@@ -1,0 +1,40 @@
+package com.codestates.culinari.product.entitiy;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+
+@Getter
+@Entity
+public class NutritionInfo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private Integer calories;
+
+    @Column(nullable = false)
+    private Integer carbohydrate;
+
+    @Column(nullable = false)
+    private Integer protein;
+
+    @Column(nullable = false)
+    private Integer fat;
+
+    @Column(nullable = false)
+    private Integer cholesterol;
+
+    @Column(nullable = false)
+    private Integer sodium;
+
+    @Column(nullable = false)
+    private Integer calcium;
+
+    @Column(nullable = false)
+    private Integer iron;
+
+    @OneToOne
+    private Product product;
+
+}
