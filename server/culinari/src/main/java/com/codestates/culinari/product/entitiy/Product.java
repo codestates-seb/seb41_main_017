@@ -1,7 +1,6 @@
 package com.codestates.culinari.product.entitiy;
 
-import com.codestates.culinari.order.entitiy.Cart;
-import com.codestates.culinari.order.entitiy.OrderDetail;
+import com.codestates.culinari.audit.AuditingFields;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -52,8 +51,8 @@ public class Product {
     @Column(nullable = false)
     private Boolean refundable;
 
-    @ManyToOne
-    private Category category;
+    @ManyToOne(optional = false)
+    private CategoryDetail categoryDetail;
 
     @OneToMany(mappedBy = "product")
     private List<ProductInquiry> productInquiry = new ArrayList<>();

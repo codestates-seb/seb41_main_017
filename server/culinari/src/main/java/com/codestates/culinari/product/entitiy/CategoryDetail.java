@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Category {
+public class CategoryDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,6 +19,12 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    private List<CategoryDetail> categoryDetails = new ArrayList<>();
+    @Column(nullable = false , unique = true)
+    String categoryDetailCode;
+
+    @ManyToOne(optional = false)
+    private Category category;
+
+    @OneToMany(mappedBy = "categoryDetail")
+    private List<Product> products = new ArrayList<>();
 }

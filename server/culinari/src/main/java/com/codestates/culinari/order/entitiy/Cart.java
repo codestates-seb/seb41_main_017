@@ -7,8 +7,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -20,10 +18,12 @@ public class Cart {
     @Column(nullable = false)
     private Integer quantity;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Profile profile;
 
     @ManyToOne(optional = false)
     private Product product;
 
 }
+
+// 장바구니 삭제 하는게 관리가 용이한 지?

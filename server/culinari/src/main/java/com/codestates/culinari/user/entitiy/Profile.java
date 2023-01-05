@@ -53,10 +53,11 @@ public class Profile {
     @OneToMany(mappedBy = "profile")
     private List<Users> users = new ArrayList<>();
 
+    @OneToMany(mappedBy = "profile")
+    private List<Orders> orders = new ArrayList<>();
+
     //주문 내역이나 결제 내역 표시..?
     @OneToMany(mappedBy = "profile")
     private List<Cart> carts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "profile")
-    private List<Orders> orders = new ArrayList<>();
 }

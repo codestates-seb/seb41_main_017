@@ -26,6 +26,6 @@ public class Orders {
     @Column(nullable = false)
     private String receiverPhoneNumber;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Profile profile;
 }

@@ -22,11 +22,14 @@ public class Users {
     @Column(nullable = false, length = 255)
     private String password;
 
-    // 논의
+    // 논의 @ElementCollection
     @OneToMany(mappedBy = "user")
-    private List<UserRole> userRoles = new ArrayList<>();
+    private List<UserRole> userRoles = new ArrayList<>();//
 
     @ManyToOne
     private Profile profile;
 
 }
+
+//
+// @ElementCollection

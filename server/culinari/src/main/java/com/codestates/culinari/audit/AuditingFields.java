@@ -13,11 +13,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @ToString
-@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public class AuditingFields {
+public abstract class AuditingFields {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
@@ -30,7 +30,7 @@ public class AuditingFields {
     private LocalDateTime modifiedAt; //수정일시
 
     @LastModifiedBy
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String modifiedBy; // 수정자
 }
 
