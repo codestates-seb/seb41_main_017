@@ -1,5 +1,6 @@
 package com.codestates.culinari.order.entitiy;
 
+import com.codestates.culinari.audit.AuditingFields;
 import com.codestates.culinari.user.entitiy.Profile;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,13 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Orders {
+public class Orders extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false, unique = true)
-    private Long orderNumber;
 
     @Column(nullable = false)
     private String address;

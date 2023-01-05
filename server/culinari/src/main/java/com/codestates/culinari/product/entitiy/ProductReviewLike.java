@@ -1,12 +1,13 @@
 package com.codestates.culinari.product.entitiy;
 
+import com.codestates.culinari.audit.AuditingFields;
 import com.codestates.culinari.user.entitiy.Profile;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
 @Entity
-public class ProductReviewLike {
+public class ProductReviewLike extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

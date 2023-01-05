@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-public class NutritionInfo {
+public class NutritionInfo extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,8 +34,5 @@ public class NutritionInfo {
 
     @Column(nullable = false)
     private Integer iron;
-
-    @OneToOne
-    private Product product;
 
 }

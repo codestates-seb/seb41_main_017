@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-public class ProductInquiry {
+public class ProductInquiry extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

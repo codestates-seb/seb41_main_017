@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Product {
+public class Product extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -60,14 +60,7 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<ProductReview> productReview = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private NutritionInfo nutritionInfo;
-
-    // 굳이..?
-    @OneToMany(mappedBy = "product")
-    private List<Cart> carts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "product")
-    private List<OrderDetail> orderDetails = new ArrayList<>();
 
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-public class ProductReview {
+public class ProductReview extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +21,7 @@ public class ProductReview {
     @ManyToOne(optional = false)
     private Profile profile;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Product product;
 
 }
