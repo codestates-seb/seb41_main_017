@@ -22,9 +22,9 @@ public class OrderDetail extends AuditingFields {
     @Column
     private StatusType statusType;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Orders orders;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Product product;
 }

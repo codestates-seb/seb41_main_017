@@ -3,8 +3,11 @@ package com.codestates.culinari.product.entitiy;
 import com.codestates.culinari.audit.AuditingFields;
 import com.codestates.culinari.user.entitiy.Profile;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 public class ProductInquiry extends AuditingFields {
@@ -18,9 +21,9 @@ public class ProductInquiry extends AuditingFields {
     @Column(nullable = false, length = 65554)
     private String content;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Profile profile;
 }

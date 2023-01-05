@@ -19,6 +19,9 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false, unique = true)
+    private String categoryCode;
+
     @OneToMany(mappedBy = "category")
     private List<CategoryDetail> categoryDetails = new ArrayList<>();
 }

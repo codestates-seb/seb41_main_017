@@ -46,7 +46,7 @@ public class Product extends AuditingFields {
     private String countryOfOrigin;
 
     @Column(nullable = false , length = 300)
-    private String allergy_info;
+    private String allergyInfo;
 
     @Column(nullable = false)
     private Boolean refundable;
