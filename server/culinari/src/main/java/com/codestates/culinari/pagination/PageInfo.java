@@ -1,4 +1,4 @@
-package com.codestates.culinari.response;
+package com.codestates.culinari.pagination;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
