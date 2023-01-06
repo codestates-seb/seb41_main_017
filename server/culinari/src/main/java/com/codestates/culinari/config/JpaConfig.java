@@ -10,6 +10,4 @@ import java.util.Optional;
 @EnableJpaAuditing
 @Configuration
 public class JpaConfig {
-
-
 }
