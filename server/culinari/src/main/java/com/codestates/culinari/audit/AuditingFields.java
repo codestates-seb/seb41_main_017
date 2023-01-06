@@ -29,6 +29,10 @@ public abstract class AuditingFields {
     @Column(nullable = false)
     private LocalDateTime modifiedAt; //수정일시
 
+    @CreatedBy
+    @Column(nullable = false)
+    private String createdBy; // 생성자
+
     @LastModifiedBy
     @Column(nullable = false)
     private String modifiedBy; // 수정자

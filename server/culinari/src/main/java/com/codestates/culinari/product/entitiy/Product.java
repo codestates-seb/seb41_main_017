@@ -48,9 +48,6 @@ public class Product extends AuditingFields {
     @Column(nullable = false , length = 300)
     private String allergyInfo;
 
-    @Column(nullable = false)
-    private Boolean refundable;
-
     @ManyToOne(optional = false)
     private CategoryDetail categoryDetail;
 
@@ -59,8 +56,5 @@ public class Product extends AuditingFields {
 
     @OneToMany(mappedBy = "product")
     private List<ProductReview> productReview = new ArrayList<>();
-
-    @OneToOne(fetch = FetchType.LAZY)
-    private NutritionInfo nutritionInfo;
 
 }
