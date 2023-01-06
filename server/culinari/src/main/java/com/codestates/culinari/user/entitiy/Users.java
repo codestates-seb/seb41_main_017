@@ -31,6 +31,5 @@ public class Users extends AuditingFields {
     private Profile profile;
 
 }
-
 //
 // @ElementCollection
