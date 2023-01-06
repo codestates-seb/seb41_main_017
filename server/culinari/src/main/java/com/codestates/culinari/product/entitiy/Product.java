@@ -31,6 +31,9 @@ public class Product extends AuditingFields {
     private String shipping;
 
     @Column(nullable = false)
+    private String brand;
+
+    @Column(nullable = false)
     private String seller;
 
     @Column(nullable = false)

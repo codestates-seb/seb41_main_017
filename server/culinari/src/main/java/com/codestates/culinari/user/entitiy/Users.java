@@ -18,7 +18,7 @@ public class Users extends AuditingFields {
     private Long id;
 
     @Column(nullable = false)
-    private String userName;
+    private String userId;
 
     @Column(nullable = false, length = 255)
     private String password;
