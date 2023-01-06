@@ -1,6 +1,8 @@
 import "./App.css";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import Login from "./pages/sign/login";
+import SignForm from "./components/signup/SignupForm";
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -52,7 +54,8 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <div>asdf</div>
+      <Login />
+      {/* <SignForm></SignForm> */}
     </>
   );
 }

@@ -31,19 +31,6 @@ const SocialLoginButton = styled.button`
   letter-spacing: normal;
   text-align: center;
   font-weight: norbal;
-
-  & > img {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    text-align: center;
-    letter-spacing: normal;
-    margin-right: 4px;
-  }
-
-  &:hover {
-    opacity: 0.8;
-  }
 `;
 
 const GitLogin = styled(SocialLoginButton)`
@@ -59,24 +46,20 @@ const GoogleLogin = styled(SocialLoginButton)`
 const BlueButton = styled.button`
   display: inline-block;
   width: 100%;
-  font-size: 13px;
+  font-size: 20px;
   line-height: 15px;
   text-align: center;
   letter-spacing: center;
-  font-family: -apple-system, "system-ui", "Segoe UI Adjusted", "Segoe UI",
-    "Liberation Sans", sans-serif;
-  background-color: #0a95ff;
+
+  background-color: #ffffff;
   padding: 10px;
   margin: 6px 0;
-  color: white;
+  color: #c26d53;
   box-shadow: rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset;
   border-radius: 3px;
-  outline: none;
+  outline: 1px solid #c26d53;
   margin: 10px 0px;
-
-  &:hover {
-    opacity: 0.8;
-  }
+  height: 59px;
 `;
 
 export default LoginButton;
