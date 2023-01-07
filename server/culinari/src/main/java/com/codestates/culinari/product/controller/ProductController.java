@@ -2,7 +2,9 @@ package com.codestates.culinari.product.controller;
 
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
+import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
+import com.codestates.culinari.product.dto.request.ProductReviewRequest;
 import com.codestates.culinari.product.dto.response.ProductResponseWithCSDto;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
@@ -40,5 +42,16 @@ public class ProductController {
 
         return new ResponseEntity(
                 new SingleResponseDto<>(productInquiryDto),HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{product-id}/review")
+    public ResponseEntity postProductReview(
+            @PathVariable("product-id") Long productId,
+            @RequestBody ProductReviewRequest productReviewRequest){
+
+        ProductReviewDto productReviewDto = productCsService.createProductInquiry(productReviewRequest,productId);
+
+        return new ResponseEntity(
+                new SingleResponseDto<>(productReviewDto),HttpStatus.CREATED);
     }
 }

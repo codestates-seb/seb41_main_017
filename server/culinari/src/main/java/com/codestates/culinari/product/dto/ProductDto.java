@@ -77,6 +77,7 @@ public record ProductDto(
                         .map(review -> ProductReviewDto
                                 .builder()
                                 .id(review.getId())
+                                .productId(review.getProduct().getId())
                                 .title(review.getTitle())
                                 .content(review.getContent())
                                 .build()

@@ -1,6 +1,8 @@
 package com.codestates.culinari.product.dto;
 
+import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductInquiry;
+import com.codestates.culinari.product.entitiy.ProductReview;
 import lombok.Builder;
 
 import java.io.Serializable;
@@ -20,12 +22,19 @@ public record ProductReviewDto(
         String createdBy,
         String modifiedBy
 ) implements Serializable {
-    public static ProductInquiryDto of(Long id, Long productId,String title,String content,LocalDateTime createdAt, LocalDateTime modifiedAt,String createdBy, String modifiedBy){
-        return new ProductInquiryDto(id, productId, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
+    public static ProductReviewDto of(Long id, Long productId, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
+        return new ProductReviewDto(id, productId, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
+
     }
 
-    public static ProductInquiryDto from(ProductInquiry entity){
-        return new ProductInquiryDto(
+    public static ProductReviewDto of(Long productId, String title,String content){
+        return new ProductReviewDto(null, productId, title, content, null, null, null, null);
+    }
+
+
+
+    public static ProductReviewDto from(ProductReview entity) {
+        return new ProductReviewDto(
                 entity.getId(),
                 entity.getProduct().getId(),
                 entity.getTitle(),
@@ -37,4 +46,14 @@ public record ProductReviewDto(
         );
     }
 
+
+
+    public ProductReview toEntity(Product product) {
+        return ProductReview.of(
+                title,
+                content,
+                product
+        );
+
+    }
 }

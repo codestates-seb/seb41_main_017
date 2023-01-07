@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -21,10 +23,26 @@ public class ProductReview extends AuditingFields {
     @Column(nullable = false, length = 65554)
     private String content;
 
-    @ManyToOne(optional = false)
-    private Profile profile;
 
     @ManyToOne(optional = false)
     private Product product;
+
+//    @ManyToOne(optional = false)
+//    private Profile profile;
+
+    public ProductReview(String title, String content, Product product){
+        this.title = title;
+        this.content = content;
+        this.product = product;
+    }
+
+    public static ProductReview of(String title, String content, Product product){
+        return new ProductReview(title, content, product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
 }

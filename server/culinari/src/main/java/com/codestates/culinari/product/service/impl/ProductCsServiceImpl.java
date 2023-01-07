@@ -1,9 +1,12 @@
 package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.product.dto.ProductInquiryDto;
+import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
+import com.codestates.culinari.product.dto.request.ProductReviewRequest;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductInquiry;
+import com.codestates.culinari.product.entitiy.ProductReview;
 import com.codestates.culinari.product.repository.ProductInquiryRepository;
 import com.codestates.culinari.product.repository.ProductRepository;
 import com.codestates.culinari.product.repository.ProductReviewRepository;
@@ -33,12 +36,22 @@ public class ProductCsServiceImpl implements ProductCsService {
     }
 
 
+    // 문의 작성
     public ProductInquiryDto createProductInquiry(ProductInquiryRequest productInquiryRequest, Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
 
         ProductInquiry productInquiry = productInquiryRepository.save(productInquiryRequest.toDto(product).toEntity(product));
 
         return ProductInquiryDto.from(productInquiry);
+    }
+
+    // 후기 작성
+    public ProductReviewDto createProductInquiry(ProductReviewRequest productInquiryRequest, Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
+
+        ProductReview productReview = productReviewRepository.save(productInquiryRequest.toDto(product).toEntity(product));
+
+        return ProductReviewDto.from(productReview);
     }
 }
 
