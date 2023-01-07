@@ -1,4 +1,4 @@
-package com.codestates.culinari.pagination.service.Impl;
+package com.codestates.culinari.pagination.service.impl;
 
 import com.codestates.culinari.pagination.service.PaginationService;
 import org.springframework.stereotype.Service;
