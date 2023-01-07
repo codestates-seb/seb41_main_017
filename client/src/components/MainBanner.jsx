@@ -202,20 +202,16 @@ function MainBanner() {
   ];
 
   return (
-    <>
-      <div>
-        <StyledSlideWrapper>
-          <StyledSlide {...settings}>
-            {srcArr.map((src, index) => {
-              return <Image src={src} key={index}></Image>;
-            })}
-          </StyledSlide>
-          <CurrentPageWrapper>
-            <CurrentPage>{`${currentPage} / ${srcArr.length}`}</CurrentPage>
-          </CurrentPageWrapper>
-        </StyledSlideWrapper>
-      </div>
-    </>
+    <StyledSlideWrapper>
+      <StyledSlide {...settings}>
+        {srcArr.map((src, index) => {
+          return <Image src={src} key={index}></Image>;
+        })}
+      </StyledSlide>
+      <CurrentPageWrapper>
+        <CurrentPage>{`${currentPage} / ${srcArr.length}`}</CurrentPage>
+      </CurrentPageWrapper>
+    </StyledSlideWrapper>
   );
 }
 
