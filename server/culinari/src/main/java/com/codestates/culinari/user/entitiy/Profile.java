@@ -45,11 +45,11 @@ public class Profile extends AuditingFields {
     @Column(nullable = false)
     private LocalDateTime birthDate;
 
-    @OneToMany(mappedBy = "profile")
-    private List<ProductReview> productReviews = new ArrayList<>();
-
-    @OneToMany(mappedBy = "profile")
-    private List<ProductInquiry> productInquiries = new ArrayList<>();
+//    @OneToMany(mappedBy = "profile")
+//    private List<ProductReview> productReviews = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "profile")
+//    private List<ProductInquiry> productInquiries = new ArrayList<>();
 
     @OneToMany(mappedBy = "profile")
     private List<Users> users = new ArrayList<>();

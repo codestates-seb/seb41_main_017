@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -24,6 +26,22 @@ public class ProductInquiry extends AuditingFields {
     @ManyToOne(optional = false)
     private Product product;
 
-    @ManyToOne(optional = false)
-    private Profile profile;
+//    @ManyToOne(optional = false)
+//    private Profile profile;
+
+
+    public ProductInquiry(String title, String content, Product product) {
+        this.title = title;
+        this.content = content;
+        this.product = product;
+    }
+
+    public static ProductInquiry of(String title, String content, Product product) {
+        return new ProductInquiry( title, content,product );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

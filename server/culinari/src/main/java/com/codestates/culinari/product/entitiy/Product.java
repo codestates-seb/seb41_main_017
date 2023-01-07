@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -56,10 +57,10 @@ public class Product extends AuditingFields {
     private CategoryDetail categoryDetail;
 
     @OneToMany(mappedBy = "product")
-    private List<ProductInquiry> productInquiry = new ArrayList<>();
+    private final List<ProductInquiry> productInquiry = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
-    private List<ProductReview> productReview = new ArrayList<>();
+    private final List<ProductReview> productReview = new ArrayList<>();
 
     public Product(String name,
                    String content,
@@ -113,6 +114,10 @@ public class Product extends AuditingFields {
                 allergyInfo,
                 categoryDetail
         );
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
 }
