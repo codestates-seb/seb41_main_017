@@ -19,12 +19,22 @@ public class CategoryDetail {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false , unique = true)
+    @Column(nullable = false , unique = true, name ="categoryDetailCode")
     String categoryDetailCode;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name ="categoryCode", referencedColumnName = "categoryCode")
     private Category category;
 
     @OneToMany(mappedBy = "categoryDetail")
     private List<Product> products = new ArrayList<>();
+
+    public CategoryDetail(String name, String categoryDetailCode) {
+        this.name = name;
+        this.categoryDetailCode = categoryDetailCode;
+    }
+
+    public static CategoryDetail of(String name, String categoryDetailCode){
+        return new CategoryDetail(name, categoryDetailCode);
+    }
 }

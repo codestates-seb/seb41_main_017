@@ -52,6 +52,7 @@ public class Product extends AuditingFields {
     private String allergyInfo;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name="categoryDetailCode", referencedColumnName = "categoryDetailCode")
     private CategoryDetail categoryDetail;
 
     @OneToMany(mappedBy = "product")
@@ -59,5 +60,59 @@ public class Product extends AuditingFields {
 
     @OneToMany(mappedBy = "product")
     private List<ProductReview> productReview = new ArrayList<>();
+
+    public Product(String name,
+                   String content,
+                   BigDecimal price,
+                   String shipping,
+                   String brand,
+                   String seller,
+                   String packaging,
+                   String unit,
+                   String weight,
+                   String countryOfOrigin,
+                   String allergyInfo,
+                   CategoryDetail categoryDetail) {
+        this.name = name;
+        this.content = content;
+        this.price = price;
+        this.shipping = shipping;
+        this.brand = brand;
+        this.seller = seller;
+        this.packaging = packaging;
+        this.unit = unit;
+        this.weight = weight;
+        this.countryOfOrigin = countryOfOrigin;
+        this.allergyInfo = allergyInfo;
+        this.categoryDetail = categoryDetail;
+    }
+
+    public static Product of (CategoryDetail categoryDetail,
+                              String name,
+                              String content,
+                              BigDecimal price,
+                              String shipping,
+                              String brand,
+                              String seller,
+                              String packaging,
+                              String unit,
+                              String weight,
+                              String countryOfOrigin,
+                              String allergyInfo){
+        return new Product(
+                name,
+                content,
+                price,
+                shipping,
+                brand,
+                seller,
+                packaging,
+                unit,
+                weight,
+                countryOfOrigin,
+                allergyInfo,
+                categoryDetail
+        );
+    }
 
 }
