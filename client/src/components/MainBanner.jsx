@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
+import { ReactComponent as GrayArrow } from "../assets/gray_arrow.svg";
 
 const StyledSlideWrapper = styled.div`
   display: flex;
@@ -10,7 +11,7 @@ const StyledSlideWrapper = styled.div`
   margin-bottom: 60px;
 
   &:hover {
-    .slick-arrow {
+    svg {
       display: block !important;
       animation: fadein 0.5s;
       -moz-animation: fadein 0.5s;
@@ -19,11 +20,12 @@ const StyledSlideWrapper = styled.div`
       /* Safari and Chrome */
       -o-animation: fadein 0.5s;
       /* Opera */
+      opacity: 0.7;
     }
   }
 
   &:not(:hover) {
-    .slick-arrow {
+    svg {
       animation: fadeout 0.5s;
       -moz-animation: fadeout 0.5s;
       /* Firefox */
@@ -41,7 +43,7 @@ const StyledSlideWrapper = styled.div`
     }
 
     to {
-      opacity: 0.4;
+      opacity: 0.7;
     }
   }
 
@@ -52,7 +54,7 @@ const StyledSlideWrapper = styled.div`
     }
 
     to {
-      opacity: 0.4;
+      opacity: 0.7;
     }
   }
 
@@ -63,7 +65,7 @@ const StyledSlideWrapper = styled.div`
     }
 
     to {
-      opacity: 0.4;
+      opacity: 0.7;
     }
   }
 
@@ -73,13 +75,13 @@ const StyledSlideWrapper = styled.div`
       opacity: 0;
     }
     to {
-      opacity: 0.4;
+      opacity: 0.7;
     }
   }
 
   @keyframes fadeout {
     from {
-      opacity: 0.4;
+      opacity: 0.7;
     }
 
     to {
@@ -90,7 +92,7 @@ const StyledSlideWrapper = styled.div`
   @-moz-keyframes fadeout {
     /* Firefox */
     from {
-      opacity: 0.4;
+      opacity: 0.7;
     }
 
     to {
@@ -101,7 +103,7 @@ const StyledSlideWrapper = styled.div`
   @-webkit-keyframes fadeout {
     /* Safari and Chrome */
     from {
-      opacity: 0.4;
+      opacity: 0.7;
     }
 
     to {
@@ -112,7 +114,7 @@ const StyledSlideWrapper = styled.div`
   @-o-keyframes fadeout {
     /* Opera */
     from {
-      opacity: 0.4;
+      opacity: 0.7;
     }
     to {
       opacity: 0;
@@ -123,36 +125,45 @@ const StyledSlideWrapper = styled.div`
 const StyledSlide = styled(Slider)`
   .slick-list {
     max-width: 1900px;
-    /* height: px; */
     margin: 0 auto;
     background-color: #f0f9ff;
   }
-
-  .slick-prev:before,
-  .slick-next:before {
-    font-size: 40px;
-    color: #000000;
-  }
 `;
 
-const PrevButton = styled.div`
-  width: 30px;
-  height: 30px;
+const PrevButtonContainer = styled.div`
   position: absolute;
-  left: 15%;
+  width: 60px;
+  height: 60px;
+  top: 45%;
+  left: 300px;
   z-index: 3;
-  opacity: 0.4;
+  transform: rotate(180deg);
 `;
 
-const NextButton = styled.div`
-  display: none;
-  width: 30px;
-  height: 30px;
+function PrevButton({ onClick }) {
+  return (
+    <PrevButtonContainer onClick={onClick}>
+      <GrayArrow />
+    </PrevButtonContainer>
+  );
+}
+
+const NextButtonContainer = styled.div`
   position: absolute;
-  right: 15.5%;
+  width: 60px;
+  height: 60px;
+  top: 45%;
+  right: 300px;
   z-index: 3;
-  opacity: 0.4;
 `;
+
+function NextButton({ onClick }) {
+  return (
+    <NextButtonContainer onClick={onClick}>
+      <GrayArrow />
+    </NextButtonContainer>
+  );
+}
 
 const Image = styled.img`
   display: block;
