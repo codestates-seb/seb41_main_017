@@ -24,6 +24,7 @@ public class CategoryDetailController {
     private final CategoryDetailService categoryDetailService;
     private final PaginationService paginationService;
 
+    //카테고리 상품 조회
     @GetMapping("/{category-code}/{category-detail-code}")
     public ResponseEntity getCategory(
             @PathVariable("category-code") String categoryCode,

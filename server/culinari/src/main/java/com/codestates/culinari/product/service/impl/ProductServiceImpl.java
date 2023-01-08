@@ -4,6 +4,10 @@ import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.repository.ProductRepository;
 import com.codestates.culinari.product.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +21,25 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
     }
 
+    //ID 상품 조회
     @Transactional(readOnly = true)
     public ProductDto readProduct(Long productId){
         return productRepository.findById(productId)
                 .map(ProductDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
     }
+
+    @Transactional(readOnly = true)
+    public Page<ProductDto> readProductWithFilter(String filter, Pageable pageable){
+        if(filter.equals("lower"))
+            return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
+                    .map(ProductDto::from);
+        else if(filter.equals("higher"))
+            return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
+                    .map(ProductDto::from);
+        return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
+                .map(ProductDto::from);
+    }
+
+
 }

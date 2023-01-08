@@ -21,7 +21,7 @@ public class ProductController {
     private final ProductService productService;
     private final ProductCsService productCsService;
 
-
+    //상품 상세 조회
     @GetMapping("/{product-id}")
     public ResponseEntity getProduct(
             @PathVariable("product-id") Long productId){
