@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
@@ -11,6 +11,7 @@ const PrevButtonContainer = styled.div`
   top: 97px;
   left: -25px;
   z-index: 3;
+  display: ${({ isFirstPage }) => (isFirstPage ? "none" : "block")};
 
   &:hover {
     path {
@@ -27,9 +28,9 @@ const PrevButtonContainer = styled.div`
   }
 `;
 
-function PrevButton({ onClick }) {
+function PrevButton({ isFirstPage, onClick }) {
   return (
-    <PrevButtonContainer onClick={onClick}>
+    <PrevButtonContainer isFirstPage={isFirstPage} onClick={onClick}>
       <WhiteArrow />
     </PrevButtonContainer>
   );
@@ -41,6 +42,7 @@ const NextButtonContainer = styled.div`
   right: -25px;
   z-index: 3;
   transform: rotate(180deg);
+  display: ${({ isLastPage }) => (isLastPage ? "none" : "block")};
 
   &:hover {
     path {
@@ -57,23 +59,17 @@ const NextButtonContainer = styled.div`
   }
 `;
 
-function NextButton({ onClick }) {
+function NextButton({ isLastPage, onClick }) {
   return (
-    <NextButtonContainer onClick={onClick}>
+    <NextButtonContainer isLastPage={isLastPage} onClick={onClick}>
       <WhiteArrow />
     </NextButtonContainer>
   );
 }
 
 function ProductItemListSlider() {
-  const settings = {
-    infinite: false,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
-    prevArrow: <PrevButton></PrevButton>,
-    nextArrow: <NextButton></NextButton>,
-  };
+  const slidesToShow = 5;
+  const [currentPage, setCurrentPage] = useState(1);
 
   const productArr = [
     {
@@ -143,6 +139,19 @@ function ProductItemListSlider() {
       image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/16505299970l0.jpg",
     },
   ];
+
+  const isFirstPage = () => currentPage === 1;
+  const isLastPage = () => currentPage === productArr.length - slidesToShow + 1;
+
+  const settings = {
+    infinite: false,
+    speed: 500,
+    slidesToShow: slidesToShow,
+    slidesToScroll: slidesToShow,
+    prevArrow: <PrevButton isFirstPage={isFirstPage()} />,
+    nextArrow: <NextButton isLastPage={isLastPage()} />,
+    beforeChange: (_, index) => setCurrentPage(index + 1),
+  };
 
   return (
     <Slider {...settings}>
