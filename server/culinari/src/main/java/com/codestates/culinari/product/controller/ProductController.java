@@ -31,19 +31,19 @@ public class ProductController {
         return new ResponseEntity<>(
                 new SingleResponseDto<>(product), HttpStatus.OK);
     }
-
+    //상품 문의 등록
     @PostMapping("/{product-id}/inquiry")
     public ResponseEntity postProductInquiry(
             @PathVariable("product-id") Long productId,
             @RequestBody ProductInquiryRequest productInquiryRequest){
 
-         ProductInquiryDto productInquiryDto = productCsService.createProductInquiry(productInquiryRequest,productId);
+        ProductInquiryDto productInquiryDto = productCsService.createProductInquiry(productInquiryRequest,productId);
 
 
         return new ResponseEntity(
                 new SingleResponseDto<>(productInquiryDto),HttpStatus.CREATED);
     }
-
+    //상품 후기 등록
     @PostMapping("/{product-id}/review")
     public ResponseEntity postProductReview(
             @PathVariable("product-id") Long productId,
@@ -54,4 +54,23 @@ public class ProductController {
         return new ResponseEntity(
                 new SingleResponseDto<>(productReviewDto),HttpStatus.CREATED);
     }
+
+    //문의 삭제
+    @DeleteMapping("/{product-id}/inquiry/{inquiry-id}")
+    public ResponseEntity deleteProductInquiry(
+            @PathVariable("inquiry-id") Long productInquiryId){
+
+        productCsService.deleteProductInquiry(productInquiryId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //리뷰 삭제
+    @DeleteMapping("/{product-id}/review/{review-id}")
+    public ResponseEntity deleteProductReview(
+            @PathVariable("review-id") Long productReviewId){
+
+        productCsService.deleteProductReview(productReviewId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

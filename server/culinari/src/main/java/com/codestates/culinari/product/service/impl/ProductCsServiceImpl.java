@@ -53,8 +53,14 @@ public class ProductCsServiceImpl implements ProductCsService {
 
         return ProductReviewDto.from(productReview);
     }
+
+    //문의 삭제
+    public void deleteProductInquiry(Long productInquiryId){
+        productInquiryRepository.deleteById(productInquiryId);
+    }
+
+    //리뷰 삭제
+    public void deleteProductReview(Long productReviewId){
+        productReviewRepository.deleteById(productReviewId);
+    }
 }
-
-
-
-

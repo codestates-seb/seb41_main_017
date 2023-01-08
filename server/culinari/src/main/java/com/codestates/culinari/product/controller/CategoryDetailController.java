@@ -38,7 +38,5 @@ public class CategoryDetailController {
 
         return new ResponseEntity<>(
                 new PageResponseDto<>(category,pageable,barNumber),HttpStatus.OK);
-
     }
-
 }
