@@ -30,16 +30,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDto> readProductWithFilter(String filter, Pageable pageable){
-        if(filter.equals("lower"))
+    public Page<ProductDto> readProductWithSortedType(String sortedType, Pageable pageable){
+        if(sortedType.equals("lower"))
             return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
                     .map(ProductDto::from);
-        else if(filter.equals("higher"))
+        else if(sortedType.equals("higher"))
             return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
                     .map(ProductDto::from);
         return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
                 .map(ProductDto::from);
     }
-
-
 }

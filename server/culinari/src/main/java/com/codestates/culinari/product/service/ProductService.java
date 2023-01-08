@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface ProductService {
     public ProductDto readProduct(Long productId);
 
-    public Page<ProductDto> readProductWithFilter(String filter, Pageable pageable);
+    public Page<ProductDto> readProductWithSortedType(String filter, Pageable pageable);
 }
