@@ -1,7 +1,6 @@
 package com.codestates.culinari.product.dto.response;
 
 import com.codestates.culinari.product.dto.ProductDto;
-import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.ProductReviewDto;
 
 import java.io.Serializable;

@@ -2,9 +2,7 @@ package com.codestates.culinari.product.controller;
 
 import com.codestates.culinari.pagination.PageResponseDto;
 import com.codestates.culinari.pagination.service.PaginationService;
-import com.codestates.culinari.product.dto.CategoryDetailDto;
 import com.codestates.culinari.product.dto.response.CategoryDetailResponseDto;
-import com.codestates.culinari.product.dto.response.CategoryResponseDto;
 import com.codestates.culinari.product.service.CategoryDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

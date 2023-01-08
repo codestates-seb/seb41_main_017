@@ -2,7 +2,6 @@ package com.codestates.culinari.product.dto;
 
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductInquiry;
-import lombok.Builder;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

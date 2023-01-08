@@ -1,6 +1,5 @@
 package com.codestates.culinari.pagination;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

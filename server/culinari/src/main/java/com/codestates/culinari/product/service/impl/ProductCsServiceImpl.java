@@ -13,8 +13,6 @@ import com.codestates.culinari.product.repository.ProductReviewRepository;
 import com.codestates.culinari.product.service.ProductCsService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

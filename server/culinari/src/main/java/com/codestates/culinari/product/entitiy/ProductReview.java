@@ -1,7 +1,6 @@
 package com.codestates.culinari.product.entitiy;
 
 import com.codestates.culinari.audit.AuditingFields;
-import com.codestates.culinari.user.entitiy.Profile;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

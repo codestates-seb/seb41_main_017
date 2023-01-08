@@ -1,6 +1,5 @@
 package com.codestates.culinari.product.dto.response;
 
-import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductInquiry;
 import lombok.Builder;
 

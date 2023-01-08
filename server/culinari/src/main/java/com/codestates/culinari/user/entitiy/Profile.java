@@ -3,8 +3,6 @@ package com.codestates.culinari.user.entitiy;
 import com.codestates.culinari.audit.AuditingFields;
 import com.codestates.culinari.order.entitiy.Cart;
 import com.codestates.culinari.order.entitiy.Orders;
-import com.codestates.culinari.product.entitiy.ProductInquiry;
-import com.codestates.culinari.product.entitiy.ProductReview;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
