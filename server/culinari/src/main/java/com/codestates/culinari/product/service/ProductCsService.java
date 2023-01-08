@@ -11,6 +11,9 @@ public interface ProductCsService {
 
     public ProductReviewDto createProductInquiry(ProductReviewRequest productInquiryRequest, Long productId);
 
+    public ProductInquiryDto updateProductInquiry(ProductInquiryRequest productInquiryRequest, Long productInquiryId);
+    public ProductReviewDto updateProductReview(ProductReviewRequest productReviewRequest, Long productReviewId);
+
     public void deleteProductInquiry(Long productInquiryId);
 
     public void deleteProductReview(Long productReviewId);

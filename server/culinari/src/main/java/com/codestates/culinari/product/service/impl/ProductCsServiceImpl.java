@@ -53,6 +53,30 @@ public class ProductCsServiceImpl implements ProductCsService {
 
         return ProductReviewDto.from(productReview);
     }
+    //문의 수정
+    public ProductInquiryDto updateProductInquiry(ProductInquiryRequest productInquiryRequest, Long productInquiryId) {
+        ProductInquiry productInquiry = productInquiryRepository.findById(productInquiryId).orElseThrow(() -> new EntityNotFoundException("문의가 없습니다"));
+        if (productInquiryRequest.title() != null) {
+            productInquiry.setTitle(productInquiryRequest.title());
+        }
+        if (productInquiryRequest.content() != null) {
+            productInquiry.setContent(productInquiryRequest.content());
+        }
+
+        return ProductInquiryDto.from(productInquiry);
+    }
+    //리뷰 수정
+    public ProductReviewDto updateProductReview(ProductReviewRequest productReviewRequest, Long productReviewId) {
+        ProductReview productReview = productReviewRepository.findById(productReviewId).orElseThrow(() -> new EntityNotFoundException("문의가 없습니다"));
+        if (productReviewRequest.title() != null) {
+            productReview.setTitle(productReviewRequest.title());
+        }
+        if (productReviewRequest.content() != null) {
+            productReview.setContent(productReviewRequest.content());
+        }
+
+        return ProductReviewDto.from(productReview);
+    }
 
     //문의 삭제
     public void deleteProductInquiry(Long productInquiryId){

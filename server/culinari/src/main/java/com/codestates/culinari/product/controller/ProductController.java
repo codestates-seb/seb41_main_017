@@ -54,6 +54,28 @@ public class ProductController {
         return new ResponseEntity(
                 new SingleResponseDto<>(productReviewDto),HttpStatus.CREATED);
     }
+    //상품 문의 수정
+    @PatchMapping("/{product-id}/inquiry/{inquiry-id}")
+    public ResponseEntity patchProductInquiry(
+            @PathVariable("inquiry-id") Long productInquiryId,
+            @RequestBody ProductReviewRequest productReviewRequest){
+
+        ProductReviewDto productInquiryDto = productCsService.updateProductReview(productReviewRequest,productInquiryId);
+
+        return new ResponseEntity(
+                new SingleResponseDto<>(productInquiryDto),HttpStatus.CREATED);
+    }
+    //상품 리뷰 수정
+    @PatchMapping("/{product-id}/review/{review-id}")
+    public ResponseEntity patchProductReview(
+            @PathVariable("review-id") Long productReviewId,
+            @RequestBody ProductInquiryRequest productInquiryRequest){
+
+        ProductInquiryDto productInquiryDto = productCsService.updateProductInquiry(productInquiryRequest,productReviewId);
+
+        return new ResponseEntity(
+                new SingleResponseDto<>(productInquiryDto),HttpStatus.CREATED);
+    }
 
     //문의 삭제
     @DeleteMapping("/{product-id}/inquiry/{inquiry-id}")
