@@ -7,6 +7,7 @@ import styled from "styled-components";
 const StyledSlideWrapper = styled.div`
   display: flex;
   justify-content: center;
+  margin-bottom: 60px;
 
   &:hover {
     .slick-arrow {
