@@ -11,12 +11,26 @@ const PrevButtonContainer = styled.div`
   top: 97px;
   left: -25px;
   z-index: 3;
+
+  &:hover {
+    path {
+      transition: 0.3s ease 0s;
+      fill: #fd6c40;
+    }
+  }
+
+  &:not(:hover) {
+    path {
+      transition: 0.3s ease 0s;
+      fill: black;
+    }
+  }
 `;
 
 function PrevButton({ onClick }) {
   return (
     <PrevButtonContainer onClick={onClick}>
-      <WhiteArrow></WhiteArrow>
+      <WhiteArrow />
     </PrevButtonContainer>
   );
 }
@@ -27,12 +41,26 @@ const NextButtonContainer = styled.div`
   right: -25px;
   z-index: 3;
   transform: rotate(180deg);
+
+  &:hover {
+    path {
+      transition: 0.3s ease 0s;
+      fill: #fd6c40;
+    }
+  }
+
+  &:not(:hover) {
+    path {
+      transition: 0.3s ease 0s;
+      fill: black;
+    }
+  }
 `;
 
 function NextButton({ onClick }) {
   return (
     <NextButtonContainer onClick={onClick}>
-      <WhiteArrow></WhiteArrow>
+      <WhiteArrow />
     </NextButtonContainer>
   );
 }
