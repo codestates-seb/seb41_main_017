@@ -46,8 +46,6 @@ public record ProductReviewDto(
         );
     }
 
-
-
     public ProductReview toEntity(Product product, Profile profile) {
         return ProductReview.of(
                 title,
