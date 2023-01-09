@@ -13,7 +13,7 @@ public class PageResponseDto<T> {
     private Page<T> pageData;
     private Pageable pageable;
     private List<Integer> barNumber;
-
+                                          ///int page, size
     public PageResponseDto(List<T> data, Page page, List<Integer> barNumber) {
         this.data = data;
         this.pageInfo = new PageInfo(page.getNumber() + 1,
@@ -27,6 +27,7 @@ public class PageResponseDto<T> {
                 page.getSize(), page.getTotalElements(), page.getTotalPages());
     }
 
+    //페이지네이션의 호출 방식 변경 시 활용
     public PageResponseDto(List<T> data, Pageable pageable, List<Integer> barNumber){
         this.data = data;
         this.pageable = pageable;
