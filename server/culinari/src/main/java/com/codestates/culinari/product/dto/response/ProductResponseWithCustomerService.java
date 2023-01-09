@@ -9,10 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * A DTO for the {@link com.codestates.culinari.product.entitiy.Product} entity
- */
-public record ProductResponseWithCSDto(
+public record ProductResponseWithCustomerService(
         Long id,
         String name,
         String content,
@@ -32,9 +29,10 @@ public record ProductResponseWithCSDto(
         List<ProductInquiryDto> productInquiryDtos,
         List<ProductReviewDto> productReviewDtos
 
-        ) implements Serializable {
+)
+{
 
-    public static ProductResponseWithCSDto of(
+    public static ProductResponseWithCustomerService of(
             Long id,
             String name,
             String content,
@@ -54,7 +52,7 @@ public record ProductResponseWithCSDto(
             List<ProductInquiryDto> productInquiryDtos,
             List<ProductReviewDto> productReviewDtos
     ) {
-        return new ProductResponseWithCSDto(
+        return new ProductResponseWithCustomerService(
                 id,
                 name,
                 content,
@@ -76,8 +74,8 @@ public record ProductResponseWithCSDto(
         );
     }
 
-    public static ProductResponseWithCSDto from(ProductDto dto){
-        return new ProductResponseWithCSDto(
+    public static ProductResponseWithCustomerService from(ProductDto dto){
+        return new ProductResponseWithCustomerService(
                 dto.id(),
                 dto.name(),
                 dto.content(),

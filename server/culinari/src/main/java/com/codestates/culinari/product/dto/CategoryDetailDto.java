@@ -1,26 +1,24 @@
 package com.codestates.culinari.product.dto;
 
-import com.codestates.culinari.product.dto.response.ProductResponseToPageDto;
+import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * A DTO for the {@link CategoryDetail} entity
- */
 public record CategoryDetailDto(
         Long id,
         String categoryCode,
         String name,
         String categoryDetailCode,
-        List<ProductResponseToPageDto> productDtos
+        List<ProductResponseToPage> productDtos
 
 
-) implements Serializable {
+)
+{
 
-    public static CategoryDetailDto of(Long id, String categoryCode, String name, String categoryDetailCode,List<ProductResponseToPageDto> productDtos) {
+    public static CategoryDetailDto of(Long id, String categoryCode, String name, String categoryDetailCode,List<ProductResponseToPage> productDtos) {
         return new CategoryDetailDto(id, categoryCode, name, categoryDetailCode,productDtos);
     }
 
@@ -32,7 +30,7 @@ public record CategoryDetailDto(
                 entity.getCategoryDetailCode(),
                 entity.getProducts().stream()
                         .map(
-                                product -> ProductResponseToPageDto
+                                product -> ProductResponseToPage
                                 .builder()
                                 .id(product.getId())
                                 .name(product.getName())

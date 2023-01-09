@@ -6,23 +6,22 @@ import com.codestates.culinari.product.dto.CategoryDto;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * A DTO for the {@link com.codestates.culinari.product.entitiy.Category} entity
- */
-public record CategoryResponseDto(
+
+public record CategoryResponse(
         Long id,
         String name,
         String categoryCode,
         List<CategoryDetailDto> categoryDetailDtos
 
-) implements Serializable {
+)
+{
 
-    public static CategoryResponseDto of(Long id, String name, String categoryCode,List<CategoryDetailDto> categoryDetailDtos){
-        return new CategoryResponseDto(id, name, categoryCode,categoryDetailDtos);
+    public static CategoryResponse of(Long id, String name, String categoryCode, List<CategoryDetailDto> categoryDetailDtos){
+        return new CategoryResponse(id, name, categoryCode,categoryDetailDtos);
     }
 
-    public static CategoryResponseDto from(CategoryDto dto){
-        return new CategoryResponseDto(
+    public static CategoryResponse from(CategoryDto dto){
+        return new CategoryResponse(
                 dto.id(),
                 dto.name(),
                 dto.categoryCode(),

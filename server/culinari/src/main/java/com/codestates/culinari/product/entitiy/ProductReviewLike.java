@@ -24,5 +24,3 @@ public class ProductReviewLike extends AuditingFields {
     private Profile profile;
 
 }
-// 멘토님께 식별관계를 통해 복합키 생성을 하여 중복방지가 가능한 지?
-

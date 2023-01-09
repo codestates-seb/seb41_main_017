@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public record ProductInquiryRequest(
         Long productId,
-        @NotBlank String title,
-        @NotBlank String content
+        @NotBlank(message = "제목 입력은 필수입니다.") String title,
+        @NotBlank(message = "내용 입력은 필수입니다.") String content
 ) {
     public static ProductInquiryRequest of(Long productId, String title, String content){
         return new ProductInquiryRequest(productId,title,content);

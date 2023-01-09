@@ -47,5 +47,4 @@ public class ProductReview extends AuditingFields {
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }

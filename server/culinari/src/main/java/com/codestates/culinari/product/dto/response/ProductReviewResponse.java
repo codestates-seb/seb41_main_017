@@ -2,17 +2,13 @@ package com.codestates.culinari.product.dto.response;
 
 import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.entitiy.ProductInquiry;
-import com.codestates.culinari.product.entitiy.ProductReview;
 import lombok.Builder;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * A DTO for the {@link ProductInquiry} entity
- */
 @Builder
-public record ProductReviewResponseDto(
+public record ProductReviewResponse(
         Long id,
         Long productId,
         String title,
@@ -24,13 +20,14 @@ public record ProductReviewResponseDto(
         String name,
         String emial
 
-) implements Serializable {
-    public static ProductReviewResponseDto of(Long id, Long productId, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,String name, String email){
-        return new ProductReviewResponseDto(id, productId, title, content, createdAt, modifiedAt, createdBy, modifiedBy, name, email);
+)
+{
+    public static ProductReviewResponse of(Long id, Long productId, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy, String name, String email){
+        return new ProductReviewResponse(id, productId, title, content, createdAt, modifiedAt, createdBy, modifiedBy, name, email);
     }
 
-    public static ProductReviewResponseDto from(ProductReviewDto dto){
-        return new ProductReviewResponseDto(
+    public static ProductReviewResponse from(ProductReviewDto dto){
+        return new ProductReviewResponse(
               dto.id(),
                 dto.productId(),
                 dto.title(),

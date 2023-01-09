@@ -5,5 +5,4 @@ import org.springframework.data.domain.Page;
 
 public interface CategoryDetailService {
     public Page<CategoryDetailDto> getCategoryDetail(String categoryCode, int page, int size);
-
 }
