@@ -2,7 +2,7 @@ package com.codestates.culinari.product.controller;
 
 import com.codestates.culinari.pagination.PageResponseDto;
 import com.codestates.culinari.pagination.service.PaginationService;
-import com.codestates.culinari.product.dto.response.ProductResponseToPageDto;
+import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 import com.codestates.culinari.product.service.CategoryDetailService;
 import com.codestates.culinari.product.service.CategoryService;
 import com.codestates.culinari.product.service.ProductService;
@@ -31,13 +31,14 @@ public class CategoryController {
     public ResponseEntity getCategory(
             @PathVariable("category-code") String categoryCode,
             @RequestParam(required = false, value = "sorted_type") String sortedType,
-            @Validated @Positive @RequestParam(required = false) int page,
-            @Validated @Positive @RequestParam(required = false) int size){
+            @RequestParam(required = false) int page,
+            @Positive @RequestParam(required = false) int size){
 
         if(sortedType == null) sortedType = "newest";
 
-            Page<ProductResponseToPageDto> categoryPage = productService.readProductWithCategoryCode(categoryCode,sortedType, page-1,size).map(ProductResponseToPageDto::from);
-            List<ProductResponseToPageDto> category = categoryPage.getContent();
+            Page<ProductResponseToPage> categoryPage = productService.readProductWithCategoryCode(categoryCode,sortedType, page,size).map(ProductResponseToPage::from);
+            List<ProductResponseToPage> category = categoryPage.getContent();
+
             List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, categoryPage.getTotalPages());
             return new ResponseEntity<>(
                     new PageResponseDto<>(category,categoryPage,barNumber),HttpStatus.OK);

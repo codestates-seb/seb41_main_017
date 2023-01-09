@@ -42,10 +42,8 @@ public class ProductReview extends AuditingFields {
     public static ProductReview of(String title, String content, Product product, Profile profile){
         return new ProductReview(title, content, product, profile);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }

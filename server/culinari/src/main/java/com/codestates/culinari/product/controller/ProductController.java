@@ -5,13 +5,12 @@ import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
-import com.codestates.culinari.product.dto.response.ProductInquiryResponseDto;
-import com.codestates.culinari.product.dto.response.ProductResponseWithCSDto;
-import com.codestates.culinari.product.dto.response.ProductReviewResponseDto;
+import com.codestates.culinari.product.dto.response.ProductInquiryResponse;
+import com.codestates.culinari.product.dto.response.ProductResponseWithCustomerService;
+import com.codestates.culinari.product.dto.response.ProductReviewResponse;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.response.SingleResponseDto;
-import com.codestates.culinari.user.entitiy.Profile;
 import com.codestates.culinari.user.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,8 @@ public class ProductController {
     public ResponseEntity getProduct(
             @PathVariable("product-id") Long productId){
 
-        ProductResponseWithCSDto product = ProductResponseWithCSDto.from(productService.readProduct(productId));
+
+        ProductResponseWithCustomerService product = ProductResponseWithCustomerService.from(productService.readProduct(productId));
         return new ResponseEntity<>(
                 new SingleResponseDto<>(product), HttpStatus.OK);
     }
@@ -44,7 +44,8 @@ public class ProductController {
             @AuthenticationPrincipal CustomPrincipal principal,
             @RequestBody ProductInquiryRequest productInquiryRequest){
 
-        ProductInquiryResponseDto productInquiry = ProductInquiryResponseDto.from(productCsService.createProductInquiry(productInquiryRequest, principal, productId));
+
+        ProductInquiryResponse productInquiry = ProductInquiryResponse.from(productCsService.createProductInquiry(productInquiryRequest, principal, productId));
 
         return new ResponseEntity(
                 new SingleResponseDto<>(productInquiry),HttpStatus.CREATED);
@@ -56,7 +57,7 @@ public class ProductController {
             @AuthenticationPrincipal CustomPrincipal principal,
             @RequestBody ProductReviewRequest productReviewRequest){
 
-        ProductReviewResponseDto productReview = ProductReviewResponseDto.from(productCsService.createProductReview(productReviewRequest, principal, productId));
+        ProductReviewResponse productReview = ProductReviewResponse.from(productCsService.createProductReview(productReviewRequest, principal, productId));
 
         return new ResponseEntity(
                 new SingleResponseDto<>(productReview),HttpStatus.CREATED);

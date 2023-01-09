@@ -8,9 +8,6 @@ import com.codestates.culinari.user.entitiy.Profile;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * A DTO for the {@link com.codestates.culinari.product.entitiy.ProductReview} entity
- */
 public record ProductReviewDto(
         Long id,
         Long productId,
@@ -21,7 +18,9 @@ public record ProductReviewDto(
         LocalDateTime modifiedAt,
         String createdBy,
         String modifiedBy
-) implements Serializable {
+)
+{
+
     public static ProductReviewDto of(Long id, Long productId,ProfileDto profileDto, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
         return new ProductReviewDto(id, productId, profileDto, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
 

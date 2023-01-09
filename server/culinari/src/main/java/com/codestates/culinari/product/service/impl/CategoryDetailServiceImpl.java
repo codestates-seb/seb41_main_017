@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CategoryDetailServiceImpl implements CategoryDetailService {
 
     private final CategoryDetailRepository categoryDetailRepository;
-
     public CategoryDetailServiceImpl(CategoryDetailRepository categoryDetailRepository) {
         this.categoryDetailRepository = categoryDetailRepository;
     }
@@ -23,6 +22,5 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
     public Page<CategoryDetailDto> getCategoryDetail(String categoryDetailCode, int page, int size){
         return categoryDetailRepository.findByCategoryDetailCode(categoryDetailCode, PageRequest.of(page, size, Sort.by("id").descending()))
                 .map(CategoryDetailDto::from);
-
     }
 }
