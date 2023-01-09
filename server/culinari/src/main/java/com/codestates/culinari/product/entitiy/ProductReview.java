@@ -1,6 +1,7 @@
 package com.codestates.culinari.product.entitiy;
 
 import com.codestates.culinari.audit.AuditingFields;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class ProductReview extends AuditingFields {
     @Column(nullable = false, length = 65554)
     private String content;
 
+    @JsonBackReference
     @ManyToOne(optional = false)
     private Product product;
 

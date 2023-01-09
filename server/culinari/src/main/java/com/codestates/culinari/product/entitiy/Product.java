@@ -1,6 +1,8 @@
 package com.codestates.culinari.product.entitiy;
 
 import com.codestates.culinari.audit.AuditingFields;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,46 +21,49 @@ public class Product extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 65554)
     private String content;
 
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String shipping;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String brand;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String seller;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String packaging;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String unit;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String weight;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String countryOfOrigin;
 
     @Column(nullable = false , length = 300)
     private String allergyInfo;
 
+    @JsonBackReference
     @ManyToOne(optional = false)
     @JoinColumn(name="categoryDetailCode", referencedColumnName = "categoryDetailCode")
     private CategoryDetail categoryDetail;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "product")
     private final List<ProductInquiry> productInquiry = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "product")
     private final List<ProductReview> productReview = new ArrayList<>();
 

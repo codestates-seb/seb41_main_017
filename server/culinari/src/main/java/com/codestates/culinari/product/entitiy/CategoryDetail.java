@@ -1,5 +1,7 @@
 package com.codestates.culinari.product.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,10 +24,12 @@ public class CategoryDetail {
     @Column(nullable = false , unique = true, name ="categoryDetailCode")
     String categoryDetailCode;
 
+    @JsonBackReference
     @ManyToOne(optional = false)
     @JoinColumn(name ="categoryCode", referencedColumnName = "categoryCode")
     private Category category;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "categoryDetail")
     private List<Product> products = new ArrayList<>();
 

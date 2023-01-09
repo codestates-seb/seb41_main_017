@@ -26,7 +26,8 @@ public record CategoryDetailResponseDto(
                 dto.name(),
                 dto.categoryDetailCode(),
                 dto.productDtos().stream()
-                        .map(product -> ProductResponseToPageDto
+                        .map(
+                                product -> ProductResponseToPageDto
                                 .builder()
                                 .id(product.id())
                                 .name(product.name())

@@ -1,6 +1,7 @@
 package com.codestates.culinari.product.dto.response;
 
 import com.codestates.culinari.product.dto.ProductDto;
+import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.ProductReviewDto;
 
 import java.io.Serializable;
@@ -28,7 +29,7 @@ public record ProductResponseWithCSDto(
         LocalDateTime modifiedAt,
         String createdBy,
         String modifiedBy,
-        List<ProductInquiryResponseDto> productInquiryDtos,
+        List<ProductInquiryDto> productInquiryDtos,
         List<ProductReviewDto> productReviewDtos
 
         ) implements Serializable {
@@ -50,7 +51,7 @@ public record ProductResponseWithCSDto(
             LocalDateTime modifiedAt,
             String createdBy,
             String modifiedBy,
-            List<ProductInquiryResponseDto> productInquiryDtos,
+            List<ProductInquiryDto> productInquiryDtos,
             List<ProductReviewDto> productReviewDtos
     ) {
         return new ProductResponseWithCSDto(

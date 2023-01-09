@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 /**
  * A DTO for the {@link ProductInquiry} entity
  */
-@Builder
 public record ProductInquiryResponseDto(
         Long id,
         Long productId,

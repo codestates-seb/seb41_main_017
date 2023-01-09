@@ -31,7 +31,8 @@ public record CategoryDetailDto(
                 entity.getName(),
                 entity.getCategoryDetailCode(),
                 entity.getProducts().stream()
-                        .map(product -> ProductResponseToPageDto
+                        .map(
+                                product -> ProductResponseToPageDto
                                 .builder()
                                 .id(product.getId())
                                 .name(product.getName())

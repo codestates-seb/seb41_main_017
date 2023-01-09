@@ -12,7 +12,6 @@ values ('채소', '001'),
        ('건강식품', '011'),
        ('와인', '012'),
        ('전통주', '013');
-
 insert into category_detail(category_code, name, category_detail_code)
 values ('001', '친환경', '001001'),
        ('001', '고구마•감자•당근', '001002'),

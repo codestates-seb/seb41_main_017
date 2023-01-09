@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 /**
  * A DTO for the {@link com.codestates.culinari.product.entitiy.ProductReview} entity
  */
-@Builder
 public record ProductReviewDto(
         Long id,
         Long productId,
@@ -29,7 +28,6 @@ public record ProductReviewDto(
     public static ProductReviewDto of(Long productId, String title,String content){
         return new ProductReviewDto(null, productId, title, content, null, null, null, null);
     }
-
 
 
     public static ProductReviewDto from(ProductReview entity) {
