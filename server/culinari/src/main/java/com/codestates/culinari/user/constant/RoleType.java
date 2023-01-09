@@ -1,10 +1,10 @@
-package com.codestates.culinari.user.entitiy;
+package com.codestates.culinari.user.constant;
 
 import lombok.Getter;
 
 public enum RoleType {
     USER("일반 유저"),
-    ADMIN("권리자");
+    ADMIN("관리자");
 
     @Getter
     private final String type;

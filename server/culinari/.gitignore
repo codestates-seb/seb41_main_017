@@ -216,3 +216,4 @@ $RECYCLE.BIN/
 /.idea/
 /build/
 /src/main/generated/
+/UserHttpRequest.http
