@@ -29,9 +29,9 @@ public record ProductDto(
         String modifiedBy,
         List<ProductInquiryDto> productInquiryDtos,
         List<ProductReviewDto> productReviewDtos
-
 )
 {
+
 
     public static ProductDto of(Long id, String categoryDetailCode, String name, String content, BigDecimal price, String shipping, String brand,String seller, String packaging, String unit,String weight,
                                 String countryOfOrigin,String allergyInfo,LocalDateTime createdAt,LocalDateTime modifiedAt,String createdBy,String modifiedBy,List<ProductInquiryDto> productInquiryDtos, List<ProductReviewDto> productReviewDtos){

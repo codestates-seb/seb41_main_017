@@ -18,9 +18,9 @@ public record ProductInquiryDto(
         LocalDateTime modifiedAt,
         String createdBy,
         String modifiedBy
-
 )
 {
+
     public static ProductInquiryDto of(Long id, Long productId,ProfileDto profileDto, String title,String content,LocalDateTime createdAt, LocalDateTime modifiedAt,String createdBy, String modifiedBy){
         return new ProductInquiryDto(id, productId, profileDto, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
     }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @Validated
@@ -32,6 +31,7 @@ public class ProductCollectionsController {
             @RequestParam(required = false, value = "filter") String filter,
             @RequestParam(required = false) int page,
             @Positive @RequestParam(required = false) int size
+            @RequestParam(required = false) int size
     ){
 
         if(sortedType == null && filter == null) sortedType = "newest";

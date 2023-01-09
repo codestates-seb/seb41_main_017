@@ -13,9 +13,9 @@ public record CategoryDto(
         String categoryCode,
 
         List<CategoryDetailDto> categoryDetailDtos
-
 )
 {
+
 
     public static CategoryDto of(Long id, String name, String categoryCode, List<CategoryDetailDto> categoryDetailDtos){
         return new CategoryDto(id, name, categoryCode, categoryDetailDtos);

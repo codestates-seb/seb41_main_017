@@ -32,6 +32,7 @@ public class ProductController {
     public ResponseEntity getProduct(
             @PathVariable("product-id") Long productId){
 
+
         ProductResponseWithCustomerService product = ProductResponseWithCustomerService.from(productService.readProduct(productId));
         return new ResponseEntity<>(
                 new SingleResponseDto<>(product), HttpStatus.OK);
@@ -42,6 +43,7 @@ public class ProductController {
             @PathVariable("product-id") Long productId,
             @AuthenticationPrincipal CustomPrincipal principal,
             @RequestBody ProductInquiryRequest productInquiryRequest){
+
 
         ProductInquiryResponse productInquiry = ProductInquiryResponse.from(productCsService.createProductInquiry(productInquiryRequest, principal, productId));
 

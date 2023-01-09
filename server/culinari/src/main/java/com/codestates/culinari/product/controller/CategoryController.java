@@ -38,6 +38,7 @@ public class CategoryController {
 
             Page<ProductResponseToPage> categoryPage = productService.readProductWithCategoryCode(categoryCode,sortedType, page,size).map(ProductResponseToPage::from);
             List<ProductResponseToPage> category = categoryPage.getContent();
+
             List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, categoryPage.getTotalPages());
             return new ResponseEntity<>(
                     new PageResponseDto<>(category,categoryPage,barNumber),HttpStatus.OK);

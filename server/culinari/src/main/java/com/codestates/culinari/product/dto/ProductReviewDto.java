@@ -20,6 +20,7 @@ public record ProductReviewDto(
         String modifiedBy
 )
 {
+
     public static ProductReviewDto of(Long id, Long productId,ProfileDto profileDto, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
         return new ProductReviewDto(id, productId, profileDto, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
 

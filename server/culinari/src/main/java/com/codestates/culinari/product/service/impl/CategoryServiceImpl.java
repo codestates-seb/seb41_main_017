@@ -12,10 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Service
 public class CategoryServiceImpl implements CategoryService {
+
     private final CategoryRepository categoryRepository;
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
     @Transactional(readOnly = true)
     public Page<CategoryDto> getCategory(String categoryCode, int page, int size){
         return categoryRepository.findByCategoryCode(categoryCode, PageRequest.of(page, size, Sort.by("id").descending()))

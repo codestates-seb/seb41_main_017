@@ -9,6 +9,7 @@ public record ProductReviewRequest(
         Long productId,
         @NotBlank(message = "제목 입력은 필수입니다.") String title,
         @NotBlank(message = "내용 입력은 필수입니다.") String content
+
 ) {
     public static ProductReviewRequest of(Long productId, String title, String content){
         return new ProductReviewRequest(productId, title,content);
