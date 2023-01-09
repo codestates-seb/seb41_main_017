@@ -1,38 +1,36 @@
 package com.codestates.culinari.user.entitiy;
 
-import com.codestates.culinari.audit.AuditingFields;
-import com.codestates.culinari.order.entitiy.Cart;
-import com.codestates.culinari.order.entitiy.Orders;
-import com.codestates.culinari.product.entitiy.ProductInquiry;
-import com.codestates.culinari.product.entitiy.ProductReview;
+import com.codestates.culinari.user.constant.GenderType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@DynamicInsert
 @Entity
-public class Profile extends AuditingFields {
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 30)
     private String name;
 
-    @Column(nullable = false, unique = true, length = 10)
+    @Column(nullable = false, unique = true, length = 40)
     private String email;
 
     @Column(nullable = false, length = 15)
     private String phoneNumber;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private BigDecimal point;
 
     @Column(nullable = false, length = 100)
@@ -43,22 +41,20 @@ public class Profile extends AuditingFields {
     private GenderType gender;
 
     @Column(nullable = false)
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
-    @OneToMany(mappedBy = "profile")
-    private List<ProductReview> productReviews = new ArrayList<>();
+    public Profile(String name, String email, String phoneNumber, BigDecimal point ,String address, GenderType gender, LocalDate birthDate) {
+        this.id = null;
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.point = point;
+        this.address = address;
+        this.gender = gender;
+        this.birthDate = birthDate;
+    }
 
-    @OneToMany(mappedBy = "profile")
-    private List<ProductInquiry> productInquiries = new ArrayList<>();
-
-    @OneToMany(mappedBy = "profile")
-    private List<Users> users = new ArrayList<>();
-
-    @OneToMany(mappedBy = "profile")
-    private List<Orders> orders = new ArrayList<>();
-
-    //주문 내역이나 결제 내역 표시..?
-    @OneToMany(mappedBy = "profile")
-    private List<Cart> carts = new ArrayList<>();
-
+    public static Profile of(String name, String email, String phoneNumber, BigDecimal point ,String address, GenderType gender, LocalDate birthDate) {
+        return new Profile(name, email, phoneNumber, point ,address, gender, birthDate);
+    }
 }
