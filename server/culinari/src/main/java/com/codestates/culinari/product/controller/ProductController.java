@@ -1,16 +1,21 @@
 package com.codestates.culinari.product.controller;
 
+import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
+import com.codestates.culinari.product.dto.response.ProductInquiryResponseDto;
 import com.codestates.culinari.product.dto.response.ProductResponseWithCSDto;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.response.SingleResponseDto;
+import com.codestates.culinari.user.entitiy.Profile;
+import com.codestates.culinari.user.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -20,6 +25,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductCsService productCsService;
+    private final ProfileService profileService;
 
     //상품 상세 조회
     @GetMapping("/{product-id}")
@@ -34,13 +40,13 @@ public class ProductController {
     @PostMapping("/{product-id}/inquiry")
     public ResponseEntity postProductInquiry(
             @PathVariable("product-id") Long productId,
+            @AuthenticationPrincipal CustomPrincipal principal,
             @RequestBody ProductInquiryRequest productInquiryRequest){
 
-        ProductInquiryDto productInquiryDto = productCsService.createProductInquiry(productInquiryRequest,productId);
-
+        ProductInquiryResponseDto productInquiry = ProductInquiryResponseDto.from(productCsService.createProductInquiry(productInquiryRequest, principal, productId));
 
         return new ResponseEntity(
-                new SingleResponseDto<>(productInquiryDto),HttpStatus.CREATED);
+                new SingleResponseDto<>(productInquiry),HttpStatus.CREATED);
     }
     //상품 후기 등록
     @PostMapping("/{product-id}/review")

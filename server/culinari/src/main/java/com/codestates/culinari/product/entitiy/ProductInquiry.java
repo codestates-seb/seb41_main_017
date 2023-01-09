@@ -1,6 +1,7 @@
 package com.codestates.culinari.product.entitiy;
 
 import com.codestates.culinari.audit.AuditingFields;
+import com.codestates.culinari.user.entitiy.Profile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -29,18 +30,19 @@ public class ProductInquiry extends AuditingFields {
     @ManyToOne(optional = false)
     private Product product;
 
-//    @ManyToOne(optional = false)
-//    private Profile profile;
+    @ManyToOne(optional = false)
+    private Profile profile;
 
 
-    public ProductInquiry(String title, String content, Product product) {
+    public ProductInquiry(String title, String content, Product product, Profile profile) {
         this.title = title;
         this.content = content;
         this.product = product;
+        this.profile = profile;
     }
 
-    public static ProductInquiry of(String title, String content, Product product) {
-        return new ProductInquiry( title, content,product );
+    public static ProductInquiry of(String title, String content, Product product, Profile profile) {
+        return new ProductInquiry( title, content,product, profile );
     }
 
     @Override

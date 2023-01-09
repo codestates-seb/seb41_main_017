@@ -1,5 +1,6 @@
 package com.codestates.culinari.product.service.impl;
 
+import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
@@ -11,43 +12,38 @@ import com.codestates.culinari.product.repository.ProductInquiryRepository;
 import com.codestates.culinari.product.repository.ProductRepository;
 import com.codestates.culinari.product.repository.ProductReviewRepository;
 import com.codestates.culinari.product.service.ProductCsService;
+import com.codestates.culinari.user.entitiy.Profile;
+import com.codestates.culinari.user.repository.ProfileRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@RequiredArgsConstructor
 @Transactional
 @Service
 public class ProductCsServiceImpl implements ProductCsService {
     private final ProductRepository productRepository;
     private final ProductInquiryRepository productInquiryRepository;
     private final ProductReviewRepository productReviewRepository;
-
-    public ProductCsServiceImpl(
-            ProductRepository productRepository,
-            ProductInquiryRepository productInquiryRepository,
-            ProductReviewRepository productReviewRepository) {
-        this.productRepository = productRepository;
-        this.productInquiryRepository = productInquiryRepository;
-        this.productReviewRepository = productReviewRepository;
-    }
-
+    private final ProfileRepository profileRepository;
 
     // 문의 작성
-    public ProductInquiryDto createProductInquiry(ProductInquiryRequest productInquiryRequest, Long productId) {
+    public ProductInquiryDto createProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal , Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
-
-        ProductInquiry productInquiry = productInquiryRepository.save(productInquiryRequest.toDto(product).toEntity(product));
-
+        Profile profile = profileRepository.getReferenceById(principal.profileId());
+        ProductInquiry productInquiry = ProductInquiry.of(productInquiryRequest.title(), productInquiryRequest.content(), product, profile);
+        productInquiryRepository.save(productInquiry);
         return ProductInquiryDto.from(productInquiry);
     }
 
     // 후기 작성
-    public ProductReviewDto createProductInquiry(ProductReviewRequest productInquiryRequest, Long productId) {
+    public ProductReviewDto createProductInquiry(ProductReviewRequest productReviewRequest, Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
 
-        ProductReview productReview = productReviewRepository.save(productInquiryRequest.toDto(product).toEntity(product));
+        ProductReview productReview = productReviewRepository.save(productReviewRequest.toDto(product).toEntity(product));
 
         return ProductReviewDto.from(productReview);
     }
