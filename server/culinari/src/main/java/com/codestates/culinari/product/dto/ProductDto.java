@@ -1,7 +1,5 @@
 package com.codestates.culinari.product.dto;
 
-import com.codestates.culinari.product.dto.response.ProductInquiryResponseDto;
-import com.codestates.culinari.product.dto.response.ProductReviewResponseDto;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
 import com.codestates.culinari.product.entitiy.Product;
 

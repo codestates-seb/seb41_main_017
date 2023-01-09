@@ -18,10 +18,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(nullable = false, unique = true, name = "categoryCode")
+    @Column(nullable = false, unique = true, name = "categoryCode", length = 20)
     private String categoryCode;
 @JsonManagedReference
     @OneToMany(mappedBy = "category")

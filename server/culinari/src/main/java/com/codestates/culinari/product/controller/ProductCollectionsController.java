@@ -6,11 +6,12 @@ import com.codestates.culinari.product.dto.response.ProductResponseToPageDto;
 import com.codestates.culinari.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -30,13 +31,14 @@ public class ProductCollectionsController {
             @RequestParam(required = false) int size
     ){
 
-        if(sortedType == null) sortedType = "newest";
+        if(sortedType == null && filter == null) sortedType = "newest";
 
-        Page<ProductResponseToPageDto> newestProductsPage = productService.readProductWithSortedType(sortedType, page-1,size).map(ProductResponseToPageDto::from);
+        Page<ProductResponseToPageDto> newestProductsPage = productService.readProductWithSortedType(sortedType, page - 1, size).map(ProductResponseToPageDto::from);
         List<ProductResponseToPageDto> productPage = newestProductsPage.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, newestProductsPage.getTotalPages());
 
         return new ResponseEntity<>(
-                new PageResponseDto<>(productPage,newestProductsPage,barNumber), HttpStatus.OK);
+                new PageResponseDto<>(productPage, newestProductsPage, barNumber), HttpStatus.OK);
+
     }
 }
