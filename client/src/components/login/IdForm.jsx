@@ -24,8 +24,6 @@ const EmailInput = styled.input.attrs({
   font-size: 13px;
   line-height: normal;
   letter-spacing: normal;
-  font-family: -apple-system, "system-ui", "Segoe UI Adjusted", "Segoe UI",
-    "Liberation Sans", sans-serif;
   box-shadow: none;
   border-radius: 3px;
 `;
