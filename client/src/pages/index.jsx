@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import MainBanner from "../components/MainBanner";
-import ProductItemListSlider from "../components/ProductItemListSlider";
+import ProductItemSlider from "../components/ProductItemSlider";
 
 const Container = styled.div`
   min-width: 1050px;
@@ -26,11 +26,11 @@ function Main() {
       <MainBanner></MainBanner>
       <TodayRecommendProducts>
         <Title>이달의 추천 상품</Title>
-        <ProductItemListSlider></ProductItemListSlider>
+        <ProductItemSlider />
       </TodayRecommendProducts>
       <TodayRecommendProducts>
         <Title>이달의 신상품</Title>
-        <ProductItemListSlider></ProductItemListSlider>
+        <ProductItemSlider />
       </TodayRecommendProducts>
     </Container>
   );

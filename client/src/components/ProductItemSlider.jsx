@@ -67,7 +67,7 @@ function NextButton({ isLastPage, onClick }) {
   );
 }
 
-function ProductItemListSlider() {
+function ProductItemSlider() {
   const slidesToShow = 5;
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -162,4 +162,4 @@ function ProductItemListSlider() {
   );
 }
 
-export default ProductItemListSlider;
+export default ProductItemSlider;
