@@ -28,16 +28,23 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
     }
-
+    //신상품 조회
     @Transactional(readOnly = true)
-    public Page<ProductDto> readProductWithSortedType(String sortedType, Pageable pageable){
+    public Page<ProductDto> readProductWithSortedType(String sortedType, int page, int size){
         if(sortedType.equals("lower"))
-            return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
+            return productRepository.findAll(PageRequest.of(page,size, Sort.by("price")))
                     .map(ProductDto::from);
         else if(sortedType.equals("higher"))
-            return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
+            return productRepository.findAll(PageRequest.of(page,size, Sort.by("price").descending()))
                     .map(ProductDto::from);
-        return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
+        return productRepository.findAll(PageRequest.of(page,size, Sort.by("id").descending()))
                 .map(ProductDto::from);
+    }
+
+    //카테고리 조회
+    @Transactional(readOnly = true)
+    public Page<ProductDto> readProductWithCategoryCode(String categoryCode, int page, int size){
+        if(categoryCode.length() <=3) return productRepository.findAllByCategoryDetailCategoryDetailCodeContaining(categoryCode, PageRequest.of(page, size, Sort.by("id").descending())).map(ProductDto::from);
+        else return productRepository.findAllByCategoryDetailCategoryDetailCode(categoryCode, PageRequest.of(page, size, Sort.by("id").descending())).map(ProductDto::from);
     }
 }

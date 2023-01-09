@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
 
-    public Page<CategoryDto> getCategory(String categoryCode, Pageable pageable);
+    public Page<CategoryDto> getCategory(String categoryCode, int page, int size);
 }

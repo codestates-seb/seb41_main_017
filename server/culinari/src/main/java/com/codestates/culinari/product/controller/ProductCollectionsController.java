@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,15 +26,17 @@ public class ProductCollectionsController {
     public ResponseEntity getNewestProducts(
             @RequestParam(required = false , value = "sorted_type") String sortedType,
             @RequestParam(required = false, value = "filter") String filter,
-            Pageable pageable){
+            @RequestParam(required = false) int page,
+            @RequestParam(required = false) int size
+    ){
 
         if(sortedType == null) sortedType = "newest";
 
-        Page<ProductResponseToPageDto> newestProductsPage = productService.readProductWithSortedType(sortedType, pageable).map(ProductResponseToPageDto::from);
-        List<ProductResponseToPageDto> productPage = newestProductsPage.stream().toList();
-        List<Integer> barNumber = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), newestProductsPage.getTotalPages());
+        Page<ProductResponseToPageDto> newestProductsPage = productService.readProductWithSortedType(sortedType, page-1,size).map(ProductResponseToPageDto::from);
+        List<ProductResponseToPageDto> productPage = newestProductsPage.getContent();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, newestProductsPage.getTotalPages());
 
         return new ResponseEntity<>(
-                new PageResponseDto<>(productPage,pageable,barNumber), HttpStatus.OK);
+                new PageResponseDto<>(productPage,newestProductsPage,barNumber), HttpStatus.OK);
     }
 }

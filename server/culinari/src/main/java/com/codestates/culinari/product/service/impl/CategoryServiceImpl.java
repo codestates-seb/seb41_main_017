@@ -4,7 +4,9 @@ import com.codestates.culinari.product.dto.CategoryDto;
 import com.codestates.culinari.product.repository.CategoryRepository;
 import com.codestates.culinari.product.service.CategoryService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +21,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CategoryDto> getCategory(String categoryCode, Pageable pageable){
-        return categoryRepository.findByCategoryCode(categoryCode,pageable)
+    public Page<CategoryDto> getCategory(String categoryCode, int page, int size){
+        return categoryRepository.findByCategoryCode(categoryCode, PageRequest.of(page, size, Sort.by("id").descending()))
                 .map(CategoryDto::from);
     }
 }
