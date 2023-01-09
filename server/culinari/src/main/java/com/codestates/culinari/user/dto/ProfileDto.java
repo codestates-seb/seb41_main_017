@@ -30,6 +30,18 @@ public record ProfileDto(
                 signUpDto.birthDate()
         );
     }
+    public static ProfileDto from(Profile entity){
+        return new ProfileDto(
+                entity.getId(),
+                entity.getName(),
+                entity.getEmail(),
+                entity.getPhoneNumber(),
+                entity.getPoint(),
+                entity.getAddress(),
+                entity.getGender(),
+                entity.getBirthDate()
+        );
+    }
 
     public Profile toEntity() {
         return Profile.of(

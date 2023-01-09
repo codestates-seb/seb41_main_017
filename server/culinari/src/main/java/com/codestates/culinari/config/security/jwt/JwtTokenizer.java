@@ -109,17 +109,4 @@ public class JwtTokenizer {
         byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-    public Long tokenToMemberId(String token) {
-        Key key = getKeyFromBase64EncodedKey(encodeBase64SecretKey(this.secretKey));
-        String jws = token.replace("Bearer ", "");
-
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jws)
-                .getBody();
-
-        return claims.get("id", Long.class);
-    }
 }

@@ -1,5 +1,7 @@
 package com.codestates.culinari.product.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,15 +18,27 @@ public class CategoryDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(nullable = false , unique = true)
+    @Column(nullable = false , unique = true, name ="categoryDetailCode", length = 20)
     String categoryDetailCode;
 
+    @JsonBackReference
     @ManyToOne(optional = false)
+    @JoinColumn(name ="categoryCode", referencedColumnName = "categoryCode")
     private Category category;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "categoryDetail")
     private List<Product> products = new ArrayList<>();
+
+    public CategoryDetail(String name, String categoryDetailCode) {
+        this.name = name;
+        this.categoryDetailCode = categoryDetailCode;
+    }
+
+    public static CategoryDetail of(String name, String categoryDetailCode){
+        return new CategoryDetail(name, categoryDetailCode);
+    }
 }

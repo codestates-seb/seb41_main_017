@@ -57,4 +57,5 @@ public class Profile {
     public static Profile of(String name, String email, String phoneNumber, BigDecimal point ,String address, GenderType gender, LocalDate birthDate) {
         return new Profile(name, email, phoneNumber, point ,address, gender, birthDate);
     }
+
 }

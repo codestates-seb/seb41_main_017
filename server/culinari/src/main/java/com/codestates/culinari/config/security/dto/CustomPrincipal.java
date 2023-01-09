@@ -1,5 +1,8 @@
 package com.codestates.culinari.config.security.dto;
 
+import com.codestates.culinari.user.dto.ProfileDto;
+import com.codestates.culinari.user.entitiy.Profile;
+
 public record CustomPrincipal(
         String username,
         Long userId,
