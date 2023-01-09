@@ -32,14 +32,15 @@ public class ProductReview extends AuditingFields {
     @ManyToOne(optional = false)
     private Profile profile;
 
-    public ProductReview(String title, String content, Product product){
+    public ProductReview(String title, String content, Product product, Profile profile){
         this.title = title;
         this.content = content;
         this.product = product;
+        this.profile = profile;
     }
 
-    public static ProductReview of(String title, String content, Product product){
-        return new ProductReview(title, content, product);
+    public static ProductReview of(String title, String content, Product product, Profile profile){
+        return new ProductReview(title, content, product, profile);
     }
 
     @Override

@@ -10,7 +10,7 @@ public interface ProductCsService {
 
     public ProductInquiryDto createProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal , Long productId);
 
-    public ProductReviewDto createProductInquiry(ProductReviewRequest productReviewRequest, Long productId);
+    public ProductReviewDto createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId);
 
     public ProductInquiryDto updateProductInquiry(ProductInquiryRequest productInquiryRequest, Long productInquiryId);
     public ProductReviewDto updateProductReview(ProductReviewRequest productReviewRequest, Long productReviewId);

@@ -7,6 +7,7 @@ import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
 import com.codestates.culinari.product.dto.response.ProductInquiryResponseDto;
 import com.codestates.culinari.product.dto.response.ProductResponseWithCSDto;
+import com.codestates.culinari.product.dto.response.ProductReviewResponseDto;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.response.SingleResponseDto;
@@ -52,12 +53,13 @@ public class ProductController {
     @PostMapping("/{product-id}/review")
     public ResponseEntity postProductReview(
             @PathVariable("product-id") Long productId,
+            @AuthenticationPrincipal CustomPrincipal principal,
             @RequestBody ProductReviewRequest productReviewRequest){
 
-        ProductReviewDto productReviewDto = productCsService.createProductInquiry(productReviewRequest,productId);
+        ProductReviewResponseDto productReview = ProductReviewResponseDto.from(productCsService.createProductReview(productReviewRequest, principal, productId));
 
         return new ResponseEntity(
-                new SingleResponseDto<>(productReviewDto),HttpStatus.CREATED);
+                new SingleResponseDto<>(productReview),HttpStatus.CREATED);
     }
     //상품 문의 수정
     @PatchMapping("/{product-id}/inquiry/{inquiry-id}")

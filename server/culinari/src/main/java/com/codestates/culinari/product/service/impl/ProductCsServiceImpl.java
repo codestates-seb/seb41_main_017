@@ -40,11 +40,11 @@ public class ProductCsServiceImpl implements ProductCsService {
     }
 
     // 후기 작성
-    public ProductReviewDto createProductInquiry(ProductReviewRequest productReviewRequest, Long productId) {
+    public ProductReviewDto createProductInquiry(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
-
-        ProductReview productReview = productReviewRepository.save(productReviewRequest.toDto(product).toEntity(product));
-
+        Profile profile = profileRepository.getReferenceById(principal.profileId());
+        ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), product, profile);
+        productReviewRepository.save(productReview);
         return ProductReviewDto.from(productReview);
     }
     //문의 수정

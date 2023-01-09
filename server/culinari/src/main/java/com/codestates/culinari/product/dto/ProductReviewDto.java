@@ -2,6 +2,8 @@ package com.codestates.culinari.product.dto;
 
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductReview;
+import com.codestates.culinari.user.dto.ProfileDto;
+import com.codestates.culinari.user.entitiy.Profile;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 public record ProductReviewDto(
         Long id,
         Long productId,
+        ProfileDto profileDto,
         String title,
         String content,
         LocalDateTime createdAt,
@@ -19,13 +22,13 @@ public record ProductReviewDto(
         String createdBy,
         String modifiedBy
 ) implements Serializable {
-    public static ProductReviewDto of(Long id, Long productId, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
-        return new ProductReviewDto(id, productId, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
+    public static ProductReviewDto of(Long id, Long productId,ProfileDto profileDto, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
+        return new ProductReviewDto(id, productId, profileDto, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
 
     }
 
-    public static ProductReviewDto of(Long productId, String title,String content){
-        return new ProductReviewDto(null, productId, title, content, null, null, null, null);
+    public static ProductReviewDto of(Long productId,ProfileDto profileDto, String title,String content){
+        return new ProductReviewDto(null, productId, profileDto, title, content, null, null, null, null);
     }
 
 
@@ -33,6 +36,7 @@ public record ProductReviewDto(
         return new ProductReviewDto(
                 entity.getId(),
                 entity.getProduct().getId(),
+                ProfileDto.from(entity.getProfile()),
                 entity.getTitle(),
                 entity.getContent(),
                 entity.getCreatedAt(),
@@ -44,12 +48,13 @@ public record ProductReviewDto(
 
 
 
-    public ProductReview toEntity(Product product) {
+    public ProductReview toEntity(Product product, Profile profile) {
         return ProductReview.of(
                 title,
                 content,
-                product
-        );
+                product,
+                profile
+                );
 
     }
 }
