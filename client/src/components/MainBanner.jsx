@@ -170,12 +170,12 @@ const Image = styled.img`
   margin: 0 auto;
 `;
 
-const CurrentPageWrapper = styled.div`
+const PageBoxWrapper = styled.div`
   position: relative;
   user-select: none;
 `;
 
-const CurrentPage = styled.div`
+const PageBox = styled.div`
   position: absolute;
   color: rgb(255, 255, 255);
   background: rgba(0, 0, 0, 0.15);
@@ -220,9 +220,9 @@ function MainBanner() {
           return <Image src={src} key={index}></Image>;
         })}
       </StyledSlide>
-      <CurrentPageWrapper>
-        <CurrentPage>{`${currentPage} / ${srcArr.length}`}</CurrentPage>
-      </CurrentPageWrapper>
+      <PageBoxWrapper>
+        <PageBox>{`${currentPage} / ${srcArr.length}`}</PageBox>
+      </PageBoxWrapper>
     </StyledSlideWrapper>
   );
 }
