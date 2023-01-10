@@ -1,9 +1,7 @@
 package com.codestates.culinari.config.security.dto;
 
-import lombok.Getter;
-
 public record CustomPrincipal(
-        @Getter String username,
+        String username,
         Long userId,
         Long profileId
 ) {
