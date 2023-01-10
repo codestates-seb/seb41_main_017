@@ -2,11 +2,13 @@ package com.codestates.culinari.global.advice;
 
 
 import com.codestates.culinari.global.exception.BusinessLogicException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,34 +19,32 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
 
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-//
-//        System.out.printf("# Not Valid Exception" + '\n' +
-//                "Value: " + HttpStatus.BAD_REQUEST.value() + '\n' +
-//                "Status: " + HttpStatus.BAD_REQUEST.getReasonPhrase() + "\n\n");
-//
-//        log.error("",e);
-//
-//        return ErrorResponse.of(e.getBindingResult(), HttpStatus.BAD_REQUEST.value(),
-//                HttpStatus.BAD_REQUEST.getReasonPhrase());
-//
-//    }
-//
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
-//
-//        System.out.printf("# Constraint Violation Exception" + '\n' +
-//                "Value: " + HttpStatus.BAD_REQUEST.value() + '\n' +
-//                "Status: " + HttpStatus.BAD_REQUEST.getReasonPhrase() + "\n\n");
-//
-//        log.error("", e);
-//
-//        return ErrorResponse.of(e.getConstraintViolations(), HttpStatus.BAD_REQUEST.value(),
-//                HttpStatus.BAD_REQUEST.getReasonPhrase());
-//    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+
+        System.out.printf("# Not Valid Exception" + '\n' +
+                "Value: " + HttpStatus.BAD_REQUEST.value() + '\n' +
+                "Status: " + HttpStatus.BAD_REQUEST.getReasonPhrase() + "\n\n");
+
+        log.error("",e);
+
+        return ErrorResponse.of(e.getBindingResult());
+
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
+
+        System.out.printf("# Constraint Violation Exception" + '\n' +
+                "Value: " + HttpStatus.BAD_REQUEST.value() + '\n' +
+                "Status: " + HttpStatus.BAD_REQUEST.getReasonPhrase() + "\n\n");
+
+        log.error("", e);
+
+        return ErrorResponse.of(e.getConstraintViolations());
+    }
 
     @ExceptionHandler
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {

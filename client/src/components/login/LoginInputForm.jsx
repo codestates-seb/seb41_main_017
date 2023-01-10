@@ -44,6 +44,8 @@ function LoginInputForm() {
             </div>
           </CheckboxContent> */}
           <LoginButton type={"login"} />
+          <LoginButton type={"github"} />
+          <LoginButton type={"google"} />
         </div>
         <div className={toggle === 2 ? "activeContent" : "content"}>
           <SignForm></SignForm>
