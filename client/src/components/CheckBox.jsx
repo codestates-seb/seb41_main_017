@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { ReactComponent as CheckBoxIcon } from "../assets/check-box-icon.svg";
 
 const Label = styled.label`
+  margin-right: 12px;
+
    {
     svg {
       width: ${({ size }) => size};
@@ -19,7 +21,7 @@ const Label = styled.label`
   }
 `;
 
-function CheckBox({ isChecked, size = "24px" }) {
+function CheckBox({ isChecked, size = "35px" }) {
   return (
     <>
       <Label isChecked={isChecked} size={size}>
