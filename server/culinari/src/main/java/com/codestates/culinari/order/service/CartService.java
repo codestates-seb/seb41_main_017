@@ -2,7 +2,6 @@ package com.codestates.culinari.order.service;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.order.dto.CartDto;
-import com.codestates.culinari.order.dto.OrderDto;
 import com.codestates.culinari.order.dto.request.CartPatch;
 import com.codestates.culinari.order.dto.request.CartPost;
 import org.springframework.data.domain.Page;
