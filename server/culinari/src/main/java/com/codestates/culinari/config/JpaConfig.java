@@ -22,7 +22,7 @@ public class JpaConfig {
                 .filter(Authentication::isAuthenticated)
                 .map(Authentication::getPrincipal)
                 .map(CustomPrincipal.class::cast)
-                .map(CustomPrincipal::getUsername);
+                .map(CustomPrincipal::username);
     }
 
 }
