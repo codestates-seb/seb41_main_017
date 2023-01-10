@@ -31,7 +31,6 @@ public class ProductCollectionsController {
             @RequestParam(required = false, value = "filter") String filter,
             @RequestParam(required = false) int page,
             @Positive @RequestParam(required = false) int size
-            @RequestParam(required = false) int size
     ){
 
         if(sortedType == null && filter == null) sortedType = "newest";
