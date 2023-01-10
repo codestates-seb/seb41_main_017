@@ -6,8 +6,10 @@ import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
 
-public interface ProductCsService {
+import java.util.List;
 
+public interface ProductCsService {
+    public List<ProductInquiryDto> readProductInquiry(CustomPrincipal principal);
     public ProductInquiryDto createProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal , Long productId);
     public ProductReviewDto createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId);
     public ProductInquiryDto updateProductInquiry(ProductInquiryRequest productInquiryRequest, Long productInquiryId);

@@ -8,6 +8,7 @@ import com.codestates.culinari.product.dto.request.ProductReviewRequest;
 import com.codestates.culinari.product.dto.response.ProductInquiryResponse;
 import com.codestates.culinari.product.dto.response.ProductResponseWithCustomerService;
 import com.codestates.culinari.product.dto.response.ProductReviewResponse;
+import com.codestates.culinari.product.entitiy.ProductInquiry;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.response.SingleResponseDto;
@@ -45,7 +46,7 @@ public class ProductController {
             @RequestBody ProductInquiryRequest productInquiryRequest){
 
 
-        ProductInquiryResponse productInquiry = ProductInquiryResponse.from(productCsService.createProductInquiry(productInquiryRequest, principal, productId));
+        ProductInquiryDto productInquiry = productCsService.createProductInquiry(productInquiryRequest, principal, productId);
 
         return new ResponseEntity(
                 new SingleResponseDto<>(productInquiry),HttpStatus.CREATED);

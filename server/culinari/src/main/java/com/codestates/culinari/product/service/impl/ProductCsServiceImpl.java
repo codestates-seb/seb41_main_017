@@ -20,6 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
@@ -29,6 +32,15 @@ public class ProductCsServiceImpl implements ProductCsService {
     private final ProductInquiryRepository productInquiryRepository;
     private final ProductReviewRepository productReviewRepository;
     private final ProfileRepository profileRepository;
+    // profileId로 문의 리스트 get
+    @Transactional(readOnly = true)
+    public List<ProductInquiryDto> readProductInquiry(CustomPrincipal principal){
+
+        return productInquiryRepository.findByProfile_Id(principal.profileId())
+                .stream()
+                .map(ProductInquiryDto::from)
+                .collect(Collectors.toList());
+    }
 
     // 문의 작성
     public ProductInquiryDto createProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal , Long productId) {
