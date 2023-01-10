@@ -1,6 +1,8 @@
 import "./App.css";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import Header from "./components/Header"
+import Mypage from "./pages/mypage/index"
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -48,11 +50,14 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+
+
 function App() {
   return (
     <>
       <GlobalStyle />
-      <div>asdf</div>
+      <Header/>
+      <Mypage/>
     </>
   );
 }
