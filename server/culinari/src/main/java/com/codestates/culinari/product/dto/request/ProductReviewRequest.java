@@ -19,7 +19,7 @@ public record ProductReviewRequest(
     public ProductReviewDto toDto(ProfileDto profile){
         return ProductReviewDto.of(
                 productId,
-                profile,
+                profile.id(),
                 title,
                 content
         );

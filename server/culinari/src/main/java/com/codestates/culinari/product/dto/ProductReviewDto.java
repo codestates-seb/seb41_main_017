@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public record ProductReviewDto(
         Long id,
         Long productId,
-        ProfileDto profileDto,
+        Long profileId,
         String title,
         String content,
         LocalDateTime createdAt,
@@ -21,13 +21,13 @@ public record ProductReviewDto(
 )
 {
 
-    public static ProductReviewDto of(Long id, Long productId,ProfileDto profileDto, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
-        return new ProductReviewDto(id, productId, profileDto, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
+    public static ProductReviewDto of(Long id, Long productId,Long profileId, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
+        return new ProductReviewDto(id, productId, profileId, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
 
     }
 
-    public static ProductReviewDto of(Long productId,ProfileDto profileDto, String title,String content){
-        return new ProductReviewDto(null, productId, profileDto, title, content, null, null, null, null);
+    public static ProductReviewDto of(Long productId,Long profileId, String title,String content){
+        return new ProductReviewDto(null, productId, profileId, title, content, null, null, null, null);
     }
 
 
@@ -35,7 +35,7 @@ public record ProductReviewDto(
         return new ProductReviewDto(
                 entity.getId(),
                 entity.getProduct().getId(),
-                ProfileDto.from(entity.getProfile()),
+                entity.getProfile().getId(),
                 entity.getTitle(),
                 entity.getContent(),
                 entity.getCreatedAt(),
