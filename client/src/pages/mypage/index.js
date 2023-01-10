@@ -258,7 +258,6 @@ function Mypage() {
             <h3>마이페이지</h3>
             <ul>
               {tap.map((el, idx) => {
-                console.log(el)
                 return (
                 <li key={idx}>
                   {/* <Colbtn>
