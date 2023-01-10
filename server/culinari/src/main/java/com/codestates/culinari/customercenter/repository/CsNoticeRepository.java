@@ -1,6 +1,6 @@
-package com.codestates.culinari.customerservice.repository;
+package com.codestates.culinari.customercenter.repository;
 
-import com.codestates.culinari.customerservice.entity.CsNotice;
+import com.codestates.culinari.customercenter.entity.CsNotice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CsNoticeRepository extends JpaRepository<CsNotice, Long> {
