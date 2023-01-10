@@ -124,7 +124,7 @@ const StyledSlideWrapper = styled.div`
 
 const StyledSlide = styled(Slider)`
   .slick-list {
-    max-width: 1900px;
+    max-width: 1050px;
     margin: 0 auto;
     background-color: #f0f9ff;
   }
@@ -134,8 +134,8 @@ const PrevButtonContainer = styled.div`
   position: absolute;
   width: 60px;
   height: 60px;
-  top: 45%;
-  left: 300px;
+  top: 35%;
+  left: 100px;
   z-index: 3;
   transform: rotate(180deg);
 `;
@@ -152,8 +152,8 @@ const NextButtonContainer = styled.div`
   position: absolute;
   width: 60px;
   height: 60px;
-  top: 45%;
-  right: 300px;
+  top: 39%;
+  right: 100px;
   z-index: 3;
 `;
 
@@ -182,10 +182,10 @@ const CurrentPage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 55px;
-  height: 23px;
-  right: 400px;
-  bottom: 30px;
+  width: 50px;
+  height: 20px;
+  right: 110px;
+  bottom: 20px;
   line-height: 23px;
   font-size: 14px;
   font-weight: 400;
