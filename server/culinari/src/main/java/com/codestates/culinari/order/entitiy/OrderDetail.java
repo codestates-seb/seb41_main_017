@@ -39,9 +39,4 @@ public class OrderDetail extends AuditingFields {
     public static OrderDetail of(Integer quantity, StatusType statusType, Orders orders, Product product) {
         return new OrderDetail(quantity, statusType, orders, product);
     }
-
-    public static OrderDetail of(Integer quantity, Orders orders, Product product) {
-        return new OrderDetail(quantity, StatusType.STAND_BY, orders, product);
-    }
-
 }
