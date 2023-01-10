@@ -1,4 +1,4 @@
-package com.codestates.culinari.order.entitiy;
+package com.codestates.culinari.order.constant;
 
 import lombok.Getter;
 
