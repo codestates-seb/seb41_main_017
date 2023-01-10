@@ -22,7 +22,7 @@ const Button = styled.button`
   height: 28px;
 `;
 
-function QuantityButton({ quantity }) {
+function QuantityBox({ quantity }) {
   return (
     <>
       <Container>
@@ -38,4 +38,4 @@ function QuantityButton({ quantity }) {
   );
 }
 
-export default QuantityButton;
+export default QuantityBox;
