@@ -1,6 +1,7 @@
 package com.codestates.culinari.order.entitiy;
 
 import com.codestates.culinari.audit.AuditingFields;
+import com.codestates.culinari.order.constant.StatusType;
 import com.codestates.culinari.product.entitiy.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -27,4 +28,15 @@ public class OrderDetail extends AuditingFields {
 
     @ManyToOne(optional = false)
     private Product product;
+
+    private OrderDetail(Integer quantity, StatusType statusType, Orders orders, Product product) {
+        this.quantity = quantity;
+        this.statusType = statusType;
+        this.orders = orders;
+        this.product = product;
+    }
+
+    public static OrderDetail of(Integer quantity, StatusType statusType, Orders orders, Product product) {
+        return new OrderDetail(quantity, statusType, orders, product);
+    }
 }
