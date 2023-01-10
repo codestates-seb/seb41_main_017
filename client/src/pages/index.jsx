@@ -12,7 +12,6 @@ const TodayRecommendProducts = styled.div`
 `;
 
 const Title = styled.div`
-  font-style: normal;
   font-weight: 700;
   font-size: 16px;
   line-height: 23px;
@@ -23,11 +22,13 @@ const Title = styled.div`
 function Main() {
   return (
     <Container>
-      <MainBanner></MainBanner>
+      <MainBanner />
+
       <TodayRecommendProducts>
         <Title>이달의 추천 상품</Title>
         <ProductItemSlider />
       </TodayRecommendProducts>
+
       <TodayRecommendProducts>
         <Title>이달의 신상품</Title>
         <ProductItemSlider />
