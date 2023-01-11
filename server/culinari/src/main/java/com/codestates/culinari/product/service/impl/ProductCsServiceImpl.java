@@ -61,6 +61,7 @@ public class ProductCsServiceImpl implements ProductCsService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), product, profile);
+        ProductReviewLike productReviewLike = productReviewLikeRepository.save(ProductReviewLike.of(0L,productReview));
         productReviewRepository.save(productReview);
         return ProductReviewDto.from(productReview);
     }
@@ -104,10 +105,9 @@ public class ProductCsServiceImpl implements ProductCsService {
 
         Profile profile = profileRepository.getReferenceById(principal.profileId());
 
-        ProductReviewLike productReviewLike = ProductReviewLike.of(productReviewLikePost.like());
+        ProductReviewLike productReviewLike = productReviewLikeRepository.getReferenceById(productReviewId);
         productReviewLike.setLikeNum(productReviewLike.getLikeNum() + productReviewLikePost.like());
-        productReviewLikeRepository.save(productReviewLike);
-        productReview.setProductReviewLike(productReviewLike);
+        productReviewLike.setProductReviewProfileIds(principal.profileId());
 
         return ProductReviewDto.from(productReview);
 

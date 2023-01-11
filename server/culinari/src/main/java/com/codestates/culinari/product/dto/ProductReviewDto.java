@@ -2,6 +2,7 @@ package com.codestates.culinari.product.dto;
 
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductReview;
+import com.codestates.culinari.product.entitiy.ProductReviewLike;
 import com.codestates.culinari.user.dto.ProfileDto;
 import com.codestates.culinari.user.entitiy.Profile;
 
@@ -21,7 +22,7 @@ public record ProductReviewDto(
 )
 {
 
-    public static ProductReviewDto of(Long id, Long productId,Long profileId, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
+    public static ProductReviewDto of(Long id, Long productId,Long profileId, String title, String content,  LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
         return new ProductReviewDto(id, productId, profileId, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
 
     }

@@ -28,15 +28,15 @@ public class ProductReviewLike extends AuditingFields {
     @ElementCollection
     private final List<Long> productReviewProfileIds = new ArrayList<>();
 
-    public ProductReviewLike(Long likeNum) {
+    public ProductReviewLike(Long likeNum, ProductReview productReview){
         this.likeNum = likeNum;
+        this.productReview = productReview;
     }
-
-    public static ProductReviewLike of(Long likeNum){
-        return new ProductReviewLike(likeNum);
+    public static ProductReviewLike of(Long likeNum, ProductReview productReview){
+        return new ProductReviewLike(likeNum, productReview);
     }
-    public void productReviewProfileIds(Long userId){
-        this.productReviewProfileIds.add(userId);
+    public void setProductReviewProfileIds(Long profileId){
+        this.productReviewProfileIds.add(profileId);
     }
 
 }
