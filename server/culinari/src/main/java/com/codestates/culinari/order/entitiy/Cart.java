@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -16,6 +17,7 @@ public class Cart extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @Column(nullable = false)
     private Integer quantity;
 
@@ -24,6 +26,16 @@ public class Cart extends AuditingFields {
 
     @ManyToOne(optional = false)
     private Product product;
+
+    private Cart(Integer quantity, Profile profile, Product product) {
+        this.quantity = quantity;
+        this.profile = profile;
+        this.product = product;
+    }
+
+    public static Cart of(Integer quantity, Profile profile, Product product) {
+        return new Cart(quantity, profile, product);
+    }
 
 }
 
