@@ -1,9 +1,6 @@
 package com.codestates.culinari.user.entitiy;
 
-import com.codestates.culinari.product.entitiy.ProductInquiry;
-import com.codestates.culinari.product.entitiy.ProductReview;
 import com.codestates.culinari.user.constant.GenderType;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,8 +10,6 @@ import org.hibernate.annotations.DynamicInsert;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -47,14 +42,6 @@ public class Profile {
 
     @Column(nullable = false)
     private LocalDate birthDate;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "profile")
-    private final List<ProductInquiry> productInquiry = new ArrayList<>();
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "profile")
-    private final List<ProductReview> productReview = new ArrayList<>();
 
     public Profile(String name, String email, String phoneNumber, BigDecimal point ,String address, GenderType gender, LocalDate birthDate) {
         this.id = null;

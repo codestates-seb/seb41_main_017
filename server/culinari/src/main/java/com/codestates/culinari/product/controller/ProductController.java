@@ -4,12 +4,10 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
-import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
 import com.codestates.culinari.product.dto.response.ProductInquiryResponse;
 import com.codestates.culinari.product.dto.response.ProductResponseWithCustomerService;
 import com.codestates.culinari.product.dto.response.ProductReviewResponse;
-import com.codestates.culinari.product.entitiy.ProductInquiry;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.response.SingleResponseDto;
@@ -47,7 +45,7 @@ public class ProductController {
             @RequestBody ProductInquiryRequest productInquiryRequest){
 
 
-        ProductInquiryDto productInquiry = productCsService.createProductInquiry(productInquiryRequest, principal, productId);
+        ProductInquiryResponse productInquiry = ProductInquiryResponse.from(productCsService.createProductInquiry(productInquiryRequest, principal, productId));
 
         return new ResponseEntity(
                 new SingleResponseDto<>(productInquiry),HttpStatus.CREATED);
@@ -68,9 +66,9 @@ public class ProductController {
     @PatchMapping("/{product-id}/inquiry/{inquiry-id}")
     public ResponseEntity patchProductInquiry(
             @PathVariable("inquiry-id") Long productInquiryId,
-            @RequestBody ProductInquiryRequest productInquiryRequest){
+            @RequestBody ProductReviewRequest productReviewRequest){
 
-        ProductInquiryDto productInquiryDto = productCsService.updateProductInquiry(productInquiryRequest,productInquiryId);
+        ProductReviewDto productInquiryDto = productCsService.updateProductReview(productReviewRequest,productInquiryId);
 
         return new ResponseEntity(
                 new SingleResponseDto<>(productInquiryDto),HttpStatus.CREATED);
@@ -79,24 +77,12 @@ public class ProductController {
     @PatchMapping("/{product-id}/review/{review-id}")
     public ResponseEntity patchProductReview(
             @PathVariable("review-id") Long productReviewId,
-            @RequestBody ProductReviewRequest productReviewRequest){
+            @RequestBody ProductInquiryRequest productInquiryRequest){
 
-        ProductReviewDto productReviewDto = productCsService.updateProductReview(productReviewRequest,productReviewId);
-
-        return new ResponseEntity(
-                new SingleResponseDto<>(productReviewDto),HttpStatus.CREATED);
-    }
-    //상품 리뷰 좋아요
-    @PatchMapping("/{product-id}/review/{review-id}/like")
-    public ResponseEntity patchProductReviewLike(
-            @PathVariable("review-id") Long productReviewId,
-            @AuthenticationPrincipal CustomPrincipal principal,
-            @RequestBody ProductReviewLikeRequest productReviewLikeRequest){
-
-        ProductReviewDto productReviewDto = productCsService.updateLike(productReviewLikeRequest, principal,productReviewId);
+        ProductInquiryDto productInquiryDto = productCsService.updateProductInquiry(productInquiryRequest,productReviewId);
 
         return new ResponseEntity(
-                new SingleResponseDto<>(productReviewDto),HttpStatus.CREATED);
+                new SingleResponseDto<>(productInquiryDto),HttpStatus.CREATED);
     }
 
     //문의 삭제

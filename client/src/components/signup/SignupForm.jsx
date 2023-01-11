@@ -3,7 +3,6 @@ import SignupBtn from "./SignupBtn";
 import GenderRadio from "./GenderRadio";
 import { useState } from "react";
 import ModalContainer from "./ModalCotainer";
-
 import {
   Page,
   CheckboxContent,

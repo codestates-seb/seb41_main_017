@@ -17,7 +17,7 @@ public record ProductInquiryRequest(
     public ProductInquiryDto toDto(ProfileDto profile){
         return ProductInquiryDto.of(
                 productId,
-                profile.id(),
+                profile,
                 title,
                 content
         );
