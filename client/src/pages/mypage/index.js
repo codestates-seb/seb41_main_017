@@ -12,6 +12,9 @@ import Selectitem from "./selectItem";
 import Itemreview from "./itemreview";
 import Inquiry from "./inquiry";
 
+
+
+
 const Layout = styled.div`
 
 
@@ -19,7 +22,7 @@ const Layout = styled.div`
   display:flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #FFF7F5;
   border: 1px solid #ff6767;
   border-radius: 10px;
   color: #ff6767;
@@ -118,9 +121,7 @@ const Tap = styled.div`
         gap: 10px;
 
         li{
-        
           flex:1;
-
         }
 
       }
@@ -130,7 +131,7 @@ const Tap = styled.div`
   .content {
       border-top: 1px solid #D7D7D7;
       margin-top: 10px;
-      padding: 10px;
+      padding: 30px;
   }
 
   .active{
@@ -138,34 +139,6 @@ const Tap = styled.div`
     background-color: #FF6767;
   }
 `;
-
-
-
-
-// const Colbtn = styled.button`
-//   background-color: #ffffff;
-//   border: 1px solid #ff6767;
-//   border-radius: 10px;
-//   color: #ff6767;
-//   cursor: pointer;
-//   font-size: 12px;
-//   flex-shrink: 0;
-//   position: relative;
-//   overflow: hidden;
-
-//   a{
-//     padding: 3px 8px;
-//     color: #ff6767;
-//     position: relative;
-//     font-size: 12px;
-//     display:block;
-//     top: 0;
-//     left: 0;
-//     bottom: 0;
-//     right: 0;
-//   }
-// `;
-
 
 function Mypage() {
   const tap = [
@@ -179,18 +152,6 @@ function Mypage() {
     { "자주 산 상품": "/buyitem" },
     { "작성한 후기": "/itemreview" },
     { "내 문의": "/inquiry" },
-    
-  
-    // 회원카드 옆의 개인정보 수정은 내정보와 같은 페이지인가 ?
-    //  -> { "개인 정보 수정": "/wish" }
-    // 찜한상품 보기 카테고리가 없음
-    // -> { "찜한 상품": "/itemreview" }
-    // 카테고리에 맞는 파일들을 만들어야함 ~~~~
-    // [삭제한파일들]
-    /* 
-    - item
-
-    */
   ];
 
   return (
@@ -260,13 +221,6 @@ function Mypage() {
               {tap.map((el, idx) => {
                 return (
                 <li key={idx}>
-                  {/* <Colbtn>
-                    <NavLink 
-                    to={Object.values(el)[0]}
-                    className={({isActive})=> (isActive) ? "active" : ""}>
-                      {Object.keys(el)}
-                    </NavLink>
-                  </Colbtn> */}
                     <NavLink 
                     to={Object.values(el)[0]}
                     className={`colbtn ${({isActive})=> (isActive) ? "active" : ""}`}>
