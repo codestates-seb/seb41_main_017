@@ -1,8 +1,6 @@
 import "./App.css";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
-import Header from "./components/Header"
-import Mypage from "./pages/mypage/index"
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -50,19 +48,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-
-
 function App() {
-  // const calculator = ["AC","+/-","%","÷",7,8,9,"X",4,5,6,"-",1,2,3,"+",0,".","="];
-
-
-  
-
   return (
     <>
       <GlobalStyle />
-      <Header/>
-      <Mypage/>
+      <div>asdf</div>
     </>
   );
 }
