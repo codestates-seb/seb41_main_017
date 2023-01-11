@@ -30,7 +30,7 @@ const TitleContainer = styled.div`
 `;
 
 const CartProductListContainer = styled.div`
-  padding: 0 50px 20px 50px;
+  padding: 0 40px 20px 40px;
   border-bottom: 1px solid black;
 `;
 
@@ -39,9 +39,10 @@ const SelectButtonContainer = styled.div`
   margin-top: 10px;
   border-bottom: 1px solid #ddd;
   display: flex;
+  align-items: center;
 
   span {
-    margin: 10px;
+    margin-right: 10px;
   }
 
   .delete-selection {
@@ -52,6 +53,7 @@ const SelectButtonContainer = styled.div`
 const TotalPriceBox = styled.div`
   height: 50px;
   margin: 26px 0;
+  padding-top: 2px;
   border: 1px solid #ff6767;
   border-radius: 3px;
   display: flex;
@@ -60,6 +62,15 @@ const TotalPriceBox = styled.div`
 
   span {
     margin-right: 5px;
+  }
+
+  .shipping-fee {
+    display: flex;
+    align-items: center;
+  }
+
+  .sign {
+    color: #ff6767;
   }
 `;
 
@@ -81,53 +92,51 @@ const OrderButtonContainer = styled.div`
 function Cart() {
   return (
     <>
-      <div>
-        <Container>
-          <TitleContainer>
-            <CartIcon />
-            <h2>장바구니</h2>
-          </TitleContainer>
-          <CartProductListContainer>
-            <SelectButtonContainer>
-              <CheckBox />
-              <span>전체 선택</span>
-              <span className="delete-selection">선택 삭제</span>
-            </SelectButtonContainer>
+      <Container>
+        <TitleContainer>
+          <CartIcon />
+          <h2>장바구니</h2>
+        </TitleContainer>
+        <CartProductListContainer>
+          <SelectButtonContainer>
+            <CheckBox />
+            <span>전체 선택</span>
+            <span className="delete-selection">선택 삭제</span>
+          </SelectButtonContainer>
 
-            <CartProductItem></CartProductItem>
-            <CartProductItem></CartProductItem>
-            <CartProductItem></CartProductItem>
-            <CartProductItem></CartProductItem>
+          <CartProductItem></CartProductItem>
+          <CartProductItem></CartProductItem>
+          <CartProductItem></CartProductItem>
+          <CartProductItem></CartProductItem>
 
-            <TotalPriceBox>
-              <div className="product-price">
-                <span>상품 가격</span>
-                <span>204,000원</span>
-              </div>
-              <div className="shipping-fee">
-                <span>+</span>
-                <span>배송비</span>
-                <span>3,000원</span>
-              </div>
-              <div className="total-price">
-                <span>=</span>
-                <span>총 주문 금액</span>
-                <strong>207,000원</strong>
-              </div>
-            </TotalPriceBox>
+          <TotalPriceBox>
+            <div className="product-price">
+              <span>상품 가격</span>
+              <span>204,000원</span>
+            </div>
+            <div className="shipping-fee">
+              <span className="sign">+</span>
+              <span>배송비</span>
+              <span>3,000원</span>
+            </div>
+            <div className="total-price">
+              <span className="sign">=</span>
+              <span>총 주문 금액</span>
+              <strong>207,000원</strong>
+            </div>
+          </TotalPriceBox>
 
-            <OrderButtonContainer>
-              <BasicButton radius={"5"} p_width={"30"} p_height={"10"} children={"상품 더 담기"} />
-              <ColorButton radius={"5"} p_width={"30"} p_height={"10"} children={"주문하기"} />
-            </OrderButtonContainer>
-          </CartProductListContainer>
+          <OrderButtonContainer>
+            <BasicButton children={"상품 더 담기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
+            <ColorButton children={"주문하기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
+          </OrderButtonContainer>
+        </CartProductListContainer>
 
-          <TodayRecommendProducts>
-            <Title>이달의 추천 상품</Title>
-            <ProductItemSlider />
-          </TodayRecommendProducts>
-        </Container>
-      </div>
+        <TodayRecommendProducts>
+          <Title>이달의 추천 상품</Title>
+          <ProductItemSlider />
+        </TodayRecommendProducts>
+      </Container>
     </>
   );
 }
