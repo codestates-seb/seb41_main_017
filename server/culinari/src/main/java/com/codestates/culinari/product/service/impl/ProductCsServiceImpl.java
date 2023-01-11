@@ -61,8 +61,9 @@ public class ProductCsServiceImpl implements ProductCsService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), product, profile);
+        ProductReviewLike productReviewLike = productReviewLikeRepository.save(ProductReviewLike.of(0L,productReview));
         productReviewRepository.save(productReview);
-        return ProductReviewDto.from(productReview);
+        return ProductReviewDto.from(productReview,productReviewLike);
     }
     //문의 수정
     public ProductInquiryDto updateProductInquiry(ProductInquiryRequest productInquiryRequest, Long productInquiryId) {
@@ -85,8 +86,9 @@ public class ProductCsServiceImpl implements ProductCsService {
         if (productReviewRequest.content() != null) {
             productReview.setContent(productReviewRequest.content());
         }
+        ProductReviewLike productReviewLike = productReviewLikeRepository.getReferenceById(productReviewId);
 
-        return ProductReviewDto.from(productReview);
+        return ProductReviewDto.from(productReview, productReviewLike);
     }
 
     //문의 삭제
@@ -103,13 +105,11 @@ public class ProductCsServiceImpl implements ProductCsService {
         ProductReview productReview = productReviewRepository.findById(productReviewId).orElseThrow(() -> new EntityNotFoundException("리뷰가 없습니다"));
 
         Profile profile = profileRepository.getReferenceById(principal.profileId());
-
-        ProductReviewLike productReviewLike = ProductReviewLike.of(productReviewLikePost.like());
+        ProductReviewLike productReviewLike = productReviewLikeRepository.getReferenceById(productReviewId);
         productReviewLike.setLikeNum(productReviewLike.getLikeNum() + productReviewLikePost.like());
-        productReviewLikeRepository.save(productReviewLike);
-        productReview.setProductReviewLike(productReviewLike);
+        productReviewLike.setProductReviewProfileIds(principal.profileId());
 
-        return ProductReviewDto.from(productReview);
+        return ProductReviewDto.from(productReview,productReviewLike);
 
     }
 }

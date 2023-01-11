@@ -33,8 +33,8 @@ public class ProductReview extends AuditingFields {
     @ManyToOne(optional = false)
     private Profile profile;
 
-    @Setter
-    @OneToOne(mappedBy = "productReview")
+
+    @OneToOne(mappedBy = "productReview", cascade = CascadeType.ALL)
     private ProductReviewLike productReviewLike;
 
     public ProductReview(String title, String content, Product product, Profile profile){
@@ -51,4 +51,12 @@ public class ProductReview extends AuditingFields {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public void setProductReviewLike(ProductReviewLike productReviewLike){
+        this.productReviewLike = productReviewLike;
+        if(productReviewLike.getProductReview() != this){
+            productReviewLike.setProductReview(this);
+        }
+    }
+
 }
