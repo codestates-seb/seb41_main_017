@@ -3,7 +3,6 @@ import SignupBtn from "./SignupBtn";
 import GenderRadio from "./GenderRadio";
 import { useState } from "react";
 import ModalContainer from "./ModalCotainer";
-import GuideModalContainer from "./GuideModalContainer";
 import {
   Page,
   CheckboxContent,
@@ -29,21 +28,21 @@ function SignForm() {
       <IdBlock>
         <span>아이디</span>
         <span className="essential">*</span>
-        <CheckId></CheckId>
+        <CheckId placeholder="아이디를 입력해주세요"></CheckId>
         <span>비밀번호</span>
-        <span className="essential">*</span>
-        <SignupInput type={"createPwd"} />
-        <SignupInput type={"checkPwd"} />
+        <span className="essential">*</span>{" "}
+        <CreatePwd placeholder="비밀먼호를 입력해주세요"></CreatePwd>
+        <CheckPwd placeholder="비밀번호를 확인"></CheckPwd>
         <span>이름</span> <span className="essential">*</span>
-        <SignupInput type={"name"} />
+        <CheckName placeholder="이름을 입력해주세요"></CheckName>
         <span>이메일</span>
         <span className="essential">*</span>
         <br></br>
-        <SignupInput type={"email"} />
+        <CheckEmail placeholder="이메일을 입력해주세요"></CheckEmail>
         <span>@</span>
         <Select>
           <option value="" hidden>
-            이메일을 선택해주세요
+            Type
           </option>
           <option value="1">gmail.com</option>
           <option value="2">naver.com</option>
@@ -52,7 +51,7 @@ function SignForm() {
         </Select>
         <span>휴대폰</span>
         <span className="essential">*</span>
-        <SignupInput type={"phoneNum"} />
+        <CheckPhoneNum placeholder="연락처를 입력해주세요"></CheckPhoneNum>
         <span>주소</span>
         <span className="essential">*</span>
         <br />

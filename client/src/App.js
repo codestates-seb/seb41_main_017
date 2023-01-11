@@ -3,6 +3,7 @@ import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import Header from "./components/Header";
 import Mypage from "./pages/mypage/index";
+import Login from "./pages/sign/login";
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -57,7 +58,8 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <Mypage />
+      {/* <Mypage /> */}
+      <Login></Login>
     </>
   );
 }
