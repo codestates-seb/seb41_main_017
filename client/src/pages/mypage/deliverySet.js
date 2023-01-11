@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Mypagebtn from "../../components/Mypagebtn";
+import Mypagebtn from "../../components/BasicButton";
 import { BsCheckCircle } from "react-icons/bs";
 
 const Layout = styled.div`
