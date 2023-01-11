@@ -4,6 +4,7 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
+import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface ProductCsService {
     public ProductReviewDto updateProductReview(ProductReviewRequest productReviewRequest, Long productReviewId);
     public void deleteProductInquiry(Long productInquiryId);
     public void deleteProductReview(Long productReviewId);
+    ProductReviewDto updateLike(ProductReviewLikeRequest productReviewLikePost, CustomPrincipal principal, Long productReviewId);
 }

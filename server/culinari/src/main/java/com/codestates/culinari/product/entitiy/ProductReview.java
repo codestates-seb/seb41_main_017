@@ -33,6 +33,10 @@ public class ProductReview extends AuditingFields {
     @ManyToOne(optional = false)
     private Profile profile;
 
+    @Setter
+    @OneToOne(mappedBy = "productReview")
+    private ProductReviewLike productReviewLike;
+
     public ProductReview(String title, String content, Product product, Profile profile){
         this.title = title;
         this.content = content;

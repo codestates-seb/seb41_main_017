@@ -26,7 +26,7 @@ public record ProductReviewResponse(
 
     public static ProductReviewResponse from(ProductReviewDto dto){
         return new ProductReviewResponse(
-              dto.id(),
+                dto.id(),
                 dto.productId(),
                 dto.profileId(),
                 dto.title(),
