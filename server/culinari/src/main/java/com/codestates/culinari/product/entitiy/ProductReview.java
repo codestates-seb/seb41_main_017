@@ -51,4 +51,11 @@ public class ProductReview extends AuditingFields {
         return Objects.hash(id);
     }
 
+    public void setProductReviewLike(ProductReviewLike productReviewLike){
+        this.productReviewLike = productReviewLike;
+        if(productReviewLike.getProductReview() != this){
+            productReviewLike.setProductReview(this);
+        }
+    }
+
 }

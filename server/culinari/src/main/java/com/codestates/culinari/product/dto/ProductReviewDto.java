@@ -13,6 +13,7 @@ public record ProductReviewDto(
         Long id,
         Long productId,
         Long profileId,
+        Long like,
         String title,
         String content,
         LocalDateTime createdAt,
@@ -22,21 +23,37 @@ public record ProductReviewDto(
 )
 {
 
-    public static ProductReviewDto of(Long id, Long productId,Long profileId, String title, String content,  LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
-        return new ProductReviewDto(id, productId, profileId, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
+    public static ProductReviewDto of(Long id, Long productId,Long profileId,Long like, String title, String content,  LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
+        return new ProductReviewDto(id, productId, profileId,like, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
 
     }
 
     public static ProductReviewDto of(Long productId,Long profileId, String title,String content){
-        return new ProductReviewDto(null, productId, profileId, title, content, null, null, null, null);
+        return new ProductReviewDto(null, productId, profileId,null, title, content, null, null, null, null);
     }
 
+
+    public static ProductReviewDto from(ProductReview entity, ProductReviewLike likeEntity) {
+        return new ProductReviewDto(
+                entity.getId(),
+                entity.getProduct().getId(),
+                entity.getProfile().getId(),
+                likeEntity.getLikeNum(),
+                entity.getTitle(),
+                entity.getContent(),
+                entity.getCreatedAt(),
+                entity.getModifiedAt(),
+                entity.getCreatedBy(),
+                entity.getModifiedBy()
+        );
+    }
 
     public static ProductReviewDto from(ProductReview entity) {
         return new ProductReviewDto(
                 entity.getId(),
                 entity.getProduct().getId(),
                 entity.getProfile().getId(),
+                entity.getProductReviewLike().getLikeNum(),
                 entity.getTitle(),
                 entity.getContent(),
                 entity.getCreatedAt(),

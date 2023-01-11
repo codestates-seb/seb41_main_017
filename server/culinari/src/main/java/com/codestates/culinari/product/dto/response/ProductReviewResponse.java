@@ -15,14 +15,15 @@ public record ProductReviewResponse(
         Long profileId,
         String title,
         String content,
+        Long like,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         String createdBy,
         String modifiedBy
 )
 {
-    public static ProductReviewResponse of(Long id, Long productId, Long profileId, String title, String content,  LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
-        return new ProductReviewResponse(id, productId, profileId, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
+    public static ProductReviewResponse of(Long id, Long productId, Long profileId, String title, String content,Long like, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
+        return new ProductReviewResponse(id, productId, profileId, title, content, like, createdAt, modifiedAt, createdBy, modifiedBy);
     }
 
     public static ProductReviewResponse from(ProductReviewDto dto){
@@ -32,6 +33,7 @@ public record ProductReviewResponse(
                 dto.profileId(),
                 dto.title(),
                 dto.content(),
+                dto.like(),
                 dto.createdAt(),
                 dto.modifiedAt(),
                 dto.createdBy(),

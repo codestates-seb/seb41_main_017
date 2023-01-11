@@ -21,6 +21,7 @@ public class ProductReviewLike extends AuditingFields {
 
     @Setter
     private Long likeNum = 0L;
+    @Setter
     @OneToOne
     @JoinColumn(name = "product_review_id")
     private ProductReview productReview;

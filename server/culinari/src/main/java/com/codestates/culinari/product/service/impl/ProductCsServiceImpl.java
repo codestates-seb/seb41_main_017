@@ -63,7 +63,7 @@ public class ProductCsServiceImpl implements ProductCsService {
         ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), product, profile);
         ProductReviewLike productReviewLike = productReviewLikeRepository.save(ProductReviewLike.of(0L,productReview));
         productReviewRepository.save(productReview);
-        return ProductReviewDto.from(productReview);
+        return ProductReviewDto.from(productReview,productReviewLike);
     }
     //문의 수정
     public ProductInquiryDto updateProductInquiry(ProductInquiryRequest productInquiryRequest, Long productInquiryId) {
@@ -86,8 +86,9 @@ public class ProductCsServiceImpl implements ProductCsService {
         if (productReviewRequest.content() != null) {
             productReview.setContent(productReviewRequest.content());
         }
+        ProductReviewLike productReviewLike = productReviewLikeRepository.getReferenceById(productReviewId);
 
-        return ProductReviewDto.from(productReview);
+        return ProductReviewDto.from(productReview, productReviewLike);
     }
 
     //문의 삭제
@@ -109,7 +110,7 @@ public class ProductCsServiceImpl implements ProductCsService {
         productReviewLike.setLikeNum(productReviewLike.getLikeNum() + productReviewLikePost.like());
         productReviewLike.setProductReviewProfileIds(principal.profileId());
 
-        return ProductReviewDto.from(productReview);
+        return ProductReviewDto.from(productReview,productReviewLike);
 
     }
 }
