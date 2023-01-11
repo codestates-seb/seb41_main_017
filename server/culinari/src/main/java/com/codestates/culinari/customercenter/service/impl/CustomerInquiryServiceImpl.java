@@ -43,17 +43,14 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
 
     @Override
     public void deleteEnquire(CustomPrincipal customPrincipal, Long inquiryId) {
-        verifyExistsInquiry(inquiryId);
-        //todo : 내가 작성한 글인지 비교 확인
+        writtenByMeFindInquiry(customPrincipal,inquiryId);
+
         csInquiryRepository.deleteById(inquiryId);
     }
 
     @Override
     public void updateEnquire(CustomPrincipal customPrincipal, Long inquiryId, CsInquiryRequest csInquiryRequest) {
-        //todo : 내가 작성한 글인지 비교 확인
-        CsInquiryDto csInquiryDto = csInquiryRepository.findById(inquiryId)
-                .map(CsInquiryDto::from)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.INQUIRY_NOT_FOUND));
+        CsInquiryDto csInquiryDto = writtenByMeFindInquiry(customPrincipal,inquiryId);
 
         csInquiryRepository.save(csInquiryDto.update(csInquiryRequest).toEntity());
     }
@@ -61,16 +58,19 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
     @Transactional(readOnly = true)
     @Override
     public CsInquiryResponse readEnquire(CustomPrincipal customPrincipal, Long inquiryId) {
-        //todo : 내가 작성한 글인지 비교 확인
+        CsInquiryDto csInquiryDto = writtenByMeFindInquiry(customPrincipal,inquiryId);
+
+        return CsInquiryResponse.from(csInquiryDto);
+    }
+
+    private CsInquiryDto writtenByMeFindInquiry(CustomPrincipal customPrincipal, Long inquiryId) {
         return csInquiryRepository.findById(inquiryId)
                 .map(CsInquiryDto::from)
-                .map(CsInquiryResponse::from)
+                .filter(a -> verifyAuth(a.profile().getId(), customPrincipal.profileId()))
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.INQUIRY_NOT_FOUND));
     }
 
-    private void verifyExistsInquiry(Long inquiryId) {
-        if (!csInquiryRepository.existsById(inquiryId)) {
-            throw new BusinessLogicException(ExceptionCode.INQUIRY_NOT_FOUND);
-        }
+    private boolean verifyAuth(Long targetProfileId, Long profileId) {
+        return targetProfileId.equals(profileId);
     }
 }
