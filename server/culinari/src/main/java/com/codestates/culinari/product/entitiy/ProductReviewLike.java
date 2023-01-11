@@ -21,6 +21,7 @@ public class ProductReviewLike extends AuditingFields {
 
     @Setter
     private Long likeNum = 0L;
+
     @Setter
     @OneToOne
     @JoinColumn(name = "product_review_id")
@@ -38,6 +39,7 @@ public class ProductReviewLike extends AuditingFields {
     }
     public void setProductReviewProfileIds(Long profileId){
         this.productReviewProfileIds.add(profileId);
+
     }
 
 }

@@ -33,6 +33,7 @@ public class ProductReview extends AuditingFields {
     @ManyToOne(optional = false)
     private Profile profile;
 
+
     @OneToOne(mappedBy = "productReview", cascade = CascadeType.ALL)
     private ProductReviewLike productReviewLike;
 

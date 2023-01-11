@@ -4,8 +4,6 @@ import LoginInputForm from "../../components/login/LoginInputForm";
 
 const Page = styled.div`
   width: 100vw;
-  height: 100vh;
-  // background-color: #f1f2f3;
   display: flex;
   flex-direction: column;
   justify-content: center;
