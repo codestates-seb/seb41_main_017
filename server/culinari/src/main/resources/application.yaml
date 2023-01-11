@@ -1,0 +1,49 @@
+
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:test
+  jpa:
+    hibernate:
+      ddl-auto: create  # ? ????? None ?? ??
+    show-sql: true      # (2) SQL ?? ??
+    properties:
+      hibernate:
+        format_sql: true  # (3) SQL pretty print
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath*:data.sql
+
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: DEBUG
+server:
+  servlet:
+    encoding:
+      force-response: true
+mail:
+  address:
+    admin: admin@email.com            #??? ??
+jwt:
+  secret-key: test1234asdf123412341234123451234123412341234512341234123412345123412341234123451234123412341234512341234123412345
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
+
+---
+#EC2 ???? JWT
+spring:
+  config:
+    activate:
+      on-profile: test
+
+jwt:
+  secret-key: test1234asdf123412341234123451234123412341234512341234123412345123412341234123451234123412341234512341234123412345
+  access-token-expiration-minutes: 15
+  refresh-token-expiration-minutes: 30
