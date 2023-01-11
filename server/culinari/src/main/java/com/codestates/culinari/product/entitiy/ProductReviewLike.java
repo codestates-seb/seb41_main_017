@@ -6,6 +6,10 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -15,12 +19,24 @@ public class ProductReviewLike extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 논의
+    @Setter
+    private Long likeNum = 0L;
     @OneToOne
+    @JoinColumn(name = "product_review_id")
     private ProductReview productReview;
 
-    //논의
-    @ManyToOne
-    private Profile profile;
+    @ElementCollection
+    private final List<Long> productReviewProfileIds = new ArrayList<>();
+
+    public ProductReviewLike(Long likeNum) {
+        this.likeNum = likeNum;
+    }
+
+    public static ProductReviewLike of(Long likeNum){
+        return new ProductReviewLike(likeNum);
+    }
+    public void productReviewProfileIds(Long userId){
+        this.productReviewProfileIds.add(userId);
+    }
 
 }

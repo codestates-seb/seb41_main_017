@@ -1,11 +1,15 @@
 package com.codestates.culinari.user.dto;
 
+import com.codestates.culinari.product.dto.ProductInquiryDto;
+import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.user.constant.GenderType;
 import com.codestates.culinari.user.dto.request.SignUpDto;
 import com.codestates.culinari.user.entitiy.Profile;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public record ProfileDto(
         Long id,
@@ -15,7 +19,10 @@ public record ProfileDto(
         BigDecimal point,
         String address,
         GenderType gender,
-        LocalDate birthDate
+        LocalDate birthDate,
+        List<ProductInquiryDto> productInquiryDtos,
+
+        List<ProductReviewDto> productReviewDtos
 ) {
 
     public static ProfileDto of(SignUpDto signUpDto) {
@@ -27,7 +34,9 @@ public record ProfileDto(
                 null,
                 signUpDto.address(),
                 signUpDto.genderType(),
-                signUpDto.birthDate()
+                signUpDto.birthDate(),
+                null,
+                null
         );
     }
 
@@ -44,7 +53,13 @@ public record ProfileDto(
                 entity.getPoint(),
                 entity.getAddress(),
                 entity.getGender(),
-                entity.getBirthDate()
+                entity.getBirthDate(),
+                entity.getProductInquiry().stream()
+                        .map(ProductInquiryDto::from)
+                        .collect(Collectors.toList()),
+                entity.getProductReview().stream()
+                        .map(ProductReviewDto::from)
+                        .collect(Collectors.toList())
         );
     }
 
