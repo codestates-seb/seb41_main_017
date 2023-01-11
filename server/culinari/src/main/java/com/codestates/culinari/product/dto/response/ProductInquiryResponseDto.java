@@ -1,14 +1,15 @@
 package com.codestates.culinari.product.dto.response;
 
-import com.codestates.culinari.product.dto.ProductReviewDto;
+import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.entitiy.ProductInquiry;
-import lombok.Builder;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Builder
-public record ProductReviewResponse(
+/**
+ * A DTO for the {@link ProductInquiry} entity
+ */
+public record ProductInquiryResponseDto(
         Long id,
         Long productId,
         String title,
@@ -18,17 +19,16 @@ public record ProductReviewResponse(
         String createdBy,
         String modifiedBy,
         String name,
-        String emial
+        String email
 
-)
-{
-    public static ProductReviewResponse of(Long id, Long productId, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy, String name, String email){
-        return new ProductReviewResponse(id, productId, title, content, createdAt, modifiedAt, createdBy, modifiedBy, name, email);
+) implements Serializable {
+    public static ProductInquiryResponseDto of(Long id, Long productId, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy, String name, String email){
+        return new ProductInquiryResponseDto(id, productId, title, content, createdAt, modifiedAt, createdBy, modifiedBy, name, email);
     }
 
-    public static ProductReviewResponse from(ProductReviewDto dto){
-        return new ProductReviewResponse(
-              dto.id(),
+    public static ProductInquiryResponseDto from(ProductInquiryDto dto){
+        return new ProductInquiryResponseDto(
+                dto.id(),
                 dto.productId(),
                 dto.title(),
                 dto.content(),
