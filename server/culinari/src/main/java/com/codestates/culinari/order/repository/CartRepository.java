@@ -1,0 +1,15 @@
+package com.codestates.culinari.order.repository;
+
+import com.codestates.culinari.order.entitiy.Cart;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface CartRepository extends JpaRepository<Cart, Long> {
+
+    Page<Cart> findAllByProfile_Id(Pageable pageable, Long profileId);
+
+    Optional<Cart> findByProfile_IdAndProduct_Id(Long productId, Long profileId);
+}
