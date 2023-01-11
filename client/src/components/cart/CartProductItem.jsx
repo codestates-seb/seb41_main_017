@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import CheckBox from "./CheckBox";
-import DeleteButton from "./DeleteButton";
-import QuantityBox from "./QuantityBox";
+import CheckBox from "../CheckBox";
+import DeleteButton from "../DeleteButton";
+import QuantityBox from "../QuantityBox";
 
 const Container = styled.div`
   height: 124px;
