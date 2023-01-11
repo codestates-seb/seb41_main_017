@@ -4,6 +4,7 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.customercenter.dto.CsInquiryDto;
 import com.codestates.culinari.customercenter.dto.request.CsInquiryRequest;
 import com.codestates.culinari.customercenter.dto.response.CsInquiryResponse;
+import com.codestates.culinari.customercenter.entity.CsInquiry;
 import com.codestates.culinari.customercenter.repository.CsInquiryRepository;
 import com.codestates.culinari.customercenter.service.CustomerInquiryService;
 import com.codestates.culinari.global.exception.BusinessLogicException;
@@ -50,9 +51,11 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
 
     @Override
     public void updateEnquire(CustomPrincipal customPrincipal, Long inquiryId, CsInquiryRequest csInquiryRequest) {
-        CsInquiryDto csInquiryDto = writtenByMeFindInquiry(customPrincipal,inquiryId);
+        CsInquiry csInquiry = csInquiryRepository.findById(inquiryId)
+                .filter(a -> verifyAuth(a.getProfile().getId(), customPrincipal.profileId()))
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.INQUIRY_NOT_FOUND));
 
-        csInquiryRepository.save(csInquiryDto.update(csInquiryRequest).toEntity());
+        csInquiry.updateCsInquiry(csInquiryRequest);
     }
 
     @Transactional(readOnly = true)

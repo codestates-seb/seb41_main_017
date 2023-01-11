@@ -35,7 +35,7 @@ public class CustomerNoticeController {
     }
 
     @GetMapping
-    public ResponseEntity getNoticePage(@PageableDefault(sort = "created_At", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity getNoticePage(@PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<CsNoticeResponse> csNoticeResponsePage = customerNoticeService.readNoticePage(pageable);
         List<CsNoticeResponse> csNoticeResponses = csNoticeResponsePage.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), csNoticeResponsePage.getTotalPages());

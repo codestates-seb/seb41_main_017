@@ -39,7 +39,7 @@ public class CustomerInquiryController {
 
     @GetMapping
     public ResponseEntity getEnquirePage(@AuthenticationPrincipal CustomPrincipal customPrincipal,
-                                     @PageableDefault(sort = "created_At", direction = Sort.Direction.DESC) Pageable pageable) {
+                                     @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<CsInquiryResponse> csInquiryResponsePage = customerInquiryService.readEnquiriePage(customPrincipal, pageable);
         List<CsInquiryResponse> csInquiryResponses = csInquiryResponsePage.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), csInquiryResponsePage.getTotalPages());

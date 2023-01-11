@@ -5,6 +5,8 @@ import com.codestates.culinari.customercenter.dto.request.CsInquiryRequest;
 import com.codestates.culinari.customercenter.entity.CsInquiry;
 import com.codestates.culinari.user.entitiy.Profile;
 
+import java.time.LocalDateTime;
+
 public record CsInquiryDto(
         Long id,
         String title,
@@ -30,16 +32,6 @@ public record CsInquiryDto(
                 csInquiry.getContent(),
                 csInquiry.getProfile(),
                 csInquiry.getProcessStatus()
-        );
-    }
-
-    public CsInquiryDto update(CsInquiryRequest csInquiryRequest){
-        return new CsInquiryDto(
-                id,
-                csInquiryRequest.title(),
-                csInquiryRequest.content(),
-                profile,
-                processStatus
         );
     }
 

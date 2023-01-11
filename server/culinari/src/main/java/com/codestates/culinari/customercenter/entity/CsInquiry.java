@@ -2,6 +2,7 @@ package com.codestates.culinari.customercenter.entity;
 
 import com.codestates.culinari.audit.AuditingFields;
 import com.codestates.culinari.customercenter.constant.ProcessStatus;
+import com.codestates.culinari.customercenter.dto.request.CsInquiryRequest;
 import com.codestates.culinari.user.entitiy.Profile;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,5 +31,10 @@ public class CsInquiry extends AuditingFields {
 
     public static CsInquiry of(Long id, String title, String content, Profile profile, ProcessStatus processStatus) {
         return new CsInquiry(id, title, content, profile, processStatus);
+    }
+
+    public void updateCsInquiry(CsInquiryRequest csInquiryRequest) {
+        this.title = csInquiryRequest.title();
+        this.content = csInquiryRequest.content();
     }
 }
