@@ -25,10 +25,10 @@ public record ProductReviewDto(
 
     public static ProductReviewDto of(Long id, Long productId,Long profileId,Long like, String title, String content,  LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
         return new ProductReviewDto(id, productId, profileId,like, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
+
     }
 
     public static ProductReviewDto of(Long productId,Long profileId, String title,String content){
-
         return new ProductReviewDto(null, productId, profileId,null, title, content, null, null, null, null);
     }
 

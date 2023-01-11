@@ -105,6 +105,7 @@ public class ProductCsServiceImpl implements ProductCsService {
         ProductReview productReview = productReviewRepository.findById(productReviewId).orElseThrow(() -> new EntityNotFoundException("리뷰가 없습니다"));
 
         Profile profile = profileRepository.getReferenceById(principal.profileId());
+
         ProductReviewLike productReviewLike = productReviewLikeRepository.getReferenceById(productReviewId);
         productReviewLike.setLikeNum(productReviewLike.getLikeNum() + productReviewLikePost.like());
         productReviewLike.setProductReviewProfileIds(principal.profileId());

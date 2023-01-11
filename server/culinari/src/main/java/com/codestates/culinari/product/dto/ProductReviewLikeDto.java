@@ -1,7 +1,8 @@
 package com.codestates.culinari.product.dto;
 
-
 import com.codestates.culinari.product.entitiy.ProductReview;
+import com.codestates.culinari.product.entitiy.ProductReviewLike;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,12 +35,10 @@ public record ProductReviewLikeDto(
                 entity.getModifiedBy()
         );
     }
-
     public ProductReviewLike toEntity(ProductReview productReview){
         return ProductReviewLike.of(
                 likeNum,
                 productReview
-
         );
     }
 }
