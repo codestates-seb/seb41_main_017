@@ -16,7 +16,10 @@ import Tap from "../../components/Tap";
 
 
 // 보류
-const Layout = styled.div``
+const Layout = styled.div`
+  width: 1050px;
+  margin: 0 auto;
+`
 const Mycard = styled.div`
   background-color: rgb(255,224,214);
   // 부모와 맞게 수정
@@ -25,6 +28,7 @@ const Mycard = styled.div`
   display: flex;
   text-align: center;
   margin-top: 15px;
+  margin-bottom: 20px;
 
   .accountBox {
     padding: 10px 0 0 30px;
@@ -160,7 +164,7 @@ function Mypage() {
             </div>
           </div>
         </Mycard>
-        <Tap list={list} title="마이 페이지"/>
+        <Tap list={list} title="마이 페이지" flex={1}/>
       </Layout>
   );
 }

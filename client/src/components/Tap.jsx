@@ -1,14 +1,11 @@
 import styled from "styled-components";
-import { Route, Routes, BrowserRouter, NavLink, Link } from "react-router-dom";
+import { Route, Routes, BrowserRouter, NavLink } from "react-router-dom";
 
 
 
 const Container = styled.div`
-// 부모와 맞게 수정
-  margin: 0 auto;
-  width: 1050px;
+  width: 100%;
   text-align: left;
-  margin-top: 20px;
 
   .colbtn{
     display:flex;
@@ -16,26 +13,27 @@ const Container = styled.div`
     align-items: center;
     background-color: #FFF7F5;
     border: 1px solid #ff6767;
-    border-radius: 10px;
+    border-radius: 12px;
     color: #ff6767;
     cursor: pointer;
     font-size: 12px;
-    padding: 5px 8px 3px 8px;
+    padding: 7px 12px 4px 12px;
     
   }
 
   .nav {
       h3{
         font-size: 20px;
+        margin-bottom:15px;
       }
 
       ul{
         display:flex;
         margin-top: 10px;
-        gap: 10px;
+        gap: 7px;
 
         li{
-          flex:1;
+          flex:${props => props.flex};
         }
 
       }
@@ -58,12 +56,14 @@ const Container = styled.div`
 // props양식
 // list = [{"탭이름": ["탭URI",컴포넌트]}] 
 // title = "제목이름"
+// flex = {1} -> 요소에맞게 공간할당
 
 
-const Tap = ({title, list})=>{
+const Tap = ({title, list, flex = null})=>{
+    let styles = {flex}
     return(
         <BrowserRouter>
-        <Container>
+        <Container {...styles}>
           <div className="nav">
             <h3>{title}</h3>
             <ul>
