@@ -6,12 +6,12 @@ const Container = styled.div`
   min-width: 1050px;
 `;
 
-const TodayRecommendProducts = styled.div`
+export const TodayRecommendProducts = styled.div`
   max-width: 1009px;
   margin: 40px auto;
 `;
 
-const Title = styled.div`
+export const Title = styled.div`
   font-weight: 700;
   font-size: 16px;
   line-height: 23px;
@@ -19,7 +19,7 @@ const Title = styled.div`
   padding: 10px;
 `;
 
-function Main() {
+export function Main() {
   return (
     <Container>
       <MainBanner />
@@ -36,5 +36,3 @@ function Main() {
     </Container>
   );
 }
-
-export default Main;

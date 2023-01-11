@@ -38,7 +38,7 @@ const QuantityBoxWrapper = styled.div`
 `;
 
 const TotalPrice = styled.div`
-  width: 150px;
+  min-width: 150px;
 `;
 
 const DeleteButtonWrapper = styled.div`
