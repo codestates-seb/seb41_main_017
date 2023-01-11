@@ -30,6 +30,7 @@ public class ProductInquiry extends AuditingFields {
     @ManyToOne(optional = false)
     private Product product;
 
+    @JsonBackReference
     @ManyToOne(optional = false)
     private Profile profile;
 

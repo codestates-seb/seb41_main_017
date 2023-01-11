@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public record ProductInquiryDto(
         Long id,
         Long productId,
-        ProfileDto profileDto,
+        Long profileId,
         String title,
         String content,
         LocalDateTime createdAt,
@@ -21,19 +21,19 @@ public record ProductInquiryDto(
 )
 {
 
-    public static ProductInquiryDto of(Long id, Long productId,ProfileDto profileDto, String title,String content,LocalDateTime createdAt, LocalDateTime modifiedAt,String createdBy, String modifiedBy){
-        return new ProductInquiryDto(id, productId, profileDto, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
+    public static ProductInquiryDto of(Long id, Long productId,Long profileId, String title,String content,LocalDateTime createdAt, LocalDateTime modifiedAt,String createdBy, String modifiedBy){
+        return new ProductInquiryDto(id, productId, profileId, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
     }
 
-    public static ProductInquiryDto of(Long productId,ProfileDto profileDto, String title,String content){
-        return new ProductInquiryDto(null, productId, profileDto, title, content, null, null, null, null);
+    public static ProductInquiryDto of(Long productId,Long profileId, String title,String content){
+        return new ProductInquiryDto(null, productId, profileId, title, content, null, null, null, null);
     }
 
     public static ProductInquiryDto from(ProductInquiry entity){
         return new ProductInquiryDto(
                 entity.getId(),
                 entity.getProduct().getId(),
-                ProfileDto.from(entity.getProfile()),
+                entity.getProfile().getId(),
                 entity.getTitle(),
                 entity.getContent(),
                 entity.getCreatedAt(),
