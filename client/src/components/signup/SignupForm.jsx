@@ -31,19 +31,19 @@ function SignForm() {
         <span className="essential">*</span>
         <CheckId></CheckId>
         <span>비밀번호</span>
-        <span className="essential">*</span>{" "}
-        <CreatePwd placeholder="비밀먼호를 입력해주세요"></CreatePwd>
-        <CheckPwd placeholder="비밀번호를 확인"></CheckPwd>
+        <span className="essential">*</span>
+        <SignupInput type={"createPwd"} />
+        <SignupInput type={"checkPwd"} />
         <span>이름</span> <span className="essential">*</span>
-        <CheckName placeholder="이름을 입력해주세요"></CheckName>
+        <SignupInput type={"name"} />
         <span>이메일</span>
         <span className="essential">*</span>
         <br></br>
-        <CheckEmail placeholder="이메일을 입력해주세요"></CheckEmail>
+        <SignupInput type={"email"} />
         <span>@</span>
         <Select>
           <option value="" hidden>
-            Type
+            이메일을 선택해주세요
           </option>
           <option value="1">gmail.com</option>
           <option value="2">naver.com</option>
@@ -52,7 +52,7 @@ function SignForm() {
         </Select>
         <span>휴대폰</span>
         <span className="essential">*</span>
-        <CheckPhoneNum placeholder="연락처를 입력해주세요"></CheckPhoneNum>
+        <SignupInput type={"phoneNum"} />
         <span>주소</span>
         <span className="essential">*</span>
         <br />
