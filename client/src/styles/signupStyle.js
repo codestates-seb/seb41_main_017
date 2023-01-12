@@ -40,7 +40,7 @@ const CheckId = styled.input.attrs({
   type: "text",
 })`
   display: inline-block;
-  width: 100%;
+  width: 65%;
   min-height: 50px;
   padding: 7px 9px;
   text-align: start;
@@ -105,7 +105,7 @@ const CheckEmail = styled.input.attrs({
   type: "select",
 })`
   display: inline-block;
-  width: 50%;
+  width: 65%;
   min-height: 50px;
   padding: 7px 9px;
   text-align: start;
@@ -116,25 +116,6 @@ const CheckEmail = styled.input.attrs({
   border-radius: 3px;
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-right: 10px;
-`;
-
-const Select = styled.select`
-  width: 40%;
-  min-height: 50px;
-  background: white;
-  //   color: gray;
-  padding-left: 5px;
-  font-size: 14px;
-  margin-left: 10px;
-  option {
-    color: black;
-    background: white;
-    display: flex;
-    white-space: pre;
-    min-height: 20px;
-    padding: 0px 2px 1px;
-  }
 `;
 
 const CheckPhoneNum = styled.input.attrs({
@@ -213,7 +194,6 @@ export {
   CheckPwd,
   CheckName,
   CheckEmail,
-  Select,
   CheckPhoneNum,
   DetailAddress,
   CheckAddress,

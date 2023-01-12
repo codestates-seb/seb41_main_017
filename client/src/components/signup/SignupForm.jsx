@@ -12,7 +12,6 @@ import {
   CheckPwd,
   CheckName,
   CheckEmail,
-  Select,
   CheckPhoneNum,
   DetailAddress,
   CheckAddress,
@@ -28,7 +27,11 @@ function SignForm() {
       <IdBlock>
         <span>아이디</span>
         <span className="essential">*</span>
+        <br />
         <CheckId placeholder="아이디를 입력해주세요"></CheckId>
+        {/* <CheckIdBtn>중복확인</CheckIdBtn> */}
+        <ModalContainer type={"checkId"} onClick />
+        <br />
         <span>비밀번호</span>
         <span className="essential">*</span>{" "}
         <CreatePwd placeholder="비밀먼호를 입력해주세요"></CreatePwd>
@@ -39,16 +42,7 @@ function SignForm() {
         <span className="essential">*</span>
         <br></br>
         <CheckEmail placeholder="이메일을 입력해주세요"></CheckEmail>
-        <span>@</span>
-        <Select>
-          <option value="" hidden>
-            Type
-          </option>
-          <option value="1">gmail.com</option>
-          <option value="2">naver.com</option>
-          <option value="3">nate.com</option>
-          <option value="4">daum.net</option>
-        </Select>
+        <ModalContainer type={"checkId"} onClick />
         <span>휴대폰</span>
         <span className="essential">*</span>
         <CheckPhoneNum placeholder="연락처를 입력해주세요"></CheckPhoneNum>
@@ -61,7 +55,7 @@ function SignForm() {
           onChange={(e) => setPostAddress(e.target.value)}
           placeholder="주소를 입력해주세요"
         ></CheckAddress>
-        <ModalContainer setAddress={setAddress} />
+        <ModalContainer setAddress={setAddress} type={"address"} />
         <DetailAddress placeholder="나머지 주소를 입력해주세요"></DetailAddress>
         <span>생년월일</span>
         <span className="essential">*</span>
