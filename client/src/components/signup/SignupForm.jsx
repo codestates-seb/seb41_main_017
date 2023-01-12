@@ -15,7 +15,9 @@ import {
   CheckPhoneNum,
   DetailAddress,
   CheckAddress,
-  CheckBirth,
+  CheckBirthYY,
+  CheckBirthMM,
+  CheckBirthDD,
 } from "../../styles/signupStyle";
 
 function SignForm() {
@@ -41,11 +43,11 @@ function SignForm() {
         <span>이메일</span>
         <span className="essential">*</span>
         <br></br>
-        <CheckEmail placeholder="이메일을 입력해주세요"></CheckEmail>
+        <CheckEmail placeholder=" ex) Culinari@gmail.com"></CheckEmail>
         <ModalContainer type={"checkId"} onClick />
         <span>휴대폰</span>
         <span className="essential">*</span>
-        <CheckPhoneNum placeholder="연락처를 입력해주세요"></CheckPhoneNum>
+        <CheckPhoneNum placeholder="-를 포함한 숫자를 입력해주세요"></CheckPhoneNum>
         <span>주소</span>
         <span className="essential">*</span>
         <br />
@@ -60,9 +62,9 @@ function SignForm() {
         <span>생년월일</span>
         <span className="essential">*</span>
         <br />
-        <CheckBirth></CheckBirth>
-        <CheckBirth></CheckBirth>
-        <CheckBirth></CheckBirth>
+        <CheckBirthYY placeholder="         YY"></CheckBirthYY>
+        <CheckBirthMM placeholder="         MM"></CheckBirthMM>
+        <CheckBirthDD placeholder="         DD"></CheckBirthDD>
         <br />
         <span>성별</span>
         <GenderRadio></GenderRadio>

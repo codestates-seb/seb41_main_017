@@ -167,7 +167,41 @@ const CheckAddress = styled.input.attrs({
   margin-bottom: 10px;
 `;
 
-const CheckBirth = styled.input.attrs({
+const CheckBirthDD = styled.input.attrs({
+  type: "text",
+})`
+  display: inline-block;
+  width: 25%;
+  min-height: 50px;
+  padding: 7px 9px;
+  text-align: start;
+  font-size: 13px;
+  line-height: normal;
+  letter-spacing: normal;
+  box-shadow: none;
+  border-radius: 3px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+`;
+const CheckBirthYY = styled.input.attrs({
+  type: "text",
+})`
+  display: inline-block;
+  width: 25%;
+  min-height: 50px;
+  padding: 7px 9px;
+  text-align: start;
+  font-size: 13px;
+  line-height: normal;
+  letter-spacing: normal;
+  box-shadow: none;
+  border-radius: 3px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+`;
+const CheckBirthMM = styled.input.attrs({
   type: "text",
 })`
   display: inline-block;
@@ -197,5 +231,7 @@ export {
   CheckPhoneNum,
   DetailAddress,
   CheckAddress,
-  CheckBirth,
+  CheckBirthYY,
+  CheckBirthMM,
+  CheckBirthDD,
 };
