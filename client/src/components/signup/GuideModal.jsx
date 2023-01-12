@@ -1,26 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 
-const Modal = (props) => {
-  // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
+const GuideModal = (props) => {
   const { open, close, header } = props;
 
   return (
-    // 모달이 열릴때 openModal 클래스가 생성된다.
     <Page>
       <div className={open ? "openModal modal" : "modal"}>
         {open ? (
           <Section>
-            <Header>
-              <button className="close" onClick={close}>
-                &times;
-              </button>
-            </Header>
-            <Main>{props.children}</Main>
+            <Main>사용 불가능한 아이디입니다</Main>
             <Footer>
-              <button className="close" onClick={close}>
-                close
-              </button>
+              <div className="close" onClick={close}>
+                확인
+              </div>
             </Footer>
           </Section>
         ) : null}
@@ -30,8 +23,6 @@ const Modal = (props) => {
 };
 
 const Page = styled.div`
-  text-align: center;
-
   .modal {
     display: none;
     position: fixed;
@@ -77,48 +68,39 @@ const Page = styled.div`
 
 const Section = styled.section`
   width: 90%;
-  max-width: 450px;
+  max-width: 361px;
+  //   max-height: 120px;
+  height: 110px;
   margin: 0 auto;
   border-radius: 0.3rem;
   background-color: #fff;
   animation: modal-show 0.3s;
   overflow: hidden;
-`;
-
-const Header = styled.header`
-  position: relative;
-  padding: 36px 64px 16px 16px;
-  background-color: #f1f1f1;
-  font-weight: 700;
-  button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 30px;
-    font-size: 21px;
-    font-weight: 700;
-    text-align: center;
-    color: #999;
-    background-color: transparent;
-  }
+  border: 1px solid #c26d53;
 `;
 
 const Main = styled.main`
+  display: flex;
   padding: 16px;
-  border-bottom: 1px solid #dee2e6;
-  border-top: 1px solid #dee2e6;
+  text-align: center;
+  justify-content: center;
+  margin-top: 10px;
 `;
 
 const Footer = styled.footer`
-  padding: 12px 16px;
-  text-align: right;
-  button {
+  //   padding: 12px 16px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  div {
+    width: 50px;
+    height: 30px;
     padding: 6px 12px;
-    color: #fff;
-    background-color: #6c757d;
+    border: 1px solid #c26d53;
     border-radius: 5px;
     font-size: 13px;
   }
 `;
 
-export default Modal;
+export default GuideModal;
