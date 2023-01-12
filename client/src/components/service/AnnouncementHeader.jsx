@@ -13,7 +13,7 @@ const Page = styled.div`
 const ItemCotainer = styled.div`
   width: 900px;
   height: 60px;
-  border-top: 1px solid black;
+  border-top: 2px solid black;
   border-bottom: 1px solid black;
   display: flex;
   align-items: center;
@@ -42,10 +42,10 @@ function AnnouncementHeader() {
     <Page>
       <ItemCotainer>
         <Notice>
-          <p>공지</p>{" "}
+          <p>공지</p>
         </Notice>
         <Title>
-          <p>제목</p>{" "}
+          <p>제목</p>
         </Title>
         <Writter>작성자</Writter>
         <Time>시간</Time>

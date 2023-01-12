@@ -1,11 +1,14 @@
 import styled from "styled-components";
+import AnnouncementHeader from "./AnnouncementHeader";
+import AnnouncementItem from "./AnnouncementItem";
 
-function announcement() {
+function Announcement() {
   return (
     <>
-      <div></div>
+      <AnnouncementHeader></AnnouncementHeader>
+      <AnnouncementItem></AnnouncementItem>
     </>
   );
 }
 
-export default announcement;
+export default Announcement;
