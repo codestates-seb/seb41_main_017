@@ -41,4 +41,17 @@ public record SignUpDto(
         @PastOrPresent(message = "미래에서 오셨나요???? 미래에서 오신분은 사용 불가입니다.")
         LocalDate birthDate
 ) {
+
+        public static SignUpDto of(String username, String password, String name, String email, String phoneNumber, String address, GenderType genderType, LocalDate birthDate) {
+                return new SignUpDto(
+                        username,
+                        password,
+                        name,
+                        email,
+                        phoneNumber,
+                        address,
+                        genderType,
+                        birthDate
+                );
+        }
 }

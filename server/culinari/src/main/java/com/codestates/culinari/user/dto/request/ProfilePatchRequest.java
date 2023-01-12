@@ -35,4 +35,14 @@ public record ProfilePatchRequest(
         @PastOrPresent(message = "미래 날짜로 수정 불가합니다.")
         LocalDate birthDate
 ) {
+    public static ProfilePatchRequest of(String name, String email, String phoneNumber, String address, GenderType genderType, LocalDate birthDate) {
+        return new ProfilePatchRequest(
+                name,
+                email,
+                phoneNumber,
+                address,
+                genderType,
+                birthDate
+        );
+    }
 }

@@ -13,7 +13,7 @@ public enum ExceptionCode {
     NOTICE_NOT_FOUND(404,"Notice not found"),
     CART_NOT_FOUND(404, "Cart not found"),
     USERNAME_EXISTS(405, "Username exist"),
-    EMAIL_EXISTS(405, "Username exist");
+    EMAIL_EXISTS(405, "Email exist");
 
     @Getter
     private int status;
