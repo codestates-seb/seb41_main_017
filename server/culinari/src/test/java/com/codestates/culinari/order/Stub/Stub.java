@@ -111,7 +111,11 @@ public class Stub {
 
     public static Page<Orders> createOrderPage() {
         List<Orders> orders = LongStream.rangeClosed(1L, 5L)
-                .mapToObj(l -> createOrder(l, 1L))
+                .mapToObj(l -> {
+                    Orders order = createOrder(l, 1L);
+                    order.getOrderDetails().addAll(LongStream.rangeClosed(1L, 3L).mapToObj(Stub::createOrderDetail).toList());
+                    return order;
+                })
                 .toList();
         Pageable pageable = PageRequest.of(0, 10);
 
