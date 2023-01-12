@@ -19,14 +19,12 @@ import com.codestates.culinari.user.entitiy.Profile;
 import com.codestates.culinari.user.repository.ProfileRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -48,25 +46,26 @@ public class ProductCsServiceImpl implements ProductCsService {
     }
 
     // 문의 작성
-    public ProductInquiryDto createProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal , Long productId) {
+    @Override
+    public void createProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal, Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         ProductInquiry productInquiry = ProductInquiry.of(productInquiryRequest.title(), productInquiryRequest.content(), product, profile);
         productInquiryRepository.save(productInquiry);
-        return ProductInquiryDto.from(productInquiry);
     }
 
     // 후기 작성
-    public ProductReviewDto createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId) {
+    @Override
+    public void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), product, profile);
         ProductReviewLike productReviewLike = productReviewLikeRepository.save(ProductReviewLike.of(0L,productReview));
         productReviewRepository.save(productReview);
-        return ProductReviewDto.from(productReview,productReviewLike);
     }
     //문의 수정
-    public ProductInquiryDto updateProductInquiry(ProductInquiryRequest productInquiryRequest, Long productInquiryId) {
+    @Override
+    public void updateProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal, Long productInquiryId) {
         ProductInquiry productInquiry = productInquiryRepository.findById(productInquiryId).orElseThrow(() -> new EntityNotFoundException("문의가 없습니다"));
         if (productInquiryRequest.title() != null) {
             productInquiry.setTitle(productInquiryRequest.title());
@@ -74,11 +73,10 @@ public class ProductCsServiceImpl implements ProductCsService {
         if (productInquiryRequest.content() != null) {
             productInquiry.setContent(productInquiryRequest.content());
         }
-
-        return ProductInquiryDto.from(productInquiry);
     }
     //리뷰 수정
-    public ProductReviewDto updateProductReview(ProductReviewRequest productReviewRequest, Long productReviewId) {
+    @Override
+    public void updateProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productReviewId) {
         ProductReview productReview = productReviewRepository.findById(productReviewId).orElseThrow(() -> new EntityNotFoundException("문의가 없습니다"));
         if (productReviewRequest.title() != null) {
             productReview.setTitle(productReviewRequest.title());
@@ -86,21 +84,22 @@ public class ProductCsServiceImpl implements ProductCsService {
         if (productReviewRequest.content() != null) {
             productReview.setContent(productReviewRequest.content());
         }
-        ProductReviewLike productReviewLike = productReviewLikeRepository.getReferenceById(productReviewId);
-
-        return ProductReviewDto.from(productReview, productReviewLike);
     }
 
     //문의 삭제
-    public void deleteProductInquiry(Long productInquiryId){
+    @Override
+    public void deleteProductInquiry(CustomPrincipal principal, Long productInquiryId){
         productInquiryRepository.deleteById(productInquiryId);
     }
 
     //리뷰 삭제
-    public void deleteProductReview(Long productReviewId){productReviewRepository.deleteById(productReviewId);}
+    @Override
+    public void deleteProductReview(CustomPrincipal principal,Long productReviewId){
+        productReviewRepository.deleteById(productReviewId);
+    }
 
     @Override
-    public ProductReviewDto updateLike(ProductReviewLikeRequest productReviewLikePost, CustomPrincipal principal, Long productReviewId){
+    public void updateLike(ProductReviewLikeRequest productReviewLikePost, CustomPrincipal principal, Long productReviewId){
 
         ProductReview productReview = productReviewRepository.findById(productReviewId).orElseThrow(() -> new EntityNotFoundException("리뷰가 없습니다"));
 
@@ -109,8 +108,5 @@ public class ProductCsServiceImpl implements ProductCsService {
         ProductReviewLike productReviewLike = productReviewLikeRepository.getReferenceById(productReviewId);
         productReviewLike.setLikeNum(productReviewLike.getLikeNum() + productReviewLikePost.like());
         productReviewLike.setProductReviewProfileIds(principal.profileId());
-
-        return ProductReviewDto.from(productReview,productReviewLike);
-
     }
 }

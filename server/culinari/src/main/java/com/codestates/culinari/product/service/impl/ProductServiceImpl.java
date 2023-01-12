@@ -4,21 +4,19 @@ import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.repository.ProductRepository;
 import com.codestates.culinari.product.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@RequiredArgsConstructor
 @Transactional
 @Service
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-
-    public ProductServiceImpl(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
 
     //ID 상품 조회
     @Transactional(readOnly = true)
