@@ -1,22 +1,16 @@
 package com.codestates.culinari.user.dto.request;
 
 import com.codestates.culinari.user.constant.GenderType;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-public record SignUpDto(
-        @NotBlank(message = "아이디 입력은 필수입니다.")
-        @Length(max = 30, message = "아이디 길이는 30자 를 넘으면 안됩니다.")
-        String username,
-
-        @NotBlank(message = "비밀번호 입력은 필수입니다.")
-        @Length(max = 255, message = "비밀번호 길이는 255자 를 넘으면 안됩니다.")
-//        @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\\S+$).{8,20}$") //숫자, 알파벳, 특수문자(!@#$%^&*) 포함 8자 이상 20자 이하
-        String password,
-
+public record ProfilePatchRequest(
         @NotBlank(message = "이름 입력은 필수입니다.")
         @Length(max = 30, message = "이름 길이는 30자 를 넘으면 안됩니다.")
         String name,
@@ -38,7 +32,7 @@ public record SignUpDto(
         GenderType genderType,
 
         @DateTimeFormat(pattern = "yyyy-MM-dd")
-        @PastOrPresent(message = "미래에서 오셨나요???? 미래에서 오신분은 사용 불가입니다.")
+        @PastOrPresent(message = "미래 날짜로 수정 불가합니다.")
         LocalDate birthDate
 ) {
 }

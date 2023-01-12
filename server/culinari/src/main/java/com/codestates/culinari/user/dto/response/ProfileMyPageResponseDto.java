@@ -1,22 +1,30 @@
 package com.codestates.culinari.user.dto.response;
 
+import com.codestates.culinari.user.constant.GenderType;
 import com.codestates.culinari.user.entitiy.Profile;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public record ProfileMyPageResponseDto(
         String name,
-        BigDecimal point
+        String email,
+        String phoneNumber,
+        BigDecimal point,
+        String address,
+        GenderType gender,
+        LocalDate birthDate
 ) {
 
-    private static ProfileMyPageResponseDto of(String name, BigDecimal point) {
-        return new ProfileMyPageResponseDto(name, point);
-    }
-
     public static ProfileMyPageResponseDto from(Profile profile){
-        return ProfileMyPageResponseDto.of(
+        return new ProfileMyPageResponseDto(
                 profile.getName(),
-                profile.getPoint()
+                profile.getEmail(),
+                profile.getPhoneNumber(),
+                profile.getPoint(),
+                profile.getAddress(),
+                profile.getGender(),
+                profile.getBirthDate()
         );
     }
 }

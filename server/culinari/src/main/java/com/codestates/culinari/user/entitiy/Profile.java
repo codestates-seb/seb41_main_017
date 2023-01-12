@@ -3,6 +3,7 @@ package com.codestates.culinari.user.entitiy;
 import com.codestates.culinari.product.entitiy.ProductInquiry;
 import com.codestates.culinari.product.entitiy.ProductReview;
 import com.codestates.culinari.user.constant.GenderType;
+import com.codestates.culinari.user.dto.request.ProfilePatchRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -71,4 +72,12 @@ public class Profile {
         return new Profile(name, email, phoneNumber, point ,address, gender, birthDate);
     }
 
+    public void updateProfile(ProfilePatchRequest profilePatchRequest) {
+        this.name = profilePatchRequest.name();
+        this.email = profilePatchRequest.email();
+        this.phoneNumber = profilePatchRequest.phoneNumber();
+        this.address = profilePatchRequest.address();
+        this.gender = profilePatchRequest.genderType();
+        this.birthDate = profilePatchRequest.birthDate();
+    }
 }
