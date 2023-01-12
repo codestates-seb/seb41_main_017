@@ -30,7 +30,7 @@ const Mycard = styled.div`
   margin-top: 15px;
   margin-bottom: 20px;
 
-  .accountBox {
+  .account_Box {
     padding: 10px 0 0 30px;
     flex-basis: 300px;
     height: 212px;
@@ -47,7 +47,7 @@ const Mycard = styled.div`
       }
     }
 
-    .acEvent {
+    .ac_Event {
       justify-content: left;
       background-color: #fff7f5;
       width: 195px;
@@ -111,14 +111,14 @@ function Mypage() {
   return (
       <Layout>
         <Mycard>
-          <div className="accountBox">
+          <div className="account_Box">
             <div className="acName">
               <span>ID님의 회원카드</span>
               <div>
                 <BasicButton href={'/userinfo'} radius={12}>내 정보 수정</BasicButton>
               </div>
             </div>
-            <div className="acEvent">
+            <div className="ac_Event">
               <div className="event">
                 <a href='/point'>
                 <span>내 포인트</span>
