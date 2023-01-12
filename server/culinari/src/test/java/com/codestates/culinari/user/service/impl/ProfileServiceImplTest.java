@@ -158,6 +158,4 @@ class ProfileServiceImplTest {
 
         return profile;
     }
-
-
 }
