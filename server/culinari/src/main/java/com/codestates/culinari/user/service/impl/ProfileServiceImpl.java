@@ -1,4 +1,4 @@
-package com.codestates.culinari.user.service.Impl;
+package com.codestates.culinari.user.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.global.exception.BusinessLogicException;
