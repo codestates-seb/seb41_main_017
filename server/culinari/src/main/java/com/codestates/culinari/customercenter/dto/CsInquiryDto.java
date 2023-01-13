@@ -1,11 +1,8 @@
 package com.codestates.culinari.customercenter.dto;
 
 import com.codestates.culinari.customercenter.constant.ProcessStatus;
-import com.codestates.culinari.customercenter.dto.request.CsInquiryRequest;
 import com.codestates.culinari.customercenter.entity.CsInquiry;
 import com.codestates.culinari.user.entitiy.Profile;
-
-import java.time.LocalDateTime;
 
 public record CsInquiryDto(
         Long id,

@@ -3,7 +3,6 @@ package com.codestates.culinari.product.dto.response;
 import com.codestates.culinari.product.dto.ProductDto;
 import lombok.Builder;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Builder

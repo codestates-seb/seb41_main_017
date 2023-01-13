@@ -1,8 +1,6 @@
 package com.codestates.culinari.user.dto.response;
 
-import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.ProductReviewDto;
-import com.codestates.culinari.product.entitiy.ProductReview;
 import com.codestates.culinari.user.dto.ProfileDto;
 
 import java.util.List;

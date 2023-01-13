@@ -1,11 +1,8 @@
 package com.codestates.culinari.product.dto.response;
 
 import com.codestates.culinari.product.dto.ProductReviewDto;
-import com.codestates.culinari.product.dto.ProductReviewLikeDto;
-import com.codestates.culinari.product.entitiy.ProductInquiry;
 import lombok.Builder;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Builder

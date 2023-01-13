@@ -1,14 +1,10 @@
 package com.codestates.culinari.product.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.product.dto.ProductInquiryDto;
-import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
 import com.codestates.culinari.product.dto.response.ProductResponseWithCustomerService;
-import com.codestates.culinari.product.dto.response.ProductReviewResponse;
-import com.codestates.culinari.product.entitiy.ProductInquiry;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.response.SingleResponseDto;

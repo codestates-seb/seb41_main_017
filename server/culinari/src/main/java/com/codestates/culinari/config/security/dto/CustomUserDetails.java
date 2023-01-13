@@ -1,7 +1,6 @@
 package com.codestates.culinari.config.security.dto;
 
 import com.codestates.culinari.user.constant.RoleType;
-import com.codestates.culinari.user.dto.ProfileDto;
 import com.codestates.culinari.user.entitiy.UserRole;
 import com.codestates.culinari.user.entitiy.Users;
 import org.springframework.security.core.GrantedAuthority;

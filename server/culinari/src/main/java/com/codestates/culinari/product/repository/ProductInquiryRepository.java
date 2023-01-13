@@ -1,6 +1,5 @@
 package com.codestates.culinari.product.repository;
 
-import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.entitiy.ProductInquiry;
 import org.springframework.data.jpa.repository.JpaRepository;
 
