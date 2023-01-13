@@ -3,22 +3,8 @@ import SignupBtn from "./SignupBtn";
 import GenderRadio from "./GenderRadio";
 import { useState } from "react";
 import ModalContainer from "./ModalCotainer";
-import {
-  Page,
-  CheckboxContent,
-  IdBlock,
-  CheckId,
-  CreatePwd,
-  CheckPwd,
-  CheckName,
-  CheckEmail,
-  CheckPhoneNum,
-  DetailAddress,
-  CheckAddress,
-  CheckBirthYY,
-  CheckBirthMM,
-  CheckBirthDD,
-} from "../../styles/signupStyle";
+import BasicInput from "../BasicInput";
+import { Page, CheckboxContent, IdBlock } from "../../styles/signupStyle";
 
 function SignForm() {
   const [address, setAddress] = useState("");
@@ -27,44 +13,99 @@ function SignForm() {
   return (
     <Page>
       <IdBlock>
-        <span>아이디</span>
-        <span className="essential">*</span>
-        <br />
-        <CheckId placeholder="아이디를 입력해주세요"></CheckId>
-        {/* <CheckIdBtn>중복확인</CheckIdBtn> */}
-        <ModalContainer type={"checkId"} onClick />
-        <br />
-        <span>비밀번호</span>
-        <span className="essential">*</span>{" "}
-        <CreatePwd placeholder="비밀먼호를 입력해주세요"></CreatePwd>
-        <CheckPwd placeholder="비밀번호를 확인"></CheckPwd>
-        <span>이름</span> <span className="essential">*</span>
-        <CheckName placeholder="이름을 입력해주세요"></CheckName>
-        <span>이메일</span>
-        <span className="essential">*</span>
-        <br></br>
-        <CheckEmail placeholder=" ex) Culinari@gmail.com"></CheckEmail>
-        <ModalContainer type={"checkId"} onClick />
-        <span>휴대폰</span>
-        <span className="essential">*</span>
-        <CheckPhoneNum placeholder="-를 포함한 숫자를 입력해주세요"></CheckPhoneNum>
-        <span>주소</span>
-        <span className="essential">*</span>
-        <br />
-        <CheckAddress
-          type="text"
-          value={address}
-          onChange={(e) => setPostAddress(e.target.value)}
-          placeholder="주소를 입력해주세요"
-        ></CheckAddress>
-        <ModalContainer setAddress={setAddress} type={"address"} />
-        <DetailAddress placeholder="나머지 주소를 입력해주세요"></DetailAddress>
-        <span>생년월일</span>
-        <span className="essential">*</span>
-        <br />
-        <CheckBirthYY placeholder="         YY"></CheckBirthYY>
-        <CheckBirthMM placeholder="         MM"></CheckBirthMM>
-        <CheckBirthDD placeholder="         DD"></CheckBirthDD>
+        <div className="input_title">
+          <span>아이디</span>
+          <span className="essential">*</span>
+        </div>
+        <div className="input_cotainer">
+          <BasicInput
+            type={"text"}
+            placeholder={"아이디를 입력해주세요"}
+          ></BasicInput>
+          <ModalContainer type={"checkId"} onClick />
+        </div>
+        <div className="input_title">
+          <span>비밀번호</span>
+          <span className="essential">*</span>
+        </div>
+        <div className="input_container">
+          <BasicInput
+            type={"password"}
+            placeholder={"비밀번호를 입력해주세요"}
+          ></BasicInput>
+          <BasicInput
+            type={"password"}
+            placeholder={"비밀번호를 확인"}
+          ></BasicInput>
+        </div>
+        <div className="input_title">
+          <span>이름</span>
+          <span className="essential">*</span>
+        </div>
+        <div className="input_container">
+          <BasicInput
+            type={"text"}
+            placeholder={"이름을 입력해주세요"}
+          ></BasicInput>
+        </div>
+        <div className="input_title">
+          <span>이메일</span>
+          <span className="essential">*</span>
+        </div>
+        <div className="input_cotainer">
+          <BasicInput
+            type={"text"}
+            placeholder={" ex) Culinari@gmail.com"}
+          ></BasicInput>
+          <ModalContainer type={"checkId"} onClick />
+        </div>
+
+        <div className="input_title">
+          <span>휴대폰</span>
+          <span className="essential">*</span>
+        </div>
+        <div className="input_container">
+          <BasicInput
+            type={"text"}
+            placeholder={"-를 포함한 숫자를 입력해주세요"}
+          ></BasicInput>
+        </div>
+        <div className="input_title">
+          <span>주소</span>
+          <span className="essential">*</span>
+        </div>
+
+        <div className="input_cotainer">
+          <BasicInput
+            type={"text"}
+            placeholder={"주소를 입력해주세요"}
+            defaultValue={address}
+            onChange={(e) => setPostAddress(e.target.value)}
+          ></BasicInput>
+          <ModalContainer setAddress={setAddress} type={"address"} />
+        </div>
+        <div className="input_cotainer">
+          <BasicInput
+            type={"text"}
+            placeholder={"나머지 주소를 입력해주세요"}
+          ></BasicInput>
+        </div>
+        <div className="input_title">
+          <span>생년월일</span>
+          <span className="essential">*</span>
+        </div>
+        <div className="input_cotainer">
+          <div className="birth_container">
+            <BasicInput type={"text"} placeholder={"YY"}></BasicInput>
+          </div>
+          <div className="birth_container">
+            <BasicInput type={"text"} placeholder={"MM"}></BasicInput>
+          </div>
+          <div className="birth_container">
+            <BasicInput type={"text"} placeholder={"DD"}></BasicInput>
+          </div>
+        </div>
+
         <br />
         <span>성별</span>
         <GenderRadio></GenderRadio>
