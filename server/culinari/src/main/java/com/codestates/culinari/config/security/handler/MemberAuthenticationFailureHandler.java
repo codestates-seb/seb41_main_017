@@ -2,7 +2,6 @@ package com.codestates.culinari.config.security.handler;
 
 import com.codestates.culinari.global.advice.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

@@ -6,8 +6,6 @@ import com.codestates.culinari.user.dto.request.ProfilePatchRequest;
 import com.codestates.culinari.user.dto.response.ProfileMyPageResponseDto;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 public interface ProfileService {
 
     ProfileMyPageResponseDto readProfile(CustomPrincipal customPrincipal);

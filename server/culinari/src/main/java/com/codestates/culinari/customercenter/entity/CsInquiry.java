@@ -5,7 +5,10 @@ import com.codestates.culinari.customercenter.constant.ProcessStatus;
 import com.codestates.culinari.customercenter.dto.request.CsInquiryRequest;
 import com.codestates.culinari.user.entitiy.Profile;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

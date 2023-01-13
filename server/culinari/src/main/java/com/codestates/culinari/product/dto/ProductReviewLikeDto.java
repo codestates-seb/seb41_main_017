@@ -3,9 +3,7 @@ package com.codestates.culinari.product.dto;
 import com.codestates.culinari.product.entitiy.ProductReview;
 import com.codestates.culinari.product.entitiy.ProductReviewLike;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record ProductReviewLikeDto(
         Long id,

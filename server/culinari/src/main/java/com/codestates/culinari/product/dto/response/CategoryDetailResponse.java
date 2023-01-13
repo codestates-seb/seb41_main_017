@@ -2,7 +2,6 @@ package com.codestates.culinari.product.dto.response;
 
 import com.codestates.culinari.product.dto.CategoryDetailDto;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,6 +1,5 @@
 package com.codestates.culinari.product.dto.request;
 
-import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.ProductReviewLikeDto;
 import com.codestates.culinari.user.dto.ProfileDto;
 import jakarta.validation.constraints.NotNull;
