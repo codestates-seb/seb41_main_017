@@ -23,19 +23,27 @@ const Button = styled.button`
   height: 28px;
 `;
 
-function QuantityBox({ quantity }) {
+function QuantityBox({ quantity, setQuantity }) {
+  const handleIncrease = () => {
+    setQuantity((quantity += 1));
+  };
+
+  const handleDecrease = () => {
+    if (quantity === 1) return;
+
+    setQuantity((quantity -= 1));
+  };
+
   return (
-    <>
-      <Container>
-        <Button>
-          <MinusIcon fill={quantity === 1 ? "#DDD" : "#fd6c40"} />
-        </Button>
-        <Quantity>{quantity}</Quantity>
-        <Button>
-          <PlusIcon fill={"#fd6c40"} />
-        </Button>
-      </Container>
-    </>
+    <Container>
+      <Button onClick={handleDecrease}>
+        <MinusIcon fill={quantity === 1 ? "#DDD" : "#fd6c40"} />
+      </Button>
+      <Quantity>{quantity}</Quantity>
+      <Button onClick={handleIncrease}>
+        <PlusIcon fill={"#fd6c40"} />
+      </Button>
+    </Container>
   );
 }
 
