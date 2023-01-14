@@ -13,7 +13,7 @@ function ProductHeader({ data }) {
       <h2 className="content">{data.content}</h2>
 
       <h2 className="price">
-        <span className="number">{data.price}</span>
+        <span className="number">{data.priceToLocaleString}</span>
         <span className="unit">원</span>
       </h2>
     </>
