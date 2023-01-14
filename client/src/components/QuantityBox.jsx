@@ -15,6 +15,7 @@ const Quantity = styled.div`
   display: inherit;
   justify-content: center;
   padding-top: 3px;
+  font-size: 14px;
 `;
 
 const Button = styled.button`
