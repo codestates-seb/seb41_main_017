@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import ColorButton from "../../components/ColorButton";
-import QuantityBox from "../../components/QuantityBox";
+import ColorButton from "../../../components/ColorButton";
+import QuantityBox from "../../../components/QuantityBox";
 
 const HeaderContainer = styled.div`
   padding-bottom: 40px;
