@@ -1,11 +1,15 @@
 import styled from "styled-components";
-// 해당컴포넌트는 div를 감싸서 써야 글씨가 정렬됨
+
 const BasicInput = ({
+  star,
+  label,
+  password,
+  address,
   children,
   font,
   radius,
   p_height,
-  p_width,
+  width,
   type,
   placeholder,
   defaultValue,
@@ -14,28 +18,71 @@ const BasicInput = ({
     font,
     radius,
     p_height,
-    p_width,
+    width,
     type,
     placeholder,
     defaultValue,
   };
+
   return (
-    <>
-      {/* <CustomLabel></CustomLabel> */}
+    <Container>
+      <div className="LabelContainer">
+        <CustomLabel>{label}</CustomLabel>
+        <div className="essential">{star}</div>
+      </div>
       <CustomInput {...styles}>{children}</CustomInput>
-    </>
+      {password === "password" ? (
+        <CustomInput
+          {...styles}
+          type={"password"}
+          placeholder="비밀번호를 확인"
+        >
+          {children}
+        </CustomInput>
+      ) : null}
+      {address === "address" ? (
+        <CustomInput
+          {...styles}
+          placeholder="나머지 주소를 입력해주세요"
+          width={"100%"}
+        >
+          {children}
+        </CustomInput>
+      ) : null}
+    </Container>
   );
 };
+const Container = styled.div`
+  width: 100%;
+  margin-bottom: 15px;
+  .LabelContainer {
+    width: 100%;
+    display: flex;
+  }
+  .essential {
+    color: red;
+    margin-left: 2px;
+  }
+`;
 
-BasicInput.defaultProps = {};
+const CheckId = styled.div`
+  width: 100%;
+`;
+
+const CustomLabel = styled.label`
+  display: flex;
+  height: 20px;
+  font-size: 16px;
+`;
 
 const CustomInput = styled.input.attrs((props) => ({
   type: props.type,
   placeholder: props.placeholder,
   defaultValue: props.defaultValue,
+  width: props.width,
 }))`
   display: inline-block;
-  width: 100%;
+  width: ${(props) => props.width};
   min-height: 50px;
   padding: 7px 9px;
   text-align: start;
@@ -46,4 +93,5 @@ const CustomInput = styled.input.attrs((props) => ({
   border-radius: 3px;
   margin-bottom: 10px;
 `;
+
 export default BasicInput;

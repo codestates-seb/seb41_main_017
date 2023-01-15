@@ -36,8 +36,9 @@ const IdBlock = styled.div`
   }
   .input_cotainer {
     display: flex;
-    height: 50px;
-    margin-bottom: 15px;
+  }
+  .input_birth {
+    display: flex;
   }
   .input_title {
     display: flex;
