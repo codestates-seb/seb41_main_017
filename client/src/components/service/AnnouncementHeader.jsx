@@ -18,7 +18,6 @@ const ItemCotainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
 `;
 
 const Notice = styled.div`
