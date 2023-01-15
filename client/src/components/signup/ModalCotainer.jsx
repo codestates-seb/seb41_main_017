@@ -7,8 +7,9 @@ import styled from "styled-components";
 const AddressBtn = styled.button`
   width: 30%;
   margin-left: 20px;
-  min-height: 50px;
+  height: 50px;
   border: 1px solid gray;
+  margin-top: 19.5px;
 `;
 
 function ModalContainer({ setAddress, type }) {
@@ -24,7 +25,9 @@ function ModalContainer({ setAddress, type }) {
   if (type === "address") {
     return (
       <>
+        {/* <div> */}
         <AddressBtn onClick={openModal}>주소검색</AddressBtn>
+        {/* </div> */}
         {/* <button onClick={openModal}>주소검색</button> */}
 
         <Modal open={modalOpen} close={closeModal} header="Modal heading">
