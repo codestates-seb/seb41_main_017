@@ -1,12 +1,9 @@
 import styled from "styled-components";
-import { Route, Routes, BrowserRouter, NavLink } from "react-router-dom";
-
-
+import { Route, Routes, NavLink } from "react-router-dom";
+import React from "react";
 
 const Container = styled.div`
-  width: 100%;
   text-align: left;
-
   .colbtn{
     display:flex;
     justify-content: center;
@@ -53,45 +50,51 @@ const Container = styled.div`
 
   
 `;
-// props양식
-// list = [{"탭이름": ["탭URI",컴포넌트]}] 
-// title = "제목이름"
-// flex = {1} -> 요소에맞게 공간할당
 
+const Tab = ({title, list, flex = null})=>{
+    let styles = {flex};
+    const taptitle = []
+    const tapcontent = []
+    const children = []
+    
+  // 알맞은 키값은 ?
+      for(let i in list){
+        taptitle.push(
+          <li key={i}>
+            <NavLink
+            to={Object.keys(list[i])[0]}
+            className={`colbtn ${({isActive})=> (isActive) ? "active" : ""}`}
+            >{i}</NavLink>
+          </li>
+        )
+        tapcontent.push(
+          <Route key={i} path={Object.keys(list[i])[0]} element={Object.values(list[i])[0]}/>
+        )
 
-const Tap = ({title, list, flex = null})=>{
-    let styles = {flex}
+        if(list[i].children){
+          children.push(
+            <Route key={i} path={Object.keys(list[i].children)[0]} element={Object.values(list[i].children)[0]}/>
+          )
+        }
+      }
+
+    
     return(
-        <BrowserRouter>
         <Container {...styles}>
           <div className="nav">
             <h3>{title}</h3>
-            <ul>
-              {list.map((el, idx) => {
-                return (
-                <li key={idx}>
-                    <NavLink 
-                    to={Object.values(el)[0][0]}
-                    className={`colbtn ${({isActive})=> (isActive) ? "active" : ""}`}>
-                      {Object.keys(el)}
-                    </NavLink>
-                </li>
-                );
-              })}
-            </ul>
+            <ul>{taptitle}</ul>
           </div>
           <div className="content">
             <Routes>
-                {list.map((el, idx)=>{
-                    return <Route key={idx} path={Object.values(el)[0][0]} element={Object.values(el)[0][1]} />
-                })}
+            {tapcontent}
+            {children}
             </Routes>
           </div>
         </Container>
-        </BrowserRouter>
     );
 }
 
-export default Tap;
+export default Tab;
 
 

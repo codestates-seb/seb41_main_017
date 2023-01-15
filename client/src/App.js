@@ -4,6 +4,8 @@ import reset from "styled-reset";
 import Header from "./components/Header";
 import Mypage from "./pages/mypage/index";
 import Login from "./pages/sign/login";
+import { Route, Routes, BrowserRouter} from "react-router-dom";
+
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -53,12 +55,14 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyle />
       <Header />
       <Mypage />
       {/* <Login></Login> */}
-    </>
+      <Routes>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
