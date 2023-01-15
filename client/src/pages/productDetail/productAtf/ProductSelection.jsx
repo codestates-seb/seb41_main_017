@@ -91,6 +91,21 @@ const HeaderContainer = styled.div`
       justify-content: center;
     }
   }
+
+  .cart_option_wrapper {
+    width: 300px;
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #fd6c40;
+
+    position: sticky;
+    top: 10px;
+  }
+
+  .cart_option_title {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
 `;
 
 function ProductSelection({ position, name, priceToLocaleString, quantity, setQuantity, totalPrice }) {
@@ -112,18 +127,39 @@ function ProductSelection({ position, name, priceToLocaleString, quantity, setQu
               </div>
             </dd>
           </dl>
+
+          <div className="total_price_wrapper">
+            <span className="total_price_text">총 상품금액 : </span>
+            <span className="total_price_number">{totalPrice}</span>
+            <span className="total_price_unit">원</span>
+          </div>
+          <div className="add_cart_button_wrapper">
+            <ColorButton children="장바구니 담기" font="16" radius="3" p_height="19" />
+          </div>
         </div>
       ) : (
-        <></>
+        <div className="cart_option_wrapper">
+          <div className="cart_option_title">상품선택</div>
+          <div className="cart_option">
+            <div>
+              <span>{name}</span>
+            </div>
+            <div className="cart_option_item">
+              <QuantityBox quantity={quantity} setQuantity={setQuantity} />
+              <span>{priceToLocaleString}원</span>
+            </div>
+          </div>
+
+          <div className="total_price_wrapper">
+            <span className="total_price_text">총 상품금액 : </span>
+            <span className="total_price_number">{totalPrice}</span>
+            <span className="total_price_unit">원</span>
+          </div>
+          <div className="add_cart_button_wrapper">
+            <ColorButton children="장바구니 담기" font="16" radius="3" p_height="19" />
+          </div>
+        </div>
       )}
-      <div className="total_price_wrapper">
-        <span className="total_price_text">총 상품금액 : </span>
-        <span className="total_price_number">{totalPrice}</span>
-        <span className="total_price_unit">원</span>
-      </div>
-      <div className="add_cart_button_wrapper">
-        <ColorButton children="장바구니 담기" font="16" radius="3" p_height="19" />
-      </div>
     </HeaderContainer>
   );
 }
