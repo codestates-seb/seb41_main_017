@@ -13,6 +13,13 @@ public record CsNoticePost(
         String content
 ) {
 
+    public static CsNoticePost of(String title, String content){
+        return new CsNoticePost(
+                title,
+                content
+        );
+    }
+
     public CsNoticeDto toDto() {
         return CsNoticeDto.of(
                 title,

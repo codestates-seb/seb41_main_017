@@ -14,6 +14,13 @@ public record CsInquiryRequest(
         String content
 ) {
 
+    public static CsInquiryRequest of(String title, String content) {
+        return new CsInquiryRequest(
+                title,
+                content
+        );
+    }
+
     public CsInquiryDto toDto(Profile profile) {
         return CsInquiryDto.of(
                 title,
