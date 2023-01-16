@@ -1,6 +1,6 @@
+import React from "react";
 import styled from "styled-components";
 import { Route, Routes, NavLink } from "react-router-dom";
-import React from "react";
 
 const Container = styled.div`
   text-align: left;
@@ -57,7 +57,6 @@ const Tab = ({title, list, flex = null})=>{
     const tapcontent = []
     const children = []
     
-  // 알맞은 키값은 ?
       for(let i in list){
         taptitle.push(
           <li key={i}>
