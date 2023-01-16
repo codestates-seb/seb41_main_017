@@ -72,7 +72,9 @@ function AnnouncementItem() {
                 <p>{el.notice}</p>
               </Notice>
               <Title>
-                <Link to={`/announcement/detail/${el.id}`}>{el.title}</Link>
+                <Link to={`/service/announcement/detail/${el.id}`}>
+                  {el.title}
+                </Link>
               </Title>
               <Writter>{el.writter}</Writter>
               <Time>{el.time}</Time>

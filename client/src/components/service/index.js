@@ -10,15 +10,14 @@ import Dummy from "./data.json";
 
 function ServiceHome() {
   const Page = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 40px;
+    width: 1050px;
+    margin: 0 auto;
+    margin-top: 50px;
   `;
 
   const list = {
     공지사항: {
-      "/announcement": <Announcement />,
+      announcement: <Announcement />,
       children: [
         {
           "/announcement/detail/1": (
@@ -39,7 +38,7 @@ function ServiceHome() {
     },
 
     "자주묻는 질문": {
-      "/question": <ManyQuestion />,
+      question: <ManyQuestion />,
       children: [
         {
           "/question/often/1": <OftenDetail Dummy={Dummy.Question[0]} />,
@@ -60,7 +59,7 @@ function ServiceHome() {
     },
 
     "1:1문의": {
-      "/one-on-one": <OneOnOne />,
+      "one-on-one": <OneOnOne />,
       children: [
         {
           "/one-on-one/inquiry": <OneOnOneInquiry />,
@@ -71,9 +70,7 @@ function ServiceHome() {
 
   return (
     <Page>
-      <div>
-        <Tab list={list} title="고객센터" />
-      </div>
+      <Tab list={list} title="고객센터" />
     </Page>
   );
 }

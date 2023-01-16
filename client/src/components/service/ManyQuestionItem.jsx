@@ -96,7 +96,7 @@ function ManyQuestionItem() {
               </Notice>
               <Category>{el.category}</Category>
               <Title>
-                <Link to={`/question/often/${el.id}`}>{el.title}</Link>
+                <Link to={`/service/question/often/${el.id}`}>{el.title}</Link>
               </Title>
               <Writter>{el.writter}</Writter>
               <Time>{el.time}</Time>
