@@ -5,7 +5,6 @@ import { Route, Routes, BrowserRouter} from "react-router-dom";
 import Header from "./components/Header";
 import Mypage from "./pages/mypage/index";
 
-
 const GlobalStyle = createGlobalStyle`
     ${reset};
     html,body{
