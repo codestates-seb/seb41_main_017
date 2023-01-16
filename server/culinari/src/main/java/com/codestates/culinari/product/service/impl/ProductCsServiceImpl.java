@@ -2,6 +2,7 @@ package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
+import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
@@ -58,7 +59,7 @@ public class ProductCsServiceImpl implements ProductCsService {
     public void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
-        ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), product, profile);
+        ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), productReviewRequest.reviewStar(),product, profile);
         ProductReviewLike productReviewLike = productReviewLikeRepository.save(ProductReviewLike.of(0L,productReview));
         productReviewRepository.save(productReview);
     }
