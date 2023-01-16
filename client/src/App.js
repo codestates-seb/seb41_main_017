@@ -11,6 +11,7 @@ import Signup from "./pages/sign/signup";
 import ServiceHome from "./components/service/index";
 import { Main } from "./pages";
 import Cart from "./pages/cart";
+import ProductDetail from "./pages/productDetail";
 
 
 
@@ -68,12 +69,15 @@ function App() {
       <GlobalStyle />
       <Header />
       <Routes>
-        <Route path="/mypage" element={<Mypage/>}/>
+        <Route path="/mypage/*" element={<Mypage/>}/>
         <Route path="/login" element={<Login/>}/>
         {/* <Route path="/signup" element={<Signup/>}/> */}
         <Route path="/service" element={<ServiceHome />}/>
         <Route path="/" element={<Main/>}/>
         <Route path="/carts" element={<Cart/>}/>
+        <Route path="/product" element={<ProductDetail/>}/>
+        {/* <Route path="/newproduct" element={}/> */}
+        {/* <Route path="/bestproduct" element={}/> */}
       </Routes>
     </BrowserRouter>
   );
