@@ -1,8 +1,11 @@
 import styled from "styled-components";
-import Tap from "../Tap";
+import Tab from "../Tab";
 import Announcement from "./Announcement";
 import ManyQuestion from "./ManyQuestion";
 import OneOnOne from "./OneOnOne";
+import OneOnOneInquiry from "./OneOnOneInquiry";
+import ServiceDetailpage from "./ServiceDetailpage";
+import Dummy from "./data.json";
 
 function ServiceHome() {
   const Page = styled.div`
@@ -11,17 +14,39 @@ function ServiceHome() {
     justify-content: center;
     margin-top: 40px;
   `;
+  console.log(Dummy.Announcement[0]);
 
-  const list = [
-    { 공지사항: ["/announcement", <Announcement />] },
-    { "자주묻는 질문": ["/question", <ManyQuestion />] },
-    { "1:1 문의": ["/one-on-one", <OneOnOne />] },
-  ];
+  const list = {
+    공지사항: {
+      "/announcement": <Announcement />,
+      children: {
+        "/announcement/detail": (
+          <ServiceDetailpage Dummy={Dummy.Announcement[0]} />
+        ),
+      },
+    },
+    "자주묻는 질문": {
+      "/question": <ManyQuestion />,
+      children: {
+        "/question/detail": <ServiceDetailpage />,
+      },
+    },
+
+    "1:1문의": {
+      "/one-on-one": <OneOnOne />,
+      children: {
+        "/one-on-one/inquiry": <OneOnOneInquiry />,
+      },
+    },
+    test: {
+      "/test": <ServiceDetailpage />,
+    },
+  };
 
   return (
     <Page>
       <div>
-        <Tap list={list} title="고객센터" />
+        <Tab list={list} title="고객센터" />
       </div>
     </Page>
   );

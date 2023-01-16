@@ -120,9 +120,9 @@ function Mypage() {
     },
     "작성한 후기": {
       '/itemreviewList': <ItemreviewList/>,
-      children:{
-        "/itemreviewList/write" : <ItemreviewWrite/>
-      }
+      children:[
+        {"/itemreviewList/write" : <ItemreviewWrite/>},
+      ]
     },
     "내 문의": {
       '/inquiry': <Inquiry/>
