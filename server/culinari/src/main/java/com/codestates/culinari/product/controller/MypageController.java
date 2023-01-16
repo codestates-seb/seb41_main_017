@@ -24,7 +24,7 @@ public class MypageController {
     public ResponseEntity getInquiryList(
             @AuthenticationPrincipal CustomPrincipal principal){
 
-        ProfileMyPageInquiryResponse response = ProfileMyPageInquiryResponse.from(profileService.readProfileInquiry(principal));
+        ProfileMyPageInquiryResponse response = ProfileMyPageInquiryResponse.from(profileService.readMyPageReview(principal));
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK);
     }
@@ -33,7 +33,7 @@ public class MypageController {
     public ResponseEntity getReviewList(
             @AuthenticationPrincipal CustomPrincipal principal){
 
-        ProfileMyPageReviewResponse response = ProfileMyPageReviewResponse.from(profileService.readProfileInquiry(principal));
+        ProfileMyPageReviewResponse response = ProfileMyPageReviewResponse.from(profileService.readMyPageReview(principal));
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK);
     }

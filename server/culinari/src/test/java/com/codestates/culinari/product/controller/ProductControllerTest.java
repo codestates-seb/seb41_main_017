@@ -87,7 +87,7 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
                 )
-                .andExpect(status().isCreated());
+                .andExpect(status().isResetContent());
         // Then
         then(productCsService).should().createProductInquiry(any(ProductInquiryRequest.class), any(CustomPrincipal.class), anyLong());
     }
@@ -112,7 +112,7 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
                 )
-                .andExpect(status().isCreated());
+                .andExpect(status().isResetContent());
         // Then
         then(productCsService).should().createProductReview(any(ProductReviewRequest.class), any(CustomPrincipal.class), anyLong());
     }
@@ -137,7 +137,7 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isResetContent());
         // Then
         then(productCsService).should().updateProductInquiry(any(ProductInquiryRequest.class), any(CustomPrincipal.class), anyLong());
     }
@@ -162,7 +162,7 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isResetContent());
 
         then(productCsService).should().updateProductReview(any(ProductReviewRequest.class), any(CustomPrincipal.class), anyLong());
     }
@@ -186,7 +186,7 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isResetContent());
         then(productCsService).should().updateLike(any(ProductReviewLikeRequest.class), any(CustomPrincipal.class), anyLong());
     }
 

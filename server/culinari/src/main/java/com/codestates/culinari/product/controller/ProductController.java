@@ -43,7 +43,7 @@ public class ProductController {
 
          productCsService.createProductInquiry(productInquiryRequest, principal, productId);
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
     //상품 후기 등록
     @PostMapping("/{product-id}/review")
@@ -54,7 +54,7 @@ public class ProductController {
 
         productCsService.createProductReview(productReviewRequest,principal,productId);
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
     //상품 문의 수정
     @PatchMapping("/inquiry/{inquiry-id}")
@@ -65,7 +65,7 @@ public class ProductController {
 
         productCsService.updateProductInquiry(productInquiryRequest,principal,productInquiryId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
     //상품 리뷰 수정
     @PatchMapping("/review/{review-id}")
@@ -76,7 +76,7 @@ public class ProductController {
 
        productCsService.updateProductReview(productReviewRequest,principal,productReviewId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
     //상품 리뷰 좋아요
     @PatchMapping("/review/{review-id}/like")
@@ -87,7 +87,7 @@ public class ProductController {
 
         productCsService.updateLike(productReviewLikeRequest, principal,productReviewId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
 
     //문의 삭제

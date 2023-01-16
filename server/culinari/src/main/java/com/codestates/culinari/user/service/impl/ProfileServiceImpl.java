@@ -30,7 +30,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Transactional(readOnly = true)
     @Override
-    public ProfileDto readProfileInquiry(CustomPrincipal customPrincipal){
+    public ProfileDto readMyPageReview(CustomPrincipal customPrincipal){
         return profileRepository.findById(customPrincipal.profileId())
                 .map(ProfileDto::from)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
