@@ -1,7 +1,8 @@
+import Mypagehead from "../../components/MypageHead";
 
 function Inquiry(){
     return(
-        <div>내문의</div>
+        <Mypagehead title={"내 1:1 문의"} line="true"></Mypagehead>
     );
 }
 
