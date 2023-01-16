@@ -10,6 +10,7 @@ const BasicInput = ({
   radius,
   p_height,
   width,
+  height,
   type,
   placeholder,
   defaultValue,
@@ -18,6 +19,7 @@ const BasicInput = ({
     font,
     radius,
     p_height,
+    height,
     width,
     type,
     placeholder,
@@ -65,10 +67,6 @@ const Container = styled.div`
   }
 `;
 
-const CheckId = styled.div`
-  width: 100%;
-`;
-
 const CustomLabel = styled.label`
   display: flex;
   height: 20px;
@@ -83,6 +81,7 @@ const CustomInput = styled.input.attrs((props) => ({
 }))`
   display: inline-block;
   width: ${(props) => props.width};
+  height: ${(props) => props.height};
   min-height: 50px;
   padding: 7px 9px;
   text-align: start;
