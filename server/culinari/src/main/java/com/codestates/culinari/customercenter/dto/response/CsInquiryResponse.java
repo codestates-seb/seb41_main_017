@@ -10,6 +10,15 @@ public record CsInquiryResponse(
         ProcessStatus processStatus
 ) {
 
+    public static CsInquiryResponse of(Long id, String title, String content, ProcessStatus processStatus) {
+        return new CsInquiryResponse(
+                id,
+                title,
+                content,
+                processStatus
+        );
+    }
+
     public static CsInquiryResponse from(CsInquiryDto csInquiryDto) {
         return new CsInquiryResponse(
                 csInquiryDto.id(),

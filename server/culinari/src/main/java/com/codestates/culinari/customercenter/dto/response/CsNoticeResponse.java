@@ -11,6 +11,15 @@ public record CsNoticeResponse(
         String createdBy
 ) {
 
+    public static CsNoticeResponse of(String title, String content, LocalDateTime createdAt, String createdBy) {
+        return new CsNoticeResponse(
+                title,
+                content,
+                createdAt,
+                createdBy
+        );
+    }
+
     public static CsNoticeResponse from(CsNoticeDto csNoticeDto) {
         return new CsNoticeResponse(
                 csNoticeDto.title(),

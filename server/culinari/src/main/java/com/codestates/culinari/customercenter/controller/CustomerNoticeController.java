@@ -31,7 +31,7 @@ public class CustomerNoticeController {
     public ResponseEntity postNewNotice(@RequestBody CsNoticePost csNoticePost) {
         customerNoticeService.createNotice(csNoticePost);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
     }
 
     @GetMapping
