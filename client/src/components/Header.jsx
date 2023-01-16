@@ -108,8 +108,7 @@ function Header() {
   return (
     <Layout>
       <div className="top flex">
-        <div>로그인</div>
-        <div>회원가입</div>
+        <div>로그인 & 회원가입</div>
         <div>고객센터</div>
       </div>
       <div className="mid flex">
@@ -122,10 +121,10 @@ function Header() {
         </div>
         <div className="myIcons flex">
           <div className="icons">
-            <BsFillPersonFill className="icon"/>
+            <a href="/mypage"><BsFillPersonFill className="icon"/></a>
           </div>
           <div className="icons">
-            <BsCart4 className="icon"/>
+            <a><BsCart4 className="icon"/></a>
           </div>
         </div>
       </div>
