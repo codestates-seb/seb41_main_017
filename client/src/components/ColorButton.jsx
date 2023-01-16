@@ -1,13 +1,11 @@
 import styled from "styled-components";
-// 해당컴포넌트는 div를 감싸서 써야 글씨가 정렬됨
+
 const ColorButton = ({ href, children, font, radius, p_height, p_width }) => {
   const styles = { font, radius, p_height, p_width };
   return (
-    <>
       <Colbtn {...styles} href={href}>
         {children}
       </Colbtn>
-    </>
   );
 };
 
