@@ -32,6 +32,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void createCart(CartPost post, CustomPrincipal principal) {
+        verifyPrincipal(principal);
+
         Product product = productRepository.findById(post.productId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
@@ -51,11 +53,15 @@ public class CartServiceImpl implements CartService {
     @Transactional(readOnly = true)
     @Override
     public Page<CartDto> readCarts(Pageable pageable, CustomPrincipal principal) {
+        verifyPrincipal(principal);
+
         return cartRepository.findAllByProfile_Id(pageable, principal.profileId()).map(CartDto::from);
     }
 
     @Override
     public void updateCart(CartPatch patch, Long cartId, CustomPrincipal principal) {
+        verifyPrincipal(principal);
+
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
         verifyAuth(cart.getProfile().getId(), principal.profileId());
@@ -66,6 +72,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void deleteCart(Long cartId, CustomPrincipal principal) {
+        verifyPrincipal(principal);
+
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
         verifyAuth(cart.getProfile().getId(), principal.profileId());
@@ -76,5 +84,9 @@ public class CartServiceImpl implements CartService {
     // TODO: 공통적으로 처리할 수 있는지
     public void verifyAuth(Long targetProfileId, Long profileId) {
         if (!targetProfileId.equals(profileId)) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+    }
+
+    public void verifyPrincipal(CustomPrincipal principal) {
+        if (principal == null) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 }

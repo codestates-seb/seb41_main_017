@@ -16,6 +16,16 @@ public record UserDto(
         Profile profile
 ) {
 
+    public static UserDto of(Long id, String username, String password, List<UserRole> userRoles, Profile profile) {
+        return new UserDto(
+                id,
+                username,
+                password,
+                userRoles,
+                profile
+        );
+    }
+
     public static UserDto of(SignUpDto signUpDto, String encryptedPassword, Profile profile) {
         return new UserDto(
                 null,
@@ -36,7 +46,7 @@ public record UserDto(
         );
     }
 
-    public Users toEntity(){
+    public Users toEntity() {
         return Users.of(
                 id,
                 username,

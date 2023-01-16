@@ -30,6 +30,8 @@ const Modal = (props) => {
 };
 
 const Page = styled.div`
+  text-align: center;
+
   .modal {
     display: none;
     position: fixed;
