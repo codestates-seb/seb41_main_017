@@ -3,22 +3,8 @@ import SignupBtn from "./SignupBtn";
 import GenderRadio from "./GenderRadio";
 import { useState } from "react";
 import ModalContainer from "./ModalCotainer";
-import {
-  Page,
-  CheckboxContent,
-  IdBlock,
-  CheckId,
-  CreatePwd,
-  CheckPwd,
-  CheckName,
-  CheckEmail,
-  CheckPhoneNum,
-  DetailAddress,
-  CheckAddress,
-  CheckBirthYY,
-  CheckBirthMM,
-  CheckBirthDD,
-} from "../../styles/signupStyle";
+import BasicInput from "../BasicInput";
+import { Page, CheckboxContent, IdBlock } from "../../styles/signupStyle";
 
 function SignForm() {
   const [address, setAddress] = useState("");
@@ -27,49 +13,124 @@ function SignForm() {
   return (
     <Page>
       <IdBlock>
-        <span>아이디</span>
-        <span className="essential">*</span>
-        <br />
-        <CheckId placeholder="아이디를 입력해주세요"></CheckId>
-        {/* <CheckIdBtn>중복확인</CheckIdBtn> */}
-        <ModalContainer type={"checkId"} onClick />
-        <br />
-        <span>비밀번호</span>
-        <span className="essential">*</span>{" "}
-        <CreatePwd placeholder="비밀먼호를 입력해주세요"></CreatePwd>
-        <CheckPwd placeholder="비밀번호를 확인"></CheckPwd>
-        <span>이름</span> <span className="essential">*</span>
-        <CheckName placeholder="이름을 입력해주세요"></CheckName>
-        <span>이메일</span>
-        <span className="essential">*</span>
-        <br></br>
-        <CheckEmail placeholder=" ex) Culinari@gmail.com"></CheckEmail>
-        <ModalContainer type={"checkId"} onClick />
-        <span>휴대폰</span>
-        <span className="essential">*</span>
-        <CheckPhoneNum placeholder="-를 포함한 숫자를 입력해주세요"></CheckPhoneNum>
-        <span>주소</span>
-        <span className="essential">*</span>
-        <br />
-        <CheckAddress
-          type="text"
-          value={address}
-          onChange={(e) => setPostAddress(e.target.value)}
-          placeholder="주소를 입력해주세요"
-        ></CheckAddress>
-        <ModalContainer setAddress={setAddress} type={"address"} />
-        <DetailAddress placeholder="나머지 주소를 입력해주세요"></DetailAddress>
-        <span>생년월일</span>
-        <span className="essential">*</span>
-        <br />
-        <CheckBirthYY placeholder="         YY"></CheckBirthYY>
-        <CheckBirthMM placeholder="         MM"></CheckBirthMM>
-        <CheckBirthDD placeholder="         DD"></CheckBirthDD>
-        <br />
+        {/* <div className="input_title">
+          <span>아이디</span>
+          <span className="essential">*</span>
+        </div> */}
+        <div className="input_cotainer">
+          <BasicInput
+            label={"아이디"}
+            star={"*"}
+            type={"text"}
+            width={"100%"}
+            placeholder={"아이디를 입력해주세요"}
+          ></BasicInput>
+          <ModalContainer type={"checkId"} onClick />
+        </div>
+        <div className="input_cotainer">
+          <BasicInput
+            label={"비밀번호"}
+            star={"*"}
+            width={"100%"}
+            type={"text"}
+            password={"password"}
+            placeholder={"비밀번호를 입력해주세요"}
+          ></BasicInput>
+        </div>
+        <div className="input_cotainer">
+          <BasicInput
+            label={"이메일"}
+            star={"*"}
+            type={"text"}
+            width={"100%"}
+            placeholder={"이메일을 입력해주세요"}
+          ></BasicInput>
+          <ModalContainer type={"checkId"} onClick />
+        </div>
+        <div className="input_cotainer">
+          <BasicInput
+            label={"핸드폰"}
+            star={"*"}
+            width={"100%"}
+            type={"text"}
+            placeholder={"-를 포함한 숫자를 입력해주세요"}
+          ></BasicInput>
+        </div>
+        <div className="input_cotainer">
+          <BasicInput
+            label={"주소"}
+            star={"*"}
+            width={"100%"}
+            type={"text"}
+            address={"address"}
+            placeholder={"주소를 입력해주세요"}
+            defaultValue={address}
+            onChange={(e) => setPostAddress(e.target.value)}
+          ></BasicInput>
+          <ModalContainer setAddress={setAddress} type={"address"} />
+        </div>
+
+        <div className="input_birth">
+          <BasicInput
+            label={"생년월일"}
+            star={"*"}
+            type={"text"}
+            width={"80%"}
+            placeholder={"YY"}
+          ></BasicInput>
+          <BasicInput
+            type={"text"}
+            placeholder={"MM "}
+            width={"80%"}
+          ></BasicInput>
+          <BasicInput
+            type={"text"}
+            placeholder={"DD"}
+            width={"80%"}
+          ></BasicInput>
+        </div>
         <span>성별</span>
         <GenderRadio></GenderRadio>
+        <CheckboxContent>
+          <div className="autoContent">
+            <input type="checkbox" />
+            <span className="CheckboxText">전체 동의하기</span>
+          </div>
+          <div className="autoContent">
+            <input type="checkbox" />
+            <span className="CheckboxText">이용약관 동의하기(필수)</span>
+          </div>
+          <div className="autoContent">
+            <input type="checkbox" />
+            <span className="CheckboxText">개인정보 수집 이용동의(필수)</span>
+          </div>
+        </CheckboxContent>
+        <SignupBtn type={"signup"} />
+        {/*
+
+       
+        
+        <div className="input_title">
+          <span>생년월일</span>
+          <span className="essential">*</span>
+        </div>
+        <div className="input_cotainer">
+          <div className="birth_container">
+            <BasicInput type={"text"} placeholder={"YY"}></BasicInput>
+          </div>
+          <div className="birth_container">
+            <BasicInput type={"text"} placeholder={"MM"}></BasicInput>
+          </div>
+          <div className="birth_container">
+            <BasicInput type={"text"} placeholder={"DD"}></BasicInput>
+          </div>
+        </div> */}
+
+        {/* <br />
+        <span>성별</span>
+        <GenderRadio></GenderRadio> */}
       </IdBlock>
-      <CheckboxContent>
+      {/* <CheckboxContent>
         <div className="autoContent">
           <input type="checkbox" />
           <span className="CheckboxText">전체 동의하기</span>
@@ -82,8 +143,8 @@ function SignForm() {
           <input type="checkbox" />
           <span className="CheckboxText">개인정보 수집 이용동의(필수)</span>
         </div>
-      </CheckboxContent>
-      <SignupBtn type={"signup"} />
+      </CheckboxContent> */}
+      {/* <SignupBtn type={"signup"} /> */}
     </Page>
   );
 }
