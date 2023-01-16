@@ -121,7 +121,7 @@ function Mypage() {
     "작성한 후기": {
       '/itemreviewList': <ItemreviewList/>,
       children:[
-        {"/itemreviewList/write" : <ItemreviewWrite/>},
+        {"/itemreviewList/write" : (<ItemreviewWrite/>)},
       ]
     },
     "내 문의": {
