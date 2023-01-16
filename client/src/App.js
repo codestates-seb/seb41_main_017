@@ -1,9 +1,10 @@
 import "./App.css";
-import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import { createGlobalStyle } from "styled-components";
+import { Route, Routes, BrowserRouter} from "react-router-dom";
 import Header from "./components/Header";
 import Mypage from "./pages/mypage/index";
-import Login from "./pages/sign/login";
+
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -53,12 +54,13 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyle />
       <Header />
-      {/* <Mypage /> */}
-      <Login></Login>
-    </>
+      <Mypage />
+      <Routes>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

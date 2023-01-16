@@ -1,11 +1,10 @@
+import Mypagehead from "../../components/MypageHead";
 
-function Userinfo(){
-    return(
-        <div>
-           내정보
-        </div>
-    );
+function Userinfo() {
+  return (
+    <Mypagehead title={"내 정보"} line={true}>
+    </Mypagehead>
+  );
 }
-
 
 export default Userinfo;

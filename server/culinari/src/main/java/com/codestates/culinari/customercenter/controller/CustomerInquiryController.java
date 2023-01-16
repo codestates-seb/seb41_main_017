@@ -34,7 +34,7 @@ public class CustomerInquiryController {
                                          @RequestBody CsInquiryRequest csInquiryRequest) {
         customerInquiryService.createEnquire(customPrincipal, csInquiryRequest);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
     }
 
     @GetMapping
