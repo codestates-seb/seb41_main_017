@@ -1,10 +1,12 @@
 package com.codestates.culinari.product.dto.response;
 
 import com.codestates.culinari.product.dto.ProductReviewDto;
+import com.codestates.culinari.product.dto.ProductReviewImageDto;
 import com.codestates.culinari.product.entitiy.ProductReview;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 public record ProductReviewResponse(
@@ -18,14 +20,15 @@ public record ProductReviewResponse(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         String createdBy,
-        String modifiedBy
-)
-{
-    public static ProductReviewResponse of(Long id, Long productId, Long profileId, String title, String content,ProductReview.ReviewStar reviewStar,Long like, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
-        return new ProductReviewResponse(id, productId, profileId, title, content, reviewStar,like, createdAt, modifiedAt, createdBy, modifiedBy);
+        String modifiedBy,
+        List<ProductReviewImageDto> productReviewImageDtos
+
+) {
+    public static ProductReviewResponse of(Long id, Long productId, Long profileId, String title, String content, ProductReview.ReviewStar reviewStar, Long like, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,List<ProductReviewImageDto> productReviewImageDtos) {
+        return new ProductReviewResponse(id, productId, profileId, title, content, reviewStar, like, createdAt, modifiedAt, createdBy, modifiedBy,productReviewImageDtos);
     }
 
-    public static ProductReviewResponse from(ProductReviewDto dto){
+    public static ProductReviewResponse from(ProductReviewDto dto) {
         return new ProductReviewResponse(
                 dto.id(),
                 dto.productId(),
@@ -37,7 +40,8 @@ public record ProductReviewResponse(
                 dto.createdAt(),
                 dto.modifiedAt(),
                 dto.createdBy(),
-                dto.modifiedBy()
+                dto.modifiedBy(),
+                dto.productReviewImageDtos()
         );
     }
 }

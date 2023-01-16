@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,10 +40,14 @@ public class ProductReview extends AuditingFields {
     @ManyToOne(optional = false)
     private Profile profile;
 
+    @OneToMany(mappedBy = "productReview", cascade = CascadeType.ALL)
+    @Setter
+    private List<ProductReviewImage> productReviewImages = new ArrayList<>();
+
     @OneToOne(mappedBy = "productReview", cascade = CascadeType.ALL)
     private ProductReviewLike productReviewLike;
 
-    public ProductReview(String title, String content, ReviewStar reviewStar, Product product, Profile profile) {
+    public ProductReview(String title, String content, ReviewStar reviewStar, Product product, Profile profile ) {
         this.title = title;
         this.content = content;
         this.reviewStar = reviewStar;
@@ -73,8 +79,5 @@ public class ProductReview extends AuditingFields {
         @Getter
         private final String star;
         ReviewStar(String star){this.star = star;}
-
-
     }
-
 }

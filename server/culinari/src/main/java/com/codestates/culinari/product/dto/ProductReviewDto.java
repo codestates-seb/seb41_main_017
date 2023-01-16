@@ -2,10 +2,16 @@ package com.codestates.culinari.product.dto;
 
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductReview;
+import com.codestates.culinari.product.entitiy.ProductReviewImage;
 import com.codestates.culinari.product.entitiy.ProductReviewLike;
 import com.codestates.culinari.user.entitiy.Profile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public record ProductReviewDto(
         Long id,
@@ -18,17 +24,19 @@ public record ProductReviewDto(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         String createdBy,
-        String modifiedBy
+        String modifiedBy,
+
+        List<ProductReviewImageDto> productReviewImageDtos
 )
 {
 
-    public static ProductReviewDto of(Long id, Long productId,Long profileId,ProductReview.ReviewStar reviewStar,Long like, String title, String content,  LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy){
-        return new ProductReviewDto(id, productId, profileId,reviewStar, like, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
+    public static ProductReviewDto of(Long id, Long productId,Long profileId,ProductReview.ReviewStar reviewStar,Long like, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,List<ProductReviewImageDto> productReviewImageDtos){
+        return new ProductReviewDto(id, productId, profileId,reviewStar, like, title, content, createdAt, modifiedAt, createdBy, modifiedBy,productReviewImageDtos);
 
     }
 
     public static ProductReviewDto of(Long productId,Long profileId, String title,String content,ProductReview.ReviewStar reviewStar){
-        return new ProductReviewDto(null, productId, profileId,reviewStar,null, title, content, null, null, null, null);
+        return new ProductReviewDto(null, productId, profileId,reviewStar,null, title, content,null, null, null, null,null);
     }
 
 
@@ -44,7 +52,11 @@ public record ProductReviewDto(
                 entity.getCreatedAt(),
                 entity.getModifiedAt(),
                 entity.getCreatedBy(),
-                entity.getModifiedBy()
+                entity.getModifiedBy(),
+                entity.getProductReviewImages().stream()
+                        .map(ProductReviewImageDto::from)
+                        .collect(Collectors.toList())
+
         );
     }
 
@@ -60,7 +72,11 @@ public record ProductReviewDto(
                 entity.getCreatedAt(),
                 entity.getModifiedAt(),
                 entity.getCreatedBy(),
-                entity.getModifiedBy()
+                entity.getModifiedBy(),
+                entity.getProductReviewImages().stream()
+                        .map(ProductReviewImageDto::from)
+                        .collect(Collectors.toList())
+
         );
     }
 
@@ -71,7 +87,7 @@ public record ProductReviewDto(
                 reviewStar,
                 product,
                 profile
-                );
+        );
 
     }
 }
