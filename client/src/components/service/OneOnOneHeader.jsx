@@ -21,10 +21,14 @@ const ItemCotainer = styled.div`
 `;
 
 const Notice = styled.div`
+  width: 5%;
+`;
+const Category = styled.div`
   width: 15%;
+  text-align: center;
 `;
 const Title = styled.div`
-  width: 65%;
+  width: 60%;
 `;
 const Writter = styled.div`
   width: 10%;
@@ -36,13 +40,14 @@ const Time = styled.div`
   text-align: center;
 `;
 
-function AnnouncementHeader() {
+function OneOnOneHeader() {
   return (
     <Page>
       <ItemCotainer>
         <Notice>
-          <p>공지</p>
+          <p>번호</p>
         </Notice>
+        <Category>분류</Category>
         <Title>
           <p>제목</p>
         </Title>
@@ -53,4 +58,4 @@ function AnnouncementHeader() {
   );
 }
 
-export default AnnouncementHeader;
+export default OneOnOneHeader;

@@ -4,27 +4,30 @@ const Page = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  p {
-    margin-left: 15px;
-  }
 `;
 
 const ItemCotainer = styled.div`
   width: 900px;
   height: 60px;
-  border-top: 2px solid black;
+  border-top: 1px solid black;
   border-bottom: 1px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
+  p {
+    margin-left: 15px;
+  }
 `;
 
 const Notice = styled.div`
+  width: 5%;
+`;
+const Category = styled.div`
   width: 15%;
+  text-align: center;
 `;
 const Title = styled.div`
-  width: 65%;
+  width: 60%;
 `;
 const Writter = styled.div`
   width: 10%;
@@ -36,21 +39,24 @@ const Time = styled.div`
   text-align: center;
 `;
 
-function AnnouncementHeader() {
+function OneOnOneItem() {
   return (
     <Page>
-      <ItemCotainer>
-        <Notice>
-          <p>공지</p>
-        </Notice>
-        <Title>
-          <p>제목</p>
-        </Title>
-        <Writter>작성자</Writter>
-        <Time>시간</Time>
-      </ItemCotainer>
+      <div>
+        <ItemCotainer>
+          <Notice>
+            <p>1</p>
+          </Notice>
+          <Category>시스템 오류</Category>
+          <Title>
+            <p>내가 작성한 문의</p>
+          </Title>
+          <Writter>나</Writter>
+          <Time>23.01.10</Time>
+        </ItemCotainer>
+      </div>
     </Page>
   );
 }
 
-export default AnnouncementHeader;
+export default OneOnOneItem;
