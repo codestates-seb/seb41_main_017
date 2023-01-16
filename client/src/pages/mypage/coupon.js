@@ -1,7 +1,10 @@
+import Mypagehead from "../../components/MypageHead";
 
 function Coupon(){
     return(
-        <div>내 쿠폰</div>
+        <Mypagehead title={"내 쿠폰"} subtitle={"준비 중 입니다.."}>
+
+        </Mypagehead>
     );
 }
 

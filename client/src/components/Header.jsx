@@ -95,7 +95,6 @@ const Layout = styled.div`
            .category{
             display:flex;
             align-items: center;
-            // text-align: left;
             
            }
         }
@@ -108,36 +107,28 @@ function Header() {
 
   return (
     <Layout>
-        {/* 상단라인 */}
       <div className="top flex">
         <div>로그인</div>
         <div>회원가입</div>
         <div>고객센터</div>
       </div>
-
-      {/* 중간라인 */}
       <div className="mid flex">
         <div className="logo">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png" alt="logo"></img>
         </div>
-        {/* 검색창 */}
         <div className="serach">
           <input placeholder="검색어를 입력해주세요"></input>
           <button><BsSearch/></button>
         </div>
         <div className="myIcons flex">
-            {/* 아이콘 */}
           <div className="icons">
             <BsFillPersonFill className="icon"/>
-            {/* <span>마이페이지</span> */}
           </div>
           <div className="icons">
             <BsCart4 className="icon"/>
-            {/* <span>장바구니</span> */}
           </div>
         </div>
       </div>
-      {/* 메뉴 탭 */}
       <div className="bottom flex">
         <div className="GNB">
           <ul>

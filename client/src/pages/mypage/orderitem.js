@@ -1,6 +1,12 @@
+import ListLayout from "../../components/ListLayout";
+import Mypagehead from "../../components/MypageHead";
+
 function Orderitem(){
     return(
-        <div>주문 목록 조회</div>
+        <Mypagehead title={"주문 목록 조회"}>
+            <ListLayout>
+            </ListLayout>
+        </Mypagehead>
     );
 }
 
