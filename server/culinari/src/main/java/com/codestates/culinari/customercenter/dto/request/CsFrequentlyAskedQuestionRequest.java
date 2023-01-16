@@ -17,7 +17,7 @@ public record CsFrequentlyAskedQuestionRequest(
         @Length(max = 20, message = "카테고리 길이는 20자 를 넘으면 안됩니다.")
         String category
 ) {
-    public CsFrequentlyAskedQuestionRequest of(String title, String content, String category) {
+    public static CsFrequentlyAskedQuestionRequest of(String title, String content, String category) {
         return new CsFrequentlyAskedQuestionRequest(
                 title,
                 content,

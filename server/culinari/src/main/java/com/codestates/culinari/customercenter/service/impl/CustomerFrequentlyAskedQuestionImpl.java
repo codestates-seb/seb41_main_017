@@ -18,18 +18,18 @@ import java.util.Objects;
 @Service
 public class CustomerFrequentlyAskedQuestionImpl implements CustomerFrequentlyAskedQuestionService {
 
-    private final CsFrequentlyAskedQuestionRepository csFaqRepository;
+    private final CsFrequentlyAskedQuestionRepository csFAQRepository;
 
     @Transactional(readOnly = true)
     @Override
     public Page<CsFrequentlyAskedQuestionResponse> readFrequentlyAskedQuestionPage(String category,Pageable pageable) {
         if (Objects.isNull(category) || category.isBlank()) {
-            return csFaqRepository.findAll(pageable)
+            return csFAQRepository.findAll(pageable)
                     .map(CsFrequentlyAskedQuestionDto::from)
                     .map(CsFrequentlyAskedQuestionResponse::from);
         }
 
-        return csFaqRepository.findCategoryFilter(category, pageable)
+        return csFAQRepository.findCategoryFilter(category, pageable)
                 .map(CsFrequentlyAskedQuestionDto::from)
                 .map(CsFrequentlyAskedQuestionResponse::from);
     }
@@ -38,6 +38,6 @@ public class CustomerFrequentlyAskedQuestionImpl implements CustomerFrequentlyAs
     public void createCsFrequentlyAskedQuestion(CsFrequentlyAskedQuestionRequest csFrequentlyAskedQuestionRequest) {
         CsFrequentlyAskedQuestionDto csFrequentlyAskedQuestionDto = csFrequentlyAskedQuestionRequest.toDto();
 
-        csFaqRepository.save(csFrequentlyAskedQuestionDto.toEntity());
+        csFAQRepository.save(csFrequentlyAskedQuestionDto.toEntity());
     }
 }

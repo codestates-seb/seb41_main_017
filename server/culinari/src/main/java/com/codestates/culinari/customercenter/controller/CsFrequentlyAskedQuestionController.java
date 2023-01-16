@@ -23,24 +23,24 @@ import java.util.List;
 @RequestMapping("/board/faq")
 public class CsFrequentlyAskedQuestionController {
 
-    private final CustomerFrequentlyAskedQuestionService csFaqService;
+    private final CustomerFrequentlyAskedQuestionService csFAQService;
     private final PaginationService paginationService;
 
     @GetMapping
     public ResponseEntity getNoticePage(@RequestParam(required = false) String category,
-            @PageableDefault(direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<CsFrequentlyAskedQuestionResponse> CsFrequentlyAskedQuestionResponsePage = csFaqService.readFrequentlyAskedQuestionPage(category, pageable);
-        List<CsFrequentlyAskedQuestionResponse> CsFrequentlyAskedQuestionResponses = CsFrequentlyAskedQuestionResponsePage.getContent();
-        List<Integer> barNumber = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), CsFrequentlyAskedQuestionResponsePage.getTotalPages());
+                                        @PageableDefault(direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<CsFrequentlyAskedQuestionResponse> csFrequentlyAskedQuestionResponsePage = csFAQService.readFrequentlyAskedQuestionPage(category, pageable);
+        List<CsFrequentlyAskedQuestionResponse> csFrequentlyAskedQuestionResponses = csFrequentlyAskedQuestionResponsePage.getContent();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), csFrequentlyAskedQuestionResponsePage.getTotalPages());
 
         return new ResponseEntity<>(
-                new PageResponseDto<>(CsFrequentlyAskedQuestionResponses, CsFrequentlyAskedQuestionResponsePage, barNumber),
+                new PageResponseDto<>(csFrequentlyAskedQuestionResponses, csFrequentlyAskedQuestionResponsePage, barNumber),
                 HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity postNewNotice(@RequestBody CsFrequentlyAskedQuestionRequest csFrequentlyAskedQuestionRequest) {
-        csFaqService.createCsFrequentlyAskedQuestion(csFrequentlyAskedQuestionRequest);
+        csFAQService.createCsFrequentlyAskedQuestion(csFrequentlyAskedQuestionRequest);
 
         return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
     }
