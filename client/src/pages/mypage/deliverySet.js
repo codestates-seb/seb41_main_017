@@ -120,37 +120,6 @@ function Addressset() {
           </Mypagebtn>
         </div>
       </List>
-      <List>
-        <div className="save">
-        <CheckBox isChecked={false}></CheckBox>
-        </div>
-        <div className="list_Detail">
-          <div className="title">
-            <div>
-              <span>배송지 이름입니다</span>
-            </div>
-            <div>
-              <Mypagebtn radius={5} p_width={10} p_height={1}>
-                기본
-              </Mypagebtn>
-            </div>
-          </div>
-          <div className="user_Info"><span>최준호</span><span>010-000-000</span></div>
-          <div className="user_Address"><span>oo시 oo구 oo동 oooooooo</span></div>
-          <div className="user_Message">
-            <span>배송메세지</span>
-            <span>문 앞에 놔주세요</span>
-          </div>
-        </div>
-        <div className="list_Btns">
-          <Mypagebtn p_width={10} p_height={4}>
-            수정
-          </Mypagebtn>
-          <Mypagebtn p_width={10} p_height={4}>
-            삭제
-          </Mypagebtn>
-        </div>
-      </List>
     </Layout>
   );
 }
