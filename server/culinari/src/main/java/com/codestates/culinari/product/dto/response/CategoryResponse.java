@@ -3,7 +3,6 @@ package com.codestates.culinari.product.dto.response;
 import com.codestates.culinari.product.dto.CategoryDetailDto;
 import com.codestates.culinari.product.dto.CategoryDto;
 
-import java.io.Serializable;
 import java.util.List;
 
 

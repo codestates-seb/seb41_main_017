@@ -1,13 +1,10 @@
 package com.codestates.culinari.product.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.product.dto.ProductInquiryDto;
-import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
+import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
-import com.codestates.culinari.product.dto.response.ProductInquiryResponse;
 import com.codestates.culinari.product.dto.response.ProductResponseWithCustomerService;
-import com.codestates.culinari.product.dto.response.ProductReviewResponse;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.response.SingleResponseDto;
@@ -44,11 +41,9 @@ public class ProductController {
             @AuthenticationPrincipal CustomPrincipal principal,
             @RequestBody ProductInquiryRequest productInquiryRequest){
 
+         productCsService.createProductInquiry(productInquiryRequest, principal, productId);
 
-        ProductInquiryResponse productInquiry = ProductInquiryResponse.from(productCsService.createProductInquiry(productInquiryRequest, principal, productId));
-
-        return new ResponseEntity(
-                new SingleResponseDto<>(productInquiry),HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
     //상품 후기 등록
     @PostMapping("/{product-id}/review")
@@ -57,49 +52,61 @@ public class ProductController {
             @AuthenticationPrincipal CustomPrincipal principal,
             @RequestBody ProductReviewRequest productReviewRequest){
 
-        ProductReviewResponse productReview = ProductReviewResponse.from(productCsService.createProductReview(productReviewRequest, principal, productId));
+        productCsService.createProductReview(productReviewRequest,principal,productId);
 
-        return new ResponseEntity(
-                new SingleResponseDto<>(productReview),HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
     //상품 문의 수정
-    @PatchMapping("/{product-id}/inquiry/{inquiry-id}")
+    @PatchMapping("/inquiry/{inquiry-id}")
     public ResponseEntity patchProductInquiry(
             @PathVariable("inquiry-id") Long productInquiryId,
-            @RequestBody ProductReviewRequest productReviewRequest){
-
-        ProductReviewDto productInquiryDto = productCsService.updateProductReview(productReviewRequest,productInquiryId);
-
-        return new ResponseEntity(
-                new SingleResponseDto<>(productInquiryDto),HttpStatus.CREATED);
-    }
-    //상품 리뷰 수정
-    @PatchMapping("/{product-id}/review/{review-id}")
-    public ResponseEntity patchProductReview(
-            @PathVariable("review-id") Long productReviewId,
+            @AuthenticationPrincipal CustomPrincipal principal,
             @RequestBody ProductInquiryRequest productInquiryRequest){
 
-        ProductInquiryDto productInquiryDto = productCsService.updateProductInquiry(productInquiryRequest,productReviewId);
+        productCsService.updateProductInquiry(productInquiryRequest,principal,productInquiryId);
 
-        return new ResponseEntity(
-                new SingleResponseDto<>(productInquiryDto),HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    //상품 리뷰 수정
+    @PatchMapping("/review/{review-id}")
+    public ResponseEntity patchProductReview(
+            @PathVariable("review-id") Long productReviewId,
+            @AuthenticationPrincipal CustomPrincipal principal,
+            @RequestBody ProductReviewRequest productReviewRequest){
+
+       productCsService.updateProductReview(productReviewRequest,principal,productReviewId);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    //상품 리뷰 좋아요
+    @PatchMapping("/review/{review-id}/like")
+    public ResponseEntity patchProductReviewLike(
+            @PathVariable("review-id") Long productReviewId,
+            @AuthenticationPrincipal CustomPrincipal principal,
+            @RequestBody ProductReviewLikeRequest productReviewLikeRequest){
+
+        productCsService.updateLike(productReviewLikeRequest, principal,productReviewId);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     //문의 삭제
-    @DeleteMapping("/{product-id}/inquiry/{inquiry-id}")
+    @DeleteMapping("/inquiry/{inquiry-id}")
     public ResponseEntity deleteProductInquiry(
-            @PathVariable("inquiry-id") Long productInquiryId){
+            @PathVariable("inquiry-id") Long productInquiryId,
+            @AuthenticationPrincipal CustomPrincipal principal){
 
-        productCsService.deleteProductInquiry(productInquiryId);
+        productCsService.deleteProductInquiry(principal,productInquiryId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //리뷰 삭제
-    @DeleteMapping("/{product-id}/review/{review-id}")
+    @DeleteMapping("/review/{review-id}")
     public ResponseEntity deleteProductReview(
-            @PathVariable("review-id") Long productReviewId){
+            @PathVariable("review-id") Long productReviewId,
+            @AuthenticationPrincipal CustomPrincipal principal){
 
-        productCsService.deleteProductReview(productReviewId);
+        productCsService.deleteProductReview(principal,productReviewId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

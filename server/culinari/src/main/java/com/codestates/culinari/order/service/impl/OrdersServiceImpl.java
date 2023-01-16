@@ -34,6 +34,8 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override   // TODO: 결제와 동시에 생성됨을 PR에 명시하고 FE에 알릴 것
     public void createOrder(OrderRequest request, CustomPrincipal principal) {
+        verifyPrincipal(principal);
+
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         OrderDto dto = request.toDto();
         Orders orders = ordersRepository.save(dto.toEntity(profile));
@@ -49,7 +51,13 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Page<OrderDto> readOrders(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
+        verifyPrincipal(principal);
+
         return ordersRepository.findAllCreatedAfterAndProfile_Id(LocalDateTime.now().minusMonths(searchMonths), principal.profileId(), pageable)
                 .map(OrderDto::from);
+    }
+
+    public void verifyPrincipal(CustomPrincipal principal) {
+        if (principal == null) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 }

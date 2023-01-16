@@ -3,7 +3,6 @@ package com.codestates.culinari.product.dto;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
 import com.codestates.culinari.product.entitiy.Product;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,8 +32,26 @@ public record ProductDto(
 {
 
 
-    public static ProductDto of(Long id, String categoryDetailCode, String name, String content, BigDecimal price, String shipping, String brand,String seller, String packaging, String unit,String weight,
-                                String countryOfOrigin,String allergyInfo,LocalDateTime createdAt,LocalDateTime modifiedAt,String createdBy,String modifiedBy,List<ProductInquiryDto> productInquiryDtos, List<ProductReviewDto> productReviewDtos){
+    public static ProductDto of(
+            Long id,
+            String categoryDetailCode,
+            String name,
+            String content,
+            BigDecimal price,
+            String shipping,
+            String brand,
+            String seller,
+            String packaging,
+            String unit,
+            String weight,
+            String countryOfOrigin,
+            String allergyInfo,
+            LocalDateTime createdAt,
+            LocalDateTime modifiedAt,
+            String createdBy,
+            String modifiedBy,
+            List<ProductInquiryDto> productInquiryDtos,
+            List<ProductReviewDto> productReviewDtos){
 
         return new ProductDto(id, categoryDetailCode, name, content, price, shipping, brand, seller, packaging, unit, weight, countryOfOrigin, allergyInfo, createdAt, modifiedAt, createdBy, modifiedBy,productInquiryDtos, productReviewDtos);
     }

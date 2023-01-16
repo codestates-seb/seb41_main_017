@@ -1,6 +1,10 @@
 package com.codestates.culinari.user.entitiy;
 
+import com.codestates.culinari.product.entitiy.ProductInquiry;
+import com.codestates.culinari.product.entitiy.ProductReview;
 import com.codestates.culinari.user.constant.GenderType;
+import com.codestates.culinari.user.dto.request.ProfilePatchRequest;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,6 +14,8 @@ import org.hibernate.annotations.DynamicInsert;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -43,6 +49,14 @@ public class Profile {
     @Column(nullable = false)
     private LocalDate birthDate;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "profile")
+    private final List<ProductInquiry> productInquiry = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "profile")
+    private final List<ProductReview> productReview = new ArrayList<>();
+
     public Profile(String name, String email, String phoneNumber, BigDecimal point ,String address, GenderType gender, LocalDate birthDate) {
         this.id = null;
         this.name = name;
@@ -58,4 +72,12 @@ public class Profile {
         return new Profile(name, email, phoneNumber, point ,address, gender, birthDate);
     }
 
+    public void updateProfile(ProfilePatchRequest profilePatchRequest) {
+        this.name = profilePatchRequest.name();
+        this.email = profilePatchRequest.email();
+        this.phoneNumber = profilePatchRequest.phoneNumber();
+        this.address = profilePatchRequest.address();
+        this.gender = profilePatchRequest.genderType();
+        this.birthDate = profilePatchRequest.birthDate();
+    }
 }

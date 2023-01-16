@@ -1,7 +1,10 @@
 package com.codestates.culinari.user.dto.request;
 
 import com.codestates.culinari.user.constant.GenderType;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -38,7 +41,20 @@ public record SignUpDto(
         GenderType genderType,
 
         @DateTimeFormat(pattern = "yyyy-MM-dd")
-        @PastOrPresent
+        @PastOrPresent(message = "미래에서 오셨나요???? 미래에서 오신분은 사용 불가입니다.")
         LocalDate birthDate
 ) {
+
+        public static SignUpDto of(String username, String password, String name, String email, String phoneNumber, String address, GenderType genderType, LocalDate birthDate) {
+                return new SignUpDto(
+                        username,
+                        password,
+                        name,
+                        email,
+                        phoneNumber,
+                        address,
+                        genderType,
+                        birthDate
+                );
+        }
 }

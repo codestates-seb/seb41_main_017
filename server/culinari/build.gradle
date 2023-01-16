@@ -73,3 +73,8 @@ sourceSets {
 clean {
 	delete file(generated)
 }
+
+// JUnitPlatform 을 사용하여 test 실행
+tasks.named('test') {
+	useJUnitPlatform()
+}
