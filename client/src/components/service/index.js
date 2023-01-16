@@ -5,6 +5,7 @@ import ManyQuestion from "./ManyQuestion";
 import OneOnOne from "./OneOnOne";
 import OneOnOneInquiry from "./OneOnOneInquiry";
 import ServiceDetailpage from "./ServiceDetailpage";
+import OftenDetail from "./OftenDetail";
 import Dummy from "./data.json";
 
 function ServiceHome() {
@@ -14,7 +15,6 @@ function ServiceHome() {
     justify-content: center;
     margin-top: 40px;
   `;
-  console.log(Dummy.Announcement[0]);
 
   const list = {
     공지사항: {
@@ -27,26 +27,45 @@ function ServiceHome() {
         },
         {
           "/announcement/detail/2": (
-            <ServiceDetailpage Dummy={Dummy.Announcement[0]} />
+            <ServiceDetailpage Dummy={Dummy.Announcement[1]} />
+          ),
+        },
+        {
+          "/announcement/detail/3": (
+            <ServiceDetailpage Dummy={Dummy.Announcement[2]} />
           ),
         },
       ],
     },
+
     "자주묻는 질문": {
       "/question": <ManyQuestion />,
-      children: {
-        "/question/detail": <ServiceDetailpage />,
-      },
+      children: [
+        {
+          "/question/often/1": <OftenDetail Dummy={Dummy.Question[0]} />,
+        },
+        {
+          "/question/often/2": <OftenDetail Dummy={Dummy.Question[1]} />,
+        },
+        {
+          "/question/often/3": <OftenDetail Dummy={Dummy.Question[2]} />,
+        },
+        {
+          "/question/often/4": <OftenDetail Dummy={Dummy.Question[3]} />,
+        },
+        {
+          "/question/often/5": <OftenDetail Dummy={Dummy.Question[4]} />,
+        },
+      ],
     },
 
     "1:1문의": {
       "/one-on-one": <OneOnOne />,
-      children: {
-        "/one-on-one/inquiry": <OneOnOneInquiry />,
-      },
-    },
-    test: {
-      "/test": <ServiceDetailpage />,
+      children: [
+        {
+          "/one-on-one/inquiry": <OneOnOneInquiry />,
+        },
+      ],
     },
   };
 
