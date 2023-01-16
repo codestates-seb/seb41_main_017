@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Dummy from "./data.json";
 
 const Page = styled.div`
   display: flex;
@@ -40,53 +42,53 @@ const Time = styled.div`
 `;
 
 function ManyQuestionItem() {
-  const data = [
-    {
-      id: 1,
-      notice: 1,
-      category: "시스템 오류",
-      title: "주문내역이 안보여요",
-      writter: "운영팀",
-      time: "2023.01.09",
-    },
-    {
-      id: 2,
-      notice: 2,
-      category: "주문/결제",
-      title: "결제가 안돼요.",
-      writter: "운영팀",
-      time: "2023.01.11",
-    },
-    {
-      id: 3,
-      notice: 3,
-      category: "취소/교환/환불",
-      title: "배송취소하고 싶어요.",
-      writter: "운영팀",
-      time: "2023.01.12",
-    },
-    {
-      id: 4,
-      notice: 4,
-      category: "회원",
-      title: "회원정보 수정하고싶어요.",
-      writter: "운영팀",
-      time: "2023.01.12",
-    },
-    {
-      id: 5,
-      notice: 5,
-      category: "배송",
-      title: "배송이 안와요.",
-      writter: "운영팀",
-      time: "2023.01.12",
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: 1,
+  //     notice: 1,
+  //     category: "시스템 오류",
+  //     title: "주문내역이 안보여요",
+  //     writter: "운영팀",
+  //     time: "2023.01.09",
+  //   },
+  //   {
+  //     id: 2,
+  //     notice: 2,
+  //     category: "주문/결제",
+  //     title: "결제가 안돼요.",
+  //     writter: "운영팀",
+  //     time: "2023.01.11",
+  //   },
+  //   {
+  //     id: 3,
+  //     notice: 3,
+  //     category: "취소/교환/환불",
+  //     title: "배송취소하고 싶어요.",
+  //     writter: "운영팀",
+  //     time: "2023.01.12",
+  //   },
+  //   {
+  //     id: 4,
+  //     notice: 4,
+  //     category: "회원",
+  //     title: "회원정보 수정하고싶어요.",
+  //     writter: "운영팀",
+  //     time: "2023.01.12",
+  //   },
+  //   {
+  //     id: 5,
+  //     notice: 5,
+  //     category: "배송",
+  //     title: "배송이 안와요.",
+  //     writter: "운영팀",
+  //     time: "2023.01.12",
+  //   },
+  // ];
 
   return (
     <Page>
       <div>
-        {data.reverse().map((el) => {
+        {Dummy.Question.map((el) => {
           return (
             <ItemCotainer key={el.id}>
               <Notice>
@@ -94,7 +96,7 @@ function ManyQuestionItem() {
               </Notice>
               <Category>{el.category}</Category>
               <Title>
-                <p>{el.title}</p>
+                <Link to={`/question/often/${el.id}`}>{el.title}</Link>
               </Title>
               <Writter>{el.writter}</Writter>
               <Time>{el.time}</Time>
