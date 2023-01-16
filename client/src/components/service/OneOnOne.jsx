@@ -28,11 +28,9 @@ function OneOnOne() {
 
       {/* </QuestionContainer> */}
       <div className="question_btn">
-        <Link to={"/one-on-one/ask"}>
-          <BasicButton p_width={"20"} p_height={"7"}>
-            문의하기
-          </BasicButton>
-        </Link>
+        <BasicButton href={"/one-on-one/inquiry"} p_width={"20"} p_height={"7"}>
+          문의하기
+        </BasicButton>
       </div>
     </Page>
   );

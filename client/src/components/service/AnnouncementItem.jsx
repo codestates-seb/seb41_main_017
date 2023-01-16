@@ -65,16 +65,16 @@ function AnnouncementItem() {
   return (
     <Page>
       <div>
-        {Dummy.Announcement.reverse().map((el) => {
+        {Dummy.Announcement.map((el) => {
           return (
             <ItemCotainer key={el.id}>
               <Notice>
                 <p>{el.notice}</p>
               </Notice>
               <Title>
-                {/* <Link to={"/announcement/data/${data.id}"}> */}
-                <p>{el.title}</p>
-                {/* </Link> */}
+                <Link to={`/service/announcement/detail/${el.id}`}>
+                  {el.title}
+                </Link>
               </Title>
               <Writter>{el.writter}</Writter>
               <Time>{el.time}</Time>
