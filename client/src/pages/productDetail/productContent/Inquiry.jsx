@@ -1,7 +1,9 @@
+import { useState } from "react";
 import styled from "styled-components";
 import BasicButton from "../../../components/BasicButton";
 
 import InquiryDetail from "./InquiryDetail";
+import ModalComponent from "./ModalComponent";
 
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
@@ -71,6 +73,8 @@ const WriteInquiryButtonWrapper = styled.div`
 `;
 
 function Inquiry({ data }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <Header>
@@ -94,9 +98,10 @@ function Inquiry({ data }) {
             ))}
           </TableBody>
         </InquiryTable>
-        <WriteInquiryButtonWrapper>
+        <WriteInquiryButtonWrapper onClick={() => setIsOpen(true)}>
           <BasicButton children={"문의하기"} p_width={15} p_height={10} />
         </WriteInquiryButtonWrapper>
+        {isOpen ? <ModalComponent /> : null}
       </div>
     </>
   );
