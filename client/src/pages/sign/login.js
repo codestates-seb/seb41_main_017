@@ -3,7 +3,7 @@ import styled from "styled-components";
 import LoginInputForm from "../../components/login/LoginInputForm";
 
 const Page = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,7 +13,7 @@ const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 25%; // 나중에 컴포넌트 조립 때 수정해야한다!
+  width: 420px; // 나중에 컴포넌트 조립 때 수정해야한다!
 `;
 
 const ButtonWrapper = styled.div`

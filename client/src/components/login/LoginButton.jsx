@@ -21,11 +21,11 @@ const LoginButton = ({ type, onClick }) => {
   }
 
   if (type === "login") {
-    return <BlueButton>로그인</BlueButton>;
+    return <LoginBtn>로그인</LoginBtn>;
   }
 
   if (type === "signup") {
-    return <BlueButton>회원가입</BlueButton>;
+    return <LoginBtn>회원가입</LoginBtn>;
   }
 };
 
@@ -59,7 +59,7 @@ const GitLogin = styled(SocialLoginButton)`
 
 const GoogleLogin = styled(SocialLoginButton)``;
 
-const BlueButton = styled.button`
+const LoginBtn = styled.button`
   display: inline-block;
   width: 100%;
   font-size: 20px;
