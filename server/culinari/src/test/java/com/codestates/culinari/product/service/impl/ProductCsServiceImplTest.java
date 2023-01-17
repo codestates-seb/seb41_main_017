@@ -5,10 +5,7 @@ import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
 import com.codestates.culinari.product.entitiy.*;
-import com.codestates.culinari.product.repository.ProductInquiryRepository;
-import com.codestates.culinari.product.repository.ProductRepository;
-import com.codestates.culinari.product.repository.ProductReviewLikeRepository;
-import com.codestates.culinari.product.repository.ProductReviewRepository;
+import com.codestates.culinari.product.repository.*;
 import com.codestates.culinari.user.constant.GenderType;
 import com.codestates.culinari.user.entitiy.Profile;
 import com.codestates.culinari.user.repository.ProfileRepository;
@@ -20,7 +17,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -44,6 +43,8 @@ class ProductCsServiceImplTest {
     private ProductInquiryRepository productInquiryRepository;
     @Mock
     private ProductReviewRepository productReviewRepository;
+    @Mock
+    private ProductReviewImageRepository productReviewImageRepository;
     @Mock
     private ProductReviewLikeRepository productReviewLikeRepository;
 
@@ -69,9 +70,9 @@ class ProductCsServiceImplTest {
         then(productInquiryRepository).should().save(any(ProductInquiry.class));
     }
 
-    @DisplayName("[CREATE] 상품 리뷰를 입력하면, 문의를 등록한다.")
+    @DisplayName("[CREATE] 상품 리뷰를 입력하면, 리뷰를 등록한다.")
     @Test
-    void givenProductReview_whenSavingProductReview_thenSaveReview() {
+    void givenProductReview_whenSavingProductReview_thenSaveReview() throws IOException {
         // Given
         Long productId = 1L;
         ProductReviewRequest productReviewRequest = createProductReviewRequest();
@@ -79,7 +80,7 @@ class ProductCsServiceImplTest {
 
         given(productRepository.findById(anyLong())).willReturn(Optional.of(createProduct(1L)));
         given(profileRepository.getReferenceById(anyLong())).willReturn(createProfile(1L));
-        given(productReviewRepository.save(any(ProductReview.class))).willReturn(any(ProductReview.class));
+        given(productReviewRepository.saveAndFlush(any(ProductReview.class))).willReturn(any(ProductReview.class));
 
         // When
         sut.createProductReview(productReviewRequest,principal,productId);
@@ -87,7 +88,7 @@ class ProductCsServiceImplTest {
         // Then
         then(productRepository).should().findById(anyLong());
         then(profileRepository).should().getReferenceById(anyLong());
-        then(productReviewRepository).should().save(any(ProductReview.class));
+        then(productReviewRepository).should().saveAndFlush(any(ProductReview.class));
     }
 
     @DisplayName("[UPDATE] 상품 문의를 입력하면, 문의를 수정한다.")
@@ -114,7 +115,7 @@ class ProductCsServiceImplTest {
         ProductReviewRequest productReviewRequest = createProductReviewRequest();
         CustomPrincipal principal = createPrincipal("사용자", 1L, 1L);
 
-        given(productReviewRepository.findById(anyLong())).willReturn(Optional.of(createReview(1L,"제목","내용",1L,1L)));
+        given(productReviewRepository.findById(anyLong())).willReturn(Optional.of(createReview(1L,"제목","내용", ProductReview.ReviewStar.ZERO,1L,1L)));
         // When
         sut.updateProductReview(productReviewRequest,principal,productReviewId);
 
@@ -203,8 +204,8 @@ class ProductCsServiceImplTest {
         return productInquiry;
     }
 
-    private static ProductReview createReview(Long reviewId, String title, String content, Long productId,Long profileId){
-        ProductReview productReview = ProductReview.of(title, content, createProduct(productId), createProfile(profileId));
+    private static ProductReview createReview(Long reviewId, String title, String content, ProductReview.ReviewStar reviewStar, Long productId, Long profileId){
+        ProductReview productReview = ProductReview.of(title, content, reviewStar,createProduct(productId), createProfile(profileId));
         ReflectionTestUtils.setField(productReview,"id", reviewId);
         return productReview;
     }
@@ -220,7 +221,7 @@ class ProductCsServiceImplTest {
         return createProductInquiryRequest(1L, "제목", "내용");
     }
     private ProductReviewRequest createProductReviewRequest(){
-        return createProductReviewRequest(1L, "제목", "내용");
+        return createProductReviewRequest(1L, "제목", "내용", ProductReview.ReviewStar.ZERO);
     }
     private ProductReviewLikeRequest createProductReviewLikeRequest(){
         return createProductReviewLikeRequest(1L, 1L, 1L);
@@ -229,8 +230,8 @@ class ProductCsServiceImplTest {
     private ProductInquiryRequest createProductInquiryRequest(Long productId, String title, String content){
         return ProductInquiryRequest.of(productId, title, content);
     }
-    public static ProductReviewRequest createProductReviewRequest(Long productId, String title, String content){
-        return ProductReviewRequest.of(productId, title, content);
+    public static ProductReviewRequest createProductReviewRequest(Long productId, String title, String content, ProductReview.ReviewStar reviewStar){
+        return ProductReviewRequest.of(productId, title, content,reviewStar);
     }
     public static ProductReviewLikeRequest createProductReviewLikeRequest(Long reviewId, Long profileId, Long like){
         return ProductReviewLikeRequest.of(reviewId,profileId,like);
@@ -240,6 +241,7 @@ class ProductCsServiceImplTest {
         ProductReview productReview = ProductReview.of(
                 "제목",
                 "내용",
+                ProductReview.ReviewStar.ZERO,
                 createProduct(1L),
                 createProfile(1L)
         );
@@ -281,5 +283,15 @@ class ProductCsServiceImplTest {
         ReflectionTestUtils.setField(profile, "id", profileId);
 
         return profile;
+    }
+
+    private static ProductReviewImage createImage(MultipartFile multipartFile){
+        ProductReviewImage image = ProductReviewImage.of(
+                "orginName",
+                "storeName"
+        );
+        ReflectionTestUtils.setField(image, "id", multipartFile);
+
+        return image;
     }
 }
