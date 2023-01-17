@@ -95,37 +95,37 @@ function Mypage() {
   
   const list = {
     "내정보": {
-      '/userinfo': <Userinfo/>,
+      'userinfo': <Userinfo/>,
     },
     "배송지 설정": {
-      '/addressSet': <DeliverySet/>
+      'addressSet': <DeliverySet/>
     },
     "배송 조회": {
-      '/deliveryLook': <DeliveryLook/>
+      'deliveryLook': <DeliveryLook/>
     },
     "주문 목록 조회": {
-      '/orderitem': <Orderitem/>
+      'orderitem': <Orderitem/>
     },
     "내 쿠폰": {
-      '/coupon': <Coupon/>
+      'coupon': <Coupon/>
     },
     "내 포인트": {
-      '/point': <Point/>
+      'point': <Point/>
     },
     "자주 산 상품": {
-      '/buyitem': <Buyitem/>
+      'buyitem': <Buyitem/>
     },
     "찜한 상품": {
-      '/selectItem': <Selectitem/>
+      'selectItem': <Selectitem/>
     },
     "작성한 후기": {
-      '/itemreviewList': <ItemreviewList/>,
-      children:{
-        "/itemreviewList/write" : <ItemreviewWrite/>
-      }
+      'itemreviewList': <ItemreviewList/>,
+      children:[
+        {"itemreviewList/write" : (<ItemreviewWrite/>)},
+      ]
     },
     "내 문의": {
-      '/inquiry': <Inquiry/>
+      'inquiry': <Inquiry/>
     }
 
 };
