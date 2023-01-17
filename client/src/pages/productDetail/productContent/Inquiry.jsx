@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import InquiryDetail from "./InquiryDetail";
+
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
   display: flex;
@@ -18,6 +20,7 @@ const TableHead = styled.thead`
   height: 58px;
   border-top: 2px solid #333;
   border-bottom: 1px solid #333;
+  font-weight: 600;
 
   tr {
     height: 58px;
@@ -60,7 +63,7 @@ const TableBody = styled.tbody`
   }
 `;
 
-function Inquiry() {
+function Inquiry({ data }) {
   return (
     <>
       <Header>
@@ -79,18 +82,9 @@ function Inquiry() {
             </tr>
           </TableHead>
           <TableBody>
-            <tr>
-              <td className="title">상품 문의 제목 유통기한 언제까지인가요</td>
-              <td className="author">작성자</td>
-              <td className="created_date">2023.01.01</td>
-              <td className="status">확인중</td>
-            </tr>
-            <tr>
-              <td className="title">상품 문의 제목 유통기한 언제까지인가요</td>
-              <td className="author">작성자</td>
-              <td className="created_date">2023.01.01</td>
-              <td className="status">확인중</td>
-            </tr>
+            {data.productInquiryDtos.map((element, index) => (
+              <InquiryDetail element={element} key={index} />
+            ))}
           </TableBody>
         </InquiryTable>
       </div>
