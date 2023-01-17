@@ -12,7 +12,6 @@ const RootContainer = styled.div`
 
 const RootBackDrop = styled.div`
   opacity: 1;
-  transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   position: fixed;
   display: flex;
   align-items: center;
@@ -24,7 +23,6 @@ const RootBackDrop = styled.div`
 
 const ScrollPaper = styled.div`
   opacity: 1;
-  transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   height: 100%;
   outline: 0px;
   display: flex;
@@ -36,9 +34,7 @@ const Paper = styled.div`
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  max-width: none;
   width: 954px;
-  background: transparent;
 `;
 
 const Modal = styled.div`
@@ -66,7 +62,6 @@ const Header = styled.header`
     line-height: 30px;
     letter-spacing: -0.5px;
     color: rgb(51, 51, 51);
-    vertical-align: baseline;
   }
 `;
 
@@ -93,12 +88,10 @@ const ImageContainer = styled.div`
     overflow: hidden;
     width: 375px;
     height: 488px;
-    background: none;
     opacity: 1;
     border: 0px;
     margin: 0px;
     padding: 0px;
-    position: relative;
   }
 
   .img-list {
