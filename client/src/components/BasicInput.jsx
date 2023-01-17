@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 const BasicInput = ({
+  setValue2,
+  setValue,
   star,
   label,
   password,
@@ -32,9 +34,15 @@ const BasicInput = ({
         <CustomLabel>{label}</CustomLabel>
         <div className="essential">{star}</div>
       </div>
-      <CustomInput {...styles}>{children}</CustomInput>
+      <CustomInput
+        onChange={({ target }) => setValue(target.value)}
+        {...styles}
+      >
+        {children}
+      </CustomInput>
       {password === "password" ? (
         <CustomInput
+          onChange={({ target }) => setValue2(target.value)}
           {...styles}
           type={"password"}
           placeholder="비밀번호를 확인"
@@ -44,9 +52,11 @@ const BasicInput = ({
       ) : null}
       {address === "address" ? (
         <CustomInput
+          onChange={({ target }) => setValue2(target.value)}
           {...styles}
           placeholder="나머지 주소를 입력해주세요"
           width={"100%"}
+          defaultValue={""}
         >
           {children}
         </CustomInput>
