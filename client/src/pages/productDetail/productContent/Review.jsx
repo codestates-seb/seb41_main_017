@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import ReviewModal from "./ReviewModal";
+import ModalComponent from "./ModalComponent";
 import { ReactComponent as Star } from "../../../assets/star.svg";
 
 const Container = styled.div`
@@ -111,7 +112,7 @@ function Review() {
                 <img className="review-image" src={src} onClick={() => setModalOpen(true)} key={Math.random()} />
               ))}
             </div>
-            <ReviewModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+            {modalOpen ? <ModalComponent component={<ReviewModal setModalOpen={setModalOpen} />} /> : null}
           </ReviewListContainer>
         );
       })}

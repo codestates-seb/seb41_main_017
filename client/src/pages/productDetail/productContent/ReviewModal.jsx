@@ -4,46 +4,6 @@ import styled from "styled-components";
 import DeleteButton from "../../../components/DeleteButton";
 import { ReactComponent as Star } from "../../../assets/star.svg";
 
-const RootContainer = styled.div`
-  position: fixed;
-  z-index: 1300;
-  inset: 0px;
-`;
-
-const RootBackDrop = styled.div`
-  opacity: 1;
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  inset: 0px;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: -1;
-`;
-
-const ScrollPaper = styled.div`
-  opacity: 1;
-  height: 100%;
-  outline: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Paper = styled.div`
-  display: flex;
-  overflow: hidden;
-  flex-direction: column;
-  width: 954px;
-`;
-
-const Modal = styled.div`
-  width: 800px;
-  margin: 0px auto;
-  background-color: #ffffff;
-  border-radius: 12px;
-`;
-
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
@@ -150,7 +110,7 @@ const Content = styled.div`
   }
 `;
 
-function ReviewModal({ modalOpen, setModalOpen }) {
+function ReviewModal({ setModalOpen }) {
   const data = {
     username: "닉네임2",
     srcArr: [
@@ -167,54 +127,43 @@ function ReviewModal({ modalOpen, setModalOpen }) {
 
   return (
     <>
-      {modalOpen && (
-        <RootContainer>
-          <RootBackDrop />
-          <ScrollPaper>
-            <Paper>
-              <Modal>
-                <Header>
-                  <span>사진 후기</span>
-                  <div onClick={() => setModalOpen(false)}>
-                    <DeleteButton />
-                  </div>
-                </Header>
-                <ContentRoot>
-                  <ContentContainer>
-                    <ImageContainer>
-                      <span>
-                        <img src={imgSrc} />
-                      </span>
-                      <div className="img-list">
-                        {data.srcArr.map((element, index) => {
-                          return (
-                            <button key={index}>
-                              <img src={element} onClick={({ target }) => setImgSrc(target.src)} />
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </ImageContainer>
-                    <Content>
-                      <div className="username">{data.username}</div>
-                      {new Array(5)
-                        .fill(null)
-                        .map((_, index) => index < data.point)
-                        .map((point) =>
-                          point ? <Star width="20px" fill="#ff6767" key={Math.random()} /> : <Star width="20px" fill="#ddd" key={Math.random()} />
-                        )}
-                      <p className="content">{data.content}</p>
-                      <footer className="footer">
-                        <span>{data.createdAt}</span>
-                      </footer>
-                    </Content>
-                  </ContentContainer>
-                </ContentRoot>
-              </Modal>
-            </Paper>
-          </ScrollPaper>
-        </RootContainer>
-      )}
+      <Header>
+        <span>사진 후기</span>
+        <div onClick={() => setModalOpen(false)}>
+          <DeleteButton />
+        </div>
+      </Header>
+      <ContentRoot>
+        <ContentContainer>
+          <ImageContainer>
+            <span>
+              <img src={imgSrc} />
+            </span>
+            <div className="img-list">
+              {data.srcArr.map((element, index) => {
+                return (
+                  <button key={index}>
+                    <img src={element} onClick={({ target }) => setImgSrc(target.src)} />
+                  </button>
+                );
+              })}
+            </div>
+          </ImageContainer>
+          <Content>
+            <div className="username">{data.username}</div>
+            {new Array(5)
+              .fill(null)
+              .map((_, index) => index < data.point)
+              .map((point) =>
+                point ? <Star width="20px" fill="#ff6767" key={Math.random()} /> : <Star width="20px" fill="#ddd" key={Math.random()} />
+              )}
+            <p className="content">{data.content}</p>
+            <footer className="footer">
+              <span>{data.createdAt}</span>
+            </footer>
+          </Content>
+        </ContentContainer>
+      </ContentRoot>
     </>
   );
 }
