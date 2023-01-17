@@ -37,19 +37,13 @@ function LoginInputForm() {
               <span className="CheckboxText">자동로그인</span>
             </div>
           </CheckboxContent>
-          {/* <CheckboxContent>
-            <div className="autoContent">
-              <input type="checkbox" />
-              <span className="CheckboxText">이용약관 동의</span>
-            </div>
-          </CheckboxContent> */}
+
           <LoginButton type={"login"} />
           <LoginButton type={"github"} />
           <LoginButton type={"google"} />
         </div>
         <div className={toggle === 2 ? "activeContent" : "content"}>
           <SignForm></SignForm>
-          {/* <div>hello</div> */}
         </div>
       </section>
     </LoginContainer>
