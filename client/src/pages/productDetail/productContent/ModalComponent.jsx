@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 
 const RootContainer = styled.div`
@@ -23,24 +24,31 @@ const ScrollPaper = styled.div`
   outline: 0px;
   display: flex;
   justify-content: center;
-  align-items: center;
 `;
 
 const Paper = styled.div`
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  width: 954px;
 `;
 
 const Modal = styled.div`
   max-width: fit-content;
   margin: 0px auto;
   background-color: #ffffff;
+  margin: 20px;
   border-radius: 12px;
+  overflow-y: auto;
 `;
 
 function ModalComponent({ component }) {
+  useEffect(() => {
+    document.body.style.cssText = `overflow-y: hidden;`;
+    return () => {
+      document.body.style.cssText = "";
+    };
+  }, []);
+
   return (
     <RootContainer>
       <RootBackDrop />
