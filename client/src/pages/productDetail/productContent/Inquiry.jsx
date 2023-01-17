@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import BasicButton from "../../../components/BasicButton";
 
 import InquiryDetail from "./InquiryDetail";
 
@@ -63,6 +64,12 @@ const TableBody = styled.tbody`
   }
 `;
 
+const WriteInquiryButtonWrapper = styled.div`
+  margin: 20px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
 function Inquiry({ data }) {
   return (
     <>
@@ -87,6 +94,9 @@ function Inquiry({ data }) {
             ))}
           </TableBody>
         </InquiryTable>
+        <WriteInquiryButtonWrapper>
+          <BasicButton children={"문의하기"} p_width={15} p_height={10} />
+        </WriteInquiryButtonWrapper>
       </div>
     </>
   );
