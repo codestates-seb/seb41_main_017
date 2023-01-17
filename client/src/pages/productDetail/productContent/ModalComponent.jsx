@@ -34,7 +34,7 @@ const Paper = styled.div`
 `;
 
 const Modal = styled.div`
-  width: 800px;
+  max-width: fit-content;
   margin: 0px auto;
   background-color: #ffffff;
   border-radius: 12px;
