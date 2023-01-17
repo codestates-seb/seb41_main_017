@@ -10,7 +10,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
-  border-bottom: 1px solid #b3b3b3;
+  border-bottom: 2px solid black;
   display: flex;
   justify-content: space-between;
 
