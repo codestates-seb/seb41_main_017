@@ -40,7 +40,7 @@ const ContentBox = styled.div`
   margin-left: 10px;
 `;
 
-function ServiceDetailpage({ Dummy }) {
+function OftenDetail({ Dummy }) {
   console.log(Dummy);
   return (
     <DetailContainer>
@@ -57,4 +57,4 @@ function ServiceDetailpage({ Dummy }) {
   );
 }
 
-export default ServiceDetailpage;
+export default OftenDetail;

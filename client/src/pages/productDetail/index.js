@@ -39,7 +39,33 @@ function ProductDetail() {
     modifiedAt: "2023-01-14T01:59:40.007925",
     createdBy: "2023-01-14 01:59:40.007925",
     modifiedBy: "2023-01-14 01:59:40.007925",
-    productInquiryDtos: [],
+    productInquiryDtos: [
+      {
+        id: 1,
+        title: "상품 문의 제목 유통기한 언제까지인가요",
+        author: "작성자1",
+        content: "언제까지냐구욧!",
+        createdAt: "2023.01.01",
+        status: "답변 완료",
+        answer: "안녕하세요 고객님. 컬리나리입니다. 해당 상품의 유통기한은 약 2개월가량 남아있으며 상품마다 상이합니다. 감사합니다.",
+      },
+      {
+        id: 2,
+        title: "상품 문의 제목 유통기한 언제까지인가요2",
+        author: "작성자2",
+        content: "언제까지냐구욧!언제까지냐구욧!언제까지냐구욧!",
+        createdAt: "2023.01.02",
+        status: "확인중",
+      },
+      {
+        id: 3,
+        title: "상품 문의 제목 유통기한 언제까지인가요3",
+        author: "작성자3",
+        content: "언제까지냐구욧!!!!!언제까지냐구욧!!!!!언제까지냐구욧!!!!!",
+        createdAt: "2023.01.03",
+        status: "확인중",
+      },
+    ],
     productReviewDtos: [],
   };
   data.priceToLocaleString = data.price.toLocaleString();

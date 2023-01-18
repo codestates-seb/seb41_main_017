@@ -65,18 +65,21 @@ const Tab = ({title, list, flex = null})=>{
             className={`colbtn ${({isActive})=> (isActive) ? "active" : ""}`}
             >{i}</NavLink>
           </li>
-        )
+        );
         tapcontent.push(
           <Route key={i} path={Object.keys(list[i])[0]} element={Object.values(list[i])[0]}/>
-        )
+        );
 
         if(list[i].children){
-          children.push(
-            <Route key={i} path={Object.keys(list[i].children)[0]} element={Object.values(list[i].children)[0]}/>
-          )
-        }
+          for(let j of list[i].children){
+            children.push(
+              <Route key={j} path={Object.keys(j)[0]} element={Object.values(j)[0]}/>
+            )
+          }
+        };
       }
 
+      
     
     return(
         <Container {...styles}>

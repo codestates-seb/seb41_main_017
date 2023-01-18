@@ -31,7 +31,7 @@ function ProductContent({ data, quantity, setQuantity, totalPrice }) {
 
         <Review />
 
-        <Inquiry />
+        <Inquiry data={data} />
       </DetailContainer>
       <ProductSelection
         name={data.name}
