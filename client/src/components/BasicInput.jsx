@@ -14,7 +14,8 @@ const BasicInput = ({
   type,
   placeholder,
   defaultValue,
-  onChange
+  onChange,
+  min_height
   
 }) => {
   const styles = {
@@ -26,11 +27,11 @@ const BasicInput = ({
     type,
     placeholder,
     defaultValue,
-    onChange
+    onChange,
+    min_height
   };
 
-  console.log("@@@@@다시넘어온값:",defaultValue)
-  console.log(styles)
+  
   
   return (
     <Container>
@@ -93,7 +94,7 @@ const CustomInput = styled.input.attrs((props) => ({
   display: inline-block;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  min-height: 50px;
+  min-height: ${(props)=> props.min_height === undefined ? "50px" : props.min_height};
   padding: 7px 9px;
   text-align: start;
   font-size: 13px;
