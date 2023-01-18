@@ -15,17 +15,17 @@ import Inquiry from "./inquiry";
 import ItemreviewWrite from "./itemreviewWrite";
 
 const Layout = styled.div`
-  width: 1050px;
+  padding-top: 15px;
+  width:100%;
+  height: 100%;
   margin: 0 auto;
 `;
 const Mycard = styled.div`
   background-color: rgb(255, 224, 214);
-  // 부모와 맞게 수정
   width: 1050px;
   margin: 0 auto;
   display: flex;
   text-align: center;
-  margin-top: 15px;
   margin-bottom: 20px;
 
   .account_Box {
