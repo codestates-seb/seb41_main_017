@@ -31,14 +31,12 @@ function SignForm(
   const [day, setDay] = useState("");
   const [check, setCheck] = useState("");
 
-  const [test, setTest] = useState("ss");
-
   return (
     <Page>
       <IdBlock>
         <div className="input_cotainer">
           <BasicInput
-            // setValue={(e) => setSignupId(e.target.value)}
+            setValue={setSignupId}
             label={"아이디"}
             star={"*"}
             type={"text"}
@@ -48,7 +46,7 @@ function SignForm(
           ></BasicInput>
           <ModalContainer type={"checkId"} onClick />
         </div>
-        {/* {console.log(setSignupId)} */}
+        {console.log(signupId)}
         <div className="input_cotainer">
           <BasicInput
             setValue={setSignupPassword}
@@ -61,19 +59,20 @@ function SignForm(
             placeholder={"비밀번호를 입력해주세요"}
           ></BasicInput>
         </div>
-        {/* {console.log(checkPassword === signupPassword)} */}
+
         <div className="input_cotainer">
           <BasicInput
-            setValue={(e) => setName(e.target.value)}
+            setValue={setName}
             label={"이름"}
             width={"100%"}
             type={"text"}
             placeholder={"이름을 입력해주세요"}
           ></BasicInput>
         </div>
+        {console.log(name)}
         <div className="input_cotainer">
           <BasicInput
-            setValue={(e) => setSignupEmail(e.target.value)}
+            setValue={setSignupEmail}
             label={"이메일"}
             star={"*"}
             type={"text"}
@@ -84,7 +83,7 @@ function SignForm(
         </div>
         <div className="input_cotainer">
           <BasicInput
-            setValue={(e) => setPhoneNum(e.target.value)}
+            setValue={setPhoneNum}
             label={"핸드폰"}
             star={"*"}
             width={"100%"}
@@ -102,10 +101,11 @@ function SignForm(
             address={"address"}
             placeholder={"주소를 입력해주세요"}
             defaultValue={address}
-            onChange={(e) => console.log("asdf")}
+            onChange={(e) => setPostAddress(e.target.value)}
           ></BasicInput>
           <ModalContainer setAddress={setAddress} type={"address"} />
         </div>
+
         <div className="input_birth">
           <BasicInput
             setValue={setYear}
@@ -128,12 +128,9 @@ function SignForm(
             width={"80%"}
           ></BasicInput>
         </div>
-        {console.log(day)}
-        {console.log(month)}
-        {console.log(year)}
+
         <span>성별</span>
         <GenderRadio setCheck={setCheck}></GenderRadio>
-        {console.log(check)}
         <CheckboxContent>
           <div className="autoContent">
             <input type="checkbox" />

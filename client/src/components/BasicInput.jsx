@@ -16,7 +16,6 @@ const BasicInput = ({
   type,
   placeholder,
   defaultValue,
-  onChange,
 }) => {
   const styles = {
     font,
@@ -27,11 +26,7 @@ const BasicInput = ({
     type,
     placeholder,
     defaultValue,
-    onChange,
   };
-
-  console.log("@@@@@다시넘어온값:", defaultValue);
-  console.log(styles);
 
   return (
     <Container>
@@ -93,7 +88,6 @@ const CustomInput = styled.input.attrs((props) => ({
   placeholder: props.placeholder,
   defaultValue: props.defaultValue,
   width: props.width,
-  onChange: props.onChange,
 }))`
   display: inline-block;
   width: ${(props) => props.width};
