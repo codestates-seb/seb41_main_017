@@ -4,6 +4,7 @@ import BasicButton from "../../../components/BasicButton";
 
 import InquiryDetail from "./InquiryDetail";
 import ModalComponent from "./ModalComponent";
+import CreateInquiry from "./CreateInquiry";
 
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
@@ -101,7 +102,7 @@ function Inquiry({ data }) {
         <WriteInquiryButtonWrapper onClick={() => setIsOpen(true)}>
           <BasicButton children={"문의하기"} p_width={15} p_height={10} />
         </WriteInquiryButtonWrapper>
-        {isOpen ? <ModalComponent /> : null}
+        {isOpen ? <ModalComponent component={<CreateInquiry data={data} setIsOpen={setIsOpen} />} /> : null}
       </div>
     </>
   );
