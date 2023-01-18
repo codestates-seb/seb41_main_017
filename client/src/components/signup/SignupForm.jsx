@@ -29,6 +29,7 @@ function SignForm(
   const [year, setYear] = useState("");
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
+  const [check, setCheck] = useState("");
 
   return (
     <Page>
@@ -103,7 +104,6 @@ function SignForm(
           ></BasicInput>
           <ModalContainer setAddress={setAddress} type={"address"} />
         </div>
-
         <div className="input_birth">
           <BasicInput
             setValue={setYear}
@@ -130,7 +130,8 @@ function SignForm(
         {console.log(month)}
         {console.log(year)}
         <span>성별</span>
-        <GenderRadio></GenderRadio>
+        <GenderRadio setCheck={setCheck}></GenderRadio>
+        {console.log(check)}
         <CheckboxContent>
           <div className="autoContent">
             <input type="checkbox" />
