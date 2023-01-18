@@ -1,8 +1,15 @@
 package com.codestates.culinari.product.service.impl;
 
+import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.dto.ProductDto;
+import com.codestates.culinari.product.dto.ProductLikeDto;
+import com.codestates.culinari.product.entitiy.Product;
+import com.codestates.culinari.product.entitiy.ProductLike;
+import com.codestates.culinari.product.repository.ProductLikeRepository;
 import com.codestates.culinari.product.repository.ProductRepository;
 import com.codestates.culinari.product.service.ProductService;
+import com.codestates.culinari.user.entitiy.Profile;
+import com.codestates.culinari.user.repository.ProfileRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +25,30 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ProfileRepository profileRepository;
+    private final ProductLikeRepository productLikeRepository;
+
+    //찜 조회
+    @Transactional(readOnly = true)
+    @Override
+    public Page<ProductLikeDto> readProductLike(CustomPrincipal principal, Pageable pageable){
+        Page<ProductLikeDto> productLikePage = productLikeRepository.findAllByProfileId(principal.profileId(), PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending())).map(ProductLikeDto::from);
+        return productLikePage;
+    }
+
+    //찜 등록
+    @Override
+    public void createProductLike(Long productId, CustomPrincipal principal){
+        Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다."));
+        Profile profile = profileRepository.getReferenceById(principal.profileId());
+        productLikeRepository.save(ProductLike.of(profile, product));
+    }
+
+    //찜 삭제
+    @Override
+    public void deleteProductLike(Long productId, CustomPrincipal principal){
+        productLikeRepository.deleteByProductId(productId);
+    }
 
     //ID 상품 조회
     @Transactional(readOnly = true)
@@ -56,4 +87,6 @@ public class ProductServiceImpl implements ProductService {
         if(categoryCode.length() >3 && sortedType.equals(("higher"))) return productRepository.findAllByCategoryDetailCategoryDetailCode(categoryCode, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending())).map(ProductDto::from);
         else return productRepository.findAllByCategoryDetailCategoryDetailCode(categoryCode, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending())).map(ProductDto::from);
     }
+
+
 }

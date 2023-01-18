@@ -39,6 +39,26 @@ public class ProductController {
         return new ResponseEntity<>(
                 new SingleResponseDto<>(product), HttpStatus.OK);
     }
+    @PostMapping("/{product-id}/like")
+    public ResponseEntity postProductLike(
+            @PathVariable("product-id") Long productId,
+            @AuthenticationPrincipal CustomPrincipal principal){
+
+        productService.createProductLike(productId,principal);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{product-id}/like")
+    public ResponseEntity deleteProductLike(
+            @PathVariable("product-id") Long productId,
+            @AuthenticationPrincipal CustomPrincipal principal){
+
+        productService.deleteProductLike(productId,principal);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     //상품 문의 등록
     @PostMapping("/{product-id}/inquiry")
     public ResponseEntity postProductInquiry(
