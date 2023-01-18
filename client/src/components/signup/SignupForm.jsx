@@ -31,6 +31,8 @@ function SignForm(
   const [day, setDay] = useState("");
   const [check, setCheck] = useState("");
 
+  const [test, setTest] = useState("ss");
+
   return (
     <Page>
       <IdBlock>
@@ -100,7 +102,7 @@ function SignForm(
             address={"address"}
             placeholder={"주소를 입력해주세요"}
             defaultValue={address}
-            onChange={(e) => setPostAddress(e.target.value)}
+            onChange={(e) => console.log("asdf")}
           ></BasicInput>
           <ModalContainer setAddress={setAddress} type={"address"} />
         </div>
