@@ -20,10 +20,12 @@ body {
 }
 
 #main {
+  width: 1050px;
+  margin: 0 auto;
   flex: 1;
 }
 
 #footer {
-  border: 1px solid black;
+  border: 1px solid gray;
   flex-basis: 150px;
 }
