@@ -1,29 +1,30 @@
 package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.global.file.FileStore;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
+import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
-import com.codestates.culinari.product.entitiy.Product;
-import com.codestates.culinari.product.entitiy.ProductInquiry;
-import com.codestates.culinari.product.entitiy.ProductReview;
-import com.codestates.culinari.product.entitiy.ProductReviewLike;
-import com.codestates.culinari.product.repository.ProductInquiryRepository;
-import com.codestates.culinari.product.repository.ProductRepository;
-import com.codestates.culinari.product.repository.ProductReviewLikeRepository;
-import com.codestates.culinari.product.repository.ProductReviewRepository;
+import com.codestates.culinari.product.entitiy.*;
+import com.codestates.culinari.product.repository.*;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.user.entitiy.Profile;
 import com.codestates.culinari.user.repository.ProfileRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -33,6 +34,8 @@ public class ProductCsServiceImpl implements ProductCsService {
     private final ProductReviewRepository productReviewRepository;
     private final ProductReviewLikeRepository productReviewLikeRepository;
     private final ProfileRepository profileRepository;
+    private final ProductReviewImageRepository productReviewImageRepository;
+    private final FileStore fileStore;
 
     // profileId로 문의 리스트 get
     @Transactional(readOnly = true)
@@ -55,13 +58,32 @@ public class ProductCsServiceImpl implements ProductCsService {
 
     // 후기 작성
     @Override
-    public void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId) {
+    public ProductReview createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId) throws IOException {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
-        ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), product, profile);
+        ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), productReviewRequest.reviewStar(),product, profile);
         ProductReviewLike productReviewLike = productReviewLikeRepository.save(ProductReviewLike.of(0L,productReview));
-        productReviewRepository.save(productReview);
+        productReviewRepository.saveAndFlush(productReview);
+        return productReview;
     }
+
+    @Override
+    public List<ProductReviewImage> saveProductReviewImages(Long productReviewId, List<MultipartFile> multipartFiles) throws IOException{
+        ProductReview productReview = productReviewRepository.getReferenceById(productReviewId);
+        List<ProductReviewImage> imageList = fileStore.storeReviewImages(multipartFiles);
+        productReview.setProductReviewImages(imageList);
+        imageList.stream().forEach(productReviewImage -> productReviewImage.setProductReview(productReview));
+        return imageList;
+    }
+
+    //후기 사진 불러오기
+   /*
+    @Transactional(readOnly = true)
+    @Override
+    public List<ProductReviewImage> findProductReviewImages(){
+        List<ProductReviewImage> images = ProductReviewImageRepository.findAll();
+        return images;
+    }*/
     //문의 수정
     @Override
     public void updateProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal, Long productInquiryId) {

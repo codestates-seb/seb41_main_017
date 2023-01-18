@@ -26,6 +26,13 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
     }
+    //통합 검색 (Name, Seller, Brand)
+    @Transactional(readOnly = true)
+    @Override
+    public Page<ProductDto> readProductWithKeyWord(String keyWord, Pageable pageable) {
+        return productRepository.findAllByNameContainingOrBrandContainingOrSellerContaining(keyWord,keyWord,keyWord, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending())).map(ProductDto::from);
+//        return null;
+    }
     //신상품 조회
     @Transactional(readOnly = true)
     public Page<ProductDto> readProductWithSortedType(String sortedType, Pageable pageable){

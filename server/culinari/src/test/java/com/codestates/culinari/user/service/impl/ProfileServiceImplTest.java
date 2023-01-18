@@ -68,7 +68,7 @@ class ProfileServiceImplTest {
                 .willReturn(Optional.of(profile));
 
         //when
-        ProfileDto profileDto = profileService.readProfileInquiry(principal);
+        ProfileDto profileDto = profileService.readMyPageReview(principal);
 
         //then
         assertThat(profileDto)

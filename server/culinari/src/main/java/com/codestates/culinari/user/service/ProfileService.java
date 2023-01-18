@@ -11,7 +11,7 @@ public interface ProfileService {
     ProfileMyPageResponseDto readProfile(CustomPrincipal customPrincipal);
 
     @Transactional(readOnly = true)
-    ProfileDto readProfileInquiry(CustomPrincipal customPrincipal);
+    ProfileDto readMyPageReview(CustomPrincipal customPrincipal);
 
     void verifyExistsEmail(String email);
 
