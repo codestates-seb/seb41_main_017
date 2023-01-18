@@ -14,6 +14,8 @@ const BasicInput = ({
   type,
   placeholder,
   defaultValue,
+  onChange
+  
 }) => {
   const styles = {
     font,
@@ -24,15 +26,22 @@ const BasicInput = ({
     type,
     placeholder,
     defaultValue,
+    onChange
   };
 
+  console.log("@@@@@다시넘어온값:",defaultValue)
+  console.log(styles)
+  
   return (
     <Container>
       <div className="LabelContainer">
         <CustomLabel>{label}</CustomLabel>
         <div className="essential">{star}</div>
       </div>
-      <CustomInput {...styles}>{children}</CustomInput>
+      <CustomInput 
+      {...styles}
+      defaultValue={defaultValue}
+      >{children}</CustomInput>
       {password === "password" ? (
         <CustomInput
           {...styles}
@@ -73,11 +82,13 @@ const CustomLabel = styled.label`
   font-size: 16px;
 `;
 
+
 const CustomInput = styled.input.attrs((props) => ({
   type: props.type,
   placeholder: props.placeholder,
   defaultValue: props.defaultValue,
   width: props.width,
+  onChange: props.onChange
 }))`
   display: inline-block;
   width: ${(props) => props.width};

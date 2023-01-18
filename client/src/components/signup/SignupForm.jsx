@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SignupBtn from "./SignupBtn";
 import GenderRadio from "./GenderRadio";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalContainer from "./ModalCotainer";
 import BasicInput from "../BasicInput";
 import { Page, CheckboxContent, IdBlock } from "../../styles/signupStyle";
@@ -9,6 +9,9 @@ import { Page, CheckboxContent, IdBlock } from "../../styles/signupStyle";
 function SignForm() {
   const [address, setAddress] = useState("");
   const [postAddress, setPostAddress] = useState("");
+
+  const [test, setTest] = useState("ss");
+
 
   return (
     <Page>
@@ -24,6 +27,10 @@ function SignForm() {
             type={"text"}
             width={"100%"}
             placeholder={"아이디를 입력해주세요"}
+            defaultValue={test}
+            onChange={e => setTest(e.target.value)}
+            
+            
           ></BasicInput>
           <ModalContainer type={"checkId"} onClick />
         </div>
@@ -65,7 +72,7 @@ function SignForm() {
             address={"address"}
             placeholder={"주소를 입력해주세요"}
             defaultValue={address}
-            onChange={(e) => setPostAddress(e.target.value)}
+            onChange={(e) => console.log("asdf")}
           ></BasicInput>
           <ModalContainer setAddress={setAddress} type={"address"} />
         </div>

@@ -1,5 +1,8 @@
+import { useState } from "react";
 import styled from "styled-components";
 
+import ReviewModal from "./ReviewModal";
+import ModalComponent from "./ModalComponent";
 import { ReactComponent as Star } from "../../../assets/star.svg";
 
 const Container = styled.div`
@@ -8,7 +11,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
-  border-bottom: 1px solid #b3b3b3;
+  border-bottom: 2px solid black;
   display: flex;
   justify-content: space-between;
 
@@ -50,6 +53,8 @@ const ReviewListContainer = styled.div`
 `;
 
 function Review() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const productReviewDtos = [
     {
       username: "닉네임1",
@@ -65,8 +70,8 @@ function Review() {
       content: "상품 정말 너무 좋네요. 완전 잘쓰고 있어요 배송 늦어서 별 하나 안뺌",
       image: [
         "https://img-cf.kurly.com/shop/data/goods/1657528646107l0.jpg",
-        "https://img-cf.kurly.com/shop/data/goods/1657528646107l0.jpg",
-        "https://img-cf.kurly.com/shop/data/goods/1657528646107l0.jpg",
+        "https://s3.amazonaws.com/static.neostack.com/img/react-slick/abstract04.jpg",
+        "https://s3.amazonaws.com/static.neostack.com/img/react-slick/abstract03.jpg",
       ],
     },
   ];
@@ -104,9 +109,10 @@ function Review() {
               <div className="review-content">{review.content}</div>
 
               {review.image?.map((src) => (
-                <img className="review-image" src={src} key={Math.random()} />
+                <img className="review-image" src={src} onClick={() => setModalOpen(true)} key={Math.random()} />
               ))}
             </div>
+            {modalOpen ? <ModalComponent component={<ReviewModal setModalOpen={setModalOpen} />} /> : null}
           </ReviewListContainer>
         );
       })}
