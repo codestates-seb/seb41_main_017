@@ -1,4 +1,10 @@
+import { useState } from "react";
 import styled from "styled-components";
+import BasicButton from "../../../components/BasicButton";
+
+import InquiryDetail from "./InquiryDetail";
+import ModalComponent from "./ModalComponent";
+import CreateInquiry from "./CreateInquiry";
 
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
@@ -18,6 +24,7 @@ const TableHead = styled.thead`
   height: 58px;
   border-top: 2px solid #333;
   border-bottom: 1px solid #333;
+  font-weight: 600;
 
   tr {
     height: 58px;
@@ -60,7 +67,15 @@ const TableBody = styled.tbody`
   }
 `;
 
-function Inquiry() {
+const WriteInquiryButtonWrapper = styled.div`
+  margin: 20px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+function Inquiry({ data }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <Header>
@@ -79,20 +94,15 @@ function Inquiry() {
             </tr>
           </TableHead>
           <TableBody>
-            <tr>
-              <td className="title">상품 문의 제목 유통기한 언제까지인가요</td>
-              <td className="author">작성자</td>
-              <td className="created_date">2023.01.01</td>
-              <td className="status">확인중</td>
-            </tr>
-            <tr>
-              <td className="title">상품 문의 제목 유통기한 언제까지인가요</td>
-              <td className="author">작성자</td>
-              <td className="created_date">2023.01.01</td>
-              <td className="status">확인중</td>
-            </tr>
+            {data.productInquiryDtos.map((element, index) => (
+              <InquiryDetail element={element} key={index} />
+            ))}
           </TableBody>
         </InquiryTable>
+        <WriteInquiryButtonWrapper onClick={() => setIsOpen(true)}>
+          <BasicButton children={"문의하기"} p_width={15} p_height={10} />
+        </WriteInquiryButtonWrapper>
+        {isOpen ? <ModalComponent component={<CreateInquiry data={data} setIsOpen={setIsOpen} />} /> : null}
       </div>
     </>
   );
