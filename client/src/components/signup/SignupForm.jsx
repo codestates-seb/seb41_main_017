@@ -6,25 +6,33 @@ import ModalContainer from "./ModalCotainer";
 import BasicInput from "../BasicInput";
 import { Page, CheckboxContent, IdBlock } from "../../styles/signupStyle";
 import Signup from "../../pages/sign/signup";
+import BasicButton from "../BasicButton";
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  border-top: 1px solid rgb(244, 244, 244);
+  text-align: center;
+  padding-top: 20px;
+  margin-top: 20px;
 
-function SignForm(
-  {
-    // singupId,
-    // setSignupId,
-    // signupPassword,
-    // setSignupPassword,
-    // name,
-    // setName,
+  a {
+    background-color: #ffffff;
+    color: #c26d53;
+    border-radius: 3px;
+    outline: 1px solid #c26d53;
   }
-) {
-  const [address, setAddress] = useState("");
+`;
+
+function SignForm({}) {
+  const [signupAddress, setSignupAddress] = useState("");
   const [postAddress, setPostAddress] = useState("");
   const [signupId, setSignupId] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const [name, setName] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
-  const [PhoneNum, setPhoneNum] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
   const [year, setYear] = useState("");
   const [month, setMonth] = useState("");
@@ -46,7 +54,7 @@ function SignForm(
           ></BasicInput>
           <ModalContainer type={"checkId"} onClick />
         </div>
-        {console.log(signupId)}
+        {/* {console.log(signupId)} */}
         <div className="input_cotainer">
           <BasicInput
             setValue={setSignupPassword}
@@ -69,7 +77,7 @@ function SignForm(
             placeholder={"이름을 입력해주세요"}
           ></BasicInput>
         </div>
-        {console.log(name)}
+        {/* {console.log(name)} */}
         <div className="input_cotainer">
           <BasicInput
             setValue={setSignupEmail}
@@ -100,10 +108,13 @@ function SignForm(
             type={"text"}
             address={"address"}
             placeholder={"주소를 입력해주세요"}
-            defaultValue={address}
+            defaultValue={signupAddress}
             onChange={(e) => setPostAddress(e.target.value)}
           ></BasicInput>
-          <ModalContainer setAddress={setAddress} type={"address"} />
+          <ModalContainer
+            setSignupAddress={setSignupAddress}
+            type={"address"}
+          />
         </div>
 
         <div className="input_birth">
@@ -145,7 +156,16 @@ function SignForm(
             <span className="CheckboxText">개인정보 수집 이용동의(필수)</span>
           </div>
         </CheckboxContent>
-        <SignupBtn type={"signup"} />
+
+        <ButtonWrapper onClick={handleSignupBtn}>
+          <BasicButton
+            children={"가입하기"}
+            font={"20"}
+            radius={"5"}
+            p_height={"14"}
+            p_width={"150"}
+          />
+        </ButtonWrapper>
       </IdBlock>
     </Page>
   );
