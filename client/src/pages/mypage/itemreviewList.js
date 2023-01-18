@@ -13,7 +13,7 @@ function itemreviewList() {
         <div>배송</div>
         <div>상품</div>
         <div>상품제목</div>
-        <BasicButton href={"/itemreviewList/write"}>후기 작성</BasicButton>
+        <BasicButton href={"itemreviewList/write"}>후기 작성</BasicButton>
       </ListLayout>
     </Mypagehead>
   );

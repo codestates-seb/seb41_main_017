@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import BasicInput from "../BasicInput";
 import BasicButton from "../BasicButton";
+import { BsTextarea } from "react-icons/bs";
 const InquiryCotainer = styled.div`
   width: 900px;
 
@@ -38,6 +39,8 @@ function OneOnOneInquiry() {
         <BasicInput
           label={"글 내용"}
           width={"100%"}
+          height={"300px"}
+          type={"textarea"}
           star={"*"}
           placeholder="내용을 입력해주세요"
         ></BasicInput>
