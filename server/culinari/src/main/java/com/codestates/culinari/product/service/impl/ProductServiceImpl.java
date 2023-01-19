@@ -32,7 +32,6 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProfileRepository profileRepository;
     private final ProductLikeRepository productLikeRepository;
-    private final ProductRepositoryCustom productRepositoryCustom;
     private final SearchFilter searchFilter;
 
     //찜 조회
@@ -84,10 +83,10 @@ public class ProductServiceImpl implements ProductService {
             List<String> brandList = searchFilter.listFilter(brand);
 
             if(sortedType.equals("lower"))
-                return productRepositoryCustom.findAllWithSortAndFilter(categoryList,brandList,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
+                return productRepository.findAllWithSortAndFilter(categoryList,brandList,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
                         .map(ProductDto::from);
             else if(sortedType.equals("higher"))
-                return productRepositoryCustom.findAllWithSortAndFilter(categoryList,brandList,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
+                return productRepository.findAllWithSortAndFilter(categoryList,brandList,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
                         .map(ProductDto::from);
             return productRepository.findAllWithSortAndFilter(categoryList,brandList,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
                     .map(ProductDto::from);
@@ -114,6 +113,4 @@ public class ProductServiceImpl implements ProductService {
         if(categoryCode.length() >3 && sortedType.equals(("higher"))) return productRepository.findAllByCategoryDetailCategoryDetailCode(categoryCode, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending())).map(ProductDto::from);
         else return productRepository.findAllByCategoryDetailCategoryDetailCode(categoryCode, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending())).map(ProductDto::from);
     }
-
-
 }

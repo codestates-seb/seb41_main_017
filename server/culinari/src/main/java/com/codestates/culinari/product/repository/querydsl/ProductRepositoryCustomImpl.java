@@ -37,8 +37,13 @@ public class ProductRepositoryCustomImpl extends QuerydslRepositorySupport imple
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
                         .fetch();
+        Long count =
+                from(product)
+                        .select(product.count())
+                        .where(eqCategoryCode(category),(eqBrand(brand)))
+                        .fetchOne();
 
-        return new PageImpl<>(products);
+        return new PageImpl<>(products,pageable,count);
     }
 
     private BooleanExpression eqCategoryCode(List<String> category){
@@ -65,4 +70,3 @@ public class ProductRepositoryCustomImpl extends QuerydslRepositorySupport imple
         return null;
     }
 }
-
