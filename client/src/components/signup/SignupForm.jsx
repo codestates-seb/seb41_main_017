@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import SignupBtn from "./SignupBtn";
 import GenderRadio from "./GenderRadio";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import ModalContainer from "./ModalCotainer";
 import BasicInput from "../BasicInput";
 import { Page, CheckboxContent, IdBlock } from "../../styles/signupStyle";
-import Signup from "../../pages/sign/signup";
 import BasicButton from "../BasicButton";
+import axios from "axios";
+import BASE_URL from "../../constants/BASE_URL";
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -24,7 +24,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-function SignForm({}) {
+function SignForm() {
   const [signupAddress, setSignupAddress] = useState("");
   const [postAddress, setPostAddress] = useState("");
   const [signupId, setSignupId] = useState("");
@@ -38,6 +38,36 @@ function SignForm({}) {
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
   const [check, setCheck] = useState("");
+
+  const handleSignupBtn = (e) => {
+    e.preventDefault();
+
+    // console.log(signupId);
+    const reqbody = {
+      username: signupId,
+      password: signupPassword,
+      name: name,
+      email: signupEmail,
+      phoneNumber: phoneNum,
+      address: `${signupAddress} ${detailAddress}`,
+      genderType: check,
+      birthDate: `${year}-${month}-${day}`,
+    };
+    console.log(reqbody);
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    axios
+      .post(`${BASE_URL}/users/signup`, JSON.stringify(reqbody), { headers })
+
+      .then((res) => {
+        window.alert("회원가입 성공 !");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <Page>
@@ -123,20 +153,20 @@ function SignForm({}) {
             label={"생년월일"}
             star={"*"}
             type={"text"}
-            width={"80%"}
+            width={"90%"}
             placeholder={"YY"}
           ></BasicInput>
           <BasicInput
             setValue={setMonth}
             type={"text"}
             placeholder={"MM "}
-            width={"80%"}
+            width={"90%"}
           ></BasicInput>
           <BasicInput
             setValue={setDay}
             type={"text"}
             placeholder={"DD"}
-            width={"80%"}
+            width={"90%"}
           ></BasicInput>
         </div>
 
