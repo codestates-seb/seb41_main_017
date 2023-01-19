@@ -26,6 +26,7 @@ const Layout = styled.div`
 
     .logo {
       margin-right: 10px;
+
       img {
         width: 40px;
       }
@@ -73,6 +74,7 @@ const Layout = styled.div`
   .bottom {
     border-bottom: 1px solid #a9a9a9;
     margin-top: 20px;
+
     .GNB {
       width: 1050px;
       margin: 0 auto;
@@ -88,6 +90,7 @@ const Layout = styled.div`
           text-align: center;
           padding: 5px 5px 5px 0;
         }
+
         .category {
           display: flex;
           align-items: center;
@@ -111,10 +114,7 @@ function Header() {
       </div>
       <div className="mid flex">
         <div className="logo">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"
-            alt="logo"
-          ></img>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png" alt="logo"></img>
         </div>
         <div className="serach">
           <input placeholder="검색어를 입력해주세요"></input>
@@ -149,8 +149,16 @@ function Header() {
                 <span>홈</span>
               </a>
             </li>
-            <li>신상품</li>
-            <li>베스트</li>
+            <li>
+              <a href="/new-product">
+                <span>신상품</span>
+              </a>
+            </li>
+            <li>
+              <a href="/best-product">
+                <span>베스트</span>
+              </a>
+            </li>
             <li>이벤트</li>
           </ul>
         </div>
