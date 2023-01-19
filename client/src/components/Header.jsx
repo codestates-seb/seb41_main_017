@@ -89,6 +89,12 @@ const Layout = styled.div`
           flex: 1;
           text-align: center;
           padding: 5px 5px 5px 0;
+
+          span {
+            &:hover {
+              color: #ff6767;
+            }
+          }
         }
 
         .category {
