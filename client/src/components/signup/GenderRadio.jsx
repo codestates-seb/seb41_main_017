@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const GenderRadio = ({ setCheck }) => {
-  const [select, setSelect] = useState("male");
+  const [select, setSelect] = useState("남성");
   setCheck(select);
   const handleSelectChange = (event) => {
     const value = event.target.value;
@@ -14,8 +14,8 @@ const GenderRadio = ({ setCheck }) => {
         <RadioButton
           type="radio"
           name="radio"
-          value="male"
-          checked={select === "male"}
+          value="남성"
+          checked={select === "남성"}
           onChange={(event) => handleSelectChange(event)}
         />
         <RadioButtonLabel />
@@ -25,8 +25,8 @@ const GenderRadio = ({ setCheck }) => {
         <RadioButton
           type="radio"
           name="radio"
-          value="female"
-          checked={select === "female"}
+          value="여성"
+          checked={select === "여성"}
           onChange={(event) => handleSelectChange(event)}
         />
         <RadioButtonLabel />
