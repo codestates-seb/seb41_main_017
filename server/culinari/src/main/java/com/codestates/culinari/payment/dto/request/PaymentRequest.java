@@ -6,9 +6,9 @@ import jakarta.validation.constraints.*;
 import java.util.List;
 
 public record PaymentRequest(
-        @NotNull
+        @NotNull(message = "결제 수단은 필수입니다.")
         PayType payType,
-        @NotEmpty(message = "최소 1개 이상의 상품을 주문해야합니다.")
+        @Size(min = 1, message = "최소 1개 이상의 상품을 주문해야합니다.")
         List<@Positive Long> productIds,
         @NotBlank(message = "주소 입력은 필수입니다.")
         String address,
