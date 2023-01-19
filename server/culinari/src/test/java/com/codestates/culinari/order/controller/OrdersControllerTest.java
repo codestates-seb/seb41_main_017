@@ -1,10 +1,7 @@
 package com.codestates.culinari.order.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.order.dto.CartDto;
 import com.codestates.culinari.order.dto.OrderDto;
-import com.codestates.culinari.order.dto.request.CartPost;
-import com.codestates.culinari.order.dto.request.OrderRequest;
 import com.codestates.culinari.order.service.OrdersService;
 import com.codestates.culinari.pagination.service.PaginationService;
 import config.TestSecurityConfig;

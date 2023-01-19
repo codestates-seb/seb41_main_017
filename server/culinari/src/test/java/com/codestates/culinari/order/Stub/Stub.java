@@ -4,10 +4,11 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.order.constant.StatusType;
 import com.codestates.culinari.order.dto.request.CartPatch;
 import com.codestates.culinari.order.dto.request.CartPost;
-import com.codestates.culinari.order.dto.request.OrderRequest;
 import com.codestates.culinari.order.entitiy.Cart;
 import com.codestates.culinari.order.entitiy.OrderDetail;
 import com.codestates.culinari.order.entitiy.Orders;
+import com.codestates.culinari.payment.constant.PayType;
+import com.codestates.culinari.payment.dto.request.PaymentRequest;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.user.constant.GenderType;
@@ -88,15 +89,6 @@ public class Stub {
         return profile;
     }
 
-    public static OrderRequest createOrderRequest() {
-        return OrderRequest.of(
-                LongStream.rangeClosed(1L, 3L).boxed().toList(),
-                "주소",
-                "수령자 명",
-                "010-0000-0000"
-        );
-    }
-
     public static Orders createOrder(Long orderId, Long profileId) {
         Orders order = Orders.of(
                 "배송 주소",
@@ -133,4 +125,15 @@ public class Stub {
 
         return orderDetail;
     }
+
+    public static PaymentRequest createPaymentRequest() {
+        return PaymentRequest.of(
+                PayType.CARD,
+                LongStream.rangeClosed(1L, 3L).boxed().toList(),
+                "주소",
+                "수령자 명",
+                "010-0000-0000"
+        );
+    }
+
 }

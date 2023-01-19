@@ -128,13 +128,13 @@ class CartServiceImplTest {
         CartPatch patch = createCartPatch(3);
         CustomPrincipal principal = createPrincipal("사용자 명", 1L, 1L);
 
-        given(cartRepository.findById(anyLong())).willReturn(Optional.of(createCart(cartId, patch.quantity(), 1L, 1L)));
+        given(cartRepository.findByIdAndProfile_Id(anyLong(), anyLong())).willReturn(Optional.of(createCart(cartId, patch.quantity(), 1L, 1L)));
 
         // When
         sut.updateCart(patch, cartId, principal);
 
         // Then
-        then(cartRepository).should().findById(anyLong());
+        then(cartRepository).should().findByIdAndProfile_Id(anyLong(), anyLong());
     }
 
     @DisplayName("없는 장바구니의 수정정보를 입력하면, 예외를 던진다.")
@@ -145,7 +145,7 @@ class CartServiceImplTest {
         CartPatch patch = createCartPatch(3);
         CustomPrincipal principal = createPrincipal("사용자 명", 1L, 1L);
 
-        given(cartRepository.findById(anyLong())).willReturn(Optional.empty());
+        given(cartRepository.findByIdAndProfile_Id(anyLong(), anyLong())).willReturn(Optional.empty());
 
         // When
         Throwable t = catchThrowable(() -> sut.updateCart(patch, cartId, principal));
@@ -154,7 +154,7 @@ class CartServiceImplTest {
         assertThat(t)
                 .isInstanceOf(BusinessLogicException.class)
                 .hasMessage("Cart not found");
-        then(cartRepository).should().findById(anyLong());
+        then(cartRepository).should().findByIdAndProfile_Id(anyLong(), anyLong());
     }
 
     @DisplayName("장바구니의 Id 입력하면, 장바구니를 삭제한다.")
@@ -164,14 +164,14 @@ class CartServiceImplTest {
         Long cartId = 1L;
         CustomPrincipal principal = createPrincipal("사용자 명", 1L, 1L);
 
-        given(cartRepository.findById(anyLong())).willReturn(Optional.of(createCart(cartId, 3, 1L, 1L)));
+        given(cartRepository.existsByIdAndProfile_Id(anyLong(), anyLong())).willReturn(true);
         willDoNothing().given(cartRepository).deleteById(anyLong());
 
         // When
         sut.deleteCart(cartId, principal);
 
         // Then
-        then(cartRepository).should().findById(anyLong());
+        then(cartRepository).should().existsByIdAndProfile_Id(anyLong(), anyLong());
         then(cartRepository).should().deleteById(anyLong());
     }
 
@@ -182,7 +182,7 @@ class CartServiceImplTest {
         Long cartId = 1L;
         CustomPrincipal principal = createPrincipal("사용자 명", 1L, 1L);
 
-        given(cartRepository.findById(anyLong())).willReturn(Optional.empty());
+        given(cartRepository.existsByIdAndProfile_Id(anyLong(), anyLong())).willReturn(false);
 
         // When
         Throwable t = catchThrowable(() -> sut.deleteCart(cartId, principal));
@@ -191,6 +191,6 @@ class CartServiceImplTest {
         assertThat(t)
                 .isInstanceOf(BusinessLogicException.class)
                 .hasMessage("Cart not found");
-        then(cartRepository).should().findById(anyLong());
+        then(cartRepository).should().existsByIdAndProfile_Id(anyLong(), anyLong());
     }
 }
