@@ -61,7 +61,7 @@ public class DestinationServiceImpl implements DestinationService {
     @Transactional(readOnly = true)
     @Override
     public List<DestinationResponse> readDestinationList(CustomPrincipal customPrincipal) {
-        return destinationRepository.findAllByProfile_Id(customPrincipal.profileId()).stream()
+        return destinationRepository.findAllByProfileId(customPrincipal.profileId()).stream()
                 .map(DestinationDto::from)
                 .map(DestinationResponse::from)
                 .toList();
@@ -80,7 +80,7 @@ public class DestinationServiceImpl implements DestinationService {
     // 백엔드 개발자 대표 주소 가져올때 사용. (필요한가??)
     @Override
     public DestinationResponse getDestinationDefaultState(CustomPrincipal customPrincipal) {
-        return destinationRepository.findAllByProfile_Id(customPrincipal.profileId()).stream()
+        return destinationRepository.findAllByProfileId(customPrincipal.profileId()).stream()
                 .filter(d -> Objects.equals(d.getDefaultSelect(), true))
                 .findFirst()
                 .map(DestinationDto::from)
@@ -90,7 +90,7 @@ public class DestinationServiceImpl implements DestinationService {
 
     @Override
     public void updateDestinationDefaultState(CustomPrincipal customPrincipal, Long destinationId) {
-        destinationRepository.findAllByProfile_Id(customPrincipal.profileId()).stream()
+        destinationRepository.findAllByProfileId(customPrincipal.profileId()).stream()
                 .filter(d -> Objects.equals(d.getDefaultSelect(), true))
                 .findFirst()
                 .ifPresent(Destination::defaultSelectToFalse);
