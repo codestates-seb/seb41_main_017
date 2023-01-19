@@ -1,12 +1,14 @@
 package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.global.search.SearchFilter;
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.ProductLikeDto;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductLike;
 import com.codestates.culinari.product.repository.ProductLikeRepository;
 import com.codestates.culinari.product.repository.ProductRepository;
+import com.codestates.culinari.product.repository.querydsl.ProductRepositoryCustom;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.user.entitiy.Profile;
 import com.codestates.culinari.user.repository.ProfileRepository;
@@ -19,6 +21,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -27,6 +32,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProfileRepository profileRepository;
     private final ProductLikeRepository productLikeRepository;
+    private final ProductRepositoryCustom productRepositoryCustom;
+    private final SearchFilter searchFilter;
 
     //찜 조회
     @Transactional(readOnly = true)
@@ -65,16 +72,36 @@ public class ProductServiceImpl implements ProductService {
 //        return null;
     }
     //신상품 조회
-    @Transactional(readOnly = true)
-    public Page<ProductDto> readProductWithSortedType(String sortedType, Pageable pageable){
-        if(sortedType.equals("lower"))
-            return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
+
+    @Override
+    public Page<ProductDto> readProductWithSortedType(String sortedType, String filter, Pageable pageable) throws UnsupportedEncodingException {
+        if(filter != null){
+            HashMap<String, String> filterMap = searchFilter.hashFilterMap(filter);
+            String category = filterMap.get("category");
+            String brand = filterMap.get("brand");
+
+            List<String> categoryList = searchFilter.listFilter(category);
+            List<String> brandList = searchFilter.listFilter(brand);
+
+            if(sortedType.equals("lower"))
+                return productRepositoryCustom.findAllWithSortAndFilter(categoryList,brandList,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
+                        .map(ProductDto::from);
+            else if(sortedType.equals("higher"))
+                return productRepositoryCustom.findAllWithSortAndFilter(categoryList,brandList,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
+                        .map(ProductDto::from);
+            return productRepository.findAllWithSortAndFilter(categoryList,brandList,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
                     .map(ProductDto::from);
-        else if(sortedType.equals("higher"))
-            return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
-                    .map(ProductDto::from);
+        } else {
+            if(sortedType.equals("lower"))
+                return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
+                        .map(ProductDto::from);
+            else if(sortedType.equals("higher"))
+                return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
+                        .map(ProductDto::from);
+        }
         return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
                 .map(ProductDto::from);
+
     }
 
     //카테고리 조회
