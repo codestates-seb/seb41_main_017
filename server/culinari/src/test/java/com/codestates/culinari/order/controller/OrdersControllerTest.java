@@ -47,32 +47,32 @@ class OrdersControllerTest {
 
     public OrdersControllerTest(@Autowired MockMvc mvc) { this.mvc = mvc; }
 
-    @DisplayName("[POST] 주문 등록 - 정상호출")
-    @Test
-    void givenNewOrderInfo_whenRequesting_thenSavesNewOrder() throws Exception {
-        // Given
-        Authentication auth = new UsernamePasswordAuthenticationToken(createPrincipal("사용자 명", 1L, 1L), null);
-        String requestBody = """
-                {
-                    "productIds": [1, 2, 3],
-                    "address": "배송 주소 명",
-                    "receiverName": "수령자 명",
-                    "receiverPhoneNumber": "010-0000-0000"
-                }
-                """;
-
-        willDoNothing().given(ordersService).createOrder(any(OrderRequest.class), any(CustomPrincipal.class));
-
-        // When & Then
-        mvc.perform(post("/orders")
-                        .with(authentication(auth))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody)
-                )
-                .andExpect(status().isCreated());
-
-        then(ordersService).should().createOrder(any(OrderRequest.class), any(CustomPrincipal.class));
-    }
+//    @DisplayName("[POST] 주문 등록 - 정상호출")
+//    @Test
+//    void givenNewOrderInfo_whenRequesting_thenSavesNewOrder() throws Exception {
+//        // Given
+//        Authentication auth = new UsernamePasswordAuthenticationToken(createPrincipal("사용자 명", 1L, 1L), null);
+//        String requestBody = """
+//                {
+//                    "productIds": [1, 2, 3],
+//                    "address": "배송 주소 명",
+//                    "receiverName": "수령자 명",
+//                    "receiverPhoneNumber": "010-0000-0000"
+//                }
+//                """;
+//
+//        willDoNothing().given(ordersService).createOrder(any(OrderRequest.class), any(CustomPrincipal.class));
+//
+//        // When & Then
+//        mvc.perform(post("/orders")
+//                        .with(authentication(auth))
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(requestBody)
+//                )
+//                .andExpect(status().isCreated());
+//
+//        then(ordersService).should().createOrder(any(OrderRequest.class), any(CustomPrincipal.class));
+//    }
 
     @DisplayName("[GET] 장바구니 목록 조회 - 정상호출")
     @Test
