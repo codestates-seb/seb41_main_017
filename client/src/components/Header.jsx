@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
+import { useLocation } from "react-router-dom";
 
 const Layout = styled.div`
   // 화면사이즈 수정 ---
@@ -90,6 +91,18 @@ const Layout = styled.div`
           text-align: center;
           padding: 5px 5px 5px 0;
 
+          .home {
+            color: ${({ pathname }) => (pathname === "/" ? "#ff6767" : null)};
+          }
+
+          .new_product {
+            color: ${({ pathname }) => (pathname.includes("/new-product") ? "#ff6767" : null)};
+          }
+
+          .best_product {
+            color: ${({ pathname }) => (pathname.includes("/best-product") ? "#ff6767" : null)};
+          }
+
           span {
             &:hover {
               color: #ff6767;
@@ -107,8 +120,10 @@ const Layout = styled.div`
 `;
 
 function Header() {
+  const { pathname } = useLocation();
+
   return (
-    <Layout>
+    <Layout pathname={pathname}>
       <div className="top flex">
         <div>
           <a href="/login">로그인 / 회원가입</a>
@@ -152,17 +167,17 @@ function Header() {
             </li>
             <li>
               <a href="/">
-                <span>홈</span>
+                <span className="home">홈</span>
               </a>
             </li>
             <li>
               <a href="/new-product">
-                <span>신상품</span>
+                <span className="new_product">신상품</span>
               </a>
             </li>
             <li>
               <a href="/best-product">
-                <span>베스트</span>
+                <span className="best_product">베스트</span>
               </a>
             </li>
             <li>이벤트</li>
