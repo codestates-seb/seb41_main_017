@@ -71,7 +71,6 @@ function Collection({ page }) {
     isGrainChecked &&
     isSnackAndBreadChecked;
 
-  console.log(isAllChecked);
   const categories = [
     {
       text: "전체",
