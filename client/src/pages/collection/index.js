@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import styled from "styled-components";
+import axios from "axios";
 
 import CheckBox from "../../components/CheckBox";
 import MainBanner from "../../components/MainBanner";
+import BASE_URL from "../../constants/BASE_URL";
+import ProductItem from "../../components/ProductItem";
 
 const PageHeader = styled.h3`
   margin-top: 50px;
@@ -54,9 +57,65 @@ const Content = styled.div`
       }
     }
   }
+
+  .product_container {
+    width: 100%;
+
+    .product_list_header {
+      padding-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      line-height: 20px;
+    }
+
+    .product_list_count {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .product_filter {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .product_filter_list {
+      margin-left: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 14px;
+      color: rgb(153, 153, 153);
+      cursor: pointer;
+    }
+
+    .product_list {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 200px);
+      gap: 31px 18px;
+    }
+  }
 `;
 
 function Collection() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data } = await axios.get(`${BASE_URL}/collections/newproduct?page=0&size=100`);
+
+        setData(data);
+      } catch (error) {
+        console.log(`Error: ${error}`);
+      }
+    };
+
+    getData();
+  }, []);
+
   const [isFisheryChecked, setIsFisheryChecked] = useState(false);
   const [isNoodlesChecked, setNoodlesChecked] = useState(false);
   const [isMeatAndEggsChecked, setIsMeatAndEggsChecked] = useState(false);
@@ -126,6 +185,75 @@ function Collection() {
     );
   };
 
+  const productArr = [
+    {
+      id: 0,
+      name: "[비비드키친] 저칼로리 숯불매콤치킨 소스",
+      price: 3980,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/1657781547680l0.jpg",
+    },
+    {
+      id: 1,
+      name: "[파제르 핀란드 시그니처 코촐릿 4종]",
+      price: 12000,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/1607930413465l0.jpg",
+    },
+    {
+      id: 2,
+      name: "[카스0.0] 논알콜 음료 8캔 & 헌터즈트러플 감자칩 2개",
+      price: 9990,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/1658317867100l0.jpg",
+    },
+    {
+      id: 3,
+      name: "한뿌리 수삼 45g",
+      price: 3490,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/1576555719180l0.jpg",
+    },
+    {
+      id: 4,
+      name: "[순백수] 하노키 우디 디퓨저 세트 (본품 150ml)",
+      price: 26900,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/1655455835441l0.jpeg",
+    },
+    {
+      id: 5,
+      name: "[상하목장] 얼려먹는 아이스크림 초코",
+      price: 5200,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/16499051856l0.jpg",
+    },
+    {
+      id: 6,
+      name: "[창화당] 육즙 팡팡 소룡포",
+      price: 8830,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/1548292714543l0.jpg",
+    },
+    {
+      id: 7,
+      name: "[만토바] 비보 오가닉 엑스트버진 스프레이 화이트트러플향 200ml",
+      price: 3980,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/1641272547982l0.jpg",
+    },
+    {
+      id: 8,
+      name: "[설치배송][LG전자] 울트라 HDTV (스탠드형)",
+      price: 633800,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/1634802297108l0.jpg",
+    },
+    {
+      id: 9,
+      name: "[하선정] 김밥 단무지",
+      price: 2380,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/1657529753879l0.jpg",
+    },
+    {
+      id: 10,
+      name: "[제니튼] 닥터제니 저불소 어린이 치약 60g",
+      price: 6300,
+      image: "https://img-cf.kurly.com/cdn-cgi/image/quality=85,width=400/shop/data/goods/16505299970l0.jpg",
+    },
+  ];
+
   return (
     <>
       <MainBanner />
@@ -138,6 +266,30 @@ function Collection() {
               <CategoryList category={category} key={index} />
             ))}
           </ul>
+        </div>
+        <div className="product_container">
+          <div className="product_list_header">
+            <div className="product_list_count">{`총 180건`}</div>
+            <ul className="product_filter">
+              <li className="product_filter_list">신상품순</li>
+              <li className="product_filter_list">낮은 가격순</li>
+              <li className="product_filter_list">높은 가격순</li>
+            </ul>
+          </div>
+          <div className="product_list">
+            {data &&
+              data.data.map((element) => {
+                const ref = `/product/${element.id}`;
+
+                return (
+                  <a href={ref} key={element.id}>
+                    {productArr.map((element) => {
+                      return <ProductItem element={element} />;
+                    })}
+                  </a>
+                );
+              })}
+          </div>
         </div>
       </Content>
     </>
