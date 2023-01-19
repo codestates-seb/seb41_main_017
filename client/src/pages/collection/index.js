@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import styled from "styled-components";
+
 import CheckBox from "../../components/CheckBox";
 import MainBanner from "../../components/MainBanner";
 
@@ -53,7 +56,7 @@ const Content = styled.div`
   }
 `;
 
-function Collection({ page }) {
+function Collection() {
   const [isFisheryChecked, setIsFisheryChecked] = useState(false);
   const [isNoodlesChecked, setNoodlesChecked] = useState(false);
   const [isMeatAndEggsChecked, setIsMeatAndEggsChecked] = useState(false);
@@ -61,6 +64,12 @@ function Collection({ page }) {
   const [isDrinkChecked, setIsDrinkChecked] = useState(false);
   const [isGrainChecked, setIsGrainChecked] = useState(false);
   const [isSnackAndBreadChecked, setIsSnackAndBreadChecked] = useState(false);
+
+  const { pathname } = useLocation();
+  const pageMap = {
+    "/new-product": "신상품",
+    "/best-product": "베스트",
+  };
 
   const isAllChecked =
     isFisheryChecked &&
@@ -120,7 +129,7 @@ function Collection({ page }) {
   return (
     <>
       <MainBanner />
-      <PageHeader>신상품</PageHeader>
+      <PageHeader>{pageMap[pathname]}</PageHeader>
       <Content>
         <div className="category">
           <div className="category_title">카테고리</div>
