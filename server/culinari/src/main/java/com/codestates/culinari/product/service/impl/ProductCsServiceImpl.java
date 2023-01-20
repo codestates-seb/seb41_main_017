@@ -66,7 +66,7 @@ public class ProductCsServiceImpl implements ProductCsService {
         imageList.stream().forEach(productReviewImage -> productReviewImage.setProductReview(productReview));
         ProductReviewLike productReviewLike = productReviewLikeRepository.save(ProductReviewLike.of(0L,productReview));
         productReview.setProductReviewLike(productReviewLike);
-        ProductReviewDto.from(productReviewRepository.saveAndFlush(productReview));
+        productReviewRepository.saveAndFlush(productReview);
     }
 
     @Override

@@ -20,7 +20,7 @@ public interface ProductService {
     Page<ProductLikeDto> readProductLike(CustomPrincipal principal, Pageable pageable);
     //찜 삭제
     void deleteProductLike(Long productId, CustomPrincipal principal);
-    public Product readProduct(Long productId);
+    public Product findProduct(Long productId);
 
     @Transactional(readOnly = true)
     ProductWithCustomerServiceResponse readProductWithCS(Long productId);

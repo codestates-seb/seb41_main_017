@@ -129,7 +129,7 @@ class ProductControllerTest {
         MockMultipartFile request = new MockMultipartFile(
                 "request",
                 requestBody,
-                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_JSON_VALUE, //contentType
                 requestBody.getBytes(StandardCharsets.UTF_8)
         );
         List<MultipartFile> images = new ArrayList<>();

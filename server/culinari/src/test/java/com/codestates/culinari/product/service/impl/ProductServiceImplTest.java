@@ -34,6 +34,7 @@ class ProductServiceImplTest {
 
     @Mock
     ProductRepository productRepository;
+
     @Mock
     SearchFilter searchFilter;
 
@@ -48,7 +49,7 @@ class ProductServiceImplTest {
         given(productRepository.findById(productId)).willReturn(Optional.of(product));
         // When
 
-        sut.readProduct(productId);
+        sut.findProduct(productId);
 
         // Then
         then(productRepository).should().findById(productId);
