@@ -1,12 +1,9 @@
 package com.codestates.culinari.product.service.impl;
 
-import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.global.search.SearchFilter;
-import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.repository.ProductRepository;
-import com.codestates.culinari.product.repository.querydsl.ProductRepositoryCustomImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,13 +19,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.codestates.culinari.order.Stub.Stub.createPrincipal;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -41,6 +34,7 @@ class ProductServiceImplTest {
 
     @Mock
     ProductRepository productRepository;
+
     @Mock
     SearchFilter searchFilter;
 
@@ -55,7 +49,7 @@ class ProductServiceImplTest {
         given(productRepository.findById(productId)).willReturn(Optional.of(product));
         // When
 
-        sut.readProduct(productId);
+        sut.findProduct(productId);
 
         // Then
         then(productRepository).should().findById(productId);

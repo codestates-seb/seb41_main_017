@@ -27,9 +27,7 @@ import java.util.List;
 import java.util.stream.LongStream;
 
 import static com.codestates.culinari.order.Stub.Stub.createPrincipal;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;

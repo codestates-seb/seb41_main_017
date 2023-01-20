@@ -1,6 +1,5 @@
 package com.codestates.culinari.product.controller;
 
-import com.codestates.culinari.global.search.SearchFilter;
 import com.codestates.culinari.pagination.service.PaginationService;
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
@@ -9,13 +8,14 @@ import com.codestates.culinari.product.service.ProductService;
 import config.TestSecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

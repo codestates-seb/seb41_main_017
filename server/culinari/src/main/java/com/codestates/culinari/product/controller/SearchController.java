@@ -6,7 +6,6 @@ import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 import com.codestates.culinari.product.service.ProductService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

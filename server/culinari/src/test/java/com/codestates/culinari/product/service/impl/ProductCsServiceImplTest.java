@@ -1,6 +1,7 @@
 package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.global.file.FileStore;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
@@ -22,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +50,8 @@ class ProductCsServiceImplTest {
     private ProductReviewImageRepository productReviewImageRepository;
     @Mock
     private ProductReviewLikeRepository productReviewLikeRepository;
+    @Mock
+    private FileStore fileStore;
 
 
     @DisplayName("[CREATE] 상품 문의를 입력하면, 문의를 등록한다.")
@@ -75,19 +80,26 @@ class ProductCsServiceImplTest {
     void givenProductReview_whenSavingProductReview_thenSaveReview() throws IOException {
         // Given
         Long productId = 1L;
+        Product product = createProduct(productId);
+        Profile profile = createProfile(1L);
         ProductReviewRequest productReviewRequest = createProductReviewRequest();
+        List<MultipartFile> image = new ArrayList<>();
         CustomPrincipal principal = createPrincipal("사용자", 1L, 1L);
+        ProductReview productReview = ProductReview.of("타이틀", "콘텐츠", ProductReview.ReviewStar.ZERO, product, profile);
+        ProductReviewLike productReviewLike = ProductReviewLike.of(1L, productReview);
+        productReview.setProductReviewLike(productReviewLike);
 
         given(productRepository.findById(anyLong())).willReturn(Optional.of(createProduct(1L)));
         given(profileRepository.getReferenceById(anyLong())).willReturn(createProfile(1L));
-        given(productReviewRepository.saveAndFlush(any(ProductReview.class))).willReturn(any(ProductReview.class));
+        given(productReviewLikeRepository.save(any(ProductReviewLike.class))).willReturn(productReviewLike);
+        given(productReviewRepository.saveAndFlush(any(ProductReview.class))).willReturn(productReview);
 
         // When
-        sut.createProductReview(productReviewRequest,principal,productId);
-
+        sut.createProductReview(productReviewRequest,principal,productId,image);
         // Then
         then(productRepository).should().findById(anyLong());
         then(profileRepository).should().getReferenceById(anyLong());
+        then(productReviewLikeRepository).should().save(any(ProductReviewLike.class));
         then(productReviewRepository).should().saveAndFlush(any(ProductReview.class));
     }
 
