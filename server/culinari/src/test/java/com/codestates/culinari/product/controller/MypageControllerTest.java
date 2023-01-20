@@ -1,6 +1,8 @@
 package com.codestates.culinari.product.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.pagination.service.PaginationService;
+import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.user.dto.ProfileDto;
 import com.codestates.culinari.user.service.ProfileService;
 import config.TestSecurityConfig;
@@ -34,6 +36,10 @@ class MypageControllerTest {
 
     @MockBean
     private ProfileService profileService;
+    @MockBean
+    private ProductService productService;
+    @MockBean
+    private  PaginationService paginationService;
 
     public MypageControllerTest(@Autowired MockMvc mvc){this.mvc = mvc;}
 
