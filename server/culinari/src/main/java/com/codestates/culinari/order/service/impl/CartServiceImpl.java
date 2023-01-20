@@ -19,8 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -39,15 +37,15 @@ public class CartServiceImpl implements CartService {
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         CartDto dto = post.toDto();
 
-        Optional<Cart> oldCart = cartRepository.findByProfile_IdAndProduct_Id(profile.getId(), product.getId());
-
-        if (oldCart.isPresent()) {
-            Cart cart = oldCart.get();
-            cart.setQuantity(cart.getQuantity() + dto.quantity());
-            cartRepository.save(cart);
-        } else {
-            cartRepository.save(dto.toEntity(profile, product));
-        }
+        cartRepository.findByProfile_IdAndProduct_Id(profile.getId(), product.getId())
+                .ifPresentOrElse(
+                        cart -> {
+                            cart.setQuantity(cart.getQuantity() + dto.quantity());
+                            cartRepository.save(cart);
+                        }, () -> {
+                            cartRepository.save(dto.toEntity(profile, product));
+                        }
+                );
     }
 
     @Transactional(readOnly = true)
@@ -62,9 +60,8 @@ public class CartServiceImpl implements CartService {
     public void updateCart(CartPatch patch, Long cartId, CustomPrincipal principal) {
         verifyPrincipal(principal);
 
-        Cart cart = cartRepository.findById(cartId)
+        Cart cart = cartRepository.findByIdAndProfile_Id(cartId, principal.profileId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
-        verifyAuth(cart.getProfile().getId(), principal.profileId());
 
         CartDto dto = patch.toDto();
         cart.setQuantity(dto.quantity());
@@ -74,16 +71,10 @@ public class CartServiceImpl implements CartService {
     public void deleteCart(Long cartId, CustomPrincipal principal) {
         verifyPrincipal(principal);
 
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
-        verifyAuth(cart.getProfile().getId(), principal.profileId());
-
-        cartRepository.deleteById(cartId);
-    }
-
-    // TODO: 공통적으로 처리할 수 있는지
-    public void verifyAuth(Long targetProfileId, Long profileId) {
-        if (!targetProfileId.equals(profileId)) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+        if(cartRepository.existsByIdAndProfile_Id(cartId, principal.profileId()))
+            cartRepository.deleteById(cartId);
+        else
+            throw new BusinessLogicException(ExceptionCode.CART_NOT_FOUND);
     }
 
     public void verifyPrincipal(CustomPrincipal principal) {
