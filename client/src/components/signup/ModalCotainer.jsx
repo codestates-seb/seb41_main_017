@@ -14,7 +14,7 @@ const AddressBtn = styled.button`
   margin-top: 19.5px;
 `;
 
-function ModalContainer({ setSignupAddress, type, signupId }) {
+function ModalContainer({ setSignupAddress, type, signupId, signupEmail }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [response, setResponse] = useState("");
 
@@ -35,6 +35,27 @@ function ModalContainer({ setSignupAddress, type, signupId }) {
         setResponse(res.status);
 
         openModal();
+        // window.alert("사용가능한 아이디입니다");
+      })
+
+      .catch((err) => {
+        console.log(err);
+        setResponse(err.response.data.status);
+        openModal();
+      });
+  };
+
+  const handleCheckEmailBtn = (e) => {
+    e.preventDefault();
+    axios
+      .get(`${BASE_URL}/users/email-check?email=${signupEmail}`)
+
+      .then((res) => {
+        console.log(res);
+        setResponse(res.status);
+
+        openModal();
+        // window.alert("사용가능한 아이디입니다");
       })
 
       .catch((err) => {
@@ -63,6 +84,23 @@ function ModalContainer({ setSignupAddress, type, signupId }) {
       <>
         <AddressBtn onClick={handleCheckBtn}>중복확인</AddressBtn>
         <GuideModal
+          checkId={"checkId"}
+          type={"checkId"}
+          response={response}
+          open={modalOpen}
+          close={closeModal}
+          header="Modal heading"
+        ></GuideModal>
+      </>
+    );
+  }
+  if (type === "checkEmail") {
+    return (
+      <>
+        <AddressBtn onClick={handleCheckEmailBtn}>중복확인</AddressBtn>
+        <GuideModal
+          type={"checkEmail"}
+          checkEmail={"checkEmail"}
           response={response}
           open={modalOpen}
           close={closeModal}
