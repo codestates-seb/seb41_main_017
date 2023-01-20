@@ -1,5 +1,6 @@
 package com.codestates.culinari.product.controller;
 
+import com.codestates.culinari.global.search.SearchFilter;
 import com.codestates.culinari.pagination.service.PaginationService;
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
@@ -8,14 +9,13 @@ import com.codestates.culinari.product.service.ProductService;
 import config.TestSecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,9 +42,9 @@ class ProductCollectionsControllerTest {
 
     @MockBean
     private ProductService productService;
-
     @MockBean
     private PaginationService paginationService;
+
 
     public ProductCollectionsControllerTest(@Autowired MockMvc mvc){this.mvc = mvc;}
 
@@ -52,21 +52,23 @@ class ProductCollectionsControllerTest {
     @Test
     void givenPageInfoAndSortType_whenRequestProduct_thenReturnNewestProductPage() throws Exception {
         // Given
-        String sortType = "newest";
+
         Authentication auth = new UsernamePasswordAuthenticationToken(createPrincipal("사용자", 1L, 1L), null);
         Page<ProductDto> productDtoPage = createProductPage().map(ProductDto::from);
 
-        given(productService.readProductWithSortedType(eq(sortType), any(Pageable.class))).willReturn(productDtoPage);
+        given(productService.readProductWithSortedType(anyString(),anyString(), any(Pageable.class))).willReturn(productDtoPage);
         given(paginationService.getPaginationBarNumbers(anyInt(), anyInt())).willReturn(List.of(0,1,2));
 
         // When & Then
         mvc.perform(get("/collections/newproduct")
                         .with(authentication(auth))
+                        .param("sortedType", "newest")
+                        .param("filter","category:001")
                         .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
 
-        then(productService).should().readProductWithSortedType(eq(sortType),any(Pageable.class));
+        then(productService).should().readProductWithSortedType(anyString(),anyString(),any(Pageable.class));
         then(paginationService).should().getPaginationBarNumbers(anyInt(), anyInt());
     }
 
