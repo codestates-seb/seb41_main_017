@@ -2,14 +2,18 @@ import React from "react";
 import styled from "styled-components";
 
 const GuideModal = (props) => {
-  const { open, close, header } = props;
+  const { open, close, header, response } = props;
 
   return (
     <Page>
       <div className={open ? "openModal modal" : "modal"}>
         {open ? (
           <Section>
-            <Main>사용 불가능한 아이디입니다</Main>
+            {response === 405 ? (
+              <Main>사용 불가능한 아이디입니다</Main>
+            ) : (
+              <Main>사용 가능한 아이디입니다.</Main>
+            )}
             <Footer>
               <div className="close" onClick={close}>
                 확인
