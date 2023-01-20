@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,22 +57,24 @@ public class ProductCsServiceImpl implements ProductCsService {
 
     // 후기 작성
     @Override
-    public ProductReview createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId) throws IOException {
+    public void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, List<MultipartFile> multipartFiles) throws IOException {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), productReviewRequest.reviewStar(),product, profile);
+        List<ProductReviewImage> imageList = fileStore.storeReviewImages(multipartFiles);
+        productReview.setProductReviewImages(imageList);
+        imageList.stream().forEach(productReviewImage -> productReviewImage.setProductReview(productReview));
         ProductReviewLike productReviewLike = productReviewLikeRepository.save(ProductReviewLike.of(0L,productReview));
-        productReviewRepository.saveAndFlush(productReview);
-        return productReview;
+        productReview.setProductReviewLike(productReviewLike);
+        ProductReviewDto.from(productReviewRepository.saveAndFlush(productReview));
     }
 
     @Override
-    public List<ProductReviewImage> saveProductReviewImages(Long productReviewId, List<MultipartFile> multipartFiles) throws IOException{
+    public void saveProductReviewImages(Long productReviewId, List<MultipartFile> multipartFiles) throws IOException{
         ProductReview productReview = productReviewRepository.getReferenceById(productReviewId);
         List<ProductReviewImage> imageList = fileStore.storeReviewImages(multipartFiles);
         productReview.setProductReviewImages(imageList);
         imageList.stream().forEach(productReviewImage -> productReviewImage.setProductReview(productReview));
-        return imageList;
     }
 
     //후기 사진 불러오기

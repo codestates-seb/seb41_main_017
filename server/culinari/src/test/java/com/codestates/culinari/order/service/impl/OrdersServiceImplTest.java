@@ -17,14 +17,12 @@ import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 
-import static com.codestates.culinari.order.Stub.Stub.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static com.codestates.culinari.order.Stub.Stub.createOrderPage;
+import static com.codestates.culinari.order.Stub.Stub.createPrincipal;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 @DisplayName("비즈니스 로직 - 주문")
 @ExtendWith(MockitoExtension.class)

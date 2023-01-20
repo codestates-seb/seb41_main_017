@@ -4,11 +4,11 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.global.search.SearchFilter;
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.ProductLikeDto;
+import com.codestates.culinari.product.dto.response.ProductWithCustomerServiceResponse;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductLike;
 import com.codestates.culinari.product.repository.ProductLikeRepository;
 import com.codestates.culinari.product.repository.ProductRepository;
-import com.codestates.culinari.product.repository.querydsl.ProductRepositoryCustom;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.user.entitiy.Profile;
 import com.codestates.culinari.user.repository.ProfileRepository;
@@ -22,7 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -56,13 +57,20 @@ public class ProductServiceImpl implements ProductService {
         productLikeRepository.deleteByProductId(productId);
     }
 
+    //TODO get/read 는 서비스 내부에 entity 호출하여 dto를 리턴해주는 메소드를 만들어서 사용
     //ID 상품 조회
-    @Transactional(readOnly = true)
-    public ProductDto readProduct(Long productId){
+    @Transactional(readOnly = true)  //상품 후기 문의
+    public Product readProduct(Long productId){
         return productRepository.findById(productId)
-                .map(ProductDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ProductWithCustomerServiceResponse readProductWithCS(Long productId){
+        return ProductWithCustomerServiceResponse.from(readProduct(productId));
+    }
+
     //통합 검색 (Name, Seller, Brand)
     @Transactional(readOnly = true)
     @Override
