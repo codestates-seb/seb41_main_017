@@ -48,6 +48,15 @@ const IdBlock = styled.div`
     width: 25%;
     margin-right: 15px;
   }
+
+  .check_btn {
+    width: 20%
+    display: flex;
+    height:100%;
+  }
+  .input_box{
+    width:76%;
+  }
 `;
 
 export { Page, CheckboxContent, IdBlock };
