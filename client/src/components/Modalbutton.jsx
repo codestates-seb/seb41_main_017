@@ -19,7 +19,7 @@ const Layout = styled.div`
   }
 `;
 
-const Modal = styled.form`
+const Modal = styled.div`
   position: fixed;
   background-color: rgba(0, 0, 0, 0.333);
   top: 0;
@@ -133,7 +133,7 @@ function Modalbutton({ text }) {
                     min_height={"0"}
                     placeholder={"주소를 입력해주세요"}
                     defaultValue={address}
-                    onChange={(e) => console.log("asdf")}
+                    onChange={(e) => setAddress(e.target.value)}
                   ></BasicInput>
                   <ModalContainer setAddress={setAddress} type={"address"} />
                 </div>

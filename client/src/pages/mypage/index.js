@@ -13,6 +13,8 @@ import Selectitem from "./selectItem";
 import ItemreviewList from "./itemreviewList";
 import Inquiry from "./inquiry";
 import ItemreviewWrite from "./itemreviewWrite";
+import { useEffect, useState } from "react";
+import axios from 'axios';
 
 const Layout = styled.div`
   padding-top: 15px;
@@ -90,8 +92,24 @@ const Mycard = styled.div`
 `;
 
 
-
+// https://velog.io/@mgk8609/React%EC%97%90%EC%84%9C-Axios-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
 function Mypage() {
+  const [token, setToken] = useState("");
+  
+// 토큰을 받아오기 위한 임시 로컬스토리지 토큰저장
+  useEffect(()=>{
+    axios.post("http://ec2-3-37-105-24.ap-northeast-2.compute.amazonaws.com:8080/users/signin",
+    {
+      "username" : "jangusername",
+      "password" : "jangpassword"
+    }).then(res => {
+      localStorage.setItem("token" , res.headers.authorization.slice(6))
+      
+    })
+    .catch(error => console.log("에러발생",error))
+  },[])
+
+  console.log(localStorage.getItem("token"))
   
   const list = {
     "내정보": {

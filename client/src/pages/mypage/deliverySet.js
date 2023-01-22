@@ -5,6 +5,8 @@ import Mypagehead from "../../components/MypageHead";
 import ListLayout from "../../components/ListLayout";
 import Modalbutton from "../../components/Modalbutton";
 
+
+
 const Classlist = styled.div`
   .check_box {
     display: flex;
@@ -60,6 +62,8 @@ const Classlist = styled.div`
 `;
 
 function Addressset() {
+
+
   return (
     <Mypagehead title={"배송지 설정"} side_title={<Modalbutton text={"배송지 추가"}/>}>
       <Classlist>
