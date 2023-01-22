@@ -3,6 +3,8 @@ package com.codestates.culinari.payment.controller;
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.global.exception.ExceptionCode;
+import com.codestates.culinari.pagination.PageResponseDto;
+import com.codestates.culinari.pagination.service.PaginationService;
 import com.codestates.culinari.payment.dto.request.PaymentRequest;
 import com.codestates.culinari.payment.dto.request.RefundRequest;
 import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
@@ -11,7 +13,13 @@ import com.codestates.culinari.payment.dto.response.PaymentSuccessResponse;
 import com.codestates.culinari.payment.service.PaymentService;
 import com.codestates.culinari.response.SingleResponseDto;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +27,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Validated
@@ -27,6 +36,7 @@ import java.math.BigDecimal;
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final PaginationService paginationService;
 
     @PostMapping
     public ResponseEntity postPayment(
@@ -38,6 +48,25 @@ public class PaymentController {
         return new ResponseEntity<>(
                 new SingleResponseDto<>(paymentInfo),
                 HttpStatus.CREATED
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity getPayments(
+            @Min(0) @RequestParam(defaultValue = "0", required = false) int page,
+            @Positive @RequestParam(defaultValue = "10", required = false) int size,
+            @Positive @RequestParam(defaultValue = "3") Integer searchMonths,
+            @AuthenticationPrincipal CustomPrincipal principal
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        Page<PaymentInfoResponse> pagePayments = paymentService.readPayments(searchMonths, pageable, principal).map(PaymentInfoResponse::from);
+        List<PaymentInfoResponse> payments = pagePayments.getContent();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, pagePayments.getTotalPages());
+
+        return new ResponseEntity<>(
+                new PageResponseDto<>(payments, pagePayments, barNumber),
+                HttpStatus.OK
         );
     }
 
