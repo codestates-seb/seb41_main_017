@@ -1,5 +1,6 @@
 package com.codestates.culinari.payment.entity;
 
+import com.codestates.culinari.audit.AuditingFields;
 import com.codestates.culinari.order.entitiy.Orders;
 import com.codestates.culinari.payment.constant.PayType;
 import com.codestates.culinari.user.entitiy.Profile;
@@ -33,8 +34,8 @@ public class Payment {
     private String paymentKey;
 
     @Setter
-    @Column
-    private Boolean paySuccessTf;
+    @Column(nullable = false)
+    private Boolean paySuccessTf = false;
 
     @Setter
     @Column
@@ -46,15 +47,15 @@ public class Payment {
     @ManyToOne(optional = false)
     private Profile profile;
 
-    private Payment(PayType payType, BigDecimal amount, Orders order, String productName, Profile profile) {
+    private Payment(PayType payType, BigDecimal amount, String productName, Orders order, Profile profile) {
         this.payType = payType;
         this.amount = amount;
-        this.order = order;
         this.productName = productName;
+        this.order = order;
         this.profile = profile;
     }
 
-    public static Payment of(PayType payType, BigDecimal amount, Orders order, String productName, Profile profile) {
-        return new Payment(payType, amount, order, productName, profile);
+    public static Payment of(PayType payType, BigDecimal amount, String productName, Orders order, Profile profile) {
+        return new Payment(payType, amount, productName, order, profile);
     }
 }
