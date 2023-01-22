@@ -25,6 +25,8 @@ import com.codestates.culinari.user.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,6 +37,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Collections;
 
@@ -79,6 +82,9 @@ public class PaymentServiceImpl implements PaymentService {
                     orders.getOrderDetails().add(orderDetail);
                 });
 
+        if (paymentRepository.existsByOrder_IdAndPaySuccessTf(orders.getId(), true))
+            throw new BusinessLogicException(ExceptionCode.PAYMENT_EXISTS);
+
         return PaymentDto.from(
                 paymentRepository
                         .save(PaymentDto
@@ -86,6 +92,14 @@ public class PaymentServiceImpl implements PaymentService {
                                 .toEntity(orders, profile)
                         )
         );
+    }
+
+    @Override
+    public Page<PaymentDto> readPayments(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
+        verifyPrincipal(principal);
+
+        return paymentRepository.findAllCreatedAfterAndProfile_Id(LocalDateTime.now().minusMonths(searchMonths), principal.profileId(), pageable)
+                .map(PaymentDto::from);
     }
 
     @Override
@@ -111,11 +125,23 @@ public class PaymentServiceImpl implements PaymentService {
         params.put("orderId", orderId);
         params.put("paymentKey", paymentKey);
 
-        return new RestTemplate().postForEntity(
-                String.format("%s/payments/confirm", tossOriginUrl),
-                new HttpEntity<>(params, createAuthHeaders()),
-                PaymentSuccessResponse.class
-        ).getBody();
+        PaymentSuccessResponse response =
+                new RestTemplate().postForEntity(
+                    String.format("%s/payments/confirm", tossOriginUrl),
+                    new HttpEntity<>(params, createAuthHeaders()),
+                    PaymentSuccessResponse.class
+                ).getBody();
+
+        paymentRepository.findByOrder_id(Long.parseLong(orderId))
+                .ifPresentOrElse(
+                        payment ->  {
+                                payment.setPaySuccessTf(true);
+                        }, () -> {
+                            throw new BusinessLogicException(ExceptionCode.PAYMENT_NOT_FOUND);
+                        }
+                );
+
+        return response;
     }
 
     @Override
