@@ -38,11 +38,19 @@ function SignForm() {
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
   const [check, setCheck] = useState("");
+  const [allChecked, setAllChecked] = useState(false);
+  const [termsChecked, setTermsChecked] = useState(false);
+  const [privacyChecked, setPrivacyChecked] = useState(false);
+
+  function handleAllChecked() {
+    setAllChecked(!allChecked);
+    setTermsChecked(!allChecked);
+    setPrivacyChecked(!allChecked);
+  }
 
   const handleSignupBtn = (e) => {
     e.preventDefault();
 
-    // console.log(signupId);
     const reqbody = {
       username: signupId,
       password: signupPassword,
@@ -73,18 +81,22 @@ function SignForm() {
     <Page>
       <IdBlock>
         <div className="input_cotainer">
-          <BasicInput
-            setValue={setSignupId}
-            label={"아이디"}
-            star={"*"}
-            type={"text"}
-            width={"100%"}
-            placeholder={"아이디를 입력해주세요"}
-            defaultValue={""}
-          ></BasicInput>
-          <ModalContainer type={"checkId"} onClick />
+          <div className="input_box">
+            <BasicInput
+              setValue={setSignupId}
+              label={"아이디"}
+              star={"*"}
+              type={"text"}
+              width={"100%"}
+              placeholder={"아이디를 입력해주세요"}
+              defaultValue={""}
+            ></BasicInput>
+          </div>
+          <div className="check_btn">
+            <ModalContainer type={"checkId"} signupId={signupId} />
+          </div>
         </div>
-        {/* {console.log(signupId)} */}
+
         <div className="input_cotainer">
           <BasicInput
             setValue={setSignupPassword}
@@ -107,17 +119,21 @@ function SignForm() {
             placeholder={"이름을 입력해주세요"}
           ></BasicInput>
         </div>
-        {/* {console.log(name)} */}
+
         <div className="input_cotainer">
-          <BasicInput
-            setValue={setSignupEmail}
-            label={"이메일"}
-            star={"*"}
-            type={"text"}
-            width={"100%"}
-            placeholder={"이메일을 입력해주세요"}
-          ></BasicInput>
-          <ModalContainer type={"checkId"} onClick />
+          <div className="input_box">
+            <BasicInput
+              setValue={setSignupEmail}
+              label={"이메일"}
+              star={"*"}
+              type={"text"}
+              width={"100%"}
+              placeholder={"이메일을 입력해주세요"}
+            ></BasicInput>
+          </div>
+          <div className="check_btn">
+            <ModalContainer type={"checkEmail"} signupEmail={signupEmail} />
+          </div>
         </div>
         <div className="input_cotainer">
           <BasicInput
@@ -130,21 +146,25 @@ function SignForm() {
           ></BasicInput>
         </div>
         <div className="input_cotainer">
-          <BasicInput
-            setValue2={setDetailAddress}
-            label={"주소"}
-            star={"*"}
-            width={"100%"}
-            type={"text"}
-            address={"address"}
-            placeholder={"주소를 입력해주세요"}
-            defaultValue={signupAddress}
-            onChange={(e) => setPostAddress(e.target.value)}
-          ></BasicInput>
-          <ModalContainer
-            setSignupAddress={setSignupAddress}
-            type={"address"}
-          />
+          <div className="input_box">
+            <BasicInput
+              setValue2={setDetailAddress}
+              label={"주소"}
+              star={"*"}
+              width={"100%"}
+              type={"text"}
+              address={"address"}
+              placeholder={"주소를 입력해주세요"}
+              defaultValue={signupAddress}
+              onChange={(e) => setPostAddress(e.target.value)}
+            ></BasicInput>
+          </div>
+          <div className="check_btn">
+            <ModalContainer
+              setSignupAddress={setSignupAddress}
+              type={"address"}
+            />
+          </div>
         </div>
 
         <div className="input_birth">
@@ -174,15 +194,27 @@ function SignForm() {
         <GenderRadio setCheck={setCheck}></GenderRadio>
         <CheckboxContent>
           <div className="autoContent">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={allChecked}
+              onChange={handleAllChecked}
+            />
             <span className="CheckboxText">전체 동의하기</span>
           </div>
           <div className="autoContent">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={termsChecked}
+              onChange={() => setTermsChecked(!termsChecked)}
+            />
             <span className="CheckboxText">이용약관 동의하기(필수)</span>
           </div>
           <div className="autoContent">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={privacyChecked}
+              onChange={() => setPrivacyChecked(!privacyChecked)}
+            />
             <span className="CheckboxText">개인정보 수집 이용동의(필수)</span>
           </div>
         </CheckboxContent>
