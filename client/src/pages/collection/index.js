@@ -132,6 +132,7 @@ function Collection() {
         const { data } = await axios.get(`${BASE_URL}/collections/newproduct?${queryString}`);
 
         setData(data);
+        console.log(data);
       } catch (error) {
         console.log(`Error: ${error}`);
       }
@@ -150,8 +151,8 @@ function Collection() {
 
   const { pathname } = useLocation();
   const pageMap = {
-    "/new-product": "신상품",
-    "/best-product": "베스트",
+    "/collections/new-product": "신상품",
+    "/collections/best-product": "베스트",
   };
 
   const isAllChecked =
@@ -293,7 +294,7 @@ function Collection() {
         </div>
         <div className="product_container">
           <div className="product_list_header">
-            <div className="product_list_count">{`총 180건`}</div>
+            <div className="product_list_count">{`총 ${data && data.pageInfo.totalElements}건`}</div>
             <ul className="product_filter" onClick={handleSortListClick}>
               <FilterList dataId="newest" sort={sort}>
                 신상품순
@@ -306,9 +307,7 @@ function Collection() {
               </FilterList>
             </ul>
           </div>
-          <div className="product_list">
-            {data && data.data.map((_) => productArr.map((element) => <ProductItem element={element} key={Math.random()} />))}
-          </div>
+          <div className="product_list">{data && productArr.map((element) => <ProductItem element={element} key={Math.random()} />)}</div>
         </div>
       </Content>
     </>
