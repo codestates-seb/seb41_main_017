@@ -85,7 +85,7 @@ function LoginInputForm() {
                 font={"20"}
                 radius={"5"}
                 p_height={"12"}
-                p_width={"150"}
+                p_width={"159"}
               />
             </ButtonWrapper>
           </form>

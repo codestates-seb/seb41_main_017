@@ -24,18 +24,6 @@ const GuideModal = (props) => {
               )
             ) : null}
 
-            {/* {response === 405 ? (
-              <Main>사용 불가능한 아이디입니다</Main>
-            ) : (
-              <Main>사용 가능한 아이디입니다</Main>
-            )} */}
-
-            {/* sdfsdsdfsdf */}
-            {/* {response === 405 && checkEmail === "checkEmail" ? (
-              <Main>사용 불가능한 아이디입니다</Main>
-            ) : (
-              <Main>사용 가능한 아이디입니다.</Main>
-            )} */}
             <Footer>
               <div className="close" onClick={close}>
                 확인
