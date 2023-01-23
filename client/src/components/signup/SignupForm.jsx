@@ -61,7 +61,7 @@ function SignForm() {
       genderType: check,
       birthDate: `${year}-${month}-${day}`,
     };
-    console.log(reqbody);
+
     const headers = {
       "Content-Type": "application/json",
     };
@@ -70,15 +70,11 @@ function SignForm() {
       .post(`${BASE_URL}/users/signup`, JSON.stringify(reqbody), { headers })
 
       .then((res) => {
-        console.log(res);
         if (termsChecked === true && privacyChecked === true) {
           setSuccessModal(true);
         }
-        console.log(termsChecked);
-        console.log(privacyChecked);
       })
       .catch((err) => {
-        console.log(err);
         setResponse(err.response.data.status);
 
         if (
@@ -87,7 +83,6 @@ function SignForm() {
         ) {
           setRecjectModal(true);
         }
-        console.log(response);
       });
   };
 

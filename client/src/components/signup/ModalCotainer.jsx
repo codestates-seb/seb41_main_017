@@ -55,7 +55,6 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail }) {
         setResponse(res.status);
 
         openModal();
-        // window.alert("사용가능한 아이디입니다");
       })
 
       .catch((err) => {

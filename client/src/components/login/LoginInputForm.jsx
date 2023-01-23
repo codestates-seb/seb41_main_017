@@ -29,7 +29,6 @@ function LoginInputForm() {
       username: loginId,
       password: loginPassword,
     };
-    // console.log(reqbody);
 
     axios
       .post(`${BASE_URL}/users/signin`, reqbody, header)
@@ -42,8 +41,6 @@ function LoginInputForm() {
         window.alert(
           "로그인 정보가 일치하지 않습니다! 계정정보를 확인해주세요!!"
         );
-        // setLoginEmail('');
-        // setLoginPassword('');
       });
   };
 
@@ -68,10 +65,8 @@ function LoginInputForm() {
         <div className={toggle === 1 ? "activeContent" : "content"}>
           <form onSubmit={handleLoginBtn}>
             <EmailForm setLoginId={setLoginId} />
-            {/* {console.log(loginId)} */}
 
             <PasswordForm setLoginPassword={setLoginPassword} />
-            {/* {console.log(loginPassword)} */}
 
             <CheckboxContent>
               <div className="autoContent">
