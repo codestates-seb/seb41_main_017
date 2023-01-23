@@ -50,10 +50,10 @@ public class CartServiceImpl implements CartService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<CartDto> readCarts(Pageable pageable, CustomPrincipal principal) {
+    public Page<CartResponse> readCarts(Pageable pageable, CustomPrincipal principal) {
         verifyPrincipal(principal);
 
-        return cartRepository.findAllByProfile_Id(pageable, principal.profileId()).map(CartDto::from);
+        return cartRepository.findAllByProfile_Id(pageable, principal.profileId()).map(CartResponse::from);
     }
 
     @Override

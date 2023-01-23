@@ -3,7 +3,7 @@ package com.codestates.culinari.order.service.impl;
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.global.exception.ExceptionCode;
-import com.codestates.culinari.order.dto.OrderDto;
+import com.codestates.culinari.order.dto.response.OrderResponse;
 import com.codestates.culinari.order.repository.OrdersRepository;
 import com.codestates.culinari.order.service.OrdersService;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +23,11 @@ public class OrdersServiceImpl implements OrdersService {
 
 
     @Override
-    public Page<OrderDto> readOrders(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
+    public Page<OrderResponse> readOrders(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
         verifyPrincipal(principal);
 
         return ordersRepository.findAllCreatedAfterAndProfile_Id(LocalDateTime.now().minusMonths(searchMonths), principal.profileId(), pageable)
-                .map(OrderDto::from);
+                .map(OrderResponse::from);
     }
 
     public void verifyPrincipal(CustomPrincipal principal) {

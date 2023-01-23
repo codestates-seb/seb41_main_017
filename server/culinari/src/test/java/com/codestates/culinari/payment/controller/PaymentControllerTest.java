@@ -6,8 +6,7 @@ import com.codestates.culinari.pagination.service.PaginationService;
 import com.codestates.culinari.payment.dto.PaymentDto;
 import com.codestates.culinari.payment.dto.request.PaymentRequest;
 import com.codestates.culinari.payment.dto.request.RefundRequest;
-import com.codestates.culinari.payment.dto.response.PaymentInfoResponse;
-import com.codestates.culinari.payment.dto.response.PaymentSuccessResponse;
+import com.codestates.culinari.payment.dto.response.PaymentResponseToPage;
 import com.codestates.culinari.payment.service.PaymentService;
 import config.TestSecurityConfig;
 import org.junit.jupiter.api.DisplayName;
@@ -64,7 +63,7 @@ class PaymentControllerTest {
                 }
                 """;
 
-        given(paymentService.createPayment(any(PaymentRequest.class), any(CustomPrincipal.class))).willReturn(createPaymentDto());
+        given(paymentService.createPayment(any(PaymentRequest.class), any(CustomPrincipal.class))).willReturn(createPaymentInfoResponse());
 
         // When & Then
         mvc.perform(post("/payments")
@@ -83,9 +82,9 @@ class PaymentControllerTest {
         // Given
         Authentication auth = new UsernamePasswordAuthenticationToken(createPrincipal("사용자 명", 1L, 1L), null);
 
-        Page<PaymentDto> orderDtoPage = createPaymentPage().map(PaymentDto::from);
+        Page<PaymentResponseToPage> paymentPage = createPaymentPage().map(PaymentResponseToPage::from);
 
-        given(paymentService.readPayments(anyInt(), any(Pageable.class), any(CustomPrincipal.class))).willReturn(orderDtoPage);
+        given(paymentService.readPayments(anyInt(), any(Pageable.class), any(CustomPrincipal.class))).willReturn(paymentPage);
         given(paginationService.getPaginationBarNumbers(anyInt(), anyInt())).willReturn(List.of(0,1,2));
 
         // When & Then

@@ -43,7 +43,7 @@ public class PaymentController {
             @Valid @RequestBody PaymentRequest request,
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
-        PaymentInfoResponse paymentInfo = PaymentInfoResponse.from(paymentService.createPayment(request, principal));
+        PaymentInfoResponse paymentInfo = paymentService.createPayment(request, principal);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(paymentInfo),
@@ -60,8 +60,8 @@ public class PaymentController {
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
-        Page<PaymentInfoResponse> pagePayments = paymentService.readPayments(searchMonths, pageable, principal).map(PaymentInfoResponse::from);
-        List<PaymentInfoResponse> payments = pagePayments.getContent();
+        Page<PaymentResponseToPage> pagePayments = paymentService.readPayments(searchMonths, pageable, principal);
+        List<PaymentResponseToPage> payments = pagePayments.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, pagePayments.getTotalPages());
 
         return new ResponseEntity<>(

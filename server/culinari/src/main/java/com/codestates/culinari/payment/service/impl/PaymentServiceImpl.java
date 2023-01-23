@@ -17,6 +17,7 @@ import com.codestates.culinari.payment.dto.request.PaymentRequest;
 import com.codestates.culinari.payment.dto.request.RefundRequest;
 import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
 import com.codestates.culinari.payment.dto.response.PaymentSuccessResponse;
+import com.codestates.culinari.payment.dto.response.PaymentResponseToPage;
 import com.codestates.culinari.payment.repository.PaymentRepository;
 import com.codestates.culinari.payment.repository.RefundRepository;
 import com.codestates.culinari.payment.service.PaymentService;
@@ -60,7 +61,7 @@ public class PaymentServiceImpl implements PaymentService {
     private String tossOriginUrl;
 
     @Override
-    public PaymentDto createPayment(PaymentRequest request, CustomPrincipal principal) {
+    public PaymentInfoResponse createPayment(PaymentRequest request, CustomPrincipal principal) {
         verifyPrincipal(principal);
 
         Profile profile = profileRepository.getReferenceById(principal.profileId());
@@ -83,22 +84,14 @@ public class PaymentServiceImpl implements PaymentService {
                 });
 
         return PaymentInfoResponse.from(paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile)));
-
-        return PaymentDto.from(
-                paymentRepository
-                        .save(PaymentDto
-                                .from(orders, request.payType())
-                                .toEntity(orders, profile)
-                        )
-        );
     }
 
     @Override
-    public Page<PaymentDto> readPayments(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
+    public Page<PaymentResponseToPage> readPayments(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
         verifyPrincipal(principal);
 
         return paymentRepository.findAllCreatedAfterAndProfile_Id(LocalDateTime.now().minusMonths(searchMonths), principal.profileId(), pageable)
-                .map(PaymentDto::from);
+                .map(PaymentResponseToPage::from);
     }
 
     @Override
