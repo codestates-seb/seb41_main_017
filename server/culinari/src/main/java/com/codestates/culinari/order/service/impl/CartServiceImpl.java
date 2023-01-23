@@ -6,6 +6,7 @@ import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.order.dto.CartDto;
 import com.codestates.culinari.order.dto.request.CartPatch;
 import com.codestates.culinari.order.dto.request.CartPost;
+import com.codestates.culinari.order.dto.response.CartResponse;
 import com.codestates.culinari.order.entitiy.Cart;
 import com.codestates.culinari.order.repository.CartRepository;
 import com.codestates.culinari.order.service.CartService;
@@ -40,7 +41,7 @@ public class CartServiceImpl implements CartService {
         cartRepository.findByProfile_IdAndProduct_Id(profile.getId(), product.getId())
                 .ifPresentOrElse(
                         cart -> {
-                            cart.setQuantity(cart.getQuantity() + dto.quantity());
+                            cart.updateQuantity(cart.getQuantity() + dto.quantity());
                             cartRepository.save(cart);
                         }, () -> {
                             cartRepository.save(dto.toEntity(profile, product));
@@ -64,7 +65,7 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
 
         CartDto dto = patch.toDto();
-        cart.setQuantity(dto.quantity());
+        cart.updateQuantity(dto.quantity());
     }
 
     @Override
