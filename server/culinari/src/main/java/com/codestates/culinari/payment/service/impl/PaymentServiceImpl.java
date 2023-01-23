@@ -82,8 +82,7 @@ public class PaymentServiceImpl implements PaymentService {
                     orders.getOrderDetails().add(orderDetail);
                 });
 
-        if (paymentRepository.existsByOrder_IdAndPaySuccessTf(orders.getId(), true))
-            throw new BusinessLogicException(ExceptionCode.PAYMENT_EXISTS);
+        return PaymentInfoResponse.from(paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile)));
 
         return PaymentDto.from(
                 paymentRepository

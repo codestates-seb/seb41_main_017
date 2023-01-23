@@ -73,7 +73,6 @@ class PaymentServiceImplTest {
         given(cartRepository.findByProfile_IdAndProduct_Id(anyLong(), anyLong())).willReturn(Optional.of(createCart(1L, 1, 1L, 1L)));
         willDoNothing().given(cartRepository).delete(any(Cart.class));
         given(orderDetailRepository.save(any(OrderDetail.class))).willReturn(createOrderDetail(1L));
-        given(paymentRepository.existsByOrder_IdAndPaySuccessTf(anyLong(), anyBoolean())).willReturn(false);
         given(paymentRepository.save(any(Payment.class))).willReturn(createPayment(PayType.CARD, 1000, "상품명 외 2개"));
 
         // When
@@ -85,7 +84,6 @@ class PaymentServiceImplTest {
         verify(cartRepository, times(paymentRequest.productIds().size())).findByProfile_IdAndProduct_Id(anyLong(), anyLong());
         verify(cartRepository, times(paymentRequest.productIds().size())).delete(any(Cart.class));
         verify(orderDetailRepository, times(paymentRequest.productIds().size())).save(any(OrderDetail.class));
-        then(paymentRepository).should().existsByOrder_IdAndPaySuccessTf(anyLong(), anyBoolean());
         then(paymentRepository).should().save(any(Payment.class));
 
     }
@@ -111,35 +109,6 @@ class PaymentServiceImplTest {
         then(profileRepository).should().getReferenceById(anyLong());
         then(ordersRepository).should().save(any(Orders.class));
         then(cartRepository).should().findByProfile_IdAndProduct_Id(anyLong(), anyLong());
-    }
-
-    @DisplayName("이미 결제 승인된 결제 정보를 입력하면, 예외를 반환한다.")
-    @Test
-    void givenExistentPaymentInfoAndPrincipal_whenSavingPaymentAndOrder_thenThrowsException() {
-        // Given
-        PaymentRequest paymentRequest = createPaymentRequest();
-        CustomPrincipal principal = createPrincipal("사용자 명", 1L, 1L);
-
-        given(profileRepository.getReferenceById(anyLong())).willReturn(createProfile(1L));
-        given(ordersRepository.save(any(Orders.class))).willReturn(createOrder(1L, 1L));
-        given(cartRepository.findByProfile_IdAndProduct_Id(anyLong(), anyLong())).willReturn(Optional.of(createCart(1L, 1, 1L, 1L)));
-        willDoNothing().given(cartRepository).delete(any(Cart.class));
-        given(orderDetailRepository.save(any(OrderDetail.class))).willReturn(createOrderDetail(1L));
-        given(paymentRepository.existsByOrder_IdAndPaySuccessTf(anyLong(), anyBoolean())).willReturn(true);
-
-        // When
-        Throwable t = catchThrowable(() -> sut.createPayment(paymentRequest, principal));
-
-        // Then
-        assertThat(t)
-                .isInstanceOf(BusinessLogicException.class)
-                .hasMessage("Payment exists");
-        then(profileRepository).should().getReferenceById(anyLong());
-        then(ordersRepository).should().save(any(Orders.class));
-        verify(cartRepository, times(paymentRequest.productIds().size())).findByProfile_IdAndProduct_Id(anyLong(), anyLong());
-        verify(cartRepository, times(paymentRequest.productIds().size())).delete(any(Cart.class));
-        verify(orderDetailRepository, times(paymentRequest.productIds().size())).save(any(OrderDetail.class));
-        then(paymentRepository).should().existsByOrder_IdAndPaySuccessTf(anyLong(), anyBoolean());
     }
 
     @DisplayName("결제를 조회할 기간을 입력하면, 기간내에 존재하는 결제 목록을 반환한다.")
