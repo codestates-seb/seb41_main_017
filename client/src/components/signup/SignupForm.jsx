@@ -3,26 +3,22 @@ import GenderRadio from "./GenderRadio";
 import { useState } from "react";
 import ModalContainer from "./ModalCotainer";
 import BasicInput from "../BasicInput";
-import { Page, CheckboxContent, IdBlock } from "../../styles/signupStyle";
+import {
+  Page,
+  CheckboxContent,
+  IdBlock,
+  ModalTitle,
+  ModalText,
+  CloseButton,
+  ButtonWrapper,
+  ModalWrapper,
+  SignupSuccessContainer,
+  SignupFailureContainer,
+} from "../../styles/signupStyle";
 import BasicButton from "../BasicButton";
 import axios from "axios";
-import BASE_URL from "../../constants/BASE_URL";
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  border-top: 1px solid rgb(244, 244, 244);
-  text-align: center;
-  padding-top: 20px;
-  margin-top: 20px;
 
-  a {
-    background-color: #ffffff;
-    color: #c26d53;
-    border-radius: 3px;
-    outline: 1px solid #c26d53;
-  }
-`;
+import BASE_URL from "../../constants/BASE_URL";
 
 function SignForm() {
   const [signupAddress, setSignupAddress] = useState("");
@@ -41,6 +37,10 @@ function SignForm() {
   const [allChecked, setAllChecked] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [privacyChecked, setPrivacyChecked] = useState(false);
+  const [response, setResponse] = useState("");
+
+  const [successModal, setSuccessModal] = useState(false);
+  const [rejectModal, setRecjectModal] = useState(false);
 
   function handleAllChecked() {
     setAllChecked(!allChecked);
@@ -70,10 +70,24 @@ function SignForm() {
       .post(`${BASE_URL}/users/signup`, JSON.stringify(reqbody), { headers })
 
       .then((res) => {
-        window.alert("회원가입 성공 !");
+        console.log(res);
+        if (termsChecked === true && privacyChecked === true) {
+          setSuccessModal(true);
+        }
+        console.log(termsChecked);
+        console.log(privacyChecked);
       })
       .catch((err) => {
         console.log(err);
+        setResponse(err.response.data.status);
+
+        if (
+          (termsChecked === false && privacyChecked === false) ||
+          response === 405
+        ) {
+          setRecjectModal(true);
+        }
+        console.log(response);
       });
   };
 
@@ -135,6 +149,7 @@ function SignForm() {
             <ModalContainer type={"checkEmail"} signupEmail={signupEmail} />
           </div>
         </div>
+
         <div className="input_cotainer">
           <BasicInput
             setValue={setPhoneNum}
@@ -192,6 +207,7 @@ function SignForm() {
 
         <span>성별</span>
         <GenderRadio setCheck={setCheck}></GenderRadio>
+
         <CheckboxContent>
           <div className="autoContent">
             <input
@@ -201,6 +217,7 @@ function SignForm() {
             />
             <span className="CheckboxText">전체 동의하기</span>
           </div>
+
           <div className="autoContent">
             <input
               type="checkbox"
@@ -209,6 +226,7 @@ function SignForm() {
             />
             <span className="CheckboxText">이용약관 동의하기(필수)</span>
           </div>
+
           <div className="autoContent">
             <input
               type="checkbox"
@@ -229,6 +247,27 @@ function SignForm() {
           />
         </ButtonWrapper>
       </IdBlock>
+      {successModal && (
+        <ModalWrapper>
+          <SignupSuccessContainer>
+            <ModalTitle>가입 성공</ModalTitle>
+            <ModalText>가입이 완료되었습니다.</ModalText>
+          </SignupSuccessContainer>
+
+          <CloseButton onClick={() => setSuccessModal(false)}>닫기</CloseButton>
+        </ModalWrapper>
+      )}
+      {rejectModal && (
+        <ModalWrapper>
+          <SignupFailureContainer>
+            <ModalTitle>가입 실패</ModalTitle>
+            <ModalText>
+              이용약관과 개인정보 수집 이용동의를 모두 동의해주세요.
+            </ModalText>
+          </SignupFailureContainer>
+          <CloseButton onClick={() => setRecjectModal(false)}>닫기</CloseButton>
+        </ModalWrapper>
+      )}
     </Page>
   );
 }
