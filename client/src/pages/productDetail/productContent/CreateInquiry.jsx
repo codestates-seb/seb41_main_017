@@ -151,7 +151,7 @@ const ButtonWrapper = styled.div`
 function CreateInquiry({ data, setIsOpen }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const isActive = title !== "" && content !== "";
+  const isActive = title && content;
 
   return (
     <Container>
