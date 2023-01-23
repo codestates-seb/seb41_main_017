@@ -1,9 +1,7 @@
 package com.codestates.culinari.payment.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.order.dto.OrderDto;
 import com.codestates.culinari.pagination.service.PaginationService;
-import com.codestates.culinari.payment.dto.PaymentDto;
 import com.codestates.culinari.payment.dto.request.PaymentRequest;
 import com.codestates.culinari.payment.dto.request.RefundRequest;
 import com.codestates.culinari.payment.dto.response.PaymentResponseToPage;
@@ -102,7 +100,7 @@ class PaymentControllerTest {
     @Test
     void givenPaymentInfo_whenRequestingApprovingPayment_thenReturnPaymentInfo() throws Exception {
         willDoNothing().given(paymentService).verifyRequest(anyString(), anyString(), any(BigDecimal.class));
-        given(paymentService.requestApprovalPayment(anyString(), anyString(), any(BigDecimal.class))).willReturn(createPaymentSuccessResponse());
+        given(paymentService.requestApprovalPayment(anyString(), anyString(), any(BigDecimal.class))).willReturn(createPaymentTossDto());
 
         // When & Then
         mvc.perform(get("/payments/success")
@@ -146,7 +144,7 @@ class PaymentControllerTest {
                 }
                 """;
 
-        given(paymentService.requestPaymentCancel(any(RefundRequest.class), any(CustomPrincipal.class))).willReturn(createPaymentSuccessResponse());
+        given(paymentService.requestPaymentCancel(any(RefundRequest.class), any(CustomPrincipal.class))).willReturn(createPaymentTossDto());
 
         // When & Then
         mvc.perform(post("/payments/cancel")
