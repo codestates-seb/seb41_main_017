@@ -39,6 +39,11 @@ jwt:
 file:
   dir: C:/Users/J/Pictures/Screenshots/
 
+toss:
+  test:
+    secret-api-key: test_sk_P24xLea5zVAPgGnNPdb3QAMYNwW6
+    origin-url: https://api.tosspayments.com/v1
+
 ---
 #EC2 ???? JWT
 spring:

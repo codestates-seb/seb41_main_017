@@ -1,6 +1,5 @@
 package com.codestates.culinari.global.file;
 
-import com.codestates.culinari.product.entitiy.ProductReview;
 import com.codestates.culinari.product.entitiy.ProductReviewImage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

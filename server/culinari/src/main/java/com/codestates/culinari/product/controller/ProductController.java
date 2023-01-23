@@ -4,14 +4,14 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
-import com.codestates.culinari.product.dto.response.ProductResponseWithCustomerService;
-import com.codestates.culinari.product.entitiy.ProductReview;
+import com.codestates.culinari.product.dto.response.ProductWithCustomerServiceResponse;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.response.SingleResponseDto;
 import com.codestates.culinari.user.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -34,11 +34,31 @@ public class ProductController {
     public ResponseEntity getProduct(
             @PathVariable("product-id") Long productId){
 
+        ProductWithCustomerServiceResponse product = productService.readProductWithCS(productId);
 
-        ProductResponseWithCustomerService product = ProductResponseWithCustomerService.from(productService.readProduct(productId));
         return new ResponseEntity<>(
                 new SingleResponseDto<>(product), HttpStatus.OK);
     }
+    @PostMapping("/{product-id}/like")
+    public ResponseEntity postProductLike(
+            @PathVariable("product-id") Long productId,
+            @AuthenticationPrincipal CustomPrincipal principal){
+
+        productService.createProductLike(productId,principal);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{product-id}/like")
+    public ResponseEntity deleteProductLike(
+            @PathVariable("product-id") Long productId,
+            @AuthenticationPrincipal CustomPrincipal principal){
+
+        productService.deleteProductLike(productId,principal);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     //상품 문의 등록
     @PostMapping("/{product-id}/inquiry")
     public ResponseEntity postProductInquiry(
@@ -51,15 +71,15 @@ public class ProductController {
         return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
     //상품 후기 등록
-    @PostMapping("/{product-id}/review")
+    @PostMapping(value = "/{product-id}/review", consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity postProductReview(
             @PathVariable("product-id") Long productId,
             @AuthenticationPrincipal CustomPrincipal principal,
             @RequestPart(value = "request") ProductReviewRequest productReviewRequest,
             @RequestPart(value = "images", required = false) List<MultipartFile> images) throws IOException {
 
-        ProductReview productReview = productCsService.createProductReview(productReviewRequest,principal,productId);
-        productCsService.saveProductReviewImages(productReview.getId(), images);
+        productCsService.createProductReview(productReviewRequest,principal,productId,images);
+
 
         return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }

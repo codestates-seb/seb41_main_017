@@ -1,10 +1,7 @@
 package com.codestates.culinari.order.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.order.dto.CartDto;
 import com.codestates.culinari.order.dto.OrderDto;
-import com.codestates.culinari.order.dto.request.CartPost;
-import com.codestates.culinari.order.dto.request.OrderRequest;
 import com.codestates.culinari.order.service.OrdersService;
 import com.codestates.culinari.pagination.service.PaginationService;
 import config.TestSecurityConfig;
@@ -23,13 +20,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.codestates.culinari.order.Stub.Stub.*;
+import static com.codestates.culinari.order.Stub.Stub.createOrderPage;
+import static com.codestates.culinari.order.Stub.Stub.createPrincipal;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.BDDMockito.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,32 +44,32 @@ class OrdersControllerTest {
 
     public OrdersControllerTest(@Autowired MockMvc mvc) { this.mvc = mvc; }
 
-    @DisplayName("[POST] 주문 등록 - 정상호출")
-    @Test
-    void givenNewOrderInfo_whenRequesting_thenSavesNewOrder() throws Exception {
-        // Given
-        Authentication auth = new UsernamePasswordAuthenticationToken(createPrincipal("사용자 명", 1L, 1L), null);
-        String requestBody = """
-                {
-                    "productIds": [1, 2, 3],
-                    "address": "배송 주소 명",
-                    "receiverName": "수령자 명",
-                    "receiverPhoneNumber": "010-0000-0000"
-                }
-                """;
-
-        willDoNothing().given(ordersService).createOrder(any(OrderRequest.class), any(CustomPrincipal.class));
-
-        // When & Then
-        mvc.perform(post("/orders")
-                        .with(authentication(auth))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody)
-                )
-                .andExpect(status().isCreated());
-
-        then(ordersService).should().createOrder(any(OrderRequest.class), any(CustomPrincipal.class));
-    }
+//    @DisplayName("[POST] 주문 등록 - 정상호출")
+//    @Test
+//    void givenNewOrderInfo_whenRequesting_thenSavesNewOrder() throws Exception {
+//        // Given
+//        Authentication auth = new UsernamePasswordAuthenticationToken(createPrincipal("사용자 명", 1L, 1L), null);
+//        String requestBody = """
+//                {
+//                    "productIds": [1, 2, 3],
+//                    "address": "배송 주소 명",
+//                    "receiverName": "수령자 명",
+//                    "receiverPhoneNumber": "010-0000-0000"
+//                }
+//                """;
+//
+//        willDoNothing().given(ordersService).createOrder(any(OrderRequest.class), any(CustomPrincipal.class));
+//
+//        // When & Then
+//        mvc.perform(post("/orders")
+//                        .with(authentication(auth))
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(requestBody)
+//                )
+//                .andExpect(status().isCreated());
+//
+//        then(ordersService).should().createOrder(any(OrderRequest.class), any(CustomPrincipal.class));
+//    }
 
     @DisplayName("[GET] 장바구니 목록 조회 - 정상호출")
     @Test

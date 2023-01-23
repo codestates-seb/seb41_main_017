@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Validated
@@ -34,13 +35,13 @@ public class ProductCollectionsController {
             @RequestParam(required = false , value = "sorted_type") String sortedType,
             @RequestParam(required = false, value = "filter") String filter,
             @Min (0)@RequestParam(defaultValue = "0", required = false) int page,
-            @Positive @RequestParam(defaultValue = "15", required = false) int size){
+            @Positive @RequestParam(defaultValue = "15", required = false) int size) throws UnsupportedEncodingException {
 
-        if(sortedType == null && filter == null) sortedType = "newest";
+        if(sortedType == null) sortedType = "newest";
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<ProductResponseToPage> newestProductsPage = productService.readProductWithSortedType(sortedType, pageable).map(ProductResponseToPage::from);
+        Page<ProductResponseToPage> newestProductsPage = productService.readProductWithSortedType(sortedType,filter, pageable).map(ProductResponseToPage::from);
         List<ProductResponseToPage> productPage = newestProductsPage.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, newestProductsPage.getTotalPages());
 

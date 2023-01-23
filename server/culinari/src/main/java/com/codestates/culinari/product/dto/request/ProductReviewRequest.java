@@ -1,17 +1,9 @@
 package com.codestates.culinari.product.dto.request;
 
 import com.codestates.culinari.product.dto.ProductReviewDto;
-import com.codestates.culinari.product.dto.ProductReviewImageDto;
 import com.codestates.culinari.product.entitiy.ProductReview;
-import com.codestates.culinari.product.entitiy.ProductReviewImage;
 import com.codestates.culinari.user.dto.ProfileDto;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public record ProductReviewRequest(
         Long productId,

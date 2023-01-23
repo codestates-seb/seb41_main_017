@@ -2,15 +2,11 @@ package com.codestates.culinari.product.dto;
 
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductReview;
-import com.codestates.culinari.product.entitiy.ProductReviewImage;
 import com.codestates.culinari.product.entitiy.ProductReviewLike;
 import com.codestates.culinari.user.entitiy.Profile;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public record ProductReviewDto(

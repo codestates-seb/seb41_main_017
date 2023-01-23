@@ -5,8 +5,6 @@ import com.codestates.culinari.product.entitiy.Product;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public record ProductDto(
         Long id,
@@ -25,13 +23,9 @@ public record ProductDto(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         String createdBy,
-        String modifiedBy,
-        List<ProductInquiryDto> productInquiryDtos,
-        List<ProductReviewDto> productReviewDtos
+        String modifiedBy
 )
 {
-
-
     public static ProductDto of(
             Long id,
             String categoryDetailCode,
@@ -49,15 +43,13 @@ public record ProductDto(
             LocalDateTime createdAt,
             LocalDateTime modifiedAt,
             String createdBy,
-            String modifiedBy,
-            List<ProductInquiryDto> productInquiryDtos,
-            List<ProductReviewDto> productReviewDtos){
-
-        return new ProductDto(id, categoryDetailCode, name, content, price, shipping, brand, seller, packaging, unit, weight, countryOfOrigin, allergyInfo, createdAt, modifiedAt, createdBy, modifiedBy,productInquiryDtos, productReviewDtos);
+            String modifiedBy
+    ){
+        return new ProductDto(id, categoryDetailCode, name, content, price, shipping, brand, seller, packaging, unit, weight, countryOfOrigin, allergyInfo, createdAt, modifiedAt, createdBy, modifiedBy);
     }
 
     public static ProductDto of(Long id, String name, BigDecimal price){
-        return new ProductDto(id, null, name, null, price, null, null, null, null, null, null, null, null, null, null, null, null, null,null);
+        return new ProductDto(id, null, name, null, price, null, null, null, null, null, null, null, null, null, null, null, null);
     }
     public static ProductDto from(Product entity){
         return new ProductDto(
@@ -77,14 +69,7 @@ public record ProductDto(
                 entity.getCreatedAt(),
                 entity.getModifiedAt(),
                 entity.getCreatedBy(),
-                entity.getModifiedBy(),
-                entity.getProductInquiry().stream()
-                        .map(ProductInquiryDto::from)
-                        .collect(Collectors.toList()),
-                entity.getProductReview().stream()
-                        .map(ProductReviewDto::from
-                        )
-                        .collect(Collectors.toList())
+                entity.getModifiedBy()
         );
     }
 
