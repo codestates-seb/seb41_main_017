@@ -2,6 +2,7 @@ package com.codestates.culinari.order.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.order.dto.OrderDto;
+import com.codestates.culinari.order.dto.response.OrderResponse;
 import com.codestates.culinari.order.service.OrdersService;
 import com.codestates.culinari.pagination.service.PaginationService;
 import config.TestSecurityConfig;
@@ -44,42 +45,15 @@ class OrdersControllerTest {
 
     public OrdersControllerTest(@Autowired MockMvc mvc) { this.mvc = mvc; }
 
-//    @DisplayName("[POST] 주문 등록 - 정상호출")
-//    @Test
-//    void givenNewOrderInfo_whenRequesting_thenSavesNewOrder() throws Exception {
-//        // Given
-//        Authentication auth = new UsernamePasswordAuthenticationToken(createPrincipal("사용자 명", 1L, 1L), null);
-//        String requestBody = """
-//                {
-//                    "productIds": [1, 2, 3],
-//                    "address": "배송 주소 명",
-//                    "receiverName": "수령자 명",
-//                    "receiverPhoneNumber": "010-0000-0000"
-//                }
-//                """;
-//
-//        willDoNothing().given(ordersService).createOrder(any(OrderRequest.class), any(CustomPrincipal.class));
-//
-//        // When & Then
-//        mvc.perform(post("/orders")
-//                        .with(authentication(auth))
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(requestBody)
-//                )
-//                .andExpect(status().isCreated());
-//
-//        then(ordersService).should().createOrder(any(OrderRequest.class), any(CustomPrincipal.class));
-//    }
-
     @DisplayName("[GET] 장바구니 목록 조회 - 정상호출")
     @Test
     void givenNothing_whenRequesting_thenReturnOrderPage() throws Exception {
         // Given
         Authentication auth = new UsernamePasswordAuthenticationToken(createPrincipal("사용자 명", 1L, 1L), null);
 
-        Page<OrderDto> orderDtoPage = createOrderPage().map(OrderDto::from);
+        Page<OrderResponse> orderPage = createOrderPage().map(OrderResponse::from);
 
-        given(ordersService.readOrders(anyInt(), any(Pageable.class), any(CustomPrincipal.class))).willReturn(orderDtoPage);
+        given(ordersService.readOrders(anyInt(), any(Pageable.class), any(CustomPrincipal.class))).willReturn(orderPage);
         given(paginationService.getPaginationBarNumbers(anyInt(), anyInt())).willReturn(List.of(0,1,2));
 
         // When & Then
