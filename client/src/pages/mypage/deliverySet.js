@@ -3,13 +3,11 @@ import BasicButton from "../../components/BasicButton";
 import CheckBox from "../../components/CheckBox";
 import Mypagehead from "../../components/MypageHead";
 import ListLayout from "../../components/ListLayout";
-import Modalbutton from "../../components/Modalbutton";
+import Postmodal from "../../components/Postmodal";
 import { useEffect, useState,  } from "react";
 import axios from 'axios';
 import Guidance from "../../components/Guidance";
-
-
-
+import PatchModal from "../../components/PatchModal";
 
 const Classlist = styled.div`
   .check_box {
@@ -66,29 +64,21 @@ const Classlist = styled.div`
 `;
 
 /*
-  "id": 1,
-    "destinationName": "test destinationName", // 목적지
-    "address": "test address", // 주소
-    "receiverName": "test name", // 수취인
-    "receiverPhoneNumber": "010-9999-9999", // 폰번호
-    "defaultSelect": false
-    ** 배송메세지 부분이 빠졌음
-
     1. 비활성화 체크버튼을누르면 "기본배송지를 변경하시겠습니까?" 문구와함께 확인 과 취소 모달창
-    2. 삭제버튼을 누르면 "해당배송지를 삭제하시겠습니까?"  문고와함께 확인 과 취소 모달창
     3. 수정버튼을 누르면 "해당 배송지 정보가 입력된상태인 input태그들과 확인 과 취소 모달창
-    4. 기본배송지가 하나일경우는 삭제 버튼을 누를시에 "기본배송지는 1개 이상이여야합니다" 경고문과 취소버튼
 
     배송지 추가 버튼누르는건 로그인 구현후로
 */
 
 function Addressset() {
   const [addresList, setAddresList] = useState([]);
-  const [ischeckd, setIscheckd] = useState(false);
   const [keys, setKeys] = useState(0);
+  const [ischeckd, setIscheckd] = useState(false);
   const [isdelete, setIsdelete] = useState(false);
+  const [isfetch, setIsfetch] = useState(false);
 
-
+  
+  
   useEffect(()=>{
     
     axios.get(`${process.env.REACT_APP_URL}/destination`,{
@@ -101,6 +91,7 @@ function Addressset() {
     
   },[])
 
+  // 중속성을 이용하여 window.location.reload(); 을사용하지않기
   const isOpen = (e,state)=>{
     setKeys(e)
     switch(state){
@@ -108,47 +99,55 @@ function Addressset() {
       break;
       case `isdelete`: setIsdelete(!isdelete);
       break;
+      case `isfetch` : setIsfetch(!isfetch);
+      break;
       default : console.log("디폴트값이들어옴")
     }
   }
 
+
   const changeValue = (id, state)=>{
-    console.log(state)
-    console.log(addresList.length)
-
     if(state === "ischeckd"){
-        axios.patch(`${process.env.REACT_APP_URL}/destination/${id}/representative`,{
-          defaultSelect: true,
-        },{
+        axios.patch(`${process.env.REACT_APP_URL}/destination/${id}/representative`, undefined, {
           headers:{
             Authorization : localStorage.getItem("accessToken"),
           }
-        },
-        setIscheckd(!ischeckd)
+        }
       );
+      setIscheckd(!ischeckd);
     }
-    if(state === "isdelete"){
-
-        axios.delete(`${process.env.REACT_APP_URL}/destination/${id}`,{
-          headers:{
+    if(state === "isdelete") {
+      axios.delete(`${process.env.REACT_APP_URL}/destination/${id}`, {
+        headers:{
             Authorization : localStorage.getItem("accessToken"),
           }
-        },
-        setIsdelete(isdelete)
+        }
       );
+      setIsdelete(!isdelete)
     }
+    // if(state === "isfetch"){
 
-    window.location.replace("/mypage/addressSet");
+    //     axios.patch(`${process.env.REACT_APP_URL}/destination/${id}`,{
+    //       headers:{
+    //         Authorization : localStorage.getItem("accessToken"),
+    //       }
+    //     }
+    //   );
+    //   setIsfetch(!isfetch);
+    // }
+    // 비동기문제
+    setTimeout(() => window.location.reload(), 1000);
+    
   }
+  // 배송지 추가 할때 배송지명이 규칙이 있나? 현재 회사만 가능
+  // 배송지 수정 바디는 타이틀,컨텐트.프로세스스테이터스는 어떤것인지 ?
 
-
-  
-  
-  
+  // console.log(addresList)
+  // console.log(keys)
   return (
-    <Mypagehead title={"배송지 설정"} side_title={<Modalbutton text={"배송지 추가"}/>}>
+    <Mypagehead title={"배송지 설정"} side_title={<Postmodal/>}>
       <Classlist>
-        {addresList.map((user, idx)=>{
+        {addresList.map((user)=>{
           return (
             <ListLayout
             key={user.id}
@@ -174,16 +173,13 @@ function Addressset() {
               <span>{`${user.receiverPhoneNumber}`}</span>
               <p>{`${user.address}`}</p>
             </div>
-            {/* 보류 */}
-            {/* <div className="list_in_footer">
-              <span>{"배송메세지"}</span>
-              <span>{"문 앞에 놔주세요"}</span>
-            </div> */}
           </div>
           <div className="list_button">
-            <BasicButton p_width={"15"} p_height={"5"}>
+            <BasicButton p_width={"15"} p_height={"5"} onClick={()=>isOpen(user.id,"isfetch")}>
               수정
             </BasicButton>
+            {isfetch ? <PatchModal close={()=> setIsfetch(!isfetch)} data={addresList.filter((el)=> el.id === keys)}/> : null}
+
             <BasicButton p_width={"15"} p_height={"5"} onClick={()=>isOpen(user.id,"isdelete")}>
               삭제
             </BasicButton>
