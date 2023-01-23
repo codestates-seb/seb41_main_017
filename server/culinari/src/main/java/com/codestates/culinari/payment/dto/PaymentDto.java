@@ -46,8 +46,8 @@ public record PaymentDto(
         return Payment.of(
                 payType,
                 amount,
-                order,
                 productName,
+                order,
                 profile
         );
     }
