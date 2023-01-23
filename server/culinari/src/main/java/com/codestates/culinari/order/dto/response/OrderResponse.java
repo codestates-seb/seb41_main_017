@@ -1,9 +1,10 @@
 package com.codestates.culinari.order.dto.response;
 
 import com.codestates.culinari.order.constant.StatusType;
-import com.codestates.culinari.order.dto.OrderDetailDto;
-import com.codestates.culinari.order.dto.OrderDto;
+import com.codestates.culinari.order.entitiy.OrderDetail;
+import com.codestates.culinari.order.entitiy.Orders;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record OrderResponse(
@@ -12,26 +13,31 @@ public record OrderResponse(
         String receiverName,
         String receiverPhoneNumber,
         StatusType status,
+        LocalDateTime createdAt,
         List<OrderDetailResponse> orderDetails
 ) {
 
-    public static OrderResponse of(Long id, String address, String receiverName, String receiverPhoneNumber, StatusType status, List<OrderDetailResponse> orderDetails) {
-        return new OrderResponse(id, address, receiverName, receiverPhoneNumber, status, orderDetails);
+    public static OrderResponse of(
+            Long id, String address, String receiverName, String receiverPhoneNumber,
+            StatusType status, LocalDateTime createdAt, List<OrderDetailResponse> orderDetails
+    ) {
+        return new OrderResponse(id, address, receiverName, receiverPhoneNumber, status, createdAt, orderDetails);
     }
 
-    public static OrderResponse from(OrderDto dto) {
-        List<OrderDetailDto> orderDetailDtos = dto.orderDetailDtos();
+    public static OrderResponse from(Orders entity) {
+        List<OrderDetail> orderDetails = entity.getOrderDetails();
 
         return OrderResponse.of(
-                dto.id(),
-                dto.address(),
-                dto.receiverName(),
-                dto.receiverPhoneNumber(),
-                orderDetailDtos.stream()
-                        .map(OrderDetailDto::statusType)
+                entity.getId(),
+                entity.getAddress(),
+                entity.getReceiverName(),
+                entity.getReceiverPhoneNumber(),
+                orderDetails.stream()
+                        .map(OrderDetail::getStatusType)
                         .min(Enum::compareTo)
                         .orElseThrow(NullPointerException::new),
-                orderDetailDtos.stream()
+                entity.getCreatedAt(),
+                orderDetails.stream()
                         .map(OrderDetailResponse::from)
                         .toList()
         );
