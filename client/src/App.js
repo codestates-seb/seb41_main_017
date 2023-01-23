@@ -76,8 +76,8 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/product" element={<ProductDetail />} />
-            <Route path="/new-product" element={<Collection />} />
-            <Route path="/best-product" element={<Collection />} />
+            <Route path="/collections/new-product" element={<Collection />} />
+            <Route path="/collections/best-product" element={<Collection />} />
           </Routes>
         </main>
         <footer id="footer"></footer>

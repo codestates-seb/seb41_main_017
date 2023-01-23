@@ -171,12 +171,12 @@ function Header() {
               </a>
             </li>
             <li>
-              <a href="/new-product">
+              <a href="/collections/new-product">
                 <span className="new_product">신상품</span>
               </a>
             </li>
             <li>
-              <a href="/best-product">
+              <a href="/collections/best-product">
                 <span className="best_product">베스트</span>
               </a>
             </li>
