@@ -7,8 +7,7 @@ const Layout = styled.div`
   align-items: ${(props) => (props.flex_d !== "column" ? "center" : null)};
   padding-bottom: ${(props) =>
     props.padding_b !== null ? props.padding_b : "10px"};
-
-  .text {
+  .sideInput_text {
     display: flex;
     align-items: center;
     font-size: 16px;
@@ -26,7 +25,7 @@ const Layout = styled.div`
     }
   }
 
-  .data {
+  .sideInput_data {
     flex: 1;
     input {
       border-radius: 5px;
@@ -35,16 +34,9 @@ const Layout = styled.div`
     }
   }
 
-  .double {
-    width: 100%;
-    padding: 5px 3px;
-    border-radius: 5px;
-    margin-bottom: 4px;
-  }
 `;
 
 function SideInput({
-    type,
   flex_d,
   mark,
   placeholder,
@@ -53,8 +45,6 @@ function SideInput({
   onChange,
   padding_b,
   label,
-  list,
-  value,
 }) {
   const styels = {
     flex_d,
@@ -65,14 +55,13 @@ function SideInput({
 
   return (
     <Layout {...styels}>
-      <div className="text">
+      <div className="sideInput_text">
         <label htmlFor="simple">
           {label}
           {mark === "on" ? <span className="mark">*</span> : false}
         </label>
       </div>
-      <div className="data">
-        {type !== "combo" ? (
+      <div className="sideInput_data">
           <input
             type="text"
             id="simple"
@@ -80,29 +69,6 @@ function SideInput({
             defaultValue={defaultValue}
             onChange={onChange}
           ></input>
-        ) : (
-          <>
-            <select 
-            name="choice" 
-            className="double"
-            defaultValue={defaultValue}
-            onChange={onChange}
-            >
-              {["---선택---",...list,"---직접입력---"].map((el, idx) => {
-                return <option 
-                key={idx}
-                value={el}
-                >{el}</option>   
-              })}
-            </select>
-            <input
-            type="text"
-            id="simple"
-            defaultValue={defaultValue}
-            onChange={onChange}
-          ></input>
-          </>
-        )}
       </div>
     </Layout>
   );
@@ -115,7 +81,5 @@ SideInput.defaultProps = {
   padding: null,
   padding_b: null,
   label: "",
-  type: null,
-  list: [],
 };
 export default SideInput;
