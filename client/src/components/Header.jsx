@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Layout = styled.div`
   // 화면사이즈 수정 ---
@@ -121,6 +122,13 @@ const Layout = styled.div`
 
 function Header() {
   const { pathname } = useLocation();
+  const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearchProductSubmit = (event) => {
+    event.preventDefault();
+    navigate(`/search?keyword=${searchText}`);
+  };
 
   return (
     <Layout pathname={pathname}>
@@ -137,12 +145,12 @@ function Header() {
         <div className="logo">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png" alt="logo"></img>
         </div>
-        <div className="serach">
-          <input placeholder="검색어를 입력해주세요"></input>
+        <form className="serach" onSubmit={handleSearchProductSubmit}>
+          <input placeholder="검색어를 입력해주세요" onChange={({ target }) => setSearchText(target.value)}></input>
           <button>
             <BsSearch />
           </button>
-        </div>
+        </form>
         <div className="myIcons flex">
           <div className="icons">
             <a href="/mypage">
