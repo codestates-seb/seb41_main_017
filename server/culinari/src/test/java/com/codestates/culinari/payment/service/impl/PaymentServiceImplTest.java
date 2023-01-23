@@ -13,7 +13,6 @@ import com.codestates.culinari.payment.dto.request.PaymentRequest;
 import com.codestates.culinari.payment.entity.Payment;
 import com.codestates.culinari.payment.repository.PaymentRepository;
 import com.codestates.culinari.payment.repository.RefundRepository;
-import com.codestates.culinari.payment.service.PaymentService;
 import com.codestates.culinari.user.repository.ProfileRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
@@ -36,8 +34,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.*;
 
 @DisplayName("비즈니스 로직 - 결제")
@@ -81,9 +77,9 @@ class PaymentServiceImplTest {
         // Then
         then(profileRepository).should().getReferenceById(anyLong());
         then(ordersRepository).should().save(any(Orders.class));
-        verify(cartRepository, times(paymentRequest.productIds().size())).findByProfile_IdAndProduct_Id(anyLong(), anyLong());
-        verify(cartRepository, times(paymentRequest.productIds().size())).delete(any(Cart.class));
-        verify(orderDetailRepository, times(paymentRequest.productIds().size())).save(any(OrderDetail.class));
+        then(cartRepository).should(times(paymentRequest.productIds().size())).findByProfile_IdAndProduct_Id(anyLong(), anyLong());
+        then(cartRepository).should(times(paymentRequest.productIds().size())).delete(any(Cart.class));
+        then(orderDetailRepository).should(times(paymentRequest.productIds().size())).save(any(OrderDetail.class));
         then(paymentRepository).should().save(any(Payment.class));
 
     }
