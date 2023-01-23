@@ -99,13 +99,37 @@ const Content = styled.div`
   }
 `;
 
+const FilterList = styled.li.attrs(({ dataId }) => ({
+  "data-id": dataId,
+}))`
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 14px;
+  color: rgb(153, 153, 153);
+  cursor: pointer;
+
+  color: ${({ dataId, sort }) => (dataId === sort ? "#ff6767" : "rgb(153, 153, 153)")};
+`;
+
 function Collection() {
   const [data, setData] = useState(null);
+  const [sort, setSort] = useState("newest");
+
+  const handleSortListClick = ({ target }) => {
+    setSort(target.dataset.id);
+  };
 
   useEffect(() => {
+    const query = {
+      sorted_type: sort,
+    };
+    const queryString = Object.entries(query).reduce((acc, [key, value]) => `${acc}&${key}=${value}`, "");
+
     const getData = async () => {
       try {
-        const { data } = await axios.get(`${BASE_URL}/collections/newproduct?page=0&size=100`);
+        const { data } = await axios.get(`${BASE_URL}/collections/newproduct?${queryString}`);
 
         setData(data);
       } catch (error) {
@@ -270,25 +294,20 @@ function Collection() {
         <div className="product_container">
           <div className="product_list_header">
             <div className="product_list_count">{`총 180건`}</div>
-            <ul className="product_filter">
-              <li className="product_filter_list">신상품순</li>
-              <li className="product_filter_list">낮은 가격순</li>
-              <li className="product_filter_list">높은 가격순</li>
+            <ul className="product_filter" onClick={handleSortListClick}>
+              <FilterList dataId="newest" sort={sort}>
+                신상품순
+              </FilterList>
+              <FilterList dataId="lower" sort={sort}>
+                낮은 가격순
+              </FilterList>
+              <FilterList dataId="higher" sort={sort}>
+                높은 가격순
+              </FilterList>
             </ul>
           </div>
           <div className="product_list">
-            {data &&
-              data.data.map((element) => {
-                const ref = `/product/${element.id}`;
-
-                return (
-                  <a href={ref} key={element.id}>
-                    {productArr.map((element) => {
-                      return <ProductItem element={element} />;
-                    })}
-                  </a>
-                );
-              })}
+            {data && data.data.map((_) => productArr.map((element) => <ProductItem element={element} key={Math.random()} />))}
           </div>
         </div>
       </Content>
