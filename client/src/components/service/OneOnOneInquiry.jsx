@@ -3,6 +3,8 @@ import BasicInput from "../BasicInput";
 import BasicButton from "../BasicButton";
 import { BsTextarea } from "react-icons/bs";
 import { useState } from "react";
+import axios from "axios";
+
 const InquiryCotainer = styled.form`
   width: 900px;
 
@@ -35,15 +37,45 @@ const InquiryCotainer = styled.form`
 `;
 
 function OneOnOneInquiry() {
-  const [question, setQuestion] = useState({
-    title: "",
-    content: "",
-  });
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-  const handleChange = (e) => {
+  const handleChangeTitle = (e) => {
+    setTitle(e.target.value);
+  };
+  const handleChangeContent = (e) => {
+    setContent(e.target.value);
+  };
+
+  const handleSubmitInquiry = (e) => {
     e.preventDefault();
-    const { name, value } = e.target;
-    setQuestion(...setQuestion);
+
+    const token = localStorage.getItem("token");
+    const parse = JSON.parse(token);
+    const header = {
+      headers: {
+        "Content-Type": `application/json`,
+        authorization: parse.authorization,
+      },
+    };
+
+    let data = JSON.stringify({
+      title: title,
+      content: content,
+    });
+
+    axios
+      .post(
+        `http://ec2-3-37-105-24.ap-northeast-2.compute.amazonaws.com:8080/board/inquiry`,
+        data,
+        header
+      )
+      .then((res) => {
+        window.alert("성공!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -58,12 +90,21 @@ function OneOnOneInquiry() {
         className="title_content"
         type="text"
         placeholder="  제목을 입력해주세요"
+        value={title}
+        onChange={handleChangeTitle}
       />
+      {console.log(title)}
       <div className="content_container">
         <label htmlFor="content">글 내용</label>
       </div>
-      <textarea placeholder="내용을 입력해주세요"></textarea>
-      <div className="btn_container">
+      <textarea
+        placeholder="내용을 입력해주세요"
+        value={content}
+        onChange={handleChangeContent}
+      ></textarea>
+      {console.log(content)}
+
+      <div className="btn_container" onClick={handleSubmitInquiry}>
         <BasicButton p_width={"20"} p_height={"7"}>
           문의 작성
         </BasicButton>{" "}
