@@ -27,10 +27,10 @@ public class ProductReview extends AuditingFields {
     @Column(nullable = false, length = 65554)
     private String content;
 
-    @Enumerated(EnumType.STRING)
+
     @Setter
     @Column
-    private ReviewStar reviewStar;
+    private Integer reviewStar;
 
     @JsonBackReference
     @ManyToOne(optional = false)
@@ -41,13 +41,12 @@ public class ProductReview extends AuditingFields {
     private Profile profile;
 
     @OneToMany(mappedBy = "productReview", cascade = CascadeType.ALL)
-    @Setter
-    private List<ProductReviewImage> productReviewImages = new ArrayList<>();
+    private final List<ProductReviewImage> productReviewImages = new ArrayList<>();
 
     @OneToOne(mappedBy = "productReview", cascade = CascadeType.ALL)
     private ProductReviewLike productReviewLike;
 
-    public ProductReview(String title, String content, ReviewStar reviewStar, Product product, Profile profile ) {
+    public ProductReview(String title, String content, Integer reviewStar, Product product, Profile profile ) {
         this.title = title;
         this.content = content;
         this.reviewStar = reviewStar;
@@ -55,7 +54,7 @@ public class ProductReview extends AuditingFields {
         this.profile = profile;
     }
 
-    public static ProductReview of(String title, String content, ReviewStar reviewStar, Product product, Profile profile){
+    public static ProductReview of(String title, String content, Integer reviewStar, Product product, Profile profile){
         return new ProductReview(title, content, reviewStar, product, profile);
     }
     @Override
@@ -68,16 +67,5 @@ public class ProductReview extends AuditingFields {
         if(productReviewLike.getProductReview() != this){
             productReviewLike.setProductReview(this);
         }
-    }
-    public enum ReviewStar{
-        ZERO("0"),
-        ONE("1"),
-        TWO("2"),
-        THREE("3"),
-        FOUR("4"),
-        FIVE("5");
-        @Getter
-        private final String star;
-        ReviewStar(String star){this.star = star;}
     }
 }

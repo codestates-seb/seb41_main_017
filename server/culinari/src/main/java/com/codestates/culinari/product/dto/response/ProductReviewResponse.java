@@ -15,7 +15,7 @@ public record ProductReviewResponse(
         Long profileId,
         String title,
         String content,
-        ProductReview.ReviewStar reviewStar,
+        Integer reviewStar,
         Long like,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
@@ -24,7 +24,7 @@ public record ProductReviewResponse(
         List<ProductReviewImageDto> productReviewImageDtos
 
 ) {
-    public static ProductReviewResponse of(Long id, Long productId, Long profileId, String title, String content, ProductReview.ReviewStar reviewStar, Long like, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,List<ProductReviewImageDto> productReviewImageDtos) {
+    public static ProductReviewResponse of(Long id, Long productId, Long profileId, String title, String content, Integer reviewStar, Long like, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,List<ProductReviewImageDto> productReviewImageDtos) {
         return new ProductReviewResponse(id, productId, profileId, title, content, reviewStar, like, createdAt, modifiedAt, createdBy, modifiedBy,productReviewImageDtos);
     }
 

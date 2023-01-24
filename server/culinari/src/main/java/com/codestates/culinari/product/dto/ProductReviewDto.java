@@ -13,7 +13,7 @@ public record ProductReviewDto(
         Long id,
         Long productId,
         Long profileId,
-        ProductReview.ReviewStar reviewStar,
+        Integer reviewStar,
         Long like,
         String title,
         String content,
@@ -21,17 +21,16 @@ public record ProductReviewDto(
         LocalDateTime modifiedAt,
         String createdBy,
         String modifiedBy,
-
         List<ProductReviewImageDto> productReviewImageDtos
 )
 {
 
-    public static ProductReviewDto of(Long id, Long productId,Long profileId,ProductReview.ReviewStar reviewStar,Long like, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,List<ProductReviewImageDto> productReviewImageDtos){
+    public static ProductReviewDto of(Long id, Long productId,Long profileId, Integer reviewStar,Long like, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,List<ProductReviewImageDto> productReviewImageDtos){
         return new ProductReviewDto(id, productId, profileId,reviewStar, like, title, content, createdAt, modifiedAt, createdBy, modifiedBy,productReviewImageDtos);
 
     }
 
-    public static ProductReviewDto of(Long productId,Long profileId, String title,String content,ProductReview.ReviewStar reviewStar){
+    public static ProductReviewDto of(Long productId,Long profileId, String title,String content,Integer reviewStar){
         return new ProductReviewDto(null, productId, profileId,reviewStar,null, title, content,null, null, null, null,null);
     }
 

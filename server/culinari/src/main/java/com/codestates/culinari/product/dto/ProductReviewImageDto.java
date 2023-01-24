@@ -1,5 +1,6 @@
 package com.codestates.culinari.product.dto;
 
+import com.codestates.culinari.product.entitiy.ProductReview;
 import com.codestates.culinari.product.entitiy.ProductReviewImage;
 import lombok.Builder;
 
@@ -7,26 +8,23 @@ import lombok.Builder;
 public record ProductReviewImageDto(
         Long id,
         Long productReviewId,
-        String originImageName,
-        String storeImageName
+        String imgUrl
 ){
-    public static ProductReviewImageDto of(Long id,Long productReviewId, String originImageName, String storeImageName){
-        return new ProductReviewImageDto(id,productReviewId, originImageName, storeImageName);
+    public static ProductReviewImageDto of(Long id,Long productReviewId,  String imgUrl){
+        return new ProductReviewImageDto(id,productReviewId,imgUrl);
     }
 
     public static ProductReviewImageDto from(ProductReviewImage entity){
         return new ProductReviewImageDto(
                 entity.getId(),
                 entity.getProductReview().getId(),
-                entity.getOriginImageName(),
-                entity.getStoreImageName()
+                entity.getImgUrl()
         );
     }
-    public ProductReviewImage toEntity(){
+    public ProductReviewImage toEntity(ProductReview productReview){
         return ProductReviewImage.of(
-                originImageName,
-                storeImageName
-
+                imgUrl,
+                productReview
         );
     }
 }
