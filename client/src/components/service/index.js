@@ -7,6 +7,7 @@ import OneOnOneInquiry from "./OneOnOneInquiry";
 import ServiceDetailpage from "./ServiceDetailpage";
 import OftenDetail from "./OftenDetail";
 import Dummy from "./data.json";
+import OneOnOneDetail from "./OneOnOneDetail";
 
 function ServiceHome() {
   const Page = styled.div`
@@ -63,6 +64,9 @@ function ServiceHome() {
       children: [
         {
           "/one-on-one/inquiry": <OneOnOneInquiry />,
+        },
+        {
+          "/one-on-one/:id": <OneOnOneDetail />,
         },
       ],
     },
