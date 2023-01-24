@@ -1,6 +1,5 @@
 package com.codestates.culinari.payment.entity;
 
-import com.codestates.culinari.audit.AuditingFields;
 import com.codestates.culinari.order.entitiy.Orders;
 import com.codestates.culinari.payment.constant.PayType;
 import com.codestates.culinari.user.entitiy.Profile;

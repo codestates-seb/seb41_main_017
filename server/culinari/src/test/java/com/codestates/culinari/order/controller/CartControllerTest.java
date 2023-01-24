@@ -1,9 +1,9 @@
 package com.codestates.culinari.order.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.order.dto.CartDto;
 import com.codestates.culinari.order.dto.request.CartPatch;
 import com.codestates.culinari.order.dto.request.CartPost;
+import com.codestates.culinari.order.dto.response.CartResponse;
 import com.codestates.culinari.order.service.CartService;
 import com.codestates.culinari.pagination.service.PaginationService;
 import config.TestSecurityConfig;
@@ -77,9 +77,9 @@ class CartControllerTest {
         // Given
         Authentication auth = new UsernamePasswordAuthenticationToken(createPrincipal("사용자 명", 1L, 1L), null);
 
-        Page<CartDto> cartDtoPage = createCartPage().map(CartDto::from);
+        Page<CartResponse> cartPage = createCartPage().map(CartResponse::from);
 
-        given(cartService.readCarts(any(Pageable.class), any(CustomPrincipal.class))).willReturn(cartDtoPage);
+        given(cartService.readCarts(any(Pageable.class), any(CustomPrincipal.class))).willReturn(cartPage);
         given(paginationService.getPaginationBarNumbers(anyInt(), anyInt())).willReturn(List.of(0,1,2));
 
         // When & Then

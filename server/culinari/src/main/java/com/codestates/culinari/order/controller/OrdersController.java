@@ -41,7 +41,7 @@ public class OrdersController {
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
-        Page<OrderResponse> pageOrders = ordersService.readOrders(searchMonths, pageable, principal).map(OrderResponse::from);
+        Page<OrderResponse> pageOrders = ordersService.readOrders(searchMonths, pageable, principal);
         List<OrderResponse> orders = pageOrders.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, pageOrders.getTotalPages());
 
