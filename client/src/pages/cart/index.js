@@ -97,6 +97,7 @@ const OrderButtonContainer = styled.div`
 function Cart() {
   const [data, setData] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
     const getCartList = async () => {
@@ -110,10 +111,9 @@ function Cart() {
       try {
         const { data } = await axios.get(`${BASE_URL}/carts`, config);
 
-        console.log(data);
         return data;
       } catch (error) {
-        console.log(`Error: ${error}`);
+        console.error(error);
       }
     };
 
@@ -129,7 +129,7 @@ function Cart() {
       setData(data);
       setTotalPrice(calcTotalPrice(data));
     })();
-  }, []);
+  }, [isClicked]);
 
   return (
     <Container>
@@ -144,7 +144,7 @@ function Cart() {
           <span className="delete-selection">선택 삭제</span>
         </SelectButtonContainer>
 
-        {data && data.data.map((element) => <CartProductItem data={element} key={element.id} />)}
+        {data && data.data.map((item) => <CartProductItem item={item} setIsClicked={setIsClicked} key={item.id} />)}
 
         <TotalPriceBox>
           <div className="product-price">

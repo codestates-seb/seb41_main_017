@@ -55,22 +55,22 @@ const DeleteButtonWrapper = styled.div`
   margin: 0 24px;
 `;
 
-function CartProductItem({ data }) {
-  const [quantity, setQuantity] = useState(data.quantity);
+function CartProductItem({ item, setIsClicked }) {
+  const [quantity, setQuantity] = useState(item.quantity);
 
   useEffect(() => {
     const patchQuantity = () => {
-      const body = {
-        quantity,
-      };
-      const header = {
+      const config = {
         headers: {
           "Content-Type": `application/json`,
           authorization: JSON.parse(localStorage.getItem("token")).authorization,
         },
       };
-
-      axios.patch(`${BASE_URL}/carts/${data.id}`, body, header);
+      try {
+        axios.patch(`${BASE_URL}/carts/${item.id}`, { quantity }, config);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     patchQuantity();
@@ -85,14 +85,14 @@ function CartProductItem({ data }) {
       </ImageWrapper>
 
       <ProductInfo>
-        <ProductTitle>{data.product.name}</ProductTitle>
-        <ProductPrice>{data.product.price.toLocaleString()}원</ProductPrice>
-        <QuantityBoxWrapper>
+        <ProductTitle>{item.product.name}</ProductTitle>
+        <ProductPrice>{item.product.price.toLocaleString()}원</ProductPrice>
+        <QuantityBoxWrapper onClick={setIsClicked}>
           <QuantityBox quantity={quantity} setQuantity={setQuantity} />
         </QuantityBoxWrapper>
       </ProductInfo>
 
-      <TotalPrice>{(data.quantity * data.product.price).toLocaleString()}원</TotalPrice>
+      <TotalPrice>{(quantity * item.product.price).toLocaleString()}원</TotalPrice>
 
       <DeleteButtonWrapper>
         <DeleteButton />
