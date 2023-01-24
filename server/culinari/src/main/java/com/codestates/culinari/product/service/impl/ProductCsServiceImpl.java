@@ -1,9 +1,8 @@
 package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.global.file.FileStore;
+import com.codestates.culinari.global.file.S3Uploader;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
-import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
@@ -20,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +34,7 @@ public class ProductCsServiceImpl implements ProductCsService {
     private final ProductReviewLikeRepository productReviewLikeRepository;
     private final ProfileRepository profileRepository;
     private final ProductReviewImageRepository productReviewImageRepository;
-    private final FileStore fileStore;
+    private final S3Uploader s3Uploader;
 
     // profileId로 문의 리스트 get
     @Transactional(readOnly = true)
@@ -61,20 +61,18 @@ public class ProductCsServiceImpl implements ProductCsService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), productReviewRequest.reviewStar(),product, profile);
-        List<ProductReviewImage> imageList = fileStore.storeReviewImages(multipartFiles);
-        productReview.setProductReviewImages(imageList);
-        imageList.stream().forEach(productReviewImage -> productReviewImage.setProductReview(productReview));
+        List<String> image = s3Uploader.uploads(multipartFiles);
+        List<String> imgList = new ArrayList<>();
+        for(String imageUrl : image){
+            ProductReviewImage img  = new ProductReviewImage(imageUrl, productReview);
+            productReviewImageRepository.save(img);
+            imgList.add(img.getImgUrl());
+        }
+//        List<ProductReviewImage> imageList = fileStore.storeReviewImages(multipartFiles);
+//        imageList.stream().forEach(productReviewImage -> productReviewImage.(productReview));
         ProductReviewLike productReviewLike = productReviewLikeRepository.save(ProductReviewLike.of(0L,productReview));
         productReview.setProductReviewLike(productReviewLike);
         productReviewRepository.saveAndFlush(productReview);
-    }
-
-    @Override
-    public void saveProductReviewImages(Long productReviewId, List<MultipartFile> multipartFiles) throws IOException{
-        ProductReview productReview = productReviewRepository.getReferenceById(productReviewId);
-        List<ProductReviewImage> imageList = fileStore.storeReviewImages(multipartFiles);
-        productReview.setProductReviewImages(imageList);
-        imageList.stream().forEach(productReviewImage -> productReviewImage.setProductReview(productReview));
     }
 
     //후기 사진 불러오기

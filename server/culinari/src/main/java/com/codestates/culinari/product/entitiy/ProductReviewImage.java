@@ -2,6 +2,8 @@ package com.codestates.culinari.product.entitiy;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -12,21 +14,21 @@ public class ProductReviewImage {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-
-    private String originImageName;
-    private String storeImageName;
+    @Setter
+    private String imgUrl;
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_review_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ProductReview productReview;
 
-    @Builder
-    public ProductReviewImage( String originImageName, String storePath){
-        this.originImageName = originImageName;
-        this.storeImageName = storePath;
+
+    public ProductReviewImage( String imgUrl, ProductReview productReview){
+        this.imgUrl = imgUrl;
+        this.productReview = productReview;
     }
 
-    public static ProductReviewImage of(String originImageName, String storeImageName) {
-        return new ProductReviewImage(originImageName, storeImageName);
+    public static ProductReviewImage of( String imgUrl, ProductReview productReview) {
+        return new ProductReviewImage( imgUrl, productReview);
     }
 }

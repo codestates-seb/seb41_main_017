@@ -103,7 +103,7 @@ values('001001',now(), now(), now(), now(), '알러지 정보', '풀무원', '�
        '중량'),
       ('001001',now(), now(), now(), now(), '알러지 정보', '소와나무', '상품 내용', '원산지 정보', '상품명', '포장방식', 2000, '판매자', '배송방법', '단위',
        '중량'),
-      ('001001',now(), now(), now(), now(), '알러지 정보', '브랜드 정보', '상품 내용', '원산지 정보', '상품명', '포장방식', 2500, '판매자', '배송방법', '단위',
+      ('001001',now(), now(), now(), now(), '알러지 정보', '동원', '상품 내용', '원산지 정보', '상품명', '포장방식', 2500, '판매자', '배송방법', '단위',
        '중량'),
       ('001001',now(), now(), now(), now(), '알러지 정보', '브랜드 정보', '상품 내용', '원산지 정보', '상품명', '포장방식', 3000, '판매자', '배송방법', '단위',
        '중량'),
@@ -125,7 +125,6 @@ values('001001',now(), now(), now(), now(), '알러지 정보', '풀무원', '�
        '중량'),
       ('001001',now(), now(), now(), now(), '알러지 정보', '브랜드 정보', '상품 내용', '원산지 정보', '상품명', '포장방식', 7500, '판매자', '배송방법', '단위',
        '중량');
-
 
 insert into product(category_detail_code,created_at, created_by, modified_at, modified_by, allergy_info, brand, content, country_of_origin,
                     name, packaging, price, seller, shipping, unit, weight)
@@ -189,4 +188,8 @@ values('002001',now(), now(), now(), now(), '알러지 정보', '풀무원', '00
        '중량'),
       ('002001',now(), now(), now(), now(), '알러지 정보', '브랜드 정보', '상품 002', '원산지 정보', '상품명', '포장방식', 7500, '판매자', '배송방법', '단위',
        '중량');
+
+
+insert into product_image(img_url, product_id)
+values ('http://culinari-images.s3.ap-northeast-2.amazonaws.com/a8952c1a-145e-4369-aa1d-c7d50ccc3c0e-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_20221128_111724.png', 1L);
 
