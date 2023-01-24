@@ -4,22 +4,28 @@ import DeleteButton from "../DeleteButton";
 import QuantityBox from "../QuantityBox";
 
 const Container = styled.div`
-  height: 124px;
+  height: 140px;
   padding: 20px 0;
   border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
 `;
 
-const Image = styled.img`
-  width: 85px;
-  height: 100%;
-  margin-left: 39px;
-  margin-right: 33px;
+const ImageWrapper = styled.div`
+  width: 100px;
+  height: 100px;
+  margin-left: 10px;
+  margin-right: 20px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const ProductInfo = styled.div`
-  width: 100%;
+  width: calc(100% - 300px);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -39,28 +45,31 @@ const QuantityBoxWrapper = styled.div`
 
 const TotalPrice = styled.div`
   min-width: 150px;
+  text-align: end;
 `;
 
 const DeleteButtonWrapper = styled.div`
   margin: 0 24px;
 `;
 
-function CartProductItem({ src }) {
+function CartProductItem({ data }) {
   return (
     <Container>
-      <CheckBox />
+      <CheckBox size="24px" />
 
-      <Image src={src} />
+      <ImageWrapper>
+        <img src={"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"} />
+      </ImageWrapper>
 
       <ProductInfo>
-        <ProductTitle>상품 이름입니다.</ProductTitle>
-        <ProductPrice>10,000원</ProductPrice>
+        <ProductTitle>{data.product.name}</ProductTitle>
+        <ProductPrice>{data.product.price.toLocaleString()}원</ProductPrice>
         <QuantityBoxWrapper>
-          <QuantityBox quantity={10} />
+          <QuantityBox quantity={data.quantity} />
         </QuantityBoxWrapper>
       </ProductInfo>
 
-      <TotalPrice>10,000,000원</TotalPrice>
+      <TotalPrice>{(data.quantity * data.product.price).toLocaleString()}원</TotalPrice>
 
       <DeleteButtonWrapper>
         <DeleteButton />

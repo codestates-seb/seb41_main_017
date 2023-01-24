@@ -1,4 +1,7 @@
+import axios from "axios";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+
 import { ReactComponent as CartIcon } from "../../assets/cart_icon.svg";
 import CartProductItem from "../../components/cart/CartProductItem";
 import CheckBox from "../../components/CheckBox";
@@ -6,6 +9,8 @@ import BasicButton from "../../components/BasicButton";
 import ColorButton from "../../components/ColorButton";
 import ProductItemSlider from "../../components/ProductItemSlider";
 import { Title, TodayRecommendProducts } from "..";
+
+import BASE_URL from "../../constants/BASE_URL";
 
 const Container = styled.div`
   max-width: 1050px;
@@ -90,54 +95,73 @@ const OrderButtonContainer = styled.div`
 `;
 
 function Cart() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const getCartList = async () => {
+      const config = {
+        headers: {
+          "Content-Type": `application/json`,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
+        },
+      };
+
+      try {
+        const { data } = await axios.get(`${BASE_URL}/carts`, config);
+
+        console.log(data);
+        setData(data);
+      } catch (error) {
+        console.log(`Error: ${error}`);
+      }
+    };
+
+    getCartList();
+  }, []);
+
   return (
-    <>
-      <Container>
-        <TitleContainer>
-          <CartIcon />
-          <h2>장바구니</h2>
-        </TitleContainer>
-        <CartProductListContainer>
-          <SelectButtonContainer>
-            <CheckBox />
-            <span>전체 선택</span>
-            <span className="delete-selection">선택 삭제</span>
-          </SelectButtonContainer>
+    <Container>
+      <TitleContainer>
+        <CartIcon />
+        <h2>장바구니</h2>
+      </TitleContainer>
+      <CartProductListContainer>
+        <SelectButtonContainer>
+          <CheckBox size="24px" />
+          <span>전체 선택</span>
+          <span className="delete-selection">선택 삭제</span>
+        </SelectButtonContainer>
 
-          <CartProductItem></CartProductItem>
-          <CartProductItem></CartProductItem>
-          <CartProductItem></CartProductItem>
-          <CartProductItem></CartProductItem>
+        {data && data.data.map((element) => <CartProductItem data={element} key={element.id} />)}
 
-          <TotalPriceBox>
-            <div className="product-price">
-              <span>상품 가격</span>
-              <span>204,000원</span>
-            </div>
-            <div className="shipping-fee">
-              <span className="sign">+</span>
-              <span>배송비</span>
-              <span>3,000원</span>
-            </div>
-            <div className="total-price">
-              <span className="sign">=</span>
-              <span>총 주문 금액</span>
-              <strong>207,000원</strong>
-            </div>
-          </TotalPriceBox>
+        <TotalPriceBox>
+          <div className="product-price">
+            <span>상품 가격</span>
+            <span>204,000원</span>
+          </div>
+          <div className="shipping-fee">
+            <span className="sign">+</span>
+            <span>배송비</span>
+            <span>3,000원</span>
+          </div>
+          <div className="total-price">
+            <span className="sign">=</span>
+            <span>총 주문 금액</span>
+            <strong>207,000원</strong>
+          </div>
+        </TotalPriceBox>
 
-          <OrderButtonContainer>
-            <BasicButton children={"상품 더 담기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
-            <ColorButton children={"주문하기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
-          </OrderButtonContainer>
-        </CartProductListContainer>
+        <OrderButtonContainer>
+          <BasicButton children={"상품 더 담기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
+          <ColorButton children={"주문하기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
+        </OrderButtonContainer>
+      </CartProductListContainer>
 
-        <TodayRecommendProducts>
-          <Title>이달의 추천 상품</Title>
-          <ProductItemSlider />
-        </TodayRecommendProducts>
-      </Container>
-    </>
+      <TodayRecommendProducts>
+        <Title>이달의 추천 상품</Title>
+        <ProductItemSlider />
+      </TodayRecommendProducts>
+    </Container>
   );
 }
 
