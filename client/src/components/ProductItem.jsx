@@ -35,9 +35,11 @@ const Item = styled.div`
 `;
 
 function ProductItem({ element }) {
+  const ref = `/product/${element.id}`;
+
   return (
     <Item>
-      <a>
+      <a href={ref}>
         <div className="image_wrapper">
           <img src={element.image}></img>
         </div>

@@ -18,6 +18,7 @@ public enum ExceptionCode {
     PAYMENT_NOT_FOUND(404, "Payment not found"),
     USERNAME_EXISTS(405, "Username exist"),
     EMAIL_EXISTS(405, "Email exist"),
+    PAYMENT_EXISTS(405, "Payment exists"),
     TOSS_REQUEST_FAIL(500, "Toss request fail");
 
     @Getter
