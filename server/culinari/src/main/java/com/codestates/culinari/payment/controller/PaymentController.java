@@ -9,7 +9,8 @@ import com.codestates.culinari.payment.dto.request.PaymentRequest;
 import com.codestates.culinari.payment.dto.request.RefundRequest;
 import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
 import com.codestates.culinari.payment.dto.response.PaymentInfoResponse;
-import com.codestates.culinari.payment.dto.response.PaymentSuccessResponse;
+import com.codestates.culinari.payment.dto.response.PaymentResponseToPage;
+import com.codestates.culinari.payment.dto.response.toss.PaymentTossDto;
 import com.codestates.culinari.payment.service.PaymentService;
 import com.codestates.culinari.response.SingleResponseDto;
 import jakarta.validation.Valid;
@@ -43,7 +44,7 @@ public class PaymentController {
             @Valid @RequestBody PaymentRequest request,
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
-        PaymentInfoResponse paymentInfo = PaymentInfoResponse.from(paymentService.createPayment(request, principal));
+        PaymentInfoResponse paymentInfo = paymentService.createPayment(request, principal);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(paymentInfo),
@@ -60,8 +61,8 @@ public class PaymentController {
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
-        Page<PaymentInfoResponse> pagePayments = paymentService.readPayments(searchMonths, pageable, principal).map(PaymentInfoResponse::from);
-        List<PaymentInfoResponse> payments = pagePayments.getContent();
+        Page<PaymentResponseToPage> pagePayments = paymentService.readPayments(searchMonths, pageable, principal);
+        List<PaymentResponseToPage> payments = pagePayments.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, pagePayments.getTotalPages());
 
         return new ResponseEntity<>(
@@ -78,7 +79,7 @@ public class PaymentController {
     ) {
         paymentService.verifyRequest(paymentKey, orderId, amount);
         try {
-            PaymentSuccessResponse response = paymentService.requestApprovalPayment(paymentKey, orderId, amount);
+            PaymentTossDto response = paymentService.requestApprovalPayment(paymentKey, orderId, amount);
 
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response),
@@ -109,7 +110,7 @@ public class PaymentController {
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
         try {
-            PaymentSuccessResponse response = paymentService.requestPaymentCancel(request, principal);
+            PaymentTossDto response = paymentService.requestPaymentCancel(request, principal);
 
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response),

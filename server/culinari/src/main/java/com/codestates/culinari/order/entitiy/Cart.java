@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -17,7 +16,6 @@ public class Cart extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Setter
     @Column(nullable = false)
     private Integer quantity;
 
@@ -37,6 +35,9 @@ public class Cart extends AuditingFields {
         return new Cart(quantity, profile, product);
     }
 
+    public void updateQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 }
 
 // 장바구니 삭제 하는게 관리가 용이한 지?
