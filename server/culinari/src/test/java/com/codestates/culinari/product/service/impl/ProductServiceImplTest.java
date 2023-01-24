@@ -1,7 +1,6 @@
 package com.codestates.culinari.product.service.impl;
 
-import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.product.dto.ProductDto;
+import com.codestates.culinari.global.search.SearchFilter;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.repository.ProductRepository;
@@ -17,13 +16,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.codestates.culinari.order.Stub.Stub.createPrincipal;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -37,6 +35,10 @@ class ProductServiceImplTest {
     @Mock
     ProductRepository productRepository;
 
+    @Mock
+    SearchFilter searchFilter;
+
+
     @DisplayName("[READ] 상품 Id를 입력하면, 상품을 반환한다")
     @Test
     void givenProductId_whenReadingProduct_thenReturnProduct() {
@@ -47,7 +49,7 @@ class ProductServiceImplTest {
         given(productRepository.findById(productId)).willReturn(Optional.of(product));
         // When
 
-        sut.readProduct(productId);
+        sut.findProduct(productId);
 
         // Then
         then(productRepository).should().findById(productId);
@@ -55,18 +57,23 @@ class ProductServiceImplTest {
 
     @DisplayName("[READ] 정렬타입과 페이지 정보를 입력하면, 신상품 페이지를 반환한다")
     @Test
-    void givenSortTypeAndPageInfo_whenReadingProduct_thenReturnNewestProductPage() {
+    void givenSortTypeAndPageInfo_whenReadingProduct_thenReturnNewestProductPage() throws UnsupportedEncodingException {
         // Given
-        String sortType = "newest";
-        Pageable pageable = PageRequest.of(0,15, Sort.by("id").descending());
+        String sortType = "lower";
+        String filter = "category:001";
+        List<String> categoryList = new ArrayList<>();
+        List<String> brandList = new ArrayList<>();
 
-        given(productRepository.findAll(pageable)).willReturn(Page.empty());
+
+        Pageable pageable = PageRequest.of(0,15,Sort.by("price"));
+
+        given(productRepository.findAllWithSortAndFilter(categoryList,brandList,pageable)).willReturn(Page.empty());
         // When
 
-        sut.readProductWithSortedType(sortType, pageable);
+        sut.readProductWithSortedType(sortType,filter, pageable);
 
         // Then
-        then(productRepository).should().findAll(pageable);
+        then(productRepository).should().findAllWithSortAndFilter(categoryList,brandList,pageable);
     }
 
     @DisplayName("[READ] 카테고리 코드와 페이지 정보를 입력하면, 카테고리 페이지를 반환한다")

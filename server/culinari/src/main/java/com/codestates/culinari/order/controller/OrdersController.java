@@ -1,12 +1,10 @@
 package com.codestates.culinari.order.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.order.dto.request.OrderRequest;
 import com.codestates.culinari.order.dto.response.OrderResponse;
 import com.codestates.culinari.order.service.OrdersService;
 import com.codestates.culinari.pagination.PageResponseDto;
 import com.codestates.culinari.pagination.service.PaginationService;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -31,16 +32,6 @@ public class OrdersController {
     private final OrdersService ordersService;
     private final PaginationService paginationService;
 
-    @PostMapping
-    public ResponseEntity postOrder(
-            @Valid @RequestBody OrderRequest request,
-            @AuthenticationPrincipal CustomPrincipal principal
-    ) {
-        ordersService.createOrder(request, principal);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
     @GetMapping
     public ResponseEntity getOrders(
             @Min(0) @RequestParam(defaultValue = "0", required = false) int page,
@@ -50,7 +41,7 @@ public class OrdersController {
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
-        Page<OrderResponse> pageOrders = ordersService.readOrders(searchMonths, pageable, principal).map(OrderResponse::from);
+        Page<OrderResponse> pageOrders = ordersService.readOrders(searchMonths, pageable, principal);
         List<OrderResponse> orders = pageOrders.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, pageOrders.getTotalPages());
 

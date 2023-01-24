@@ -42,9 +42,9 @@ class ProductCollectionsControllerTest {
 
     @MockBean
     private ProductService productService;
-
     @MockBean
     private PaginationService paginationService;
+
 
     public ProductCollectionsControllerTest(@Autowired MockMvc mvc){this.mvc = mvc;}
 
@@ -52,21 +52,23 @@ class ProductCollectionsControllerTest {
     @Test
     void givenPageInfoAndSortType_whenRequestProduct_thenReturnNewestProductPage() throws Exception {
         // Given
-        String sortType = "newest";
+
         Authentication auth = new UsernamePasswordAuthenticationToken(createPrincipal("사용자", 1L, 1L), null);
         Page<ProductDto> productDtoPage = createProductPage().map(ProductDto::from);
 
-        given(productService.readProductWithSortedType(eq(sortType), any(Pageable.class))).willReturn(productDtoPage);
+        given(productService.readProductWithSortedType(anyString(),anyString(), any(Pageable.class))).willReturn(productDtoPage);
         given(paginationService.getPaginationBarNumbers(anyInt(), anyInt())).willReturn(List.of(0,1,2));
 
         // When & Then
         mvc.perform(get("/collections/newproduct")
                         .with(authentication(auth))
+                        .param("sortedType", "newest")
+                        .param("filter","category:001")
                         .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
 
-        then(productService).should().readProductWithSortedType(eq(sortType),any(Pageable.class));
+        then(productService).should().readProductWithSortedType(anyString(),anyString(),any(Pageable.class));
         then(paginationService).should().getPaginationBarNumbers(anyInt(), anyInt());
     }
 

@@ -1,6 +1,8 @@
 package com.codestates.culinari.product.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.pagination.service.PaginationService;
+import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.user.dto.ProfileDto;
 import com.codestates.culinari.user.service.ProfileService;
 import config.TestSecurityConfig;
@@ -17,10 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static com.codestates.culinari.order.Stub.Stub.createPrincipal;
 import static com.codestates.culinari.order.Stub.Stub.createProfile;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,6 +35,10 @@ class MypageControllerTest {
 
     @MockBean
     private ProfileService profileService;
+    @MockBean
+    private ProductService productService;
+    @MockBean
+    private  PaginationService paginationService;
 
     public MypageControllerTest(@Autowired MockMvc mvc){this.mvc = mvc;}
 

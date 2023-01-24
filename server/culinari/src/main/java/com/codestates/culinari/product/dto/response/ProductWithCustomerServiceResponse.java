@@ -1,14 +1,15 @@
 package com.codestates.culinari.product.dto.response;
 
-import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.ProductReviewDto;
+import com.codestates.culinari.product.entitiy.Product;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public record ProductResponseWithCustomerService(
+public record ProductWithCustomerServiceResponse(
         Long id,
         String name,
         String content,
@@ -27,11 +28,10 @@ public record ProductResponseWithCustomerService(
         String modifiedBy,
         List<ProductInquiryDto> productInquiryDtos,
         List<ProductReviewDto> productReviewDtos
-
 )
 {
 
-    public static ProductResponseWithCustomerService of(
+    public static ProductWithCustomerServiceResponse of(
             Long id,
             String name,
             String content,
@@ -51,7 +51,7 @@ public record ProductResponseWithCustomerService(
             List<ProductInquiryDto> productInquiryDtos,
             List<ProductReviewDto> productReviewDtos
     ) {
-        return new ProductResponseWithCustomerService(
+        return new ProductWithCustomerServiceResponse(
                 id,
                 name,
                 content,
@@ -73,26 +73,30 @@ public record ProductResponseWithCustomerService(
         );
     }
 
-    public static ProductResponseWithCustomerService from(ProductDto dto){
-        return new ProductResponseWithCustomerService(
-                dto.id(),
-                dto.name(),
-                dto.content(),
-                dto.price(),
-                dto.shipping(),
-                dto.brand(),
-                dto.seller(),
-                dto.packaging(),
-                dto.unit(),
-                dto.weight(),
-                dto.countryOfOrigin(),
-                dto.allergyInfo(),
-                dto.createdAt(),
-                dto.modifiedAt(),
-                dto.createdBy(),
-                dto.modifiedBy(),
-                dto.productInquiryDtos(),
-                dto.productReviewDtos()
+    public static ProductWithCustomerServiceResponse from(Product entity){
+        return new ProductWithCustomerServiceResponse(
+                entity.getId(),
+                entity.getName(),
+                entity.getContent(),
+                entity.getPrice(),
+                entity.getShipping(),
+                entity.getBrand(),
+                entity.getSeller(),
+                entity.getPackaging(),
+                entity.getUnit(),
+                entity.getWeight(),
+                entity.getCountryOfOrigin(),
+                entity.getAllergyInfo(),
+                entity.getCreatedAt(),
+                entity.getModifiedAt(),
+                entity.getCreatedBy(),
+                entity.getModifiedBy(),
+                entity.getProductInquiry().stream()
+                        .map(ProductInquiryDto::from)
+                        .collect(Collectors.toList()),
+                entity.getProductReview().stream()
+                        .map(ProductReviewDto::from)
+                        .collect(Collectors.toList())
         );
     }
 }

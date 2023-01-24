@@ -1,7 +1,8 @@
 package com.codestates.culinari.order.dto.response;
 
 import com.codestates.culinari.order.constant.StatusType;
-import com.codestates.culinari.order.dto.OrderDetailDto;
+import com.codestates.culinari.order.entitiy.OrderDetail;
+import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 
 public record OrderDetailResponse(
@@ -15,12 +16,13 @@ public record OrderDetailResponse(
         return new OrderDetailResponse(id, quantity, status, product);
     }
 
-    public static OrderDetailResponse from(OrderDetailDto dto) {
+    public static OrderDetailResponse from(OrderDetail entity) {
         return OrderDetailResponse.of(
-                dto.id(),
-                dto.quantity(),
-                dto.statusType(),
-                ProductResponseToPage.from(dto.productDto())
+                entity.getId(),
+                entity.getQuantity(),
+                entity.getStatusType(),
+                // TODO: 이후 ProductResponseToPage.from(entity.getProduct())
+                ProductResponseToPage.from(ProductDto.from(entity.getProduct()))
         );
     }
 }

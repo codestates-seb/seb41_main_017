@@ -2,6 +2,8 @@ package com.codestates.culinari.order.repository.querydsl;
 
 import com.codestates.culinari.order.entitiy.Orders;
 import com.codestates.culinari.order.entitiy.QOrders;
+import com.codestates.culinari.user.entitiy.QProfile;
+import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,24 +20,16 @@ public class OrdersRepositoryCustomImpl extends QuerydslRepositorySupport implem
     @Override
     public Page<Orders> findAllCreatedAfterAndProfile_Id(LocalDateTime createdAfterDateTime, Long profileId, Pageable pageable) {
         QOrders order = QOrders.orders;
+        QProfile profile = QProfile.profile;
 
-        List<Orders> orders =
+        JPQLQuery<Orders> query =
                 from(order)
-                        .select(order)
+                        .innerJoin(order.profile, profile).fetchJoin()
                         .where(order.createdAt.gt(createdAfterDateTime)
-                                .and(order.profile.id.eq(profileId)))
-                        .orderBy(order.createdAt.desc())
-                        .offset(pageable.getOffset())
-                        .limit(pageable.getPageSize())
-                        .fetch();
+                                .and(profile.id.eq(profileId)))
+                        .orderBy(order.createdAt.desc());
+        List<Orders> orders = getQuerydsl().applyPagination(pageable, query).fetch();
 
-        Long count =
-                from(order)
-                        .select(order.count())
-                        .where(order.createdAt.gt(createdAfterDateTime)
-                                .and(order.profile.id.eq(profileId)))
-                        .fetchOne();
-
-        return new PageImpl<>(orders, pageable, count);
+        return new PageImpl<>(orders, pageable, query.fetchCount());
     }
 }

@@ -7,7 +7,6 @@ import com.codestates.culinari.user.dto.UserDto;
 import com.codestates.culinari.user.dto.request.ProfilePatchRequest;
 import com.codestates.culinari.user.dto.request.SignUpDto;
 import com.codestates.culinari.user.dto.response.ProfileMyPageResponseDto;
-import com.codestates.culinari.user.entitiy.UserRole;
 import com.codestates.culinari.user.service.ProfileService;
 import com.codestates.culinari.user.service.UserService;
 import config.TestSecurityConfig;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,7 +24,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 import static com.codestates.culinari.order.Stub.Stub.createPrincipal;
 import static org.mockito.ArgumentMatchers.any;
