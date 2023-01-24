@@ -1,4 +1,7 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import BASE_URL from "../../constants/BASE_URL";
 import CheckBox from "../CheckBox";
 import DeleteButton from "../DeleteButton";
 import QuantityBox from "../QuantityBox";
@@ -53,6 +56,26 @@ const DeleteButtonWrapper = styled.div`
 `;
 
 function CartProductItem({ data }) {
+  const [quantity, setQuantity] = useState(data.quantity);
+
+  useEffect(() => {
+    const patchQuantity = () => {
+      const body = {
+        quantity,
+      };
+      const header = {
+        headers: {
+          "Content-Type": `application/json`,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
+        },
+      };
+
+      axios.patch(`${BASE_URL}/carts/${data.id}`, body, header);
+    };
+
+    patchQuantity();
+  }, [quantity]);
+
   return (
     <Container>
       <CheckBox size="24px" />
@@ -65,7 +88,7 @@ function CartProductItem({ data }) {
         <ProductTitle>{data.product.name}</ProductTitle>
         <ProductPrice>{data.product.price.toLocaleString()}원</ProductPrice>
         <QuantityBoxWrapper>
-          <QuantityBox quantity={data.quantity} />
+          <QuantityBox quantity={quantity} setQuantity={setQuantity} />
         </QuantityBoxWrapper>
       </ProductInfo>
 
