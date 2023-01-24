@@ -96,6 +96,7 @@ const OrderButtonContainer = styled.div`
 
 function Cart() {
   const [data, setData] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const getCartList = async () => {
@@ -110,13 +111,24 @@ function Cart() {
         const { data } = await axios.get(`${BASE_URL}/carts`, config);
 
         console.log(data);
-        setData(data);
+        return data;
       } catch (error) {
         console.log(`Error: ${error}`);
       }
     };
 
-    getCartList();
+    const calcTotalPrice = (data) => {
+      return data.data.reduce((acc, cur) => {
+        return acc + cur.quantity * cur.product.price;
+      }, 0);
+    };
+
+    (async () => {
+      const data = await getCartList();
+
+      setData(data);
+      setTotalPrice(calcTotalPrice(data));
+    })();
   }, []);
 
   return (
@@ -137,7 +149,7 @@ function Cart() {
         <TotalPriceBox>
           <div className="product-price">
             <span>상품 가격</span>
-            <span>204,000원</span>
+            <span>{totalPrice.toLocaleString()}원</span>
           </div>
           <div className="shipping-fee">
             <span className="sign">+</span>
@@ -147,7 +159,7 @@ function Cart() {
           <div className="total-price">
             <span className="sign">=</span>
             <span>총 주문 금액</span>
-            <strong>207,000원</strong>
+            <strong>{(totalPrice + 3000).toLocaleString()}원</strong>
           </div>
         </TotalPriceBox>
 
