@@ -97,7 +97,7 @@ const OrderButtonContainer = styled.div`
 function Cart() {
   const [data, setData] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [isClicked, setIsClicked] = useState(false);
+  const [isChanged, setIsChanged] = useState(false);
 
   useEffect(() => {
     const getCartList = async () => {
@@ -118,9 +118,7 @@ function Cart() {
     };
 
     const calcTotalPrice = (data) => {
-      return data.data.reduce((acc, cur) => {
-        return acc + cur.quantity * cur.product.price;
-      }, 0);
+      return data.data.reduce((acc, cur) => acc + cur.quantity * cur.product.price, 0);
     };
 
     (async () => {
@@ -129,7 +127,7 @@ function Cart() {
       setData(data);
       setTotalPrice(calcTotalPrice(data));
     })();
-  }, [isClicked]);
+  }, [isChanged]);
 
   return (
     <Container>
@@ -144,7 +142,18 @@ function Cart() {
           <span className="delete-selection">선택 삭제</span>
         </SelectButtonContainer>
 
-        {data && data.data.map((item) => <CartProductItem item={item} setIsClicked={setIsClicked} key={item.id} />)}
+        {data &&
+          data.data.map((item, index) => (
+            <CartProductItem
+              item={item}
+              data={data}
+              setData={setData}
+              index={index}
+              isChanged={isChanged}
+              setIsChanged={setIsChanged}
+              key={item.id}
+            />
+          ))}
 
         <TotalPriceBox>
           <div className="product-price">

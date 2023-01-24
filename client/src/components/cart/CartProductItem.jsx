@@ -55,7 +55,7 @@ const DeleteButtonWrapper = styled.div`
   margin: 0 24px;
 `;
 
-function CartProductItem({ item, setIsClicked }) {
+function CartProductItem({ item, data, setData, index, isChanged, setIsChanged }) {
   const [quantity, setQuantity] = useState(item.quantity);
 
   useEffect(() => {
@@ -68,6 +68,8 @@ function CartProductItem({ item, setIsClicked }) {
       };
       try {
         axios.patch(`${BASE_URL}/carts/${item.id}`, { quantity }, config);
+
+        setIsChanged(!isChanged);
       } catch (error) {
         console.error(error);
       }
@@ -75,6 +77,31 @@ function CartProductItem({ item, setIsClicked }) {
 
     patchQuantity();
   }, [quantity]);
+
+  const handleDeleteButtonClick = () => {
+    if (window.confirm("해당 상품을 삭제하시겠습니까?")) {
+      const deleteCartList = async () => {
+        const config = {
+          headers: {
+            "Content-Type": `application/json`,
+            authorization: JSON.parse(localStorage.getItem("token")).authorization,
+          },
+        };
+        try {
+          await axios.delete(`${BASE_URL}/carts/${item.id}`, config);
+
+          data.data = data.data.filter((_, idx) => idx !== index);
+
+          setData({ ...data });
+          setIsChanged(!isChanged);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      deleteCartList();
+    }
+  };
 
   return (
     <Container>
@@ -87,14 +114,14 @@ function CartProductItem({ item, setIsClicked }) {
       <ProductInfo>
         <ProductTitle>{item.product.name}</ProductTitle>
         <ProductPrice>{item.product.price.toLocaleString()}원</ProductPrice>
-        <QuantityBoxWrapper onClick={setIsClicked}>
+        <QuantityBoxWrapper>
           <QuantityBox quantity={quantity} setQuantity={setQuantity} />
         </QuantityBoxWrapper>
       </ProductInfo>
 
       <TotalPrice>{(quantity * item.product.price).toLocaleString()}원</TotalPrice>
 
-      <DeleteButtonWrapper>
+      <DeleteButtonWrapper onClick={handleDeleteButtonClick}>
         <DeleteButton />
       </DeleteButtonWrapper>
     </Container>
