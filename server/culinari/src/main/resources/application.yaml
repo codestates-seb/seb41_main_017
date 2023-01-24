@@ -36,6 +36,14 @@ jwt:
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
 
+file:
+  dir: C:/Users/J/Pictures/Screenshots/
+
+toss:
+  test:
+    secret-api-key: test_sk_P24xLea5zVAPgGnNPdb3QAMYNwW6
+    origin-url: https://api.tosspayments.com/v1
+
 ---
 #EC2 ???? JWT
 spring:
@@ -47,3 +55,7 @@ jwt:
   secret-key: test1234asdf123412341234123451234123412341234512341234123412345123412341234123451234123412341234512341234123412345
   access-token-expiration-minutes: 15
   refresh-token-expiration-minutes: 30
+file:
+  dir: /home/ubuntu/
+
+

@@ -8,7 +8,6 @@ import com.codestates.culinari.customercenter.service.CustomerInquiryService;
 import com.codestates.culinari.pagination.service.PaginationService;
 import config.TestSecurityConfig;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

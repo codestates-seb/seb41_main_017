@@ -50,7 +50,7 @@ public class CartController {
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
-        Page<CartResponse> pageCarts = cartService.readCarts(pageable, principal).map(CartResponse::from);
+        Page<CartResponse> pageCarts = cartService.readCarts(pageable, principal);
         List<CartResponse> carts = pageCarts.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, pageCarts.getTotalPages());
 

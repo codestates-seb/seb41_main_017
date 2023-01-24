@@ -8,9 +8,9 @@ const AddressModal = styled.div`
   align-items: center;
 `;
 
-const Post = ({ setAddress, setModalOpen }) => {
+const Post = ({ setSignupAddress, setModalOpen }) => {
   const complete = (data) => {
-    let fullAddress = setAddress(data.address);
+    let fullAddress = setSignupAddress(data.address);
     let extraAddress = "";
     setModalOpen(false);
     if (data.addressType === "R") {

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import AnnouncementHeader from "./AnnouncementHeader";
 import AnnouncementItem from "./AnnouncementItem";
 

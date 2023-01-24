@@ -6,11 +6,12 @@ import Header from "./components/Header";
 
 import Mypage from "./pages/mypage/index";
 import Login from "./pages/sign/login";
-import Signup from "./pages/sign/signup";
 import ServiceHome from "./components/service/index";
 import { Main } from "./pages";
 import Cart from "./pages/cart";
 import ProductDetail from "./pages/productDetail";
+import Collection from "./pages/collection";
+import Search from "./pages/search";
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -19,10 +20,12 @@ const GlobalStyle = createGlobalStyle`
         margin: 0;
       };
 
+
       * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      
       }
 
     li{
@@ -55,46 +58,32 @@ const GlobalStyle = createGlobalStyle`
     box-shadow: none;
     background-color: inherit;
     cursor: pointer;
-  }
-
-  .body{
-    width: 1050px;
-    margin: 0 auto;
-    height: calc(100% - 308px);
-  min-height: 100%;
-  padding-bottom: 180px;
-  }
-
-  .member_info {
-    // width:100%;
-    height: 150px;
-    
-    background-color:red;
-    // height: 150px;
-    // position : relative;
-    // transform : translateY(100%);
-  }
+  }  
 `;
 
 function App() {
   return (
     <BrowserRouter>
       <GlobalStyle />
-      <Header />
-      <main className="body">
-        <Routes>
-          <Route path="/mypage/*" element={<Mypage />} />
-          <Route path="/login" element={<Login />} />
-          {/* <Route path="/signup" element={<Signup/>}/> */}
-          <Route path="/service/*" element={<ServiceHome />} />
-          <Route path="/" element={<Main />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/product" element={<ProductDetail />} />
-          {/* <Route path="/newproduct" element={}/> */}
-          {/* <Route path="/bestproduct" element={}/> */}
-        </Routes>
-      </main>
-      <footer className="member_info"></footer>
+      <div id="container">
+        <div id="header">
+          <Header />
+        </div>
+        <main id="main">
+          <Routes>
+            <Route path="/mypage/*" element={<Mypage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/service/*" element={<ServiceHome />} />
+            <Route path="/" element={<Main />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/product" element={<ProductDetail />} />
+            <Route path="/collections/new-product" element={<Collection />} />
+            <Route path="/collections/best-product" element={<Collection />} />
+            <Route path="/search" element={<Search />} />
+          </Routes>
+        </main>
+        <footer id="footer"></footer>
+      </div>
     </BrowserRouter>
   );
 }

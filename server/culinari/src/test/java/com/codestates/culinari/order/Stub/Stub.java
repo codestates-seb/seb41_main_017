@@ -4,10 +4,16 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.order.constant.StatusType;
 import com.codestates.culinari.order.dto.request.CartPatch;
 import com.codestates.culinari.order.dto.request.CartPost;
-import com.codestates.culinari.order.dto.request.OrderRequest;
 import com.codestates.culinari.order.entitiy.Cart;
 import com.codestates.culinari.order.entitiy.OrderDetail;
 import com.codestates.culinari.order.entitiy.Orders;
+import com.codestates.culinari.payment.constant.PayType;
+import com.codestates.culinari.payment.dto.PaymentDto;
+import com.codestates.culinari.payment.dto.request.PaymentRequest;
+import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
+import com.codestates.culinari.payment.dto.response.PaymentInfoResponse;
+import com.codestates.culinari.payment.dto.response.toss.PaymentTossDto;
+import com.codestates.culinari.payment.entity.Payment;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.user.constant.GenderType;
@@ -19,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.LongStream;
@@ -88,15 +95,6 @@ public class Stub {
         return profile;
     }
 
-    public static OrderRequest createOrderRequest() {
-        return OrderRequest.of(
-                LongStream.rangeClosed(1L, 3L).boxed().toList(),
-                "주소",
-                "수령자 명",
-                "010-0000-0000"
-        );
-    }
-
     public static Orders createOrder(Long orderId, Long profileId) {
         Orders order = Orders.of(
                 "배송 주소",
@@ -132,5 +130,49 @@ public class Stub {
         ReflectionTestUtils.setField(orderDetail, "id", orderDetailId);
 
         return orderDetail;
+    }
+
+    public static Payment createPayment(PayType payType, Integer amount, String productName) {
+        return Payment.of(payType, BigDecimal.valueOf(amount).setScale(2, RoundingMode.HALF_UP), productName, createOrder(1L, 1L), createProfile(1L));
+    }
+
+    public static Page<Payment> createPaymentPage() {
+        List<Payment> payments = LongStream.rangeClosed(1L, 5L)
+                .mapToObj(l -> createPayment(PayType.CARD, 1000, "상품명"))
+                .toList();
+        Pageable pageable = PageRequest.of(0, 10);
+
+        return new PageImpl<>(payments, pageable, payments.size());
+    }
+
+    public static PaymentRequest createPaymentRequest() {
+        return PaymentRequest.of(
+                PayType.CARD,
+                LongStream.rangeClosed(1L, 3L).boxed().toList(),
+                "주소",
+                "수령자 명",
+                "010-0000-0000"
+        );
+    }
+
+    public static PaymentTossDto createPaymentTossDto() {
+        return new PaymentTossDto(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
+
+    public static PaymentFailResponse createPaymentFailResponse() {
+        return PaymentFailResponse.of(
+                "CODE",
+                "에러 메세지",
+                "0".repeat(18) + "1"
+        );
+    }
+
+    public static PaymentInfoResponse createPaymentInfoResponse() {
+        return PaymentInfoResponse.of(
+                PayType.CARD,
+                BigDecimal.valueOf(1000),
+                "0".repeat(18) + "1",
+                "상품명"
+        );
     }
 }

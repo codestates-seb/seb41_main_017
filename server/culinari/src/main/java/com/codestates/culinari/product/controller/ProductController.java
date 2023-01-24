@@ -4,16 +4,21 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
-import com.codestates.culinari.product.dto.response.ProductResponseWithCustomerService;
+import com.codestates.culinari.product.dto.response.ProductWithCustomerServiceResponse;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.response.SingleResponseDto;
 import com.codestates.culinari.user.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/product")
@@ -29,11 +34,31 @@ public class ProductController {
     public ResponseEntity getProduct(
             @PathVariable("product-id") Long productId){
 
+        ProductWithCustomerServiceResponse product = productService.readProductWithCS(productId);
 
-        ProductResponseWithCustomerService product = ProductResponseWithCustomerService.from(productService.readProduct(productId));
         return new ResponseEntity<>(
                 new SingleResponseDto<>(product), HttpStatus.OK);
     }
+    @PostMapping("/{product-id}/like")
+    public ResponseEntity postProductLike(
+            @PathVariable("product-id") Long productId,
+            @AuthenticationPrincipal CustomPrincipal principal){
+
+        productService.createProductLike(productId,principal);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{product-id}/like")
+    public ResponseEntity deleteProductLike(
+            @PathVariable("product-id") Long productId,
+            @AuthenticationPrincipal CustomPrincipal principal){
+
+        productService.deleteProductLike(productId,principal);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     //상품 문의 등록
     @PostMapping("/{product-id}/inquiry")
     public ResponseEntity postProductInquiry(
@@ -43,19 +68,23 @@ public class ProductController {
 
          productCsService.createProductInquiry(productInquiryRequest, principal, productId);
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
     //상품 후기 등록
-    @PostMapping("/{product-id}/review")
+    @PostMapping(value = "/{product-id}/review", consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity postProductReview(
             @PathVariable("product-id") Long productId,
             @AuthenticationPrincipal CustomPrincipal principal,
-            @RequestBody ProductReviewRequest productReviewRequest){
+            @RequestPart(value = "request") ProductReviewRequest productReviewRequest,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images) throws IOException {
 
-        productCsService.createProductReview(productReviewRequest,principal,productId);
+        productCsService.createProductReview(productReviewRequest,principal,productId,images);
 
-        return new ResponseEntity(HttpStatus.CREATED);
+
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
+
+
     //상품 문의 수정
     @PatchMapping("/inquiry/{inquiry-id}")
     public ResponseEntity patchProductInquiry(
@@ -65,7 +94,7 @@ public class ProductController {
 
         productCsService.updateProductInquiry(productInquiryRequest,principal,productInquiryId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
     //상품 리뷰 수정
     @PatchMapping("/review/{review-id}")
@@ -76,7 +105,7 @@ public class ProductController {
 
        productCsService.updateProductReview(productReviewRequest,principal,productReviewId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
     //상품 리뷰 좋아요
     @PatchMapping("/review/{review-id}/like")
@@ -87,7 +116,7 @@ public class ProductController {
 
         productCsService.updateLike(productReviewLikeRequest, principal,productReviewId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
 
     //문의 삭제

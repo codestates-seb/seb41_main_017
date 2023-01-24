@@ -1,6 +1,7 @@
 package com.codestates.culinari.order.dto.response;
 
-import com.codestates.culinari.order.dto.CartDto;
+import com.codestates.culinari.order.entitiy.Cart;
+import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 
 public record CartResponse(
@@ -13,11 +14,12 @@ public record CartResponse(
         return new CartResponse(id, quantity, product);
     }
 
-    public static CartResponse from(CartDto dto) {
+    public static CartResponse from(Cart entity) {
         return CartResponse.of(
-                dto.id(),
-                dto.quantity(),
-                ProductResponseToPage.from(dto.productDto())
+                entity.getId(),
+                entity.getQuantity(),
+                // TODO: 이후 ProductResponseToPage.from(entity.getProduct())
+                ProductResponseToPage.from(ProductDto.from(entity.getProduct()))
         );
     }
 }

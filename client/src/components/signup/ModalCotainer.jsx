@@ -3,18 +3,20 @@ import Modal from "./Modal";
 import GuideModal from "./GuideModal";
 import Post from "./Post";
 import styled from "styled-components";
+import axios from "axios";
+import BASE_URL from "../../constants/BASE_URL";
 
 const AddressBtn = styled.button`
-  width: 30%;
+  width: 100%;
   margin-left: 20px;
   height: 50px;
   border: 1px solid gray;
   margin-top: 19.5px;
 `;
 
-function ModalContainer({ setAddress, type }) {
-  // useState를 사용하여 open상태를 변경한다. (open일때 true로 만들어 열리는 방식)
+function ModalContainer({ setSignupAddress, type, signupId, signupEmail }) {
   const [modalOpen, setModalOpen] = useState(false);
+  const [response, setResponse] = useState("");
 
   const openModal = () => {
     setModalOpen(true);
@@ -22,16 +24,56 @@ function ModalContainer({ setAddress, type }) {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  const handleCheckBtn = (e) => {
+    e.preventDefault();
+    axios
+      .get(`${BASE_URL}/users/username-check?username=${signupId}`)
+
+      .then((res) => {
+        console.log(res);
+        setResponse(res.status);
+
+        openModal();
+        // window.alert("사용가능한 아이디입니다");
+      })
+
+      .catch((err) => {
+        console.log(err);
+        setResponse(err.response.data.status);
+        openModal();
+      });
+  };
+
+  const handleCheckEmailBtn = (e) => {
+    e.preventDefault();
+    axios
+      .get(`${BASE_URL}/users/email-check?email=${signupEmail}`)
+
+      .then((res) => {
+        console.log(res);
+        setResponse(res.status);
+
+        openModal();
+      })
+
+      .catch((err) => {
+        console.log(err);
+        setResponse(err.response.data.status);
+        openModal();
+      });
+  };
+
   if (type === "address") {
     return (
       <>
-        {/* <div> */}
         <AddressBtn onClick={openModal}>주소검색</AddressBtn>
-        {/* </div> */}
-        {/* <button onClick={openModal}>주소검색</button> */}
 
         <Modal open={modalOpen} close={closeModal} header="Modal heading">
-          <Post setModalOpen={setModalOpen} setAddress={setAddress}></Post>
+          <Post
+            setModalOpen={setModalOpen}
+            setSignupAddress={setSignupAddress}
+          ></Post>
         </Modal>
       </>
     );
@@ -39,10 +81,30 @@ function ModalContainer({ setAddress, type }) {
   if (type === "checkId") {
     return (
       <>
-        <AddressBtn onClick={openModal}>중복확인</AddressBtn>
-        <GuideModal open={modalOpen} close={closeModal} header="Modal heading">
-          {/* 사용 불가능한 아이디입니다 */}
-        </GuideModal>
+        <AddressBtn onClick={handleCheckBtn}>중복확인</AddressBtn>
+        <GuideModal
+          checkId={"checkId"}
+          type={"checkId"}
+          response={response}
+          open={modalOpen}
+          close={closeModal}
+          header="Modal heading"
+        ></GuideModal>
+      </>
+    );
+  }
+  if (type === "checkEmail") {
+    return (
+      <>
+        <AddressBtn onClick={handleCheckEmailBtn}>중복확인</AddressBtn>
+        <GuideModal
+          type={"checkEmail"}
+          checkEmail={"checkEmail"}
+          response={response}
+          open={modalOpen}
+          close={closeModal}
+          header="Modal heading"
+        ></GuideModal>
       </>
     );
   }

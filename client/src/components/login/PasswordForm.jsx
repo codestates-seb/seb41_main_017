@@ -21,10 +21,13 @@ const PasswordInput = styled.input.attrs({
   margin-bottom: 5px;
 `;
 
-function PasswordForm() {
+function PasswordForm({ setLoginPassword }) {
   return (
     <PasswordBlock>
-      <PasswordInput placeholder="비밀번호를 입력해주세요" />
+      <PasswordInput
+        onChange={(e) => setLoginPassword(e.target.value)}
+        placeholder="비밀번호를 입력해주세요"
+      />
     </PasswordBlock>
   );
 }

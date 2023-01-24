@@ -2,11 +2,9 @@ package com.codestates.culinari.user.service.impl;
 
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.user.constant.GenderType;
-import com.codestates.culinari.user.constant.RoleType;
 import com.codestates.culinari.user.dto.UserDto;
 import com.codestates.culinari.user.dto.request.SignUpDto;
 import com.codestates.culinari.user.entitiy.Profile;
-import com.codestates.culinari.user.entitiy.UserRole;
 import com.codestates.culinari.user.entitiy.Users;
 import com.codestates.culinari.user.repository.ProfileRepository;
 import com.codestates.culinari.user.repository.UserRepository;
@@ -26,7 +24,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;

@@ -1,14 +1,16 @@
 package com.codestates.culinari.product.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.product.dto.ProductDto;
+import com.codestates.culinari.order.Stub.Stub;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
+import com.codestates.culinari.product.dto.response.ProductWithCustomerServiceResponse;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
+import com.codestates.culinari.user.entitiy.Profile;
 import com.codestates.culinari.user.service.ProfileService;
 import config.TestSecurityConfig;
 import org.junit.jupiter.api.DisplayName;
@@ -18,15 +20,22 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.codestates.culinari.order.Stub.Stub.createPrincipal;
+import static com.codestates.culinari.order.Stub.Stub.createProfile;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -55,15 +64,16 @@ class ProductControllerTest {
     void givenNothing_whenRequestGetProduct_thenReturnProduct() throws Exception {
         // Given
         long productId = 1L;
-        ProductDto productDto = ProductDto.from(createProduct(productId));
-        given(productService.readProduct(productId)).willReturn(productDto);
+        Product product = Stub.createProduct(1L);
+        ProductWithCustomerServiceResponse response = ProductWithCustomerServiceResponse.from(product);
+        given(productService.readProductWithCS(productId)).willReturn(response);
         // When
         mvc.perform(get("/product/{product-id}", productId)
                         .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
         // Then
-        then(productService).should().readProduct(anyLong());
+        then(productService).should().readProductWithCS(anyLong());
     }
 
     @DisplayName("[POST] 상품 문의 등록 - 정상호출")
@@ -86,12 +96,14 @@ class ProductControllerTest {
                         .with(authentication(auth))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
+
                 )
-                .andExpect(status().isCreated());
+                .andExpect(status().isResetContent());
         // Then
         then(productCsService).should().createProductInquiry(any(ProductInquiryRequest.class), any(CustomPrincipal.class), anyLong());
     }
 
+    //TODO content-type 관련 해결하기
     @DisplayName("[POST] 상품 후기 등록 - 정상호출")
     @Test
     void givenProductReview_whenRequesting_thenSavingNewReview() throws Exception {
@@ -101,20 +113,42 @@ class ProductControllerTest {
         String requestBody = """
                 {
                  "title": "후기 확인",
-                 "content": "후기 내용"
+                 "content": "후기 내용",
+                 "reviewStar": 1
                 }
                 """;
-        willDoNothing().given(productCsService).createProductReview(any(ProductReviewRequest.class), any(CustomPrincipal.class), anyLong());
+        String fileName = "testImage";
+        String filePath = "src/test/resources/testImage/" + fileName + ".jpeg";
+        FileInputStream fileInputStream = new FileInputStream(filePath);
+        MockMultipartFile image = new MockMultipartFile(
+                "images",
+                "testImage.jpeg",
+                MediaType.IMAGE_JPEG_VALUE,
+                fileInputStream
+        );
+        MockMultipartFile request = new MockMultipartFile(
+                "request",
+                requestBody,
+                MediaType.APPLICATION_JSON_VALUE, //contentType
+                requestBody.getBytes(StandardCharsets.UTF_8)
+        );
+        List<MultipartFile> images = new ArrayList<>();
+        images.add(image);
+        Product product = createProduct(productId);
+        Profile profile = createProfile(1L);
 
+        willDoNothing().given(productCsService).createProductReview(any(ProductReviewRequest.class), any(CustomPrincipal.class), anyLong(),anyList());
         // When
-        mvc.perform(post("/product/"+productId+"/review")
+        mvc.perform(multipart("/product/" + productId + "/review")
+                        .file(image)
+                        .file(request)
                         .with(authentication(auth))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody)
+//                        .contentType(MediaType.MULTIPART_MIXED_VALUE)
+
                 )
-                .andExpect(status().isCreated());
+                .andExpect(status().isResetContent());
         // Then
-        then(productCsService).should().createProductReview(any(ProductReviewRequest.class), any(CustomPrincipal.class), anyLong());
+        then(productCsService).should().createProductReview(any(ProductReviewRequest.class), any(CustomPrincipal.class), anyLong(),anyList());
     }
 
     @DisplayName("[PATCH] 상품 문의 수정 - 정상호출")
@@ -137,11 +171,11 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isResetContent());
         // Then
         then(productCsService).should().updateProductInquiry(any(ProductInquiryRequest.class), any(CustomPrincipal.class), anyLong());
     }
-
+//TODO 이미지 업로드 테스트 추가
     @DisplayName("[PATCH] 상품 후기 수정 - 정상호출")
     @Test
     void givenProductReviewUpdate_whenRequesting_thenUpdatingProductReview() throws Exception {
@@ -162,7 +196,7 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isResetContent());
 
         then(productCsService).should().updateProductReview(any(ProductReviewRequest.class), any(CustomPrincipal.class), anyLong());
     }
@@ -186,7 +220,7 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isResetContent());
         then(productCsService).should().updateLike(any(ProductReviewLikeRequest.class), any(CustomPrincipal.class), anyLong());
     }
 

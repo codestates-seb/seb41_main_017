@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Layout = styled.div`
   // 화면사이즈 수정 ---
@@ -73,6 +75,7 @@ const Layout = styled.div`
   .bottom {
     border-bottom: 1px solid #a9a9a9;
     margin-top: 20px;
+
     .GNB {
       width: 1050px;
       margin: 0 auto;
@@ -87,7 +90,28 @@ const Layout = styled.div`
           flex: 1;
           text-align: center;
           padding: 5px 5px 5px 0;
+
+          .home {
+            color: ${({ pathname }) => (pathname === "/" ? "#ff6767" : null)};
+          }
+
+          .new_product {
+            color: ${({ pathname }) =>
+              pathname.includes("/new-product") ? "#ff6767" : null};
+          }
+
+          .best_product {
+            color: ${({ pathname }) =>
+              pathname.includes("/best-product") ? "#ff6767" : null};
+          }
+
+          span {
+            &:hover {
+              color: #ff6767;
+            }
+          }
         }
+
         .category {
           display: flex;
           align-items: center;
@@ -98,8 +122,17 @@ const Layout = styled.div`
 `;
 
 function Header() {
+  const { pathname } = useLocation();
+  const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearchProductSubmit = (event) => {
+    event.preventDefault();
+    navigate(`/search?keyword=${searchText}`);
+  };
+
   return (
-    <Layout>
+    <Layout pathname={pathname}>
       <div className="top flex">
         <div>
           <a href="/login">로그인 / 회원가입</a>
@@ -116,12 +149,15 @@ function Header() {
             alt="logo"
           ></img>
         </div>
-        <div className="serach">
-          <input placeholder="검색어를 입력해주세요"></input>
+        <form className="serach" onSubmit={handleSearchProductSubmit}>
+          <input
+            placeholder="검색어를 입력해주세요"
+            onChange={({ target }) => setSearchText(target.value)}
+          ></input>
           <button>
             <BsSearch />
           </button>
-        </div>
+        </form>
         <div className="myIcons flex">
           <div className="icons">
             <a href="/mypage">
@@ -146,11 +182,19 @@ function Header() {
             </li>
             <li>
               <a href="/">
-                <span>홈</span>
+                <span className="home">홈</span>
               </a>
             </li>
-            <li>신상품</li>
-            <li>베스트</li>
+            <li>
+              <a href="/collections/new-product">
+                <span className="new_product">신상품</span>
+              </a>
+            </li>
+            <li>
+              <a href="/collections/best-product">
+                <span className="best_product">베스트</span>
+              </a>
+            </li>
             <li>이벤트</li>
           </ul>
         </div>
