@@ -33,13 +33,7 @@ function ProductContent({ data, quantity, setQuantity, totalPrice }) {
 
         <Inquiry data={data} />
       </DetailContainer>
-      <ProductSelection
-        name={data.name}
-        priceToLocaleString={data.priceToLocaleString}
-        quantity={quantity}
-        setQuantity={setQuantity}
-        totalPrice={totalPrice}
-      />
+      <ProductSelection data={data} quantity={quantity} setQuantity={setQuantity} totalPrice={totalPrice} />
     </Container>
   );
 }
