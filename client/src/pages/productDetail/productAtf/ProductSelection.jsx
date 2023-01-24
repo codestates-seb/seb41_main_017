@@ -108,7 +108,7 @@ const HeaderContainer = styled.div`
   }
 `;
 
-function ProductSelection({ position, name, priceToLocaleString, quantity, setQuantity, totalPrice }) {
+function ProductSelection({ position, data, quantity, setQuantity, totalPrice }) {
   return (
     <HeaderContainer>
       {position === "header" ? (
@@ -118,11 +118,11 @@ function ProductSelection({ position, name, priceToLocaleString, quantity, setQu
             <dd>
               <div className="cart_option">
                 <div>
-                  <span>{name}</span>
+                  <span>{data.data && data.data.name}</span>
                 </div>
                 <div className="cart_option_item">
                   <QuantityBox quantity={quantity} setQuantity={setQuantity} />
-                  <span>{priceToLocaleString}원</span>
+                  <span>{data.data && data.data.price.toLocaleString()}원</span>
                 </div>
               </div>
             </dd>
@@ -142,11 +142,11 @@ function ProductSelection({ position, name, priceToLocaleString, quantity, setQu
           <div className="cart_option_title">상품선택</div>
           <div className="cart_option">
             <div>
-              <span>{name}</span>
+              <span>{data.data && data.data.name}</span>
             </div>
             <div className="cart_option_item">
               <QuantityBox quantity={quantity} setQuantity={setQuantity} />
-              <span>{priceToLocaleString}원</span>
+              <span>{data.data && data.data.price.toLocaleString()}원</span>
             </div>
           </div>
 

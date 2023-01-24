@@ -72,20 +72,13 @@ const ProductInfo = styled.section`
 function ProductAtf({ data, quantity, setQuantity, totalPrice }) {
   return (
     <Container>
-      <ProductImage src={data.image} />
+      <ProductImage src="https://img-cf.kurly.com/shop/data/goods/1657528646107l0.jpg" />
       <ProductInfo>
         <ProductHeader data={data} />
 
         <ProductDataList data={data} />
 
-        <ProductSelection
-          position={"header"}
-          name={data.name}
-          priceToLocaleString={data.priceToLocaleString}
-          quantity={quantity}
-          setQuantity={setQuantity}
-          totalPrice={totalPrice}
-        />
+        <ProductSelection position={"header"} data={data} quantity={quantity} setQuantity={setQuantity} totalPrice={totalPrice} />
       </ProductInfo>
     </Container>
   );
