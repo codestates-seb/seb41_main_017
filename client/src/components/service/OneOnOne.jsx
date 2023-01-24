@@ -21,16 +21,16 @@ function OneOnOne() {
 
   return (
     <Page>
-      {/* <QuestionContainer> */}
       <OneOnOneHeader></OneOnOneHeader>
 
       <OneOnOneItem></OneOnOneItem>
 
-      {/* </QuestionContainer> */}
       <div className="question_btn">
-        <BasicButton href={"/one-on-one/inquiry"} p_width={"20"} p_height={"7"}>
-          문의하기
-        </BasicButton>
+        <Link to={`/service/one-on-one/inquiry`}>
+          <BasicButton p_width={"20"} p_height={"7"}>
+            문의하기
+          </BasicButton>
+        </Link>
       </div>
     </Page>
   );
