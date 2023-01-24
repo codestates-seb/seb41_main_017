@@ -34,16 +34,6 @@ const Container = styled.div`
 `;
 
 function ProductDataList({ data }) {
-  const dataArr = [
-    ["배송", data.shipping],
-    ["판매자", data.seller],
-    ["포장 타입", data.packaging],
-    ["판매 단위", data.unit],
-    ["중량/용량", data.weight],
-    ["원산지", data.countryOfOrigin],
-    ["알레르기정보", data.allergyInfo],
-  ];
-
   const DataList = ({ title, content }) => {
     return (
       <dl>
@@ -57,11 +47,23 @@ function ProductDataList({ data }) {
 
   return (
     <Container>
-      {dataArr.map((element, index) => {
-        const [title, content] = element;
+      {data.data &&
+        Object.entries(data.data).map((element, index) => {
+          const [title, content] = element;
+          const productInfoTitle = {
+            shipping: "배송",
+            seller: "판매자",
+            packaging: "포장방식",
+            unit: "판매단위",
+            weight: "중량/용량",
+            countryOfOrigin: "원산지",
+            allergyInfo: "알러지 정보",
+          };
 
-        return <DataList key={index} title={title} content={content} />;
-      })}
+          if (productInfoTitle.hasOwnProperty(title)) {
+            return <DataList title={productInfoTitle[title]} content={content} key={index} />;
+          }
+        })}
     </Container>
   );
 }

@@ -1,6 +1,9 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import styled from "styled-components";
+import BASE_URL from "../../constants/BASE_URL";
 
 import ProductAtf from "./productAtf/index";
 import ProductContent from "./productContent/index";
@@ -12,63 +15,31 @@ const Container = styled.div`
 `;
 
 function ProductDetail() {
+  const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [data, setData] = useState({});
 
   useEffect(() => {
-    setTotalPrice(getTotalPrice());
+    if (data.data) {
+      setTotalPrice((quantity * data.data.price).toLocaleString());
+    }
   }, [quantity]);
 
-  const getTotalPrice = () => (quantity * data.price).toLocaleString();
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data } = await axios.get(`${BASE_URL}/product/${id}`);
 
-  const data = {
-    id: 1,
-    image: "https://img-cf.kurly.com/shop/data/goods/1657528646107l0.jpg",
-    name: "[순창성가정식품] 한식간장으로 담근 명이나물절임",
-    content: "국산 명이나물에 담은 전라도 손맛",
-    price: 5850.0,
-    shipping: "샛별배송",
-    brand: "브랜드 정보",
-    seller: "컬리",
-    packaging: "냉장 (종이포장)",
-    unit: "1개",
-    weight: "120g",
-    countryOfOrigin: "상세페이지 별도표기",
-    allergyInfo: `- 대두 함유\n- 본 제품은 알류(가금류에 한함), 우유, 메밀, 땅콩, 밀, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 쇠고기, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.`,
-    createdAt: "2023-01-14T01:59:40.007925",
-    modifiedAt: "2023-01-14T01:59:40.007925",
-    createdBy: "2023-01-14 01:59:40.007925",
-    modifiedBy: "2023-01-14 01:59:40.007925",
-    productInquiryDtos: [
-      {
-        id: 1,
-        title: "상품 문의 제목 유통기한 언제까지인가요",
-        author: "작성자1",
-        content: "언제까지냐구욧!",
-        createdAt: "2023.01.01",
-        status: "답변 완료",
-        answer: "안녕하세요 고객님. 컬리나리입니다. 해당 상품의 유통기한은 약 2개월가량 남아있으며 상품마다 상이합니다. 감사합니다.",
-      },
-      {
-        id: 2,
-        title: "상품 문의 제목 유통기한 언제까지인가요2",
-        author: "작성자2",
-        content: "언제까지냐구욧!언제까지냐구욧!언제까지냐구욧!",
-        createdAt: "2023.01.02",
-        status: "확인중",
-      },
-      {
-        id: 3,
-        title: "상품 문의 제목 유통기한 언제까지인가요3",
-        author: "작성자3",
-        content: "언제까지냐구욧!!!!!언제까지냐구욧!!!!!언제까지냐구욧!!!!!",
-        createdAt: "2023.01.03",
-        status: "확인중",
-      },
-    ],
-    productReviewDtos: [],
-  };
-  data.priceToLocaleString = data.price.toLocaleString();
+        setData(data);
+        setTotalPrice(data.data.price.toLocaleString());
+      } catch (error) {
+        console.log(`Error: ${error}`);
+      }
+    };
+
+    getData();
+  }, []);
 
   return (
     <Container>
