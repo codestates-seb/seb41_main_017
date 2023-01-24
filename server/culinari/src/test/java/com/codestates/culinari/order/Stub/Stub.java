@@ -2,7 +2,6 @@ package com.codestates.culinari.order.Stub;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.order.constant.StatusType;
-import com.codestates.culinari.order.dto.OrderDto;
 import com.codestates.culinari.order.dto.request.CartPatch;
 import com.codestates.culinari.order.dto.request.CartPost;
 import com.codestates.culinari.order.entitiy.Cart;
@@ -11,9 +10,9 @@ import com.codestates.culinari.order.entitiy.Orders;
 import com.codestates.culinari.payment.constant.PayType;
 import com.codestates.culinari.payment.dto.PaymentDto;
 import com.codestates.culinari.payment.dto.request.PaymentRequest;
-import com.codestates.culinari.payment.dto.response.PaymentCardResponse;
 import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
-import com.codestates.culinari.payment.dto.response.PaymentSuccessResponse;
+import com.codestates.culinari.payment.dto.response.PaymentInfoResponse;
+import com.codestates.culinari.payment.dto.response.toss.PaymentTossDto;
 import com.codestates.culinari.payment.entity.Payment;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
 import com.codestates.culinari.product.entitiy.Product;
@@ -156,51 +155,8 @@ public class Stub {
         );
     }
 
-    public static PaymentDto createPaymentDto() {
-        return PaymentDto.of(
-                PayType.CARD,
-                BigDecimal.valueOf(1000),
-                OrderDto.from(createOrder(1L, 1L)),
-                "상품명"
-        );
-    }
-
-    public static PaymentSuccessResponse createPaymentSuccessResponse() {
-        return PaymentSuccessResponse.of(
-                "1",
-                "2022-03-17",
-                "paymentKey",
-                "0".repeat(18) + "1",
-                "상품명",
-                "KRW",
-                "method",
-                "totalAmount",
-                "balanceAmount",
-                "suppliedAmount",
-                "vat",
-                "status",
-                "requestAt",
-                "approvedAt",
-                "useEscrow",
-                "cultureExpense",
-                createPaymentCardResponse(),
-                "type"
-        );
-    }
-
-    public static PaymentCardResponse createPaymentCardResponse() {
-        return PaymentCardResponse.of(
-                "company",
-                "number",
-                "installmentPlanMonths",
-                "isInterestFree",
-                "approveNo",
-                "useCardPoint",
-                "cardType",
-                "ownerType",
-                "acquireStatus",
-                "receiptUrl"
-        );
+    public static PaymentTossDto createPaymentTossDto() {
+        return new PaymentTossDto(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
     public static PaymentFailResponse createPaymentFailResponse() {
@@ -208,6 +164,15 @@ public class Stub {
                 "CODE",
                 "에러 메세지",
                 "0".repeat(18) + "1"
+        );
+    }
+
+    public static PaymentInfoResponse createPaymentInfoResponse() {
+        return PaymentInfoResponse.of(
+                PayType.CARD,
+                BigDecimal.valueOf(1000),
+                "0".repeat(18) + "1",
+                "상품명"
         );
     }
 }

@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
-const EmailForm = () => {
+const EmailForm = ({ setLoginId }) => {
   return (
     <EmailBlock>
-      <EmailInput placeholder="아이디를 입력해주세요" />
+      <EmailInput
+        onChange={(e) => setLoginId(e.target.value)}
+        placeholder="아이디를 입력해주세요"
+      />
     </EmailBlock>
   );
 };
@@ -15,6 +18,7 @@ const EmailBlock = styled.div`
 
 const EmailInput = styled.input.attrs({
   type: "text",
+  require,
 })`
   display: inline-block;
   width: 100%;
