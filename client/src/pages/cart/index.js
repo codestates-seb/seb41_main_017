@@ -156,6 +156,29 @@ function Cart() {
     }
   };
 
+  const handleSelectDeleteButtonClick = () => {
+    if (!window.confirm("체크된 상품 모두 삭제 하시겠습니까?")) return;
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": `application/json`,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
+        },
+      };
+
+      checkedList.forEach((list) => {
+        axios.delete(`${BASE_URL}/carts/${list.id}`, config);
+        data.data = data.data.filter((element) => element.id !== list.id);
+      });
+
+      setCheckedList([]);
+      setData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Container>
       <TitleContainer>
@@ -168,7 +191,9 @@ function Cart() {
             <CheckBox isChecked={data?.data.length === checkedList.length} size="24px" />
             <span>전체 선택</span>
           </div>
-          <span className="delete-selection">선택 삭제</span>
+          <span className="delete-selection" onClick={handleSelectDeleteButtonClick}>
+            선택 삭제
+          </span>
         </SelectButtonContainer>
 
         {data &&
