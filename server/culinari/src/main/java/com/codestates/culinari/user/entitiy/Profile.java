@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -39,9 +40,6 @@ public class Profile {
     @ColumnDefault("0")
     private BigDecimal point;
 
-    @Column(nullable = false, length = 100)
-    private String address;
-
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private GenderType gender;
@@ -57,27 +55,37 @@ public class Profile {
     @OneToMany(mappedBy = "profile")
     private final List<ProductReview> productReview = new ArrayList<>();
 
-    public Profile(String name, String email, String phoneNumber, BigDecimal point ,String address, GenderType gender, LocalDate birthDate) {
+    public Profile(String name, String email, String phoneNumber, BigDecimal point, GenderType gender, LocalDate birthDate) {
         this.id = null;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.point = point;
-        this.address = address;
         this.gender = gender;
         this.birthDate = birthDate;
     }
 
-    public static Profile of(String name, String email, String phoneNumber, BigDecimal point ,String address, GenderType gender, LocalDate birthDate) {
-        return new Profile(name, email, phoneNumber, point ,address, gender, birthDate);
+    public static Profile of(String name, String email, String phoneNumber, BigDecimal point, GenderType gender, LocalDate birthDate) {
+        return new Profile(name, email, phoneNumber, point, gender, birthDate);
     }
 
-    public void updateProfile(ProfilePatchRequest profilePatchRequest) {
-        this.name = profilePatchRequest.name();
-        this.email = profilePatchRequest.email();
-        this.phoneNumber = profilePatchRequest.phoneNumber();
-        this.address = profilePatchRequest.address();
-        this.gender = profilePatchRequest.genderType();
-        this.birthDate = profilePatchRequest.birthDate();
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    public void updatePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void updateGender(GenderType gender) {
+        this.gender = gender;
+    }
+
+    public void updateBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }
