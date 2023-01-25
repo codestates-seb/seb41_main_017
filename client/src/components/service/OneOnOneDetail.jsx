@@ -3,58 +3,27 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BASE_URL from "../../constants/BASE_URL";
-import styled from "styled-components";
-
-const DetailContainer = styled.div`
-  //   background-color: red;
-  width: 900px;
-  height: 550px;
-  border-bottom: 1px solid gray;
-  h2 {
-    font-size: 20px;
-    width: 100%;
-  }
-  .content_container {
-    width: 100%;
-    margin-left: 10px;
-    font-size: 18px;
-    display: flex;
-    justify-content: space-between;
-  }
-  button {
-    margin-right: 15px;
-  }
-`;
-const DetailBar = styled.div`
-  width: 100%;
-  background-color: #ffdede;
-  font-size: 15px;
-  margin-top: 15px;
-  display: flex;
-  .writter {
-    width: 80%;
-    margin-left: 10px;
-  }
-  .category {
-    width: 10%;
-    text-align: center;
-  }
-  .time {
-    width: 10%;
-    text-align: center;
-  }
-`;
-
-const ContentBox = styled.div`
-  margin-top: 45px;
-  margin-left: 10px;
-`;
+import BasicButton from "../BasicButton";
+import {
+  DetailContainer,
+  DetailBar,
+  ContentBox,
+  Page,
+} from "../../styles/OneOnOneStyle";
+import AnswerList from "../answer/AnswerList";
+import Answer from "../answer";
 
 function OneOnOneDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [data, setData] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClickBtn = (e) => {
+    e.preventDefault();
+    navigate(`/service/one-on-one`);
+  };
 
   const fetchData = () => {
     axios
@@ -95,18 +64,26 @@ function OneOnOneDetail() {
   };
 
   return (
-    <DetailContainer>
-      <div className="content_container">
-        <div>{data.title}</div>
-        <button onClick={handleDelete}>삭제</button>
+    <Page>
+      <DetailContainer>
+        <div className="content_container">
+          <div className="detail_title">{data.title}</div>
+          <button onClick={handleDelete}>삭제</button>
+        </div>
+        <DetailBar>
+          <div className="writter">나</div>
+          <div className="category">카테고리</div>
+          <div className="time">23.01.24</div>
+        </DetailBar>
+        <ContentBox>{data.content}</ContentBox>
+      </DetailContainer>
+      <Answer />
+      <div className="btn_container" onClick={handleClickBtn}>
+        <BasicButton p_width={"20"} p_height={"7"}>
+          목록으로{" "}
+        </BasicButton>{" "}
       </div>
-      <DetailBar>
-        <div className="writter">나</div>
-        <div className="category">카테고리</div>
-        <div className="time">23.01.24</div>
-      </DetailBar>
-      <ContentBox>{data.content}</ContentBox>
-    </DetailContainer>
+    </Page>
   );
 }
 
