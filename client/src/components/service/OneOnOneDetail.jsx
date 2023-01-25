@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import BASE_URL from "../../constants/BASE_URL";
 import styled from "styled-components";
 
@@ -18,6 +18,11 @@ const DetailContainer = styled.div`
     width: 100%;
     margin-left: 10px;
     font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+  }
+  button {
+    margin-right: 15px;
   }
 `;
 const DetailBar = styled.div`
@@ -47,6 +52,7 @@ const ContentBox = styled.div`
 
 function OneOnOneDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [data, setData] = useState("");
 
@@ -67,10 +73,32 @@ function OneOnOneDetail() {
     fetchData();
   }, []);
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+
+    if (window.confirm("삭제하시겠습니까?")) {
+      axios
+        .delete(`${BASE_URL}/board/inquiry/${id}`, {
+          headers: {
+            "Content-Type": `application/json`,
+            authorization: JSON.parse(localStorage.getItem("token"))
+              .authorization,
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      navigate(`/service/one-on-one`);
+      window.location.reload();
+    }
+  };
+
   return (
     <DetailContainer>
       <div className="content_container">
         <div>{data.title}</div>
+        <button onClick={handleDelete}>삭제</button>
       </div>
       <DetailBar>
         <div className="writter">나</div>
