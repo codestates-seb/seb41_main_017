@@ -28,7 +28,7 @@ const ImageWrapper = styled.div`
 `;
 
 const ProductInfo = styled.div`
-  width: calc(100% - 300px);
+  width: calc(100% - 390px);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -129,9 +129,7 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
         <CheckBox isChecked={isChecked} size="24px" />
       </div>
 
-      <ImageWrapper>
-        <img src={"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"} />
-      </ImageWrapper>
+      <ImageWrapper>{<img src={item.product.productImageDtos[0].imgUrl} />}</ImageWrapper>
 
       <ProductInfo>
         <ProductTitle>{item.product.name}</ProductTitle>
