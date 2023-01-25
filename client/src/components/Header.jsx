@@ -96,13 +96,11 @@ const Layout = styled.div`
           }
 
           .new_product {
-            color: ${({ pathname }) =>
-              pathname.includes("/new-product") ? "#ff6767" : null};
+            color: ${({ pathname }) => (pathname.includes("/new-product") ? "#ff6767" : null)};
           }
 
           .best_product {
-            color: ${({ pathname }) =>
-              pathname.includes("/best-product") ? "#ff6767" : null};
+            color: ${({ pathname }) => (pathname.includes("/best-product") ? "#ff6767" : null)};
           }
 
           span {
@@ -115,6 +113,11 @@ const Layout = styled.div`
         .category {
           display: flex;
           align-items: center;
+          cursor: pointer;
+
+          &:hover {
+            color: #ff6767;
+          }
         }
       }
     }
@@ -144,16 +147,10 @@ function Header() {
       </div>
       <div className="mid flex">
         <div className="logo">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"
-            alt="logo"
-          ></img>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png" alt="logo"></img>
         </div>
         <form className="serach" onSubmit={handleSearchProductSubmit}>
-          <input
-            placeholder="검색어를 입력해주세요"
-            onChange={({ target }) => setSearchText(target.value)}
-          ></input>
+          <input placeholder="검색어를 입력해주세요" onChange={({ target }) => setSearchText(target.value)}></input>
           <button>
             <BsSearch />
           </button>
