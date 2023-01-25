@@ -1,7 +1,10 @@
+import axios from "axios";
 import styled from "styled-components";
 import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import BASE_URL from "../constants/BASE_URL";
 
 const Layout = styled.div`
   // 화면사이즈 수정 ---
@@ -110,13 +113,62 @@ const Layout = styled.div`
           }
         }
 
-        .category {
+        .category_container {
           display: flex;
           align-items: center;
           cursor: pointer;
 
-          &:hover {
+          &:hover .category {
             color: #ff6767;
+          }
+
+          &:hover .drop_down_container {
+            display: block;
+          }
+
+          .drop_down_container {
+            max-height: calc(95vh - 55px);
+            min-height: 200px;
+            position: absolute;
+            display: flex;
+            top: 146px;
+            padding-top: 10px;
+            display: none;
+
+            .drop_down {
+              position: relative;
+              z-index: 21;
+              border: 1px solid rgb(221, 221, 221);
+              background-color: rgb(255, 255, 255);
+              display: flex;
+            }
+
+            .category_detail {
+              background-color: #f1f3f5;
+
+              ul {
+                background-color: #f1f3f5;
+              }
+            }
+
+            ul {
+              overflow-y: auto;
+              background-color: rgb(255, 255, 255);
+              cursor: pointer;
+              display: flex;
+              flex-direction: column;
+
+              li {
+                width: 247px;
+                padding: 10px 0px 10px 15px;
+                text-align: start;
+
+                &:hover {
+                  color: #ff6767;
+                  background-color: #f1f3f5;
+                }
+              }
+            }
           }
         }
       }
@@ -127,11 +179,32 @@ const Layout = styled.div`
 function Header() {
   const { pathname } = useLocation();
   const [searchText, setSearchText] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [categoryDetails, setCategoryDetails] = useState([]);
   const navigate = useNavigate();
 
   const handleSearchProductSubmit = (event) => {
     event.preventDefault();
     navigate(`/search?keyword=${searchText}`);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await axios.get(`${BASE_URL}/category`);
+
+        setCategories(data);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
+
+  const handleCategoriesMouseOver = async ({ target }) => {
+    const categoryCode = target.dataset.code;
+    const { data } = await axios.get(`${BASE_URL}/category/categorydetail/${categoryCode}`);
+
+    setCategoryDetails(data);
   };
 
   return (
@@ -171,11 +244,28 @@ function Header() {
       <div className="bottom flex">
         <div className="GNB">
           <ul>
-            <li className="category">
-              <span>
+            <li className="category_container">
+              <span className="category">
                 <BsList size="25" />
               </span>
-              <span>카테고리</span>
+              <span className="category">카테고리</span>
+              <div className="drop_down_container">
+                <div className="drop_down">
+                  <div>
+                    <ul>
+                      {categories.data &&
+                        categories.data.map((category, index) => (
+                          <li onMouseOver={handleCategoriesMouseOver} data-code={category.categoryCode} key={index}>
+                            {category.name}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                  <div className="category_detail">
+                    <ul>{categoryDetails.data && categoryDetails.data.map((category, index) => <li key={index}>{category.name}</li>)}</ul>
+                  </div>
+                </div>
+              </div>
             </li>
             <li>
               <a href="/">
