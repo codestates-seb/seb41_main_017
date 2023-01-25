@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 
-const BasicButton = ({href, children, font, radius, p_height, p_width}) =>{
+const BasicButton = ({href, children, font, radius, p_height, p_width, onClick}) =>{
     const styles = {font, radius, p_height, p_width};
     return(
-            <Colbtn {...styles} href={href}>
+            <Colbtn {...styles} href={href} onClick={onClick}>
                 {children}
             </Colbtn>
     )

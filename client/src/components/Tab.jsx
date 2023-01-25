@@ -78,8 +78,6 @@ const Tab = ({title, list, flex = null})=>{
           }
         };
       }
-
-      
     
     return(
         <Container {...styles}>

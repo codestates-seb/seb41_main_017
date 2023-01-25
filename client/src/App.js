@@ -1,7 +1,7 @@
 import "./App.css";
 import reset from "styled-reset";
 import { createGlobalStyle } from "styled-components";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter} from "react-router-dom";
 import Header from "./components/Header";
 
 import Mypage from "./pages/mypage/index";
@@ -71,7 +71,7 @@ function App() {
         </div>
         <main id="main">
           <Routes>
-            <Route path="/mypage/*" element={<Mypage />} />
+            <Route path="/mypage/*" element={<Mypage />}></Route>
             <Route path="/login" element={<Login />} />
             <Route path="/service/*" element={<ServiceHome />} />
             <Route path="/" element={<Main />} />

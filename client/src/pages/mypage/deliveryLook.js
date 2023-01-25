@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { useState } from "react";
+import styled from "styled-components";
 import Mypagebtn from "../../components/BasicButton";
 import TableBoard from "../../components/TableBoard";
 import ListLayout from "../../components/ListLayout";
@@ -16,8 +16,6 @@ const Test = styled.div`
   }
 }
 `
-
-
 
 const List = styled.div`
   display: flex;
@@ -101,6 +99,10 @@ const List = styled.div`
     }
   }
 `;
+
+/*
+
+*/
 
 function DeliveryLook() {
   const [subinfo, setSubinfo] = useState(false);
