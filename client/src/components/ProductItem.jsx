@@ -41,7 +41,7 @@ function ProductItem({ element }) {
     <Item>
       <a href={ref}>
         <div className="image_wrapper">
-          <img src={element.image}></img>
+          <img src={element.productImageDtos[0].imgUrl}></img>
         </div>
 
         <div>
