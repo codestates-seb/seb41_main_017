@@ -14,6 +14,7 @@ import ItemreviewList from "./itemreviewList";
 import Inquiry from "./inquiry";
 import ItemreviewWrite from "./itemreviewWrite";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom"
 import axios from 'axios';
 
 const Layout = styled.div`
@@ -42,8 +43,9 @@ const Mycard = styled.div`
       align-items: center;
       gap: 10px;
       margin: 15px 0 35px 0;
+      flex-wrap: wrap;
       & > span {
-        font-size: 24px;
+        font-size: 18px;
       }
     }
 
@@ -91,29 +93,41 @@ const Mycard = styled.div`
   }
 `;
 
+function Mypage () {
 
-// https://velog.io/@mgk8609/React%EC%97%90%EC%84%9C-Axios-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
-function Mypage() {
-  const [token, setToken] = useState("");
-  
-// 토큰을 받아오기 위한 임시 로컬스토리지 토큰저장
+
+  const [user, setUser] = useState({});
+
   useEffect(()=>{
-    axios.post("http://ec2-3-37-105-24.ap-northeast-2.compute.amazonaws.com:8080/users/signin",
-    {
-      "username" : "jangusername",
-      "password" : "jangpassword"
-    }).then(res => {
-      localStorage.setItem("token" , res.headers.authorization.slice(6))
-      
-    })
-    .catch(error => console.log("에러발생",error))
-  },[])
 
-  console.log(localStorage.getItem("token"))
-  
+
+    //임시영역 -> 추후에 프로필 조회하거나해서 해당유저에 대한 토큰을써야함
+    const data = async () => {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/users/signin`,
+      {
+        "username" : "jangusername",
+        "password" : "jangpassword"
+      });
+      localStorage.setItem("accessToken",res.headers.authorization)
+    }
+    data();
+    //------------------------------------------------------------
+
+    axios.get(`${process.env.REACT_APP_URL}/users`,{
+      headers:{
+        Authorization : localStorage.getItem("accessToken"),
+      }
+    })
+    .then(res => setUser(res.data.data))
+    .then(erros => erros)
+  },[]);
+
+
+
+// 마이페이지 첫화면에 내정보 페이자가 동시에 렌더 되도록 설정해야함
   const list = {
     "내정보": {
-      'userinfo': <Userinfo/>,
+      'userInfo': <Userinfo/>
     },
     "배송지 설정": {
       'addressSet': <DeliverySet/>
@@ -152,9 +166,9 @@ function Mypage() {
       <Mycard>
         <div className="account_Box">
           <div className="acName">
-            <span>ID님의 회원카드</span>
+            <span>{`${user.name} 님의 회원카드`}</span>
             <div>
-              <BasicButton href={"/userinfo"} radius={12}>
+              <BasicButton href={"/mypage"} radius={12}>
                 내 정보 수정
               </BasicButton>
             </div>
@@ -164,7 +178,7 @@ function Mypage() {
               <a href="/point">
                 <span>내 포인트</span>
                 <span>
-                  0P
+                  {`${user.point}P`}
                   <GoChevronRight />
                 </span>
               </a>
@@ -186,7 +200,7 @@ function Mypage() {
             <div className="count">
               <span>0</span>
             </div>
-            <BasicButton radius={10} href={"/deliveryLook"}>
+            <BasicButton radius={10} href={"/mypage/deliveryLook"}>
               배송조회
             </BasicButton>
           </div>
@@ -195,7 +209,7 @@ function Mypage() {
             <div className="count">
               <span>0</span>
             </div>
-            <BasicButton radius={10} href={"/orderitem"}>
+            <BasicButton radius={10} href={"/mypage/orderitem"}>
               주문 목록 조회
             </BasicButton>
           </div>
@@ -204,7 +218,7 @@ function Mypage() {
             <div className="count">
               <span>0</span>
             </div>
-            <BasicButton radius={10} href={"/selectItem"}>
+            <BasicButton radius={10} href={"/mypage/selectItem"}>
               조회
             </BasicButton>
           </div>
@@ -213,7 +227,7 @@ function Mypage() {
             <div className="count">
               <span>0</span>
             </div>
-            <BasicButton radius={10} href={"/buyitem"}>
+            <BasicButton radius={10} href={"/mypage/buyitem"}>
               조회
             </BasicButton>
           </div>

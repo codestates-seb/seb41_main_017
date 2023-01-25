@@ -17,8 +17,6 @@ const Test = styled.div`
 }
 `
 
-
-
 const List = styled.div`
   display: flex;
 
@@ -101,6 +99,10 @@ const List = styled.div`
     }
   }
 `;
+
+/*
+
+*/
 
 function DeliveryLook() {
   const [subinfo, setSubinfo] = useState(false);
