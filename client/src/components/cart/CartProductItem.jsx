@@ -55,7 +55,7 @@ const DeleteButtonWrapper = styled.div`
   margin: 0 24px;
 `;
 
-function CartProductItem({ item, data, setData, index, isChanged, setIsChanged }) {
+function CartProductItem({ item, data, setData, index, checkedList, setCheckedList }) {
   const [quantity, setQuantity] = useState(item.quantity);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -69,8 +69,6 @@ function CartProductItem({ item, data, setData, index, isChanged, setIsChanged }
       };
       try {
         axios.patch(`${BASE_URL}/carts/${item.id}`, { quantity }, config);
-
-        setIsChanged(!isChanged);
       } catch (error) {
         console.error(error);
       }
@@ -94,7 +92,6 @@ function CartProductItem({ item, data, setData, index, isChanged, setIsChanged }
           data.data = data.data.filter((_, idx) => idx !== index);
 
           setData({ ...data });
-          setIsChanged(!isChanged);
         } catch (error) {
           console.error(error);
         }
@@ -104,13 +101,21 @@ function CartProductItem({ item, data, setData, index, isChanged, setIsChanged }
     }
   };
 
+  const handleCheckBoxClick = () => {
+    if (isChecked === false) {
+      setCheckedList([...checkedList, { id: item.id, quantity: item.quantity, price: item.product.price }]);
+    }
+
+    if (isChecked === true) {
+      setCheckedList(checkedList.filter((element) => element.id !== item.id));
+    }
+
+    setIsChecked(!isChecked);
+  };
+
   return (
     <Container>
-      <div
-        onClick={() => {
-          setIsChecked(!isChecked);
-        }}
-      >
+      <div onClick={handleCheckBoxClick}>
         <CheckBox isChecked={isChecked} size="24px" />
       </div>
 

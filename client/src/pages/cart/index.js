@@ -51,12 +51,15 @@ const SelectButtonContainer = styled.div`
   display: flex;
   align-items: center;
 
-  span {
+  .select_all_container {
     margin-right: 10px;
+    display: flex;
+    align-items: center;
   }
 
   .delete-selection {
     color: #c26d53;
+    margin-right: 10px;
   }
 `;
 
@@ -102,7 +105,7 @@ const OrderButtonContainer = styled.div`
 function Cart() {
   const [data, setData] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [isChanged, setIsChanged] = useState(false);
+  const [checkedList, setCheckedList] = useState([]);
 
   useEffect(() => {
     const getCartList = async () => {
@@ -122,17 +125,18 @@ function Cart() {
       }
     };
 
-    const calcTotalPrice = (data) => {
-      return data.data.reduce((acc, cur) => acc + cur.quantity * cur.product.price, 0);
+    (async () => {
+      setData(await getCartList());
+    })();
+  }, []);
+
+  useEffect(() => {
+    const calcTotalPrice = (checkedList) => {
+      return checkedList.reduce((acc, cur) => acc + cur.quantity * cur.price, 0);
     };
 
-    (async () => {
-      const data = await getCartList();
-
-      setData(data);
-      setTotalPrice(calcTotalPrice(data));
-    })();
-  }, [isChanged]);
+    setTotalPrice(calcTotalPrice(checkedList));
+  }, [checkedList]);
 
   return (
     <Container>
@@ -142,8 +146,10 @@ function Cart() {
       </TitleContainer>
       <CartProductListContainer>
         <SelectButtonContainer>
-          <CheckBox size="24px" />
-          <span>전체 선택</span>
+          <div className="select_all_container">
+            <CheckBox size="24px" />
+            <span>전체 선택</span>
+          </div>
           <span className="delete-selection">선택 삭제</span>
         </SelectButtonContainer>
 
@@ -154,12 +160,11 @@ function Cart() {
               data={data}
               setData={setData}
               index={index}
-              isChanged={isChanged}
-              setIsChanged={setIsChanged}
+              checkedList={checkedList}
+              setCheckedList={setCheckedList}
               key={item.id}
             />
           ))}
-
         {data && data.data.length ? null : <img className="no_cart_img" src="img/no_carts.png"></img>}
 
         <TotalPriceBox>
