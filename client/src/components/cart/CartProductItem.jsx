@@ -90,6 +90,7 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
           await axios.delete(`${BASE_URL}/carts/${item.id}`, config);
 
           data.data = data.data.filter((_, idx) => idx !== index);
+          setCheckedList(checkedList.filter((element) => element.id !== item.id));
 
           setData({ ...data });
         } catch (error) {
