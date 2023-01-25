@@ -75,6 +75,9 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
     };
 
     patchQuantity();
+
+    checkedList = checkedList.filter((element) => element.id !== item.id);
+    setCheckedList([...checkedList, { id: item.id, quantity, price: item.product.price }]);
   }, [quantity]);
 
   useEffect(() => {
@@ -93,8 +96,8 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
         try {
           await axios.delete(`${BASE_URL}/carts/${item.id}`, config);
 
-          data.data = data.data.filter((_, idx) => idx !== index);
           setCheckedList(checkedList.filter((element) => element.id !== item.id));
+          data.data = data.data.filter((_, idx) => idx !== index);
 
           setData({ ...data });
         } catch (error) {
