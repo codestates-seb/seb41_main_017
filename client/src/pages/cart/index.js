@@ -37,6 +37,11 @@ const TitleContainer = styled.div`
 const CartProductListContainer = styled.div`
   padding: 0 40px 20px 40px;
   border-bottom: 1px solid black;
+
+  .no_cart_img {
+    display: block;
+    margin: 100px auto;
+  }
 `;
 
 const SelectButtonContainer = styled.div`
@@ -154,6 +159,8 @@ function Cart() {
               key={item.id}
             />
           ))}
+
+        {data && data.data.length ? null : <img className="no_cart_img" src="img/no_carts.png"></img>}
 
         <TotalPriceBox>
           <div className="product-price">
