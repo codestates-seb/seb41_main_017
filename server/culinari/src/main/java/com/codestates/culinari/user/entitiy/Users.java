@@ -39,4 +39,8 @@ public class Users {
     public void addUserRole(UserRole userRole){
         this.userRoles.add(userRole);
     }
+
+    public void updatePassword(String encryptedPassword) {
+        this.password = encryptedPassword;
+    }
 }

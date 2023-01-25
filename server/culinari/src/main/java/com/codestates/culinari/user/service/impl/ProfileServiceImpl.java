@@ -25,8 +25,6 @@ import java.util.Optional;
 public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     @Override
@@ -57,13 +55,9 @@ public class ProfileServiceImpl implements ProfileService {
         if (isVerifyExistsEmail(profilePatchRequest.email(), customPrincipal.profileId())) {
             throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
         }
-        Users user = userRepository.findById(customPrincipal.userId())
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+
         Profile profile = profileRepository.findById(customPrincipal.profileId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
-
-//        String encryptedPassword = passwordEncoder.encode(profilePatchRequest.password());
-//        user.updatePassword(encryptedPassword);
 
         Optional.ofNullable(profilePatchRequest.name())
                 .ifPresent(profile::updateName);
@@ -75,8 +69,6 @@ public class ProfileServiceImpl implements ProfileService {
                 .ifPresent(profile::updateGender);
         Optional.ofNullable(profilePatchRequest.birthDate())
                 .ifPresent(profile::updateBirthDate);
-
-
 
         return ProfileDto.from(profile);
     }
