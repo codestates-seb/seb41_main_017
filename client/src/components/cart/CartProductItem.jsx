@@ -76,8 +76,10 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
 
     patchQuantity();
 
-    checkedList = checkedList.filter((element) => element.id !== item.id);
-    setCheckedList([...checkedList, { id: item.id, quantity, price: item.product.price }]);
+    if (isChecked) {
+      checkedList = checkedList.filter((element) => element.id !== item.id);
+      setCheckedList([...checkedList, { id: item.id, quantity, price: item.product.price }]);
+    }
   }, [quantity]);
 
   useEffect(() => {
@@ -111,7 +113,7 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
 
   const handleCheckBoxClick = () => {
     if (isChecked === false) {
-      setCheckedList([...checkedList, { id: item.id, quantity: item.quantity, price: item.product.price }]);
+      setCheckedList([...checkedList, { id: item.id, quantity, price: item.product.price }]);
     }
 
     if (isChecked === true) {
