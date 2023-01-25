@@ -6,11 +6,12 @@ import Header from "./components/Header";
 
 import Mypage from "./pages/mypage/index";
 import Login from "./pages/sign/login";
-import Signup from "./pages/sign/signup";
 import ServiceHome from "./components/service/index";
 import { Main } from "./pages";
 import Cart from "./pages/cart";
 import ProductDetail from "./pages/productDetail";
+import Collection from "./pages/collection";
+import Search from "./pages/search";
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -75,7 +76,10 @@ function App() {
             <Route path="/service/*" element={<ServiceHome />} />
             <Route path="/" element={<Main />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/product" element={<ProductDetail />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/collections/new-product" element={<Collection />} />
+            <Route path="/collections/best-product" element={<Collection />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </main>
         <footer id="footer"></footer>

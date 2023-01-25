@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import axios from 'axios';
 import styled from "styled-components";
 import { GoChevronRight } from "react-icons/go";
 import BasicButton from "../../components/BasicButton";
@@ -13,9 +15,6 @@ import Selectitem from "./selectItem";
 import ItemreviewList from "./itemreviewList";
 import Inquiry from "./inquiry";
 import ItemreviewWrite from "./itemreviewWrite";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom"
-import axios from 'axios';
 
 const Layout = styled.div`
   padding-top: 15px;

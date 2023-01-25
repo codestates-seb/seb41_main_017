@@ -79,7 +79,6 @@ public class ProductServiceImpl implements ProductService {
 //        return null;
     }
     //신상품 조회
-
     @Override
     public Page<ProductDto> readProductWithSortedType(String sortedType, String filter, Pageable pageable) throws UnsupportedEncodingException {
         if(filter != null){

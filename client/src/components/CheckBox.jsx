@@ -5,19 +5,17 @@ const Label = styled.label`
   margin-right: 12px;
   cursor: pointer;
 
-   {
-    svg {
-      width: ${({ size }) => size};
-      height: ${({ size }) => size};
+  svg {
+    width: ${({ size }) => size};
+    height: ${({ size }) => size};
 
-      g {
-        fill: ${({ isChecked }) => (isChecked ? "#fd6c40" : "none")};
-        stroke: ${({ isChecked }) => (isChecked ? "#ffffff" : "#DDD")};
-      }
+    g {
+      fill: ${({ isChecked }) => (isChecked ? "#fd6c40" : "none")};
+      stroke: ${({ isChecked }) => (isChecked ? "#ffffff" : "#DDD")};
+    }
 
-      circle {
-        stroke: ${({ isChecked }) => (isChecked ? "#fd6c40" : "#DDD")};
-      }
+    circle {
+      stroke: ${({ isChecked }) => (isChecked ? "#fd6c40" : "#DDD")};
     }
   }
 `;

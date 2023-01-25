@@ -1,6 +1,11 @@
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import ColorButton from "../../../components/ColorButton";
 import QuantityBox from "../../../components/QuantityBox";
+
+import BASE_URL from "../../../constants/BASE_URL";
 
 const HeaderContainer = styled.div`
   padding-bottom: 40px;
@@ -108,7 +113,32 @@ const HeaderContainer = styled.div`
   }
 `;
 
-function ProductSelection({ position, name, priceToLocaleString, quantity, setQuantity, totalPrice }) {
+function ProductSelection({ position, data, quantity, setQuantity, totalPrice }) {
+  const navigate = useNavigate();
+
+  const handleAddCartClick = async () => {
+    const body = JSON.stringify({
+      productId: data.data.id,
+      quantity,
+    });
+    const config = {
+      headers: {
+        "Content-Type": `application/json`,
+        authorization: JSON.parse(localStorage.getItem("token")).authorization,
+      },
+    };
+
+    try {
+      const response = await axios.post(`${BASE_URL}/carts`, body, config);
+
+      if (response.status === 201 && window.confirm("해당 상품이 장바구니에 담겼습니다. 장바구니 페이지로 이동하시겠습니까?")) {
+        navigate("/cart");
+      }
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+  };
+
   return (
     <HeaderContainer>
       {position === "header" ? (
@@ -118,11 +148,11 @@ function ProductSelection({ position, name, priceToLocaleString, quantity, setQu
             <dd>
               <div className="cart_option">
                 <div>
-                  <span>{name}</span>
+                  <span>{data.data && data.data.name}</span>
                 </div>
                 <div className="cart_option_item">
                   <QuantityBox quantity={quantity} setQuantity={setQuantity} />
-                  <span>{priceToLocaleString}원</span>
+                  <span>{data.data && data.data.price.toLocaleString()}원</span>
                 </div>
               </div>
             </dd>
@@ -133,7 +163,7 @@ function ProductSelection({ position, name, priceToLocaleString, quantity, setQu
             <span className="total_price_number">{totalPrice}</span>
             <span className="total_price_unit">원</span>
           </div>
-          <div className="add_cart_button_wrapper">
+          <div className="add_cart_button_wrapper" onClick={handleAddCartClick}>
             <ColorButton children="장바구니 담기" font="16" radius="3" p_height="19" />
           </div>
         </div>
@@ -142,11 +172,11 @@ function ProductSelection({ position, name, priceToLocaleString, quantity, setQu
           <div className="cart_option_title">상품선택</div>
           <div className="cart_option">
             <div>
-              <span>{name}</span>
+              <span>{data.data && data.data.name}</span>
             </div>
             <div className="cart_option_item">
               <QuantityBox quantity={quantity} setQuantity={setQuantity} />
-              <span>{priceToLocaleString}원</span>
+              <span>{data.data && data.data.price.toLocaleString()}원</span>
             </div>
           </div>
 
@@ -155,7 +185,7 @@ function ProductSelection({ position, name, priceToLocaleString, quantity, setQu
             <span className="total_price_number">{totalPrice}</span>
             <span className="total_price_unit">원</span>
           </div>
-          <div className="add_cart_button_wrapper">
+          <div className="add_cart_button_wrapper" onClick={handleAddCartClick}>
             <ColorButton children="장바구니 담기" font="16" radius="3" p_height="19" />
           </div>
         </div>

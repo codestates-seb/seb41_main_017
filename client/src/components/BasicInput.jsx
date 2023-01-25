@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 const BasicInput = ({
+  setValue2,
+  setValue,
   star,
   label,
   password,
@@ -14,9 +16,6 @@ const BasicInput = ({
   type,
   placeholder,
   defaultValue,
-  onChange,
-  min_height
-  
 }) => {
   const styles = {
     font,
@@ -27,24 +26,23 @@ const BasicInput = ({
     type,
     placeholder,
     defaultValue,
-    onChange,
-    min_height
   };
 
-  
-  
   return (
     <Container>
       <div className="LabelContainer">
         <CustomLabel>{label}</CustomLabel>
         <div className="essential">{star}</div>
       </div>
-      <CustomInput 
-      {...styles}
-      defaultValue={defaultValue}
-      >{children}</CustomInput>
+      <CustomInput
+        onChange={({ target }) => setValue(target.value)}
+        {...styles}
+      >
+        {children}
+      </CustomInput>
       {password === "password" ? (
         <CustomInput
+          onChange={({ target }) => setValue2(target.value)}
           {...styles}
           type={"password"}
           placeholder="비밀번호를 확인"
@@ -54,9 +52,11 @@ const BasicInput = ({
       ) : null}
       {address === "address" ? (
         <CustomInput
+          onChange={({ target }) => setValue2(target.value)}
           {...styles}
           placeholder="나머지 주소를 입력해주세요"
           width={"100%"}
+          defaultValue={""}
         >
           {children}
         </CustomInput>
@@ -83,13 +83,11 @@ const CustomLabel = styled.label`
   font-size: 16px;
 `;
 
-
 const CustomInput = styled.input.attrs((props) => ({
   type: props.type,
   placeholder: props.placeholder,
   defaultValue: props.defaultValue,
   width: props.width,
-  onChange: props.onChange
 }))`
   display: inline-block;
   width: ${(props) => props.width};

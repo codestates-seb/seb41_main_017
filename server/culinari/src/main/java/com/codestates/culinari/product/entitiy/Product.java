@@ -67,6 +67,10 @@ public class Product extends AuditingFields {
     @OneToMany(mappedBy = "product")
     private final List<ProductReview> productReview = new ArrayList<>();
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "product")
+    private final List<ProductImage> productImages = new ArrayList<>();
+
     public Product(String name,
                    String content,
                    BigDecimal price,

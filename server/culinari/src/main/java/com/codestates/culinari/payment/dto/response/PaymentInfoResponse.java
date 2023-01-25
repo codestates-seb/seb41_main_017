@@ -1,7 +1,7 @@
 package com.codestates.culinari.payment.dto.response;
 
 import com.codestates.culinari.payment.constant.PayType;
-import com.codestates.culinari.payment.dto.PaymentDto;
+import com.codestates.culinari.payment.entity.Payment;
 
 import java.math.BigDecimal;
 
@@ -16,12 +16,12 @@ public record PaymentInfoResponse(
         return new PaymentInfoResponse(payType, amount, orderId, productName);
     }
 
-    public static PaymentInfoResponse from(PaymentDto dto) {
+    public static PaymentInfoResponse from(Payment entity) {
         return PaymentInfoResponse.of(
-                dto.payType(),
-                dto.amount(),
-                String.format("%019d", dto.orderDto().id()),
-                dto.productName()
+                entity.getPayType(),
+                entity.getAmount(),
+                String.format("%019d", entity.getOrder().getId()),
+                entity.getProductName()
         );
     }
 }

@@ -16,7 +16,9 @@ import com.codestates.culinari.payment.dto.RefundDto;
 import com.codestates.culinari.payment.dto.request.PaymentRequest;
 import com.codestates.culinari.payment.dto.request.RefundRequest;
 import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
-import com.codestates.culinari.payment.dto.response.PaymentSuccessResponse;
+import com.codestates.culinari.payment.dto.response.PaymentInfoResponse;
+import com.codestates.culinari.payment.dto.response.PaymentResponseToPage;
+import com.codestates.culinari.payment.dto.response.toss.PaymentTossDto;
 import com.codestates.culinari.payment.repository.PaymentRepository;
 import com.codestates.culinari.payment.repository.RefundRepository;
 import com.codestates.culinari.payment.service.PaymentService;
@@ -25,6 +27,8 @@ import com.codestates.culinari.user.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,6 +39,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Collections;
 
@@ -57,7 +62,7 @@ public class PaymentServiceImpl implements PaymentService {
     private String tossOriginUrl;
 
     @Override
-    public PaymentDto createPayment(PaymentRequest request, CustomPrincipal principal) {
+    public PaymentInfoResponse createPayment(PaymentRequest request, CustomPrincipal principal) {
         verifyPrincipal(principal);
 
         Profile profile = profileRepository.getReferenceById(principal.profileId());
@@ -79,13 +84,15 @@ public class PaymentServiceImpl implements PaymentService {
                     orders.getOrderDetails().add(orderDetail);
                 });
 
-        return PaymentDto.from(
-                paymentRepository
-                        .save(PaymentDto
-                                .from(orders, request.payType())
-                                .toEntity(orders, profile)
-                        )
-        );
+        return PaymentInfoResponse.from(paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile)));
+    }
+
+    @Override
+    public Page<PaymentResponseToPage> readPayments(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
+        verifyPrincipal(principal);
+
+        return paymentRepository.findAllCreatedAfterAndProfile_Id(LocalDateTime.now().minusMonths(searchMonths), principal.profileId(), pageable)
+                .map(PaymentResponseToPage::from);
     }
 
     @Override
@@ -104,18 +111,31 @@ public class PaymentServiceImpl implements PaymentService {
                 );
     }
 
+    // TODO: 프론트와 상의 하여 반환값 변경, 해당 DTO 를 받는 Response 로 변환하고 반환
     @Override
-    public PaymentSuccessResponse requestApprovalPayment(String paymentKey, String orderId, BigDecimal amount) {
+    public PaymentTossDto requestApprovalPayment(String paymentKey, String orderId, BigDecimal amount) {
         JSONObject params = new JSONObject();
         params.put("amount", amount);
         params.put("orderId", orderId);
         params.put("paymentKey", paymentKey);
 
-        return new RestTemplate().postForEntity(
-                String.format("%s/payments/confirm", tossOriginUrl),
-                new HttpEntity<>(params, createAuthHeaders()),
-                PaymentSuccessResponse.class
-        ).getBody();
+        PaymentTossDto response =
+                new RestTemplate().postForEntity(
+                    String.format("%s/payments/confirm", tossOriginUrl),
+                    new HttpEntity<>(params, createAuthHeaders()),
+                    PaymentTossDto.class
+                ).getBody();
+
+        paymentRepository.findByOrder_id(Long.parseLong(orderId))
+                .ifPresentOrElse(
+                        payment ->  {
+                                payment.setPaySuccessTf(true);
+                        }, () -> {
+                            throw new BusinessLogicException(ExceptionCode.PAYMENT_NOT_FOUND);
+                        }
+                );
+
+        return response;
     }
 
     @Override
@@ -131,8 +151,9 @@ public class PaymentServiceImpl implements PaymentService {
         return PaymentFailResponse.of(errorCode, errorMsg, orderId);
     }
 
+    // TODO: 프론트와 상의 하여 반환값 변경, 해당 DTO 를 받는 Response 로 변환하고 반환
     @Override
-    public PaymentSuccessResponse requestPaymentCancel(RefundRequest request, CustomPrincipal principal) {
+    public PaymentTossDto requestPaymentCancel(RefundRequest request, CustomPrincipal principal) {
         verifyPrincipal(principal);
         RefundDto dto = request.toDto();
 
@@ -148,7 +169,7 @@ public class PaymentServiceImpl implements PaymentService {
         return new RestTemplate().postForEntity(
                 String.format(String.format("%s/payments/%s/cancel", tossOriginUrl, dto.paymentKey())),
                 new HttpEntity<>(params, createAuthHeaders()),
-                PaymentSuccessResponse.class
+                PaymentTossDto.class
         ).getBody();
     }
 

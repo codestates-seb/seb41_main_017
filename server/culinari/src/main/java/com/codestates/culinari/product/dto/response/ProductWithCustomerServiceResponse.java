@@ -1,5 +1,6 @@
 package com.codestates.culinari.product.dto.response;
 
+import com.codestates.culinari.product.dto.ProductImageDto;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.entitiy.Product;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 public record ProductWithCustomerServiceResponse(
         Long id,
+        List<ProductImageDto> productImageDtos,
         String name,
         String content,
         BigDecimal price,
@@ -28,11 +30,13 @@ public record ProductWithCustomerServiceResponse(
         String modifiedBy,
         List<ProductInquiryDto> productInquiryDtos,
         List<ProductReviewDto> productReviewDtos
+
 )
 {
 
     public static ProductWithCustomerServiceResponse of(
             Long id,
+            List<ProductImageDto> productImageDtos,
             String name,
             String content,
             BigDecimal price,
@@ -53,6 +57,7 @@ public record ProductWithCustomerServiceResponse(
     ) {
         return new ProductWithCustomerServiceResponse(
                 id,
+                productImageDtos,
                 name,
                 content,
                 price,
@@ -76,6 +81,9 @@ public record ProductWithCustomerServiceResponse(
     public static ProductWithCustomerServiceResponse from(Product entity){
         return new ProductWithCustomerServiceResponse(
                 entity.getId(),
+                entity.getProductImages().stream()
+                        .map(ProductImageDto::from)
+                        .collect(Collectors.toList()),
                 entity.getName(),
                 entity.getContent(),
                 entity.getPrice(),

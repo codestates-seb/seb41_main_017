@@ -9,10 +9,10 @@ public record ProductReviewRequest(
         Long productId,
         @NotBlank(message = "제목 입력은 필수입니다.") String title,
         @NotBlank(message = "내용 입력은 필수입니다.") String content,
-        @NotBlank(message = "별점은 필수입니다.") ProductReview.ReviewStar reviewStar
+        @NotBlank(message = "별점은 필수입니다.") Integer reviewStar
 
 ) {
-    public static ProductReviewRequest of(Long productId, String title, String content, ProductReview.ReviewStar reviewStar ) {
+    public static ProductReviewRequest of(Long productId, String title, String content, Integer reviewStar ) {
         return new ProductReviewRequest(productId, title, content, reviewStar);
     }
 

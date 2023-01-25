@@ -16,7 +16,6 @@ public interface ProductCsService {
     void createProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal, Long productId);
     // 후기 작성
     void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, List<MultipartFile> multipartFiles) throws IOException;
-    void saveProductReviewImages(Long productReviewId, List<MultipartFile> multipartFiles) throws IOException;
     //문의 수정
     void updateProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal, Long productInquiryId);
     //리뷰 수정
