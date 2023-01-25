@@ -50,6 +50,7 @@ const SelectButtonContainer = styled.div`
   border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   .select_all_container {
     margin-right: 10px;
@@ -164,7 +165,7 @@ function Cart() {
       <CartProductListContainer>
         <SelectButtonContainer>
           <div className="select_all_container" onClick={handleSelectAllButtonClick}>
-            <CheckBox isChecked={selectAllChecked} size="24px" />
+            <CheckBox isChecked={data?.data.length === checkedList.length} size="24px" />
             <span>전체 선택</span>
           </div>
           <span className="delete-selection">선택 삭제</span>
