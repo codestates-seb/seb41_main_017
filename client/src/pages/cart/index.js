@@ -126,7 +126,9 @@ function Cart() {
     };
 
     (async () => {
-      setData(await getCartList());
+      const data = await getCartList();
+      setData(data);
+      setCheckedList(data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price })));
     })();
   }, []);
 
