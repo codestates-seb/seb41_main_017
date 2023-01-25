@@ -121,7 +121,7 @@ const Layout = styled.div`
   }
 `;
 
-function Header() {
+function LogoutHeader() {
   const { pathname } = useLocation();
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
@@ -203,4 +203,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default LogoutHeader;
