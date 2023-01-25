@@ -55,7 +55,7 @@ const DeleteButtonWrapper = styled.div`
   margin: 0 24px;
 `;
 
-function CartProductItem({ item, data, setData, index, checkedList, setCheckedList }) {
+function CartProductItem({ item, data, setData, index, checkedList, setCheckedList, selectAllChecked }) {
   const [quantity, setQuantity] = useState(item.quantity);
   const [isChecked, setIsChecked] = useState(!!checkedList.find((element) => element.id === item.id));
 
@@ -76,6 +76,10 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
 
     patchQuantity();
   }, [quantity]);
+
+  useEffect(() => {
+    setIsChecked(selectAllChecked);
+  }, [selectAllChecked]);
 
   const handleDeleteButtonClick = () => {
     if (window.confirm("해당 상품을 삭제하시겠습니까?")) {

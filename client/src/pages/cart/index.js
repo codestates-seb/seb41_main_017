@@ -106,6 +106,7 @@ function Cart() {
   const [data, setData] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedList, setCheckedList] = useState([]);
+  const [selectAllChecked, setSelectAllChecked] = useState(true);
 
   useEffect(() => {
     const getCartList = async () => {
@@ -140,6 +141,20 @@ function Cart() {
     setTotalPrice(calcTotalPrice(checkedList));
   }, [checkedList]);
 
+  const handleSelectAllButtonClick = () => {
+    if (selectAllChecked === true) {
+      setCheckedList([]);
+      setSelectAllChecked(!selectAllChecked);
+
+      return;
+    }
+
+    if (selectAllChecked === false) {
+      setCheckedList(data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price })));
+      setSelectAllChecked(!selectAllChecked);
+    }
+  };
+
   return (
     <Container>
       <TitleContainer>
@@ -148,8 +163,8 @@ function Cart() {
       </TitleContainer>
       <CartProductListContainer>
         <SelectButtonContainer>
-          <div className="select_all_container">
-            <CheckBox size="24px" />
+          <div className="select_all_container" onClick={handleSelectAllButtonClick}>
+            <CheckBox isChecked={selectAllChecked} size="24px" />
             <span>전체 선택</span>
           </div>
           <span className="delete-selection">선택 삭제</span>
@@ -164,6 +179,7 @@ function Cart() {
               index={index}
               checkedList={checkedList}
               setCheckedList={setCheckedList}
+              selectAllChecked={selectAllChecked}
               key={item.id}
             />
           ))}
