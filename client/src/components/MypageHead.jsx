@@ -3,7 +3,6 @@ import styled from "styled-components";
 const Layout = styled.div`
   width:80%;
   margin: 0 auto;
-  
   .container {
     padding-bottom: ${ props => props.line === props.filltap ? "0px" : "10px"};
     margin-bottom: 10px;
@@ -13,6 +12,12 @@ const Layout = styled.div`
   .simple{
     display:flex;
     align-items:center;
+    position: relative;
+
+    .side{
+      position: absolute;
+      right:0;
+    }
   }
 
   .subtitle{
@@ -32,16 +37,17 @@ const Layout = styled.div`
 
 function Mypagehead({
   children,title,subtitle,icon,
-  line,filltap
+  line,filltap,side_title
 }) {
   const styels = {line, filltap}
   return (
     <Layout {...styels}>
       <div className="container">
         <div className="simple">
-          <div className="icons">{icon}</div>
+          {icon !== null ? <div className="icons">{icon}</div> : null}
           <span>{title}</span>
-          {subtitle === null ? null : <span className="subtitle">{subtitle}</span>}
+          {side_title !== null ? <div className="side">{side_title}</div> : null}
+          {subtitle !== null ?  <span className="subtitle">{subtitle}</span> : null}
         </div>
         {filltap ? <div className="filter">탭컴포넌트 자리</div> : null}
       </div>
@@ -55,8 +61,10 @@ Mypagehead.defaultProps = {
     title: null,
     subtitle: null,
     icon: null,
+    side_title:null,
     line: false,
     filltap: false,
+
 
 
 }

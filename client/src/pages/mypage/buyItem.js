@@ -5,6 +5,7 @@ import ProductItem from "../../components/ProductItem";
 import QuantityBox from "../../components/QuantityBox";
 import BasicButton from "../../components/BasicButton";
 
+
 const Testlayout = styled.div`
   flex-wrap: wrap;
   display: flex;
@@ -51,6 +52,7 @@ function Buyitem() {
     name: "상품 이름입니다",
     price: 10000,
   };
+  
 
   return (
     <Mypagehead
@@ -58,9 +60,6 @@ function Buyitem() {
       subtitle={"최근 12개월동안 3번 이상 주문한 상품입니다."}
     >
       <Testlayout>
-
-
-        
         <ListLayout>
           <ItemLayout>
             <div className="items">
