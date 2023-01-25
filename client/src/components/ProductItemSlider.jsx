@@ -104,7 +104,7 @@ function ProductItemSlider() {
 
   return (
     <Slider {...settings}>
-      {data &&
+      {data.data &&
         data.data.map((element) => {
           return <ProductItem element={element} key={element.id}></ProductItem>;
         })}
