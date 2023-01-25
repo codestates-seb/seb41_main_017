@@ -4,11 +4,15 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.order.dto.response.OrderResponse;
+import com.codestates.culinari.order.repository.OrderDetailRepository;
 import com.codestates.culinari.order.repository.OrdersRepository;
 import com.codestates.culinari.order.service.OrdersService;
+import com.codestates.culinari.user.dto.response.ProfileMyPageReviewEnableResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,13 @@ import java.time.LocalDateTime;
 public class OrdersServiceImpl implements OrdersService {
 
     private final OrdersRepository ordersRepository;
+    private final OrderDetailRepository orderDetailRepository;
+
+    @Override
+    public Page<ProfileMyPageReviewEnableResponse> readEnableReviewOrder(CustomPrincipal principal, Pageable pageable) {
+        return orderDetailRepository.findAllByOrdersProfileIdAndProductReviewIsNull
+                (principal.profileId(), PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending())).map(ProfileMyPageReviewEnableResponse::from);
+    }
 
 
     @Override

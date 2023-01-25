@@ -1,6 +1,7 @@
 package com.codestates.culinari.product.entitiy;
 
 import com.codestates.culinari.audit.AuditingFields;
+import com.codestates.culinari.order.entitiy.OrderDetail;
 import com.codestates.culinari.user.entitiy.Profile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -21,13 +22,8 @@ public class ProductReview extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Setter
-    @Column(nullable = false, length = 255)
-    private String title;
-    @Setter
     @Column(nullable = false, length = 65554)
     private String content;
-
-
     @Setter
     @Column
     private Integer reviewStar;
@@ -40,22 +36,25 @@ public class ProductReview extends AuditingFields {
     @ManyToOne(optional = false)
     private Profile profile;
 
+    @Setter
+    @OneToOne
+    private OrderDetail orderDetail;
+
     @OneToMany(mappedBy = "productReview", cascade = CascadeType.ALL)
     private final List<ProductReviewImage> productReviewImages = new ArrayList<>();
 
     @OneToOne(mappedBy = "productReview", cascade = CascadeType.ALL)
     private ProductReviewLike productReviewLike;
 
-    public ProductReview(String title, String content, Integer reviewStar, Product product, Profile profile ) {
-        this.title = title;
+    public ProductReview( String content, Integer reviewStar, Product product, Profile profile ) {
         this.content = content;
         this.reviewStar = reviewStar;
         this.product = product;
         this.profile = profile;
     }
 
-    public static ProductReview of(String title, String content, Integer reviewStar, Product product, Profile profile){
-        return new ProductReview(title, content, reviewStar, product, profile);
+    public static ProductReview of( String content, Integer reviewStar, Product product, Profile profile){
+        return new ProductReview( content, reviewStar, product, profile);
     }
     @Override
     public int hashCode() {
