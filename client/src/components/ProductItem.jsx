@@ -6,8 +6,11 @@ const Item = styled.div`
   font-size: 14px;
 
   .image_wrapper {
+    width: 180px;
+    height: 230px;
     overflow: hidden;
     margin-bottom: 6px;
+    background-color: #f1f3f5;
   }
 
   .name {
@@ -41,7 +44,7 @@ function ProductItem({ element }) {
     <Item>
       <a href={ref}>
         <div className="image_wrapper">
-          <img src={element.image}></img>
+          <img src={element.productImageDtos?.[0]?.imgUrl}></img>
         </div>
 
         <div>
