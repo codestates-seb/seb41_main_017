@@ -3,6 +3,7 @@ import { ReactComponent as CheckBoxIcon } from "../assets/check-box-icon.svg";
 
 const Label = styled.label`
   margin-right: 12px;
+  cursor: pointer;
 
   svg {
     width: ${({ size }) => size};
