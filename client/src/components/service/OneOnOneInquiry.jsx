@@ -4,6 +4,7 @@ import BasicButton from "../BasicButton";
 import { BsTextarea } from "react-icons/bs";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const InquiryCotainer = styled.form`
   width: 900px;
@@ -37,6 +38,8 @@ const InquiryCotainer = styled.form`
 `;
 
 function OneOnOneInquiry() {
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -70,12 +73,12 @@ function OneOnOneInquiry() {
         data,
         header
       )
-      .then((res) => {
-        window.alert("성공!");
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
+    navigate(`/service/one-on-one`);
+    window.location.reload();
   };
 
   return (
