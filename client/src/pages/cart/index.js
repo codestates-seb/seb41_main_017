@@ -188,7 +188,7 @@ function Cart() {
       <CartProductListContainer>
         <SelectButtonContainer>
           <div className="select_all_container" onClick={handleSelectAllButtonClick}>
-            <CheckBox isChecked={data?.data.length === checkedList.length} size="24px" />
+            <CheckBox isChecked={data?.data.length === checkedList.length && checkedList.length} size="24px" />
             <span>전체 선택</span>
           </div>
           <span className="delete-selection" onClick={handleSelectDeleteButtonClick}>
