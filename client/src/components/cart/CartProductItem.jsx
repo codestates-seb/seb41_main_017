@@ -57,6 +57,7 @@ const DeleteButtonWrapper = styled.div`
 
 function CartProductItem({ item, data, setData, index, isChanged, setIsChanged }) {
   const [quantity, setQuantity] = useState(item.quantity);
+  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
     const patchQuantity = () => {
@@ -105,7 +106,13 @@ function CartProductItem({ item, data, setData, index, isChanged, setIsChanged }
 
   return (
     <Container>
-      <CheckBox size="24px" />
+      <div
+        onClick={() => {
+          setIsChecked(!isChecked);
+        }}
+      >
+        <CheckBox isChecked={isChecked} size="24px" />
+      </div>
 
       <ImageWrapper>
         <img src={"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"} />
