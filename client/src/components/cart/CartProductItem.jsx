@@ -57,7 +57,7 @@ const DeleteButtonWrapper = styled.div`
 
 function CartProductItem({ item, data, setData, index, checkedList, setCheckedList }) {
   const [quantity, setQuantity] = useState(item.quantity);
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(!!checkedList.find((element) => element.id === item.id));
 
   useEffect(() => {
     const patchQuantity = () => {
