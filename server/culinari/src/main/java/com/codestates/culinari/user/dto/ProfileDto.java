@@ -17,7 +17,6 @@ public record ProfileDto(
         String email,
         String phoneNumber,
         BigDecimal point,
-        String address,
         GenderType gender,
         LocalDate birthDate,
         List<ProductInquiryDto> productInquiryDtos,
@@ -32,7 +31,6 @@ public record ProfileDto(
                 signUpDto.email(),
                 signUpDto.phoneNumber(),
                 null,
-                signUpDto.address(),
                 signUpDto.genderType(),
                 signUpDto.birthDate(),
                 null,
@@ -40,8 +38,8 @@ public record ProfileDto(
         );
     }
 
-    public static ProfileDto of(Long id, String name, String email, String phoneNumber, BigDecimal point, String address, GenderType gender, LocalDate birthDate) {
-        return new ProfileDto(id, name, email, phoneNumber, point, address, gender, birthDate, null, null);
+    public static ProfileDto of(Long id, String name, String email, String phoneNumber, BigDecimal point, GenderType gender, LocalDate birthDate) {
+        return new ProfileDto(id, name, email, phoneNumber, point, gender, birthDate, null, null);
     }
 
     public static ProfileDto from(Profile entity){
@@ -51,7 +49,6 @@ public record ProfileDto(
                 entity.getEmail(),
                 entity.getPhoneNumber(),
                 entity.getPoint(),
-                entity.getAddress(),
                 entity.getGender(),
                 entity.getBirthDate(),
                 entity.getProductInquiry().stream()
@@ -69,7 +66,6 @@ public record ProfileDto(
                 email,
                 phoneNumber,
                 point,
-                address,
                 gender,
                 birthDate
         );

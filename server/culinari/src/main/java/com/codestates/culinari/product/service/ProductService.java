@@ -3,6 +3,7 @@ package com.codestates.culinari.product.service;
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.ProductLikeDto;
+import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 import com.codestates.culinari.product.dto.response.ProductWithCustomerServiceResponse;
 import com.codestates.culinari.product.entitiy.Product;
 import org.springframework.data.domain.Page;
@@ -32,4 +33,6 @@ public interface ProductService {
     Page<ProductDto> readProductWithSortedType(String sortedType, String filter, Pageable pageable) throws UnsupportedEncodingException;
 
     public Page<ProductDto> readProductWithCategoryCode(String categoryCode, String sortedType, Pageable pageable);
+
+    Page<ProductResponseToPage> readFrequentOrderProduct(Integer searchMonths, Integer frequency, Pageable pageable, CustomPrincipal principal);
 }

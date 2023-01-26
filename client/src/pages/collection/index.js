@@ -238,7 +238,18 @@ function Collection() {
               </FilterList>
             </ul>
           </div>
-          <div className="product_list">{data && data.data.map((element) => <ProductItem element={element} key={Math.random()} />)}</div>
+          <div className="product_list">
+            {data &&
+              data.data.map((element) => (
+                <ProductItem
+                  id={element.id}
+                  imgUrl={element.productImageDtos[0]?.imgUrl}
+                  name={element.name}
+                  price={element.price}
+                  key={Math.random()}
+                />
+              ))}
+          </div>
         </div>
       </Content>
     </>

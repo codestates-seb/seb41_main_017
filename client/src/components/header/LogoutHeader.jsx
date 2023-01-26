@@ -4,13 +4,11 @@ import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import BASE_URL from "../constants/BASE_URL";
+import BASE_URL from "../../constants/BASE_URL";
 
 const Layout = styled.div`
-  // 화면사이즈 수정 ---
   width: 100%;
   margin: 0 auto;
-  // 화면사이즈 수정 ---
   height: 158px;
 
   .flex {
@@ -196,9 +194,9 @@ const CategoryList = styled.li`
   }
 `;
 
-function Header() {
-  const navigate = useNavigate();
+function LogoutHeader() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   const [categories, setCategories] = useState([]);
   const [categoryDetails, setCategoryDetails] = useState([]);
@@ -344,4 +342,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default LogoutHeader;

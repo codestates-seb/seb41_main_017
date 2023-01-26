@@ -2,7 +2,7 @@ import "./App.css";
 import reset from "styled-reset";
 import { createGlobalStyle } from "styled-components";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import Header from "./components/Header";
+import Header from "./components/header";
 
 import Mypage from "./pages/mypage/index";
 import Login from "./pages/sign/login";

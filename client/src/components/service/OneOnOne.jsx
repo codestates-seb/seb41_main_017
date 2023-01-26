@@ -14,6 +14,7 @@ const QuestionContainer = styled.div`
   justify-content: center;
 `;
 const Page = styled.div`
+  max-width: 900px;
   .question_btn {
     margin-top: 50px;
     display: flex;

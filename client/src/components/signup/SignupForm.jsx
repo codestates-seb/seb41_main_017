@@ -19,6 +19,7 @@ import BasicButton from "../BasicButton";
 import axios from "axios";
 
 import BASE_URL from "../../constants/BASE_URL";
+import { useNavigate } from "react-router-dom";
 
 function SignForm() {
   const [signupAddress, setSignupAddress] = useState("");
@@ -38,9 +39,10 @@ function SignForm() {
   const [termsChecked, setTermsChecked] = useState(false);
   const [privacyChecked, setPrivacyChecked] = useState(false);
   const [response, setResponse] = useState("");
-
   const [successModal, setSuccessModal] = useState(false);
   const [rejectModal, setRecjectModal] = useState(false);
+
+  const navigate = useNavigate();
 
   function handleAllChecked() {
     setAllChecked(!allChecked);
@@ -84,6 +86,8 @@ function SignForm() {
           setRecjectModal(true);
         }
       });
+    navigate("/login");
+    window.location.reload();
   };
 
   return (
@@ -176,7 +180,6 @@ function SignForm() {
             />
           </div>
         </div>
-
         <div className="input_birth">
           <BasicInput
             setValue={setYear}

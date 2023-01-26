@@ -1,10 +1,13 @@
 package com.codestates.culinari.product.repository.querydsl;
 
+import com.codestates.culinari.order.entitiy.QOrderDetail;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.QProduct;
+import com.codestates.culinari.user.entitiy.QProfile;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.codestates.culinari.product.entitiy.QProduct.product;
@@ -67,5 +71,28 @@ public class ProductRepositoryCustomImpl extends QuerydslRepositorySupport imple
             }
         }
         return null;
+    }
+
+    @Override
+    public Page<Product> findAllFrequentOrderProduct(LocalDateTime createdAfterDateTime, Integer frequency, Long profileId, Pageable pageable) {
+        QOrderDetail orderDetail = QOrderDetail.orderDetail;
+        QProduct product = QProduct.product;
+        QProfile profile = QProfile.profile;
+
+        JPQLQuery<Product> query =
+                from(orderDetail)
+                        .select(product)
+                        .innerJoin(orderDetail.product, product)
+                        .where(orderDetail.createdAt.goe(createdAfterDateTime)
+                                .and(product.id.eq(orderDetail.product.id)))
+//                        .fetchJoin()
+                        .innerJoin(orderDetail.orders.profile, profile)
+                        .where(profile.id.eq(profileId))
+//                        .fetchJoin()
+                        .groupBy(product.id)
+                        .having(product.id.count().goe(frequency));
+        List<Product> products = getQuerydsl().applyPagination(pageable, query).fetch();
+
+        return new PageImpl<>(products, pageable, query.fetchCount());
     }
 }

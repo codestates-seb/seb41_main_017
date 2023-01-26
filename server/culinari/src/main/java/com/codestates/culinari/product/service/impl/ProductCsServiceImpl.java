@@ -2,6 +2,8 @@ package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.global.file.S3Uploader;
+import com.codestates.culinari.order.entitiy.OrderDetail;
+import com.codestates.culinari.order.repository.OrderDetailRepository;
 import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
@@ -9,11 +11,16 @@ import com.codestates.culinari.product.dto.request.ProductReviewRequest;
 import com.codestates.culinari.product.entitiy.*;
 import com.codestates.culinari.product.repository.*;
 import com.codestates.culinari.product.service.ProductCsService;
+import com.codestates.culinari.user.dto.response.ProfileMyPageReviewExistResponse;
 import com.codestates.culinari.user.entitiy.Profile;
 import com.codestates.culinari.user.repository.ProfileRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +35,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class ProductCsServiceImpl implements ProductCsService {
+    private final OrderDetailRepository orderDetailRepository;
     private final ProductRepository productRepository;
     private final ProductInquiryRepository productInquiryRepository;
     private final ProductReviewRepository productReviewRepository;
@@ -45,6 +53,12 @@ public class ProductCsServiceImpl implements ProductCsService {
                 .map(ProductInquiryDto::from)
                 .collect(Collectors.toList());
     }
+    //profileId로 리뷰 리스트 get
+    @Transactional(readOnly = true)
+    @Override
+    public Page<ProfileMyPageReviewExistResponse> readProductReview(CustomPrincipal principal, Pageable pageable){
+        return productReviewRepository.findByProfileId(principal.profileId(), PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(), Sort.by("id").descending())).map(ProfileMyPageReviewExistResponse::from);
+    }
 
     // 문의 작성
     @Override
@@ -60,7 +74,8 @@ public class ProductCsServiceImpl implements ProductCsService {
     public void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, List<MultipartFile> multipartFiles) throws IOException {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
-        ProductReview productReview = ProductReview.of(productReviewRequest.title(), productReviewRequest.content(), productReviewRequest.reviewStar(),product, profile);
+        OrderDetail orderDetail = orderDetailRepository.findByProductIdAndProductReviewIsNull(productId);
+        ProductReview productReview = ProductReview.of( productReviewRequest.content(), productReviewRequest.reviewStar(),product, profile);
         List<String> image = s3Uploader.uploads(multipartFiles);
         List<String> imgList = new ArrayList<>();
         for(String imageUrl : image){
@@ -72,6 +87,8 @@ public class ProductCsServiceImpl implements ProductCsService {
 //        imageList.stream().forEach(productReviewImage -> productReviewImage.(productReview));
         ProductReviewLike productReviewLike = productReviewLikeRepository.save(ProductReviewLike.of(0L,productReview));
         productReview.setProductReviewLike(productReviewLike);
+        productReview.setOrderDetail(orderDetail);
+        orderDetail.setProductReview(productReview);
         productReviewRepository.saveAndFlush(productReview);
     }
 
@@ -98,9 +115,6 @@ public class ProductCsServiceImpl implements ProductCsService {
     @Override
     public void updateProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productReviewId) {
         ProductReview productReview = productReviewRepository.findById(productReviewId).orElseThrow(() -> new EntityNotFoundException("문의가 없습니다"));
-        if (productReviewRequest.title() != null) {
-            productReview.setTitle(productReviewRequest.title());
-        }
         if (productReviewRequest.content() != null) {
             productReview.setContent(productReviewRequest.content());
         }

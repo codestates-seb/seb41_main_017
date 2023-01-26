@@ -15,7 +15,6 @@ public record ProductReviewDto(
         Long profileId,
         Integer reviewStar,
         Long like,
-        String title,
         String content,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
@@ -25,13 +24,13 @@ public record ProductReviewDto(
 )
 {
 
-    public static ProductReviewDto of(Long id, Long productId,Long profileId, Integer reviewStar,Long like, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,List<ProductReviewImageDto> productReviewImageDtos){
-        return new ProductReviewDto(id, productId, profileId,reviewStar, like, title, content, createdAt, modifiedAt, createdBy, modifiedBy,productReviewImageDtos);
+    public static ProductReviewDto of(Long id, Long productId,Long profileId, Integer reviewStar,Long like, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,List<ProductReviewImageDto> productReviewImageDtos){
+        return new ProductReviewDto(id, productId, profileId,reviewStar, like, content, createdAt, modifiedAt, createdBy, modifiedBy,productReviewImageDtos);
 
     }
 
-    public static ProductReviewDto of(Long productId,Long profileId, String title,String content,Integer reviewStar){
-        return new ProductReviewDto(null, productId, profileId,reviewStar,null, title, content,null, null, null, null,null);
+    public static ProductReviewDto of(Long productId,Long profileId, String content,Integer reviewStar){
+        return new ProductReviewDto(null, productId, profileId,reviewStar,null,  content,null, null, null, null,null);
     }
 
 
@@ -42,7 +41,6 @@ public record ProductReviewDto(
                 entity.getProfile().getId(),
                 entity.getReviewStar(),
                 likeEntity.getLikeNum(),
-                entity.getTitle(),
                 entity.getContent(),
                 entity.getCreatedAt(),
                 entity.getModifiedAt(),
@@ -62,7 +60,6 @@ public record ProductReviewDto(
                 entity.getProfile().getId(),
                 entity.getReviewStar(),
                 entity.getProductReviewLike().getLikeNum(),
-                entity.getTitle(),
                 entity.getContent(),
                 entity.getCreatedAt(),
                 entity.getModifiedAt(),
@@ -77,7 +74,6 @@ public record ProductReviewDto(
 
     public ProductReview toEntity(Product product, Profile profile) {
         return ProductReview.of(
-                title,
                 content,
                 reviewStar,
                 product,
