@@ -70,7 +70,6 @@ const Layout = styled.div`
   }
 
   .sub_list{
-    flex:1;
     align-self: flex-end;
     width:610px;
     margin-top: 20px;
@@ -79,7 +78,6 @@ const Layout = styled.div`
 
     .sub_title{
       font-size:15px;
-      flex:1;
       padding:6px 10px;
       border-top:1px solid #AEAEAE;
       border-bottom:1px solid #AEAEAE;
