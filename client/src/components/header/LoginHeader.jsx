@@ -121,7 +121,7 @@ const Layout = styled.div`
   }
 `;
 
-function LoginHeader() {
+function LogoutHeader() {
   const { pathname } = useLocation();
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
@@ -131,8 +131,8 @@ function LoginHeader() {
     navigate(`/search?keyword=${searchText}`);
   };
 
-  const handleClickLogout = (e) => {
-    e.preventDefault();
+  const handleClickLogout = (event) => {
+    event.preventDefault();
     localStorage.removeItem("token");
     window.location.reload();
   };
@@ -140,13 +140,13 @@ function LoginHeader() {
   return (
     <Layout pathname={pathname}>
       <div className="top flex">
-        <button onClick={handleClickLogout}>
-          <a>로그아웃</a>
-        </button>
+        <div onClick={handleClickLogout}>
+          <a href="/">로그아웃</a>
+        </div>
 
-        <button>
+        <div>
           <a href="/service">고객센터</a>
-        </button>
+        </div>
       </div>
       <div className="mid flex">
         <div className="logo">
@@ -209,4 +209,4 @@ function LoginHeader() {
   );
 }
 
-export default LoginHeader;
+export default LogoutHeader;
