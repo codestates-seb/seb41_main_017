@@ -25,6 +25,7 @@ function SignForm() {
   const [signupAddress, setSignupAddress] = useState("");
   const [postAddress, setPostAddress] = useState("");
   const [signupId, setSignupId] = useState("");
+  const [errorId, setErrorId] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const [name, setName] = useState("");
@@ -113,6 +114,13 @@ function SignForm() {
           <div className="check_btn">
             <ModalContainer type={"checkId"} signupId={signupId} />
           </div>
+        </div>
+        <div className="error_box">
+          {signupId.length < 6 && 0 < signupId.length ? (
+            <div className="error_text">
+              6자 이상 16자 이하의 글자 수를 입력해주세요{" "}
+            </div>
+          ) : null}
         </div>
 
         <div className="input_cotainer">
