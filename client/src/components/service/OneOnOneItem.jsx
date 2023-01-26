@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Page = styled.div`
@@ -21,6 +22,9 @@ const ItemCotainer = styled.div`
 
 const Notice = styled.div`
   width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 const Category = styled.div`
   width: 15%;
@@ -39,20 +43,19 @@ const Time = styled.div`
   text-align: center;
 `;
 
-function OneOnOneItem() {
+function OneOnOneItem({ question }) {
   return (
     <Page>
       <div>
         <ItemCotainer>
-          <Notice>
-            <p>1</p>
-          </Notice>
+          <Notice>{question.id} </Notice>
           <Category>시스템 오류</Category>
+
           <Title>
-            <p>내가 작성한 문의</p>
+            <Link to={`${question.id}`}>{question.title}</Link>
           </Title>
           <Writter>나</Writter>
-          <Time>23.01.10</Time>
+          <Time>23.01.24</Time>
         </ItemCotainer>
       </div>
     </Page>

@@ -4,10 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const Layout = styled.div`
-  // 화면사이즈 수정 ---
   width: 100%;
   margin: 0 auto;
-  // 화면사이즈 수정 ---
   height: 158px;
 
   .flex {
@@ -28,7 +26,6 @@ const Layout = styled.div`
 
     .logo {
       margin-right: 10px;
-
       img {
         width: 40px;
       }
@@ -97,11 +94,13 @@ const Layout = styled.div`
           }
 
           .new_product {
-            color: ${({ pathname }) => (pathname.includes("/new-product") ? "#ff6767" : null)};
+            color: ${({ pathname }) =>
+              pathname.includes("/new-product") ? "#ff6767" : null};
           }
 
           .best_product {
-            color: ${({ pathname }) => (pathname.includes("/best-product") ? "#ff6767" : null)};
+            color: ${({ pathname }) =>
+              pathname.includes("/best-product") ? "#ff6767" : null};
           }
 
           span {
@@ -120,7 +119,7 @@ const Layout = styled.div`
   }
 `;
 
-function Header() {
+function LogoutHeader() {
   const { pathname } = useLocation();
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
@@ -143,10 +142,16 @@ function Header() {
       </div>
       <div className="mid flex">
         <div className="logo">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png" alt="logo"></img>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"
+            alt="logo"
+          ></img>
         </div>
         <form className="serach" onSubmit={handleSearchProductSubmit}>
-          <input placeholder="검색어를 입력해주세요" onChange={({ target }) => setSearchText(target.value)}></input>
+          <input
+            placeholder="검색어를 입력해주세요"
+            onChange={({ target }) => setSearchText(target.value)}
+          ></input>
           <button>
             <BsSearch />
           </button>
@@ -196,4 +201,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default LogoutHeader;

@@ -1,4 +1,7 @@
+import axios from "axios";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+
 import { ReactComponent as CartIcon } from "../../assets/cart_icon.svg";
 import CartProductItem from "../../components/cart/CartProductItem";
 import CheckBox from "../../components/CheckBox";
@@ -6,6 +9,8 @@ import BasicButton from "../../components/BasicButton";
 import ColorButton from "../../components/ColorButton";
 import ProductItemSlider from "../../components/ProductItemSlider";
 import { Title, TodayRecommendProducts } from "..";
+
+import BASE_URL from "../../constants/BASE_URL";
 
 const Container = styled.div`
   max-width: 1050px;
@@ -32,6 +37,11 @@ const TitleContainer = styled.div`
 const CartProductListContainer = styled.div`
   padding: 0 40px 20px 40px;
   border-bottom: 1px solid black;
+
+  .no_cart_img {
+    display: block;
+    margin: 100px auto;
+  }
 `;
 
 const SelectButtonContainer = styled.div`
@@ -40,13 +50,17 @@ const SelectButtonContainer = styled.div`
   border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
-  span {
+  .select_all_container {
     margin-right: 10px;
+    display: flex;
+    align-items: center;
   }
 
   .delete-selection {
     color: #c26d53;
+    margin-right: 10px;
   }
 `;
 
@@ -90,54 +104,141 @@ const OrderButtonContainer = styled.div`
 `;
 
 function Cart() {
+  const [data, setData] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [checkedList, setCheckedList] = useState([]);
+  const [selectAllChecked, setSelectAllChecked] = useState(true);
+
+  useEffect(() => {
+    const getCartList = async () => {
+      const config = {
+        headers: {
+          "Content-Type": `application/json`,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
+        },
+      };
+
+      try {
+        const { data } = await axios.get(`${BASE_URL}/carts`, config);
+
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    (async () => {
+      const data = await getCartList();
+      setData(data);
+      setCheckedList(data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price })));
+    })();
+  }, []);
+
+  useEffect(() => {
+    const calcTotalPrice = (checkedList) => {
+      return checkedList.reduce((acc, cur) => acc + cur.quantity * cur.price, 0);
+    };
+
+    setTotalPrice(calcTotalPrice(checkedList));
+  }, [checkedList]);
+
+  const handleSelectAllButtonClick = () => {
+    if (selectAllChecked === true) {
+      setCheckedList([]);
+      setSelectAllChecked(!selectAllChecked);
+
+      return;
+    }
+
+    if (selectAllChecked === false) {
+      setCheckedList(data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price })));
+      setSelectAllChecked(!selectAllChecked);
+    }
+  };
+
+  const handleSelectDeleteButtonClick = () => {
+    if (!window.confirm("체크된 상품 모두 삭제 하시겠습니까?")) return;
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": `application/json`,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
+        },
+      };
+
+      checkedList.forEach((list) => {
+        axios.delete(`${BASE_URL}/carts/${list.id}`, config);
+        data.data = data.data.filter((element) => element.id !== list.id);
+      });
+
+      setCheckedList([]);
+      setData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <>
-      <Container>
-        <TitleContainer>
-          <CartIcon />
-          <h2>장바구니</h2>
-        </TitleContainer>
-        <CartProductListContainer>
-          <SelectButtonContainer>
-            <CheckBox />
+    <Container>
+      <TitleContainer>
+        <CartIcon />
+        <h2>장바구니</h2>
+      </TitleContainer>
+      <CartProductListContainer>
+        <SelectButtonContainer>
+          <div className="select_all_container" onClick={handleSelectAllButtonClick}>
+            <CheckBox isChecked={data?.data.length === checkedList.length && checkedList.length} size="24px" />
             <span>전체 선택</span>
-            <span className="delete-selection">선택 삭제</span>
-          </SelectButtonContainer>
+          </div>
+          <span className="delete-selection" onClick={handleSelectDeleteButtonClick}>
+            선택 삭제
+          </span>
+        </SelectButtonContainer>
 
-          <CartProductItem></CartProductItem>
-          <CartProductItem></CartProductItem>
-          <CartProductItem></CartProductItem>
-          <CartProductItem></CartProductItem>
+        {data &&
+          data.data.map((item, index) => (
+            <CartProductItem
+              item={item}
+              data={data}
+              setData={setData}
+              index={index}
+              checkedList={checkedList}
+              setCheckedList={setCheckedList}
+              selectAllChecked={selectAllChecked}
+              key={item.id}
+            />
+          ))}
+        {data && data.data.length ? null : <img className="no_cart_img" src="img/no_carts.png"></img>}
 
-          <TotalPriceBox>
-            <div className="product-price">
-              <span>상품 가격</span>
-              <span>204,000원</span>
-            </div>
-            <div className="shipping-fee">
-              <span className="sign">+</span>
-              <span>배송비</span>
-              <span>3,000원</span>
-            </div>
-            <div className="total-price">
-              <span className="sign">=</span>
-              <span>총 주문 금액</span>
-              <strong>207,000원</strong>
-            </div>
-          </TotalPriceBox>
+        <TotalPriceBox>
+          <div className="product-price">
+            <span>상품 가격</span>
+            <span>{totalPrice.toLocaleString()}원</span>
+          </div>
+          <div className="shipping-fee">
+            <span className="sign">+</span>
+            <span>배송비</span>
+            <span>3,000원</span>
+          </div>
+          <div className="total-price">
+            <span className="sign">=</span>
+            <span>총 주문 금액</span>
+            <strong>{(totalPrice + 3000).toLocaleString()}원</strong>
+          </div>
+        </TotalPriceBox>
 
-          <OrderButtonContainer>
-            <BasicButton children={"상품 더 담기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
-            <ColorButton children={"주문하기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
-          </OrderButtonContainer>
-        </CartProductListContainer>
+        <OrderButtonContainer>
+          <BasicButton href={"/collections/best-product"} children={"상품 더 담기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
+          <ColorButton children={"주문하기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
+        </OrderButtonContainer>
+      </CartProductListContainer>
 
-        <TodayRecommendProducts>
-          <Title>이달의 추천 상품</Title>
-          <ProductItemSlider />
-        </TodayRecommendProducts>
-      </Container>
-    </>
+      <TodayRecommendProducts>
+        <Title>이달의 추천 상품</Title>
+        <ProductItemSlider />
+      </TodayRecommendProducts>
+    </Container>
   );
 }
 

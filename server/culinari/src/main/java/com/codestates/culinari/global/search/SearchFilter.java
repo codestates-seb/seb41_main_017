@@ -28,6 +28,8 @@ public class SearchFilter {
     }
 
     public List<String> listFilter(String filterList) {
-        return List.of(filterList.split(","));
+        if(filterList == null) return null;
+        if(filterList.contains(",")) return List.of(filterList.split(","));
+        else return List.of(filterList);
     }
 }

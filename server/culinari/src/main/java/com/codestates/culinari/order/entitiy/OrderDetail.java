@@ -3,10 +3,12 @@ package com.codestates.culinari.order.entitiy;
 import com.codestates.culinari.audit.AuditingFields;
 import com.codestates.culinari.order.constant.StatusType;
 import com.codestates.culinari.product.entitiy.Product;
+import com.codestates.culinari.product.entitiy.ProductReview;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
@@ -30,6 +32,10 @@ public class OrderDetail extends AuditingFields {
 
     @ManyToOne(optional = false)
     private Product product;
+
+    @Setter
+    @OneToOne
+    private ProductReview productReview;
 
     private OrderDetail(Integer quantity, StatusType statusType, Orders orders, Product product) {
         this.quantity = quantity;
