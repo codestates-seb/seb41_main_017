@@ -21,6 +21,14 @@ const Container = styled.div`
 
   .product_list_header {
     margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .product_filter {
+    position: relative;
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -38,9 +46,24 @@ const PageHeader = styled.h3`
   }
 `;
 
+const FilterList = styled.li.attrs(({ dataId }) => ({
+  "data-id": dataId,
+}))`
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 14px;
+  color: rgb(153, 153, 153);
+  cursor: pointer;
+
+  color: ${({ dataId, sort }) => (dataId === sort ? "#ff6767" : "rgb(153, 153, 153)")};
+`;
+
 function Search() {
   const location = useLocation();
   const [data, setData] = useState("");
+  const [sort, setSort] = useState("newest");
 
   useEffect(() => {
     const getData = async () => {
@@ -56,6 +79,10 @@ function Search() {
     getData();
   }, [location]);
 
+  const handleSortListClick = ({ target }) => {
+    setSort(target.dataset.id);
+  };
+
   return (
     <Container>
       <PageHeader>
@@ -63,6 +90,17 @@ function Search() {
       </PageHeader>
       <div className="product_list_header">
         <div className="product_list_count">{`총 ${data && data.data.length}건`}</div>
+        <ul className="product_filter" onClick={handleSortListClick}>
+          <FilterList dataId="newest" sort={sort}>
+            신상품순
+          </FilterList>
+          <FilterList dataId="lower" sort={sort}>
+            낮은 가격순
+          </FilterList>
+          <FilterList dataId="higher" sort={sort}>
+            높은 가격순
+          </FilterList>
+        </ul>
       </div>
       <div className="product_list">
         {data &&
