@@ -14,6 +14,7 @@ const Item = styled.div`
   }
 
   .name {
+    width: 180px;
     margin-bottom: 5px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
