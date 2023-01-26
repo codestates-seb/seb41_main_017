@@ -297,7 +297,7 @@ function Header() {
                         categories.data.map((category, index) => (
                           <CategoryList onMouseOver={handleCategoriesMouseOver} data-index={index} ishover={index == currentIndex} key={index}>
                             {
-                              <Link to={"/category" + category.categoryCode} data-index={index}>
+                              <Link to={"/category/" + category.categoryCode} data-index={index}>
                                 {category.name}
                               </Link>
                             }
@@ -310,7 +310,7 @@ function Header() {
                       {categoryDetailCodes.map((category, index) => (
                         <li key={index}>
                           {
-                            <Link to={"/category" + category.categoryDetailCode} data-index={index}>
+                            <Link to={"/category/" + category.categoryDetailCode} data-index={index}>
                               {category.name}
                             </Link>
                           }
