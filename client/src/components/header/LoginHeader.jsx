@@ -4,10 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const Layout = styled.div`
-  // 화면사이즈 수정 ---
   width: 100%;
   margin: 0 auto;
-  // 화면사이즈 수정 ---
   height: 158px;
 
   .flex {
