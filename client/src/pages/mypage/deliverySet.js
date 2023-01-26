@@ -69,17 +69,19 @@ function Addressset() {
   const [isdelete, setIsdelete] = useState(false);
   const [isfetch, setIsfetch] = useState(false);
 
+
+  console.log(addresList);
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_URL}/destination`, {
         headers: {
-          Authorization: localStorage.getItem("accessToken"),
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
         },
       })
       .then((res) => setAddresList(res.data.data))
       .then((erros) => erros);
   }, []);
-
 
   const isOpen = (e, state) => {
     setKeys(e);
@@ -94,7 +96,7 @@ function Addressset() {
         setIsfetch(!isfetch);
         break;
       default:
-        console.log("디폴트값이들어옴");
+        console.log("defalut");
     }
   };
 
@@ -105,7 +107,8 @@ function Addressset() {
         undefined,
         {
           headers: {
-            Authorization: localStorage.getItem("accessToken"),
+            authorization: JSON.parse(localStorage.getItem("token"))
+              .authorization,
           },
         }
       );
@@ -114,23 +117,13 @@ function Addressset() {
     if (state === "isdelete") {
       axios.delete(`${process.env.REACT_APP_URL}/destination/${id}`, {
         headers: {
-          Authorization: localStorage.getItem("accessToken"),
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
         },
       });
       setIsdelete(!isdelete);
     }
-    // if(state === "isfetch"){
-
-    //     axios.patch(`${process.env.REACT_APP_URL}/destination/${id}`,{
-    //       headers:{
-    //         Authorization : localStorage.getItem("accessToken"),
-    //       }
-    //     }
-    //   );
-    //   setIsfetch(!isfetch);
-    // }
-    // 비동기문제
-    setTimeout(() => window.location.reload(), 1000);
+    setTimeout(() => window.location.reload(), 100);
   };
  
   return (

@@ -1,8 +1,8 @@
+import { useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
 import SideInput from "./SideInput";
 import BasicInput from "./BasicButton";
-import axios from "axios";
 
 const Layout = styled.div`
   background-color: rgba(0, 0, 0, 0.333);
@@ -52,28 +52,28 @@ const Layout = styled.div`
 `;
 
 function PatchModal({ close, data }) {
-  const [addressid, setAddressId] = useState(data[0].id);
-//   받은데이터로 초기값을 설정할 스테이트들
-  const [title, setTitle] = useState("");
-  const [processStatus, setProcessStatus] = useState("");
-  const [content, setContent] = useState("");
+  const [destinationName, setDestinationName] = useState(data[0].destinationName);
+  const [address, setAddress] = useState(data[0].address);
+  const [receiverName, setReceiverName] = useState(data[0].receiverName);
+  const [receiverPhoneNumber, setReceiverPhoneNumber] = useState(data[0].receiverPhoneNumber);
 
   const changeValue = () => {
     axios.patch(
-      `${process.env.REACT_APP_URL}/destination/${addressid}`,
+      `${process.env.REACT_APP_URL}/destination/${data[0].id}`,
       {
-        addressid,
-        title,
-        content,
-        processStatus,
+        destinationName,
+        address,
+        receiverName,
+        receiverPhoneNumber,
       },
       {
         headers: {
-          Authorization: localStorage.getItem("accessToken"),
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
         },
       }
     );
-    close()
+    close();
     setTimeout(() => window.location.reload(), 1000);
   };
 
@@ -87,32 +87,33 @@ function PatchModal({ close, data }) {
           </div>
         </div>
         <div className="patchModal_body">
-          {/* ? */}
           <SideInput
-            label={"title"}
+            label={"배송지명"}
             flex_d={"column"}
             padding_b={"20px"}
-            placeholder={`${data[0].destinationName}`}
-            defaultValue={title}
-            onChange={(e) => setTitle(e.target.value)}
+            defaultValue={destinationName}
+            onChange={(e) => setDestinationName(e.target.value)}
           />
-          {/* ? */}
           <SideInput
-            label={"processStatus"}
+            label={"주소"}
             flex_d={"column"}
             padding_b={"20px"}
-            placeholder={`${data[0].receiverName}`}
-            defaultValue={processStatus}
-            onChange={(e) => setProcessStatus(e.target.value)}
+            defaultValue={address}
+            onChange={(e) => setAddress(e.target.value)}
           />
-          {/* ? */}
           <SideInput
-            label={"content"}
+            label={"수취인"}
             flex_d={"column"}
             padding_b={"20px"}
-            placeholder={`${data[0].address}`}
-            defaultValue={content}
-            onChange={(e) => setContent(e.target.value)}
+            defaultValue={receiverName}
+            onChange={(e) => setReceiverName(e.target.value)}
+          />
+          <SideInput
+            label={"연락처"}
+            flex_d={"column"}
+            padding_b={"20px"}
+            defaultValue={receiverPhoneNumber}
+            onChange={(e) => setReceiverPhoneNumber(e.target.value)}
           />
         </div>
         <div className="patchModal_btns">

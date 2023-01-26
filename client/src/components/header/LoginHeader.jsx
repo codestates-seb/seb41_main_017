@@ -4,10 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const Layout = styled.div`
-  // 화면사이즈 수정 ---
   width: 100%;
   margin: 0 auto;
-  // 화면사이즈 수정 ---
   height: 158px;
 
   .flex {
@@ -121,7 +119,7 @@ const Layout = styled.div`
   }
 `;
 
-function Header() {
+function LogoutHeader() {
   const { pathname } = useLocation();
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
@@ -131,11 +129,17 @@ function Header() {
     navigate(`/search?keyword=${searchText}`);
   };
 
+  const handleClickLogout = (event) => {
+    event.preventDefault();
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
+
   return (
     <Layout pathname={pathname}>
       <div className="top flex">
-        <div>
-          <a href="/login">로그인 / 회원가입</a>
+        <div onClick={handleClickLogout}>
+          <a href="/">로그아웃</a>
         </div>
 
         <div>
@@ -203,4 +207,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default LogoutHeader;
