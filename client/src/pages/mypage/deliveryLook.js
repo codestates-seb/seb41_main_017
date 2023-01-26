@@ -1,200 +1,178 @@
-import { useState } from "react";
 import styled from "styled-components";
-import Mypagebtn from "../../components/BasicButton";
-import TableBoard from "../../components/TableBoard";
 import ListLayout from "../../components/ListLayout";
 import Mypagehead from "../../components/MypageHead";
+import BasicButton from "../../components/BasicButton";
+import { format, add } from "date-fns";
+import { useState } from "react";
 
-const Test = styled.div`
-.sub_List {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
+const Layout = styled.div`
+  display:flex;
+  flex-direction: column;
+  
+  
 
-  .table {
-    flex-basis: calc(100% - 130px);
+
+  .main_list {
+    display: flex;
   }
-}
-`
 
-const List = styled.div`
-  display: flex;
-
-  .item_Img {
-    width: 130px;
-    height: 130px;
+  .left {
+    flex: 1;
 
     img {
+      border-radius: 5px;
       width: 100%;
-      height: 100%;
     }
   }
 
-  .list_Detail {
-    flex: 1;
-    margin-top: 8px;
+  .center {
+    flex: 3;
+    margin: 0 10px;
     display: flex;
     flex-direction: column;
-    padding: 0px 12px;
 
-    .item_Name {
+    .title {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
+      span {
+        color: #067303;
+        font-size: 14px;
+      }
     }
 
-    .item_Money {
-      margin-bottom: 8px;
+    .count {
+      margin-bottom: 10px;
       span {
         margin-right: 20px;
       }
     }
 
-    .item_State {
-      display: flex;
-      justify-content: space-around;
-
-      .item_Circle {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .state_Icons {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: 1px solid black;
-      }
-
-      .state_Font {
-        padding-top: 10px;
-      }
+    .items_states {
+      color:red;
+      flex: 1;
     }
   }
 
-  .list_Btns {
+  .right {
+    text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
-    .user_Btn {
-      display: flex;
+    
+    .btns{
+      display:flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
+      
     }
+  }
 
-    .event_Btn {
-      display: flex;
-      justify-content: flex-end;
-      text-align: center;
-      span {
-        font-size: 25px;
-        margin: 0 10px;
+  .sub_list{
+    flex:1;
+    align-self: flex-end;
+    width:610px;
+    margin-top: 20px;
+    display:flex;
+    flex-direction: column;
+
+    .sub_title{
+      font-size:15px;
+      flex:1;
+      padding:6px 10px;
+      border-top:1px solid #AEAEAE;
+      border-bottom:1px solid #AEAEAE;
+      display:flex;
+
+      & > div:first-child{
+        flex:1;
+      }
+
+      & div:last-child{
+        flex:2;
+        text-align:center;
       }
     }
+
+    .sub_content{      
+      padding:10px;
+      font-size:14px;
+
+      display:flex;
+      flex-direction: column;
+
+      gap:10px;
+      & > li {
+        display:flex;
+        & span:first-child {
+          flex:1;
+        }
+        & span:last-child{
+          flex:2;
+          text-align:center;
+        }
+      }
+
+    }
+    
   }
 `;
 
-/*
-
-*/
-
 function DeliveryLook() {
-  const [subinfo, setSubinfo] = useState(false);
+  const time = format(add(new Date(), { days: 2 }), "MM/dd");
+  const [bottomTap, setBottomTap] = useState(false)
 
   return (
     <Mypagehead title={"배송 조회"}>
-    <Test>
-      <ListLayout>
-        <List>
-          <div className="item_Img">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"
-              alt="#"
-            ></img>
-          </div>
-          <div className="list_Detail">
-            <div className="item_Name">
-              <div>
-                <span>상품 이름입니다</span>
+      <ListLayout padding_width={"10px"}>
+        <Layout>
+          <div className="main_list">
+            <div className="left">
+              <img
+                src="https://www.wjfood.co.kr/Psd/Main/3A3326.png"
+                alt="#"
+              ></img>
+            </div>
+            <div className="center">
+              <div className="title">
+                <h5>상품이름입니다</h5>
+                <BasicButton>배송중</BasicButton>
+                <span>{`${time} 도착예정`}</span>
               </div>
-              <div>
-                <Mypagebtn radius={5} p_width={10} p_height={1}>
-                  배송 준비중
-                </Mypagebtn>
+              <div className="count">
+                <span>{"00,000원"}</span>
+                <span>{"00개"}</span>
               </div>
-              <div>
-                <span>MM/YY 도착예정</span>
+              <div className="items_states">
+                <div>{"상태들어올 예정"}</div>
               </div>
             </div>
-
-            <div className="item_Money">
-              <span>00,000원</span>
-              <span>00개</span>
-            </div>
-
-            <div className="item_State">
-              <div className="item_Circle">
-                <div className="state_Icons">
-                  <span>아이콘</span>
-                </div>
-                <div className="state_Font">주문접수</div>
+            <div className="right">
+              <div className="btns">
+                <BasicButton>{"취소,교환,반품 신청"}</BasicButton>
+                <BasicButton>{"문의하기"}</BasicButton>
               </div>
-              <div className="item_Circle">
-                <div className="state_Icons">
-                  <span>아이콘</span>
-                </div>
-                <div className="state_Font">배송 준비중</div>
-              </div>
-              <div className="item_Circle">
-                <div className="state_Icons">
-                  <span>아이콘</span>
-                </div>
-                <div className="state_Font">배송 출발</div>
-              </div>
-              <div className="item_Circle">
-                <div className="state_Icons">
-                  <span>아이콘</span>
-                </div>
-                <div className="state_Font">배송중</div>
-              </div>
-              <div className="item_Circle">
-                <div className="state_Icons">
-                  <span>아이콘</span>
-                </div>
-                <div className="state_Font">배송 완료</div>
+              <div onClick={()=> setBottomTap(!bottomTap)}>
+                {"자세히보기"}
               </div>
             </div>
           </div>
-          <div className="list_Btns">
-            <div className="user_Btn">
-              <Mypagebtn p_width={10} p_height={6}>
-                취소,교환,반품 신청
-              </Mypagebtn>
-              <Mypagebtn p_width={35} p_height={6}>
-                문의하기
-              </Mypagebtn>
+          {bottomTap ? 
+          <div className="sub_list">
+            <div className="sub_title">
+              <div>{"시간"}</div>
+              <div>{"위치"}</div>
+              <div>{"상태"}</div>
             </div>
-            <div onClick={() => setSubinfo(!subinfo)} className="event_Btn">
-              <button>자세히보기</button>
-              {subinfo ? <span>⬆</span> :<span>⬇</span>}
-            </div>
-          </div>
-        </List>
-        {subinfo ? (
-          <div className="sub_List">
-            <div className="table">
-              <TableBoard />
-            </div>
-          </div>
-        ) : null}
+            <ul className="sub_content">
+              <li><span>{"YY/MM/DD hh:mm:ss"}</span><span>{"위치"}</span><span>{"배송중(배송기사: 최준호 010-0000-0000)"}</span></li>
+              <li><span>{"YY/MM/DD hh:mm:ss"}</span><span>{"위치"}</span><span>{"간선 상차"}</span></li>
+              <li><span>{"YY/MM/DD hh:mm:ss"}</span><span>{"위치"}</span><span>{"배송 준비중"}</span></li>
+            </ul>
+          </div> : undefined}
+        </Layout>
       </ListLayout>
-    </Test>
     </Mypagehead>
   );
 }
