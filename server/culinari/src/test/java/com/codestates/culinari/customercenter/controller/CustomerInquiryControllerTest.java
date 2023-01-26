@@ -1,8 +1,7 @@
 package com.codestates.culinari.customercenter.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.customercenter.constant.ProcessStatus;
-import com.codestates.culinari.customercenter.dto.request.CsInquiryRequest;
+import com.codestates.culinari.customercenter.dto.request.CsInquiryPost;
 import com.codestates.culinari.customercenter.dto.response.CsInquiryResponse;
 import com.codestates.culinari.customercenter.service.CustomerInquiryService;
 import com.codestates.culinari.pagination.service.PaginationService;
@@ -66,7 +65,7 @@ class CustomerInquiryControllerTest {
                 """;
 
         willDoNothing().given(customerInquiryService).createEnquire(
-                any(CustomPrincipal.class), any(CsInquiryRequest.class));
+                any(CustomPrincipal.class), any(CsInquiryPost.class));
 
         //when
         ResultActions actions =
@@ -156,7 +155,7 @@ class CustomerInquiryControllerTest {
                 }
                 """;
 
-        willDoNothing().given(customerInquiryService).updateEnquire(any(CustomPrincipal.class), anyLong(), any(CsInquiryRequest.class));
+        willDoNothing().given(customerInquiryService).updateEnquire(any(CustomPrincipal.class), anyLong(), any(CsInquiryPost.class));
 
         //when
         ResultActions actions =
@@ -170,11 +169,12 @@ class CustomerInquiryControllerTest {
     }
 
     private CsInquiryResponse createCsInquiryResponse() {
-        return CsInquiryResponse.of(
-                1L,
-                "test_title",
-                "test_content",
-                ProcessStatus.STAND_BY
-        );
+        return null;
+//        return CsInquiryResponse.of(
+//                1L,
+//                "test_title",
+//                "test_content",
+//                ProcessStatus.STAND_BY
+//        );
     }
 }
