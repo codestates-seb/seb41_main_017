@@ -105,9 +105,15 @@ function ProductItemSlider() {
   return (
     <Slider {...settings}>
       {data.data &&
-        data.data.map((element) => {
-          return <ProductItem element={element} key={element.id}></ProductItem>;
-        })}
+        data.data.map((element) => (
+          <ProductItem
+            id={element.id}
+            imgUrl={element.productImageDtos[0].imgUrl}
+            name={element.name}
+            price={element.price}
+            key={element.id}
+          ></ProductItem>
+        ))}
     </Slider>
   );
 }
