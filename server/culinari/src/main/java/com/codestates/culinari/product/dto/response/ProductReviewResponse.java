@@ -13,7 +13,6 @@ public record ProductReviewResponse(
         Long id,
         Long productId,
         Long profileId,
-        String title,
         String content,
         Integer reviewStar,
         Long like,
@@ -24,8 +23,8 @@ public record ProductReviewResponse(
         List<ProductReviewImageDto> productReviewImageDtos
 
 ) {
-    public static ProductReviewResponse of(Long id, Long productId, Long profileId, String title, String content, Integer reviewStar, Long like, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,List<ProductReviewImageDto> productReviewImageDtos) {
-        return new ProductReviewResponse(id, productId, profileId, title, content, reviewStar, like, createdAt, modifiedAt, createdBy, modifiedBy,productReviewImageDtos);
+    public static ProductReviewResponse of(Long id, Long productId, Long profileId, String content, Integer reviewStar, Long like, LocalDateTime createdAt, LocalDateTime modifiedAt, String createdBy, String modifiedBy,List<ProductReviewImageDto> productReviewImageDtos) {
+        return new ProductReviewResponse(id, productId, profileId, content, reviewStar, like, createdAt, modifiedAt, createdBy, modifiedBy,productReviewImageDtos);
     }
 
     public static ProductReviewResponse from(ProductReviewDto dto) {
@@ -33,7 +32,6 @@ public record ProductReviewResponse(
                 dto.id(),
                 dto.productId(),
                 dto.profileId(),
-                dto.title(),
                 dto.content(),
                 dto.reviewStar(),
                 dto.like(),

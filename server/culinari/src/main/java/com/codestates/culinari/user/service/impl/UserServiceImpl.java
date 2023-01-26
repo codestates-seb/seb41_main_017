@@ -1,6 +1,10 @@
 package com.codestates.culinari.user.service.impl;
 
+
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.destination.dto.DestinationDto;
+import com.codestates.culinari.destination.entity.Destination;
+import com.codestates.culinari.destination.repository.DestinationRepository;
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.user.constant.RoleType;
@@ -28,6 +32,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
+    private final DestinationRepository destinationRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -36,6 +41,7 @@ public class UserServiceImpl implements UserService {
         String encryptedPassword = passwordEncoder.encode(signUpDto.password());
 
         Profile profile = profileRepository.save(ProfileDto.of(signUpDto).toEntity());
+        Destination destination = destinationRepository.save(Destination.of("기본 배송지", signUpDto.address(), signUpDto.name(), signUpDto.phoneNumber(), true, profile));
         Users user = UserDto.of(signUpDto, encryptedPassword, profile).toEntity();
         user.addUserRole(UserRole.of(RoleType.USER, user));
 
