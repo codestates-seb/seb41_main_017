@@ -80,6 +80,7 @@ function App() {
             <Route path="/collections/new-product" element={<Collection />} />
             <Route path="/collections/best-product" element={<Collection />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/category/:code" element={<Search />} />
           </Routes>
         </main>
         <footer id="footer"></footer>
