@@ -205,7 +205,11 @@ function LogoutHeader() {
 
   const handleSearchProductSubmit = (event) => {
     event.preventDefault();
-    navigate(`/search?keyword=${searchText}`);
+    const text = searchText.trim();
+
+    if (text === "") return;
+
+    navigate(`/search?keyword=${text}`);
   };
 
   useEffect(() => {
