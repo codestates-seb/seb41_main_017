@@ -14,6 +14,7 @@ const Item = styled.div`
   }
 
   .name {
+    width: 180px;
     margin-bottom: 5px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -37,20 +38,20 @@ const Item = styled.div`
   }
 `;
 
-function ProductItem({ element }) {
-  const ref = `/product/${element.id}`;
+function ProductItem({ id, imgUrl, name, price }) {
+  const ref = `/product/${id}`;
 
   return (
     <Item>
       <a href={ref}>
         <div className="image_wrapper">
-          <img src={element.productImageDtos?.[0]?.imgUrl}></img>
+          <img src={imgUrl}></img>
         </div>
 
         <div>
-          <h3 className="name">{element.name}</h3>
+          <h3 className="name">{name}</h3>
 
-          <div className="price">{element.price.toLocaleString()}원</div>
+          <div className="price">{price.toLocaleString()}원</div>
         </div>
       </a>
     </Item>

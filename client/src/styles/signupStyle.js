@@ -12,6 +12,23 @@ const Page = styled.div`
     font-size: 25px;
     margin-bottom: 50px;
   }
+
+  .error_text{
+    color : red;
+    font-size: 8px;
+    margin-top: -20px;
+  }
+  .error_text2{
+    color : red;
+    font-size: 8px;
+    margin-top: -10px;
+  }
+
+  .error_box{
+    display: flex;
+    align-item : center;
+
+  }
 `;
 const CheckboxContent = styled.div`
   display: flex;
@@ -29,6 +46,7 @@ const CheckboxContent = styled.div`
 `;
 
 const IdBlock = styled.div`
+    
   //   margin: 6px 0;
   width: 100%;
   .essential {

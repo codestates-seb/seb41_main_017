@@ -1,7 +1,10 @@
+import axios from "axios";
 import styled from "styled-components";
 import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+import BASE_URL from "../../constants/BASE_URL";
 
 const Layout = styled.div`
   width: 100%;
@@ -94,13 +97,11 @@ const Layout = styled.div`
           }
 
           .new_product {
-            color: ${({ pathname }) =>
-              pathname.includes("/new-product") ? "#ff6767" : null};
+            color: ${({ pathname }) => (pathname.includes("/new-product") ? "#ff6767" : null)};
           }
 
           .best_product {
-            color: ${({ pathname }) =>
-              pathname.includes("/best-product") ? "#ff6767" : null};
+            color: ${({ pathname }) => (pathname.includes("/best-product") ? "#ff6767" : null)};
           }
 
           span {
@@ -110,23 +111,142 @@ const Layout = styled.div`
           }
         }
 
-        .category {
+        .category_container {
           display: flex;
           align-items: center;
+          cursor: pointer;
+
+          &:hover .category {
+            color: #ff6767;
+          }
+
+          &:hover .drop_down_container {
+            display: block;
+          }
+
+          .drop_down_container {
+            max-height: calc(95vh - 55px);
+            min-height: 200px;
+            position: absolute;
+            display: flex;
+            top: 146px;
+            padding-top: 10px;
+            display: none;
+
+            .drop_down {
+              position: relative;
+              z-index: 21;
+              border: 1px solid rgb(221, 221, 221);
+              background-color: rgb(255, 255, 255);
+              display: flex;
+            }
+
+            .category_detail {
+              background-color: #f1f3f5;
+
+              ul {
+                background-color: #f1f3f5;
+              }
+            }
+
+            ul {
+              overflow-y: auto;
+              background-color: rgb(255, 255, 255);
+              cursor: pointer;
+              display: flex;
+              flex-direction: column;
+
+              li {
+                padding: 0px !important;
+                width: 247px;
+                text-align: start;
+
+                a {
+                  padding: 10px 0px 10px 15px;
+                  width: 100%;
+                  height: 100%;
+                  display: block;
+                }
+
+                &:hover a {
+                  color: #ff6767;
+                  background-color: #f1f3f5;
+                }
+              }
+            }
+          }
         }
       }
     }
   }
 `;
 
+const CategoryList = styled.li`
+  color: ${({ ishover }) => (ishover ? "#ff6767" : null)};
+  background-color: ${({ ishover }) => (ishover ? "#f1f3f5" : null)};
+
+  a {
+    padding: 10px 0px 10px 15px;
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: ${({ ishover }) => (ishover ? "#ff6767" : null)};
+  }
+`;
+
 function LogoutHeader() {
   const { pathname } = useLocation();
-  const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
+  const [searchText, setSearchText] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [categoryDetails, setCategoryDetails] = useState([]);
+  const [categoryDetailCodes, setCategoryDetailCodes] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(null);
 
   const handleSearchProductSubmit = (event) => {
     event.preventDefault();
-    navigate(`/search?keyword=${searchText}`);
+    const text = searchText.trim();
+
+    if (text === "") return;
+
+    navigate(`/search?keyword=${text}`);
+  };
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const { data } = await axios.get(`${BASE_URL}/category`);
+
+      return data;
+    };
+
+    const getCategoryDetails = async (codes) => {
+      const data = await Promise.all(codes.map((code) => axios.get(`${BASE_URL}/category/categorydetail/${code}`)));
+
+      return data;
+    };
+
+    (async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+
+        const codes = data.data.map((element) => element.categoryCode);
+        const categoryDetails = await getCategoryDetails(codes);
+        setCategoryDetails(categoryDetails);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
+
+  const handleCategoriesMouseOver = ({ target }) => {
+    setCategoryDetailCodes(categoryDetails[target.dataset.index].data.data);
+    setCurrentIndex(target.dataset.index);
+  };
+
+  const handleCategoriesMouseLeave = () => {
+    setCategoryDetailCodes([]);
+    setCurrentIndex(null);
   };
 
   return (
@@ -142,16 +262,10 @@ function LogoutHeader() {
       </div>
       <div className="mid flex">
         <div className="logo">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"
-            alt="logo"
-          ></img>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png" alt="logo"></img>
         </div>
         <form className="serach" onSubmit={handleSearchProductSubmit}>
-          <input
-            placeholder="검색어를 입력해주세요"
-            onChange={({ target }) => setSearchText(target.value)}
-          ></input>
+          <input placeholder="검색어를 입력해주세요" onChange={({ target }) => setSearchText(target.value)}></input>
           <button>
             <BsSearch />
           </button>
@@ -172,11 +286,42 @@ function LogoutHeader() {
       <div className="bottom flex">
         <div className="GNB">
           <ul>
-            <li className="category">
-              <span>
+            <li className="category_container">
+              <span className="category">
                 <BsList size="25" />
               </span>
-              <span>카테고리</span>
+              <span className="category">카테고리</span>
+              <div className="drop_down_container">
+                <div className="drop_down" onMouseLeave={handleCategoriesMouseLeave}>
+                  <div>
+                    <ul>
+                      {categories.data &&
+                        categories.data.map((category, index) => (
+                          <CategoryList onMouseOver={handleCategoriesMouseOver} data-index={index} ishover={index == currentIndex} key={index}>
+                            {
+                              <Link to={"/category/" + category.categoryCode} data-index={index}>
+                                {category.name}
+                              </Link>
+                            }
+                          </CategoryList>
+                        ))}
+                    </ul>
+                  </div>
+                  <div className="category_detail">
+                    <ul>
+                      {categoryDetailCodes.map((category, index) => (
+                        <li key={index}>
+                          {
+                            <Link to={"/category/" + category.categoryDetailCode} data-index={index}>
+                              {category.name}
+                            </Link>
+                          }
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </li>
             <li>
               <a href="/">
