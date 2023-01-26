@@ -83,6 +83,7 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail }) {
       <>
         <AddressBtn onClick={handleCheckBtn}>중복확인</AddressBtn>
         <GuideModal
+          signupId={signupId}
           checkId={"checkId"}
           type={"checkId"}
           response={response}

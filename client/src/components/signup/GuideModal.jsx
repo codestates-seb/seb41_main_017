@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const GuideModal = (props) => {
-  const { open, close, header, response, checkId, checkEmail, type } = props;
+  const { open, close, header, response, checkId, checkEmail, type, signupId } =
+    props;
 
   return (
     <Page>
@@ -10,7 +11,7 @@ const GuideModal = (props) => {
         {open ? (
           <Section>
             {type === "checkId" ? (
-              response === 405 ? (
+              response === 405 || signupId.length < 6 ? (
                 <Main>사용 불가능한 아이디입니다</Main>
               ) : (
                 <Main>사용 가능한 아이디입니다</Main>
