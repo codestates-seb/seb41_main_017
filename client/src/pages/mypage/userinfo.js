@@ -20,23 +20,15 @@ const Layout = styled.div`
   }
 `;
 function Userinfo() {
-  // 유저이름
   const [userName, setUserName] = useState(null);
-  // 유저 비밀번호
   const [userPassword, setUserPassword] = useState(null);
-  // 유저이메일
   const [userEmail, setUserEmail] = useState(null);
-  // 핸드폰번호
   const [userPhone, setUserPhone] = useState(null);
-  // 생년월일
   const [userYear, setUserYear] = useState(null);
   const [userMonth, setUserMonth] = useState(null);
   const [userDay, setUserDay] = useState(null);
-  // 성별
   const [userCheck, setCheck] = useState(null);
 
-
-  // submit
   const userPatch = () => {
     
     axios.patch(
