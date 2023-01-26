@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Destination extends AuditingFields {
+public class Destination {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

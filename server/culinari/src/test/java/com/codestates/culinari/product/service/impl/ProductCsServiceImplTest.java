@@ -1,7 +1,6 @@
 package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.global.file.FileStore;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
@@ -50,8 +49,6 @@ class ProductCsServiceImplTest {
     private ProductReviewImageRepository productReviewImageRepository;
     @Mock
     private ProductReviewLikeRepository productReviewLikeRepository;
-    @Mock
-    private FileStore fileStore;
 
 
     @DisplayName("[CREATE] 상품 문의를 입력하면, 문의를 등록한다.")

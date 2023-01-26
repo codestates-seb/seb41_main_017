@@ -33,7 +33,7 @@ public class Product extends AuditingFields {
     @Column(nullable = false, length = 100)
     private String shipping;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     private String brand;
 
     @Column(nullable = false, length = 50)
@@ -42,16 +42,16 @@ public class Product extends AuditingFields {
     @Column(nullable = false, length = 100)
     private String packaging;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 20)
     private String unit;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     private String weight;
 
     @Column(nullable = false, length = 50)
     private String countryOfOrigin;
 
-    @Column(nullable = false , length = 300)
+    @Column(length = 300)
     private String allergyInfo;
 
     @JsonBackReference
