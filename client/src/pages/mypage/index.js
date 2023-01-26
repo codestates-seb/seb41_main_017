@@ -99,23 +99,11 @@ function Mypage () {
 
   useEffect(()=>{
 
-
-    //임시영역 -> 추후에 프로필 조회하거나해서 해당유저에 대한 토큰을써야함
-    const data = async () => {
-      const res = await axios.post(`${process.env.REACT_APP_URL}/users/signin`,
-      {
-        "username" : "jangusername",
-        "password" : "jangpassword"
-      });
-      localStorage.setItem("accessToken",res.headers.authorization)
-    }
-    data();
-    //------------------------------------------------------------
-
     axios.get(`${process.env.REACT_APP_URL}/users`,{
-      headers:{
-        Authorization : localStorage.getItem("accessToken"),
-      }
+      headers: {
+        authorization: JSON.parse(localStorage.getItem("token"))
+          .authorization,
+      },
     })
     .then(res => setUser(res.data.data))
     .then(erros => erros)
@@ -123,7 +111,7 @@ function Mypage () {
 
 
 
-// 마이페이지 첫화면에 내정보 페이자가 동시에 렌더 되도록 설정해야함
+// 마이페이지 첫화면에 내정보 페이자가 동시에 렌더 되도록 설정해야함 
   const list = {
     "내정보": {
       'userInfo': <Userinfo/>
@@ -167,7 +155,7 @@ function Mypage () {
           <div className="acName">
             <span>{`${user.name} 님의 회원카드`}</span>
             <div>
-              <BasicButton href={"/mypage"} radius={12}>
+              <BasicButton href={"/mypage/userInfo"} radius={12}>
                 내 정보 수정
               </BasicButton>
             </div>
@@ -242,3 +230,18 @@ function Mypage () {
 }
 
 export default Mypage;
+
+
+
+/*
+1.[내정보]: 프로필수정 API 바디 양식 수정 후 테스트 해야함 -> 용현님
+2.[배송지설정] : 완료 (디자인수정 필요)
+3.[배송조회] : ?
+4.[주문 목록 조회] : 
+5.[내쿠폰] : 준비중페이지
+6.[내포인트] : 준비중페이지
+7.[자주 산 상품] :
+8.[찜한 상품] : 
+9.[작성한 후기] :
+10.[내문의] : 
+*/
