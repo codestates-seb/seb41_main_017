@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 public record CsInquiryCommentResponse(
         Long id,
+        String writer,
         String title,
         String content,
         String createdAt
@@ -13,6 +14,7 @@ public record CsInquiryCommentResponse(
     public static CsInquiryCommentResponse from(CsInquiryComment csInquiryComment) {
         return new CsInquiryCommentResponse(
                 csInquiryComment.getId(),
+                csInquiryComment.getProfile().getName(),
                 csInquiryComment.getTitle(),
                 csInquiryComment.getContent(),
                 csInquiryComment.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE)
