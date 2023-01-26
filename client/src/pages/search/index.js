@@ -134,7 +134,12 @@ function Search() {
       <div className="product_list_header">
         <div className="product_list_count">{`총 10건`}</div>
       </div>
-      <div className="product_list">{data && productArr.map((element) => <ProductItem element={element} key={Math.random()} />)}</div>
+      <div className="product_list">
+        {data &&
+          productArr.map((element) => (
+            <ProductItem id={element.id} imgUrl={element.image} name={element.name} price={element.price} key={Math.random()} />
+          ))}
+      </div>
     </Container>
   );
 }
