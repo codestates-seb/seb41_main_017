@@ -9,6 +9,7 @@ const Container = styled.div`
   margin-bottom: 20px;
 
   .text{
+    font-size:13px;
     position: absolute;
     padding: 5px;
   }

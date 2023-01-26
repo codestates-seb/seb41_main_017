@@ -180,7 +180,6 @@ function SignForm() {
             />
           </div>
         </div>
-
         <div className="input_birth">
           <BasicInput
             setValue={setYear}
