@@ -70,14 +70,37 @@ function Search() {
       try {
         const { data } = await axios.get(`${BASE_URL}/search${location.search}`);
 
-        setData(data);
+        return data;
       } catch (error) {
         console.log(`Error: ${error}`);
       }
     };
 
-    getData();
-  }, [location]);
+    const dataSortByPrice = (data) => {
+      if (sort === "newest") {
+        return data;
+      }
+
+      if (sort === "lower") {
+        data.data = data.data.sort((a, b) => a.price - b.price);
+
+        return data;
+      }
+
+      if (sort === "higher") {
+        data.data = data.data.sort((a, b) => b.price - a.price);
+
+        return data;
+      }
+    };
+
+    (async () => {
+      const data = await getData();
+      const sortedData = dataSortByPrice(data);
+
+      setData(sortedData);
+    })();
+  }, [location, sort]);
 
   const handleSortListClick = ({ target }) => {
     setSort(target.dataset.id);
