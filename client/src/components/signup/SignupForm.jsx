@@ -86,6 +86,11 @@ function SignForm() {
           setRecjectModal(true);
         }
       });
+  };
+
+  const handleClickSignup = (e) => {
+    e.preventDefault();
+    setSuccessModal(false);
     navigate("/login");
     window.location.reload();
   };
@@ -253,7 +258,7 @@ function SignForm() {
             <ModalText>가입이 완료되었습니다.</ModalText>
           </SignupSuccessContainer>
 
-          <CloseButton onClick={() => setSuccessModal(false)}>닫기</CloseButton>
+          <CloseButton onClick={handleClickSignup}>닫기</CloseButton>
         </ModalWrapper>
       )}
       {rejectModal && (
