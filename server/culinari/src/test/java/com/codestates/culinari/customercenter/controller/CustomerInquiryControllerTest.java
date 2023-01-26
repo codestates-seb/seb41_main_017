@@ -155,7 +155,7 @@ class CustomerInquiryControllerTest {
                 }
                 """;
 
-        willDoNothing().given(customerInquiryService).updateEnquire(any(CustomPrincipal.class), anyLong(), any(CsInquiryPost.class));
+//        willDoNothing().given(customerInquiryService).updateEnquire(any(CustomPrincipal.class), anyLong(), any(CsInquiryPost.class));
 
         //when
         ResultActions actions =
