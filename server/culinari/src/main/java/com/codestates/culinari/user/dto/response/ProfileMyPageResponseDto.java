@@ -11,18 +11,16 @@ public record ProfileMyPageResponseDto(
         String email,
         String phoneNumber,
         BigDecimal point,
-        String address,
         GenderType gender,
         LocalDate birthDate
 ) {
 
-    public static ProfileMyPageResponseDto of(String name, String email, String phoneNumber, BigDecimal point, String address, GenderType gender, LocalDate birthDate) {
+    public static ProfileMyPageResponseDto of(String name, String email, String phoneNumber, BigDecimal point, GenderType gender, LocalDate birthDate) {
         return new ProfileMyPageResponseDto(
                 name,
                 email,
                 phoneNumber,
                 point,
-                address,
                 gender,
                 birthDate
         );
@@ -34,7 +32,6 @@ public record ProfileMyPageResponseDto(
                 profile.getEmail(),
                 profile.getPhoneNumber(),
                 profile.getPoint(),
-                profile.getAddress(),
                 profile.getGender(),
                 profile.getBirthDate()
         );

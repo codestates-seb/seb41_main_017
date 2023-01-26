@@ -1,10 +1,7 @@
 package com.codestates.culinari.user.dto.request;
 
 import com.codestates.culinari.user.constant.GenderType;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,9 +12,7 @@ public record SignUpDto(
         @Length(max = 30, message = "아이디 길이는 30자 를 넘으면 안됩니다.")
         String username,
 
-        @NotBlank(message = "비밀번호 입력은 필수입니다.")
-        @Length(max = 255, message = "비밀번호 길이는 255자 를 넘으면 안됩니다.")
-//        @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\\S+$).{8,20}$") //숫자, 알파벳, 특수문자(!@#$%^&*) 포함 8자 이상 20자 이하
+        @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\\S+$).{8,20}$") //숫자, 알파벳, 특수문자(!@#$%^&*) 포함 8자 이상 20자 이하
         String password,
 
         @NotBlank(message = "이름 입력은 필수입니다.")

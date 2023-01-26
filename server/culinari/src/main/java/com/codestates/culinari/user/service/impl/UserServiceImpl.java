@@ -1,5 +1,7 @@
 package com.codestates.culinari.user.service.impl;
 
+
+import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.destination.dto.DestinationDto;
 import com.codestates.culinari.destination.entity.Destination;
 import com.codestates.culinari.destination.repository.DestinationRepository;
@@ -9,6 +11,7 @@ import com.codestates.culinari.user.constant.RoleType;
 import com.codestates.culinari.user.dto.ProfileDto;
 import com.codestates.culinari.user.dto.UserDto;
 import com.codestates.culinari.user.dto.request.SignUpDto;
+import com.codestates.culinari.user.dto.request.UserPatchPasswordRequest;
 import com.codestates.culinari.user.entitiy.Profile;
 import com.codestates.culinari.user.entitiy.UserRole;
 import com.codestates.culinari.user.entitiy.Users;
@@ -45,10 +48,19 @@ public class UserServiceImpl implements UserService {
         return UserDto.from(userRepository.save(user));
     }
 
+    @Transactional
+    @Override
+    public void updatePassword(CustomPrincipal customPrincipal, UserPatchPasswordRequest userPatchPasswordRequest) {
+        Users user = userRepository.getReferenceById(customPrincipal.userId());
+        String encryptedPassword = passwordEncoder.encode(userPatchPasswordRequest.password());
+        user.updatePassword(encryptedPassword);
+    }
+
+
     @Transactional(readOnly = true)
     @Override
     public void verifyExistsUsername(String username) {
-        if(userRepository.findByUsername(username).isPresent()){
+        if (userRepository.findByUsername(username).isPresent()) {
             throw new BusinessLogicException(ExceptionCode.USERNAME_EXISTS);
         }
     }
