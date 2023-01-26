@@ -237,10 +237,9 @@ function Header() {
     })();
   }, []);
 
-  const handleCategoriesMouseOver = (event) => {
-    event.stopPropagation();
-    setCategoryDetailCodes(categoryDetails[event.target.dataset.index].data.data);
-    setCurrentIndex(event.target.dataset.index);
+  const handleCategoriesMouseOver = ({ target }) => {
+    setCategoryDetailCodes(categoryDetails[target.dataset.index].data.data);
+    setCurrentIndex(target.dataset.index);
   };
 
   const handleCategoriesMouseLeave = () => {
