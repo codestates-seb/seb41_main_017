@@ -10,8 +10,6 @@ import {
   ContentBox,
   Page,
 } from "../../styles/OneOnOneStyle";
-import AnswerList from "../answer/AnswerList";
-import Answer from "../answer";
 
 function OneOnOneDetail() {
   const { id } = useParams();
@@ -77,7 +75,6 @@ function OneOnOneDetail() {
         </DetailBar>
         <ContentBox>{data.content}</ContentBox>
       </DetailContainer>
-      <Answer />
       <div className="btn_container" onClick={handleClickBtn}>
         <BasicButton p_width={"20"} p_height={"7"}>
           목록으로{" "}
