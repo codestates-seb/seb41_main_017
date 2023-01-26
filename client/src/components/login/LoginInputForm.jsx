@@ -33,9 +33,9 @@ function LoginInputForm() {
     axios
       .post(`${BASE_URL}/users/signin`, reqbody, header)
       .then((res) => {
-        window.alert("로그인 성공!");
         localStorage.setItem("token", JSON.stringify(res.headers));
         navigate("/");
+        window.location.reload();
       })
       .catch((err) => {
         window.alert(
