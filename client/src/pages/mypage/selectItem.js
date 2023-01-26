@@ -1,12 +1,11 @@
 import { BiHeartCircle } from "react-icons/bi";
-import {useState} from "react";
+import { useState } from "react";
 import Mypagehead from "../../components/MypageHead";
 import styled from "styled-components";
 import ListLayout from "../../components/ListLayout";
 import ProductItem from "../../components/ProductItem";
 import QuantityBox from "../../components/QuantityBox";
 import BasicButton from "../../components/BasicButton";
-
 
 const Layout = styled.div`
   flex-wrap: wrap;
@@ -23,21 +22,19 @@ const ItemLayout = styled.div`
   flex-direction: column;
   padding: 10px;
 
-  
-
   .items {
     width: 150px;
     height: 220px;
     margin: 0 auto;
     position: relative;
 
-    .select{
-        color: ${porps => porps.test ? "red" : "black"};
-        cursor: pointer;
-        font-size:40px;
-        position: absolute;
-        right:0px;
-        bottom:0px;
+    .select {
+      color: ${(porps) => (porps.test ? "red" : "black")};
+      cursor: pointer;
+      font-size: 40px;
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
     }
   }
 
@@ -62,56 +59,50 @@ const ItemLayout = styled.div`
   }
 `;
 
-
-function Serachitem(){
-const [item1, setItem1] = useState(0);
+function Serachitem() {
+  const [item1, setItem1] = useState(0);
   const [item2, setItem2] = useState(0);
   const [item3, setItem3] = useState(0);
   const [item4, setItem4] = useState(0);
   const [item5, setItem5] = useState(0);
-  const [test, setTest] = useState(false)
-
+  const [test, setTest] = useState(false);
 
   const items1 = {
-    image:
-      "https://t1.daumcdn.net/cfile/tistory/992642435D04DE9B27",
+    image: "https://t1.daumcdn.net/cfile/tistory/992642435D04DE9B27",
     name: "상품 이름입니다",
     price: 10000,
   };
   const items2 = {
-    image:
-      "https://t1.daumcdn.net/cfile/tistory/99885A485D04E42234",
+    image: "https://t1.daumcdn.net/cfile/tistory/99885A485D04E42234",
     name: "상품 이름입니다",
     price: 10000,
   };
   const items3 = {
-    image:
-      "https://t1.daumcdn.net/cfile/tistory/99256C3D5D04E12810",
+    image: "https://t1.daumcdn.net/cfile/tistory/99256C3D5D04E12810",
     name: "상품 이름입니다",
     price: 10000,
   };
   const items4 = {
-    image:
-      "https://t1.daumcdn.net/cfile/tistory/99D71F485D04E42205",
+    image: "https://t1.daumcdn.net/cfile/tistory/99D71F485D04E42205",
     name: "상품 이름입니다",
     price: 10000,
   };
   const items5 = {
-    image:
-      "https://t1.daumcdn.net/cfile/tistory/99D970465D04E18205",
+    image: "https://t1.daumcdn.net/cfile/tistory/99D970465D04E18205",
     name: "상품 이름입니다",
     price: 10000,
   };
 
-
-    return(
-        <Mypagehead title={'찜한 상품'} subtitle={"최대 N개까지 저장됩니다."} icon={<BiHeartCircle color="red" size={15}/>} line={true}>
-            <Layout>
+  return (
+    <Mypagehead title={"찜한 상품"} subtitle={"최대 N개까지 저장됩니다."} icon={<BiHeartCircle color="red" size={15} />} line={true}>
+      <Layout>
         <ListLayout>
           <ItemLayout test={test}>
             <div className="items">
-                <div className="select" onClick={()=> setTest(!test)}><BiHeartCircle/></div>
-              <ProductItem element={items1}></ProductItem>
+              <div className="select" onClick={() => setTest(!test)}>
+                <BiHeartCircle />
+              </div>
+              <ProductItem imgUrl={items1.image} name={items1.name} price={items1.price}></ProductItem>
             </div>
             <div className="counts">
               <QuantityBox quantity={item1} setQuantity={setItem1}></QuantityBox>
@@ -124,7 +115,7 @@ const [item1, setItem1] = useState(0);
         <ListLayout>
           <ItemLayout>
             <div className="items">
-              <ProductItem element={items2}></ProductItem>
+              <ProductItem imgUrl={items2.image} name={items2.name} price={items2.price}></ProductItem>
             </div>
             <div className="counts">
               <QuantityBox quantity={item2} setQuantity={setItem2}></QuantityBox>
@@ -137,7 +128,7 @@ const [item1, setItem1] = useState(0);
         <ListLayout>
           <ItemLayout>
             <div className="items">
-              <ProductItem element={items3}></ProductItem>
+              <ProductItem imgUrl={items3.image} name={items3.name} price={items3.price}></ProductItem>
             </div>
             <div className="counts">
               <QuantityBox quantity={item3} setQuantity={setItem3}></QuantityBox>
@@ -150,7 +141,7 @@ const [item1, setItem1] = useState(0);
         <ListLayout>
           <ItemLayout>
             <div className="items">
-              <ProductItem element={items4}></ProductItem>
+              <ProductItem imgUrl={items4.image} name={items4.name} price={items4.price}></ProductItem>
             </div>
             <div className="counts">
               <QuantityBox quantity={item4} setQuantity={setItem4}></QuantityBox>
@@ -163,7 +154,7 @@ const [item1, setItem1] = useState(0);
         <ListLayout>
           <ItemLayout>
             <div className="items">
-              <ProductItem element={items5}></ProductItem>
+              <ProductItem imgUrl={items5.image} name={items5.name} price={items5.price}></ProductItem>
             </div>
             <div className="counts">
               <QuantityBox quantity={item5} setQuantity={setItem5}></QuantityBox>
@@ -174,9 +165,8 @@ const [item1, setItem1] = useState(0);
           </ItemLayout>
         </ListLayout>
       </Layout>
-        </Mypagehead>
-    );
+    </Mypagehead>
+  );
 }
-
 
 export default Serachitem;

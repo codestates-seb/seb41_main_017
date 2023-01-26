@@ -4,7 +4,7 @@ import ListLayout from "../../components/ListLayout";
 import ProductItem from "../../components/ProductItem";
 import QuantityBox from "../../components/QuantityBox";
 import BasicButton from "../../components/BasicButton";
-import {useState} from "react";
+import { useState } from "react";
 
 const Layout = styled.div`
   flex-wrap: wrap;
@@ -24,7 +24,7 @@ const ItemLayout = styled.div`
   .items {
     width: 150px;
     height: 220px;
-    
+
     margin: 0 auto;
   }
 
@@ -57,48 +57,38 @@ function Buyitem() {
   const [item5, setItem5] = useState(0);
 
   const items1 = {
-    image:
-      "https://t1.daumcdn.net/cfile/tistory/992642435D04DE9B27",
+    image: "https://t1.daumcdn.net/cfile/tistory/992642435D04DE9B27",
     name: "상품 이름입니다",
     price: 10000,
   };
   const items2 = {
-    image:
-      "https://t1.daumcdn.net/cfile/tistory/99885A485D04E42234",
+    image: "https://t1.daumcdn.net/cfile/tistory/99885A485D04E42234",
     name: "상품 이름입니다",
     price: 10000,
   };
   const items3 = {
-    image:
-      "https://t1.daumcdn.net/cfile/tistory/99256C3D5D04E12810",
+    image: "https://t1.daumcdn.net/cfile/tistory/99256C3D5D04E12810",
     name: "상품 이름입니다",
     price: 10000,
   };
   const items4 = {
-    image:
-      "https://t1.daumcdn.net/cfile/tistory/99D71F485D04E42205",
+    image: "https://t1.daumcdn.net/cfile/tistory/99D71F485D04E42205",
     name: "상품 이름입니다",
     price: 10000,
   };
   const items5 = {
-    image:
-      "https://t1.daumcdn.net/cfile/tistory/99D970465D04E18205",
+    image: "https://t1.daumcdn.net/cfile/tistory/99D970465D04E18205",
     name: "상품 이름입니다",
     price: 10000,
   };
 
-  
-
   return (
-    <Mypagehead
-      title={"자주 산 상품"}
-      subtitle={"최근 12개월동안 3번 이상 주문한 상품입니다."}
-    >
+    <Mypagehead title={"자주 산 상품"} subtitle={"최근 12개월동안 3번 이상 주문한 상품입니다."}>
       <Layout>
         <ListLayout>
           <ItemLayout>
             <div className="items">
-              <ProductItem element={items1}></ProductItem>
+              <ProductItem imgUrl={items1.image} name={items1.name} price={items1.price}></ProductItem>
             </div>
             <div className="counts">
               <QuantityBox quantity={item1} setQuantity={setItem1}></QuantityBox>
@@ -111,7 +101,7 @@ function Buyitem() {
         <ListLayout>
           <ItemLayout>
             <div className="items">
-              <ProductItem element={items2}></ProductItem>
+              <ProductItem imgUrl={items2.image} name={items2.name} price={items2.price}></ProductItem>
             </div>
             <div className="counts">
               <QuantityBox quantity={item2} setQuantity={setItem2}></QuantityBox>
@@ -124,7 +114,7 @@ function Buyitem() {
         <ListLayout>
           <ItemLayout>
             <div className="items">
-              <ProductItem element={items3}></ProductItem>
+              <ProductItem imgUrl={items3.image} name={items3.name} price={items3.price}></ProductItem>
             </div>
             <div className="counts">
               <QuantityBox quantity={item3} setQuantity={setItem3}></QuantityBox>
@@ -137,7 +127,7 @@ function Buyitem() {
         <ListLayout>
           <ItemLayout>
             <div className="items">
-              <ProductItem element={items4}></ProductItem>
+              <ProductItem imgUrl={items4.image} name={items4.name} price={items4.price}></ProductItem>
             </div>
             <div className="counts">
               <QuantityBox quantity={item4} setQuantity={setItem4}></QuantityBox>
@@ -150,7 +140,7 @@ function Buyitem() {
         <ListLayout>
           <ItemLayout>
             <div className="items">
-              <ProductItem element={items5}></ProductItem>
+              <ProductItem imgUrl={items5.image} name={items5.name} price={items5.price}></ProductItem>
             </div>
             <div className="counts">
               <QuantityBox quantity={item5} setQuantity={setItem5}></QuantityBox>
