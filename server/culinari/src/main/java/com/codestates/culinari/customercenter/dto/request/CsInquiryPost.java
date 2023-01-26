@@ -5,7 +5,7 @@ import com.codestates.culinari.user.entitiy.Profile;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
-public record CsInquiryRequest(
+public record CsInquiryPost(
         @NotBlank(message = "제목 입력은 필수입니다.")
         @Length(max = 255, message = "제목 길이는 255자 를 넘으면 안됩니다.")
         String title,
@@ -28,7 +28,8 @@ public record CsInquiryRequest(
         return CsInquiryDto.of(
                 title,
                 content,
-                profile
+                profile,
+                category
         );
     }
 
