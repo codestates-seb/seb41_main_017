@@ -6,6 +6,7 @@ import com.codestates.culinari.user.dto.ProfileDto;
 import com.codestates.culinari.user.dto.UserDto;
 import com.codestates.culinari.user.dto.request.ProfilePatchRequest;
 import com.codestates.culinari.user.dto.request.SignUpDto;
+import com.codestates.culinari.user.dto.request.UserPatchPasswordRequest;
 import com.codestates.culinari.user.dto.response.ProfileMyPageResponseDto;
 import com.codestates.culinari.user.service.ProfileService;
 import com.codestates.culinari.user.service.UserService;
@@ -38,12 +39,20 @@ public class UserController {
     @PatchMapping
     public ResponseEntity updateProfile(@AuthenticationPrincipal CustomPrincipal customPrincipal,
                                         @Valid @RequestBody ProfilePatchRequest profilePatchRequest){
-        log.info("gender값 : {}",profilePatchRequest.genderType().getValue());
         ProfileDto profileResponse = profileService.updateProfile(customPrincipal, profilePatchRequest);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(profileResponse),
                 HttpStatus.OK);
+    }
+
+    @PatchMapping("/password-edit")
+    public ResponseEntity updatePassword(@AuthenticationPrincipal CustomPrincipal customPrincipal,
+                                        @Valid @RequestBody UserPatchPasswordRequest userPatchPasswordRequest){
+        userService.updatePassword(customPrincipal, userPatchPasswordRequest);
+
+        return new ResponseEntity<>(
+                HttpStatus.RESET_CONTENT);
     }
 
     @PostMapping("/signup")

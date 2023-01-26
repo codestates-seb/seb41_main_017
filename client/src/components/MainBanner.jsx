@@ -168,6 +168,7 @@ function NextButton({ onClick }) {
 const Image = styled.img`
   display: block;
   margin: 0 auto;
+  height: 204px;
 `;
 
 const PageBoxWrapper = styled.div`

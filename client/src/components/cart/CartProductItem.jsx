@@ -1,25 +1,34 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import BASE_URL from "../../constants/BASE_URL";
 import CheckBox from "../CheckBox";
 import DeleteButton from "../DeleteButton";
 import QuantityBox from "../QuantityBox";
 
 const Container = styled.div`
-  height: 124px;
+  height: 140px;
   padding: 20px 0;
   border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
 `;
 
-const Image = styled.img`
-  width: 85px;
-  height: 100%;
-  margin-left: 39px;
-  margin-right: 33px;
+const ImageWrapper = styled.div`
+  width: 100px;
+  height: 100px;
+  margin-left: 10px;
+  margin-right: 20px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const ProductInfo = styled.div`
-  width: 100%;
+  width: calc(100% - 390px);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -39,30 +48,100 @@ const QuantityBoxWrapper = styled.div`
 
 const TotalPrice = styled.div`
   min-width: 150px;
+  text-align: end;
 `;
 
 const DeleteButtonWrapper = styled.div`
   margin: 0 24px;
 `;
 
-function CartProductItem({ src }) {
+function CartProductItem({ item, data, setData, index, checkedList, setCheckedList, selectAllChecked }) {
+  const [quantity, setQuantity] = useState(item.quantity);
+  const [isChecked, setIsChecked] = useState(!!checkedList.find((element) => element.id === item.id));
+
+  useEffect(() => {
+    const patchQuantity = () => {
+      const config = {
+        headers: {
+          "Content-Type": `application/json`,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
+        },
+      };
+      try {
+        axios.patch(`${BASE_URL}/carts/${item.id}`, { quantity }, config);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    patchQuantity();
+
+    if (isChecked) {
+      checkedList = checkedList.filter((element) => element.id !== item.id);
+      setCheckedList([...checkedList, { id: item.id, quantity, price: item.product.price }]);
+    }
+  }, [quantity]);
+
+  useEffect(() => {
+    setIsChecked(selectAllChecked);
+  }, [selectAllChecked]);
+
+  const handleDeleteButtonClick = () => {
+    if (window.confirm("해당 상품을 삭제하시겠습니까?")) {
+      const deleteCartList = async () => {
+        const config = {
+          headers: {
+            "Content-Type": `application/json`,
+            authorization: JSON.parse(localStorage.getItem("token")).authorization,
+          },
+        };
+        try {
+          await axios.delete(`${BASE_URL}/carts/${item.id}`, config);
+
+          setCheckedList(checkedList.filter((element) => element.id !== item.id));
+          data.data = data.data.filter((_, idx) => idx !== index);
+
+          setData({ ...data });
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      deleteCartList();
+    }
+  };
+
+  const handleCheckBoxClick = () => {
+    if (isChecked === false) {
+      setCheckedList([...checkedList, { id: item.id, quantity, price: item.product.price }]);
+    }
+
+    if (isChecked === true) {
+      setCheckedList(checkedList.filter((element) => element.id !== item.id));
+    }
+
+    setIsChecked(!isChecked);
+  };
+
   return (
     <Container>
-      <CheckBox />
+      <div onClick={handleCheckBoxClick}>
+        <CheckBox isChecked={isChecked} size="24px" />
+      </div>
 
-      <Image src={src} />
+      <ImageWrapper>{<img src={item.product.productImageDtos[0].imgUrl} />}</ImageWrapper>
 
       <ProductInfo>
-        <ProductTitle>상품 이름입니다.</ProductTitle>
-        <ProductPrice>10,000원</ProductPrice>
+        <ProductTitle>{item.product.name}</ProductTitle>
+        <ProductPrice>{item.product.price.toLocaleString()}원</ProductPrice>
         <QuantityBoxWrapper>
-          <QuantityBox quantity={10} />
+          <QuantityBox quantity={quantity} setQuantity={setQuantity} />
         </QuantityBoxWrapper>
       </ProductInfo>
 
-      <TotalPrice>10,000,000원</TotalPrice>
+      <TotalPrice>{(quantity * item.product.price).toLocaleString()}원</TotalPrice>
 
-      <DeleteButtonWrapper>
+      <DeleteButtonWrapper onClick={handleDeleteButtonClick}>
         <DeleteButton />
       </DeleteButtonWrapper>
     </Container>
