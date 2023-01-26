@@ -30,7 +30,6 @@ function Userinfo() {
   const [userCheck, setCheck] = useState(null);
 
   const userPatch = () => {
-    
     axios.patch(
       `${process.env.REACT_APP_URL}/destination/users`,
       {

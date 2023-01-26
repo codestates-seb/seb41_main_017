@@ -56,7 +56,7 @@ const Tab = ({title, list, flex = null})=>{
     const taptitle = []
     const tapcontent = []
     const children = []
-    
+
       for(let i in list){
         taptitle.push(
           <li key={i}>

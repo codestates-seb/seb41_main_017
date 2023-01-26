@@ -97,17 +97,21 @@ function Mypage () {
 
   const [user, setUser] = useState({});
 
-  useEffect(()=>{
+  // useEffect(()=>{
 
-    axios.get(`${process.env.REACT_APP_URL}/users`,{
-      headers: {
-        authorization: JSON.parse(localStorage.getItem("token"))
-          .authorization,
-      },
-    })
-    .then(res => setUser(res.data.data))
-    .then(erros => erros)
-  },[]);
+  //   axios.get(`${process.env.REACT_APP_URL}/users`,{
+  //     headers: {
+  //       authorization: JSON.parse(localStorage.getItem("token"))
+  //         .authorization,
+  //     },
+  //   })
+  //   .then(res => setUser(res.data.data))
+  //   .then(erros => erros)
+  // },[]);
+
+  // if (window.location.pathname === '/mypage') {
+  //   window.location.pathname = '/mypage/userInfo'
+  // }
 
   const list = {
     "내정보": {
@@ -152,7 +156,7 @@ function Mypage () {
           <div className="acName">
             <span>{`${user.name} 님의 회원카드`}</span>
             <div>
-              <BasicButton href={"/mypage/userInfo"} radius={12}>
+              <BasicButton href={"/mypage/userinfo"} radius={12}>
                 내 정보 수정
               </BasicButton>
             </div>
