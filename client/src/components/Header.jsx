@@ -1,7 +1,7 @@
 import axios from "axios";
 import styled from "styled-components";
 import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import BASE_URL from "../constants/BASE_URL";
@@ -159,11 +159,18 @@ const Layout = styled.div`
               flex-direction: column;
 
               li {
+                padding: 0px !important;
                 width: 247px;
-                padding: 10px 0px 10px 15px;
                 text-align: start;
 
-                &:hover {
+                a {
+                  padding: 10px 0px 10px 15px;
+                  width: 100%;
+                  height: 100%;
+                  display: block;
+                }
+
+                &:hover a {
                   color: #ff6767;
                   background-color: #f1f3f5;
                 }
@@ -176,12 +183,27 @@ const Layout = styled.div`
   }
 `;
 
+const CategoryList = styled.li`
+  color: ${({ ishover }) => (ishover ? "#ff6767" : null)};
+  background-color: ${({ ishover }) => (ishover ? "#f1f3f5" : null)};
+
+  a {
+    padding: 10px 0px 10px 15px;
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: ${({ ishover }) => (ishover ? "#ff6767" : null)};
+  }
+`;
+
 function Header() {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [searchText, setSearchText] = useState("");
   const [categories, setCategories] = useState([]);
   const [categoryDetails, setCategoryDetails] = useState([]);
-  const navigate = useNavigate();
+  const [categoryDetailCodes, setCategoryDetailCodes] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(null);
 
   const handleSearchProductSubmit = (event) => {
     event.preventDefault();
@@ -189,22 +211,41 @@ function Header() {
   };
 
   useEffect(() => {
+    const getCategories = async () => {
+      const { data } = await axios.get(`${BASE_URL}/category`);
+
+      return data;
+    };
+
+    const getCategoryDetails = async (codes) => {
+      const data = await Promise.all(codes.map((code) => axios.get(`${BASE_URL}/category/categorydetail/${code}`)));
+
+      return data;
+    };
+
     (async () => {
       try {
-        const { data } = await axios.get(`${BASE_URL}/category`);
-
+        const data = await getCategories();
         setCategories(data);
+
+        const codes = data.data.map((element) => element.categoryCode);
+        const categoryDetails = await getCategoryDetails(codes);
+        setCategoryDetails(categoryDetails);
       } catch (error) {
         console.error(error);
       }
     })();
   }, []);
 
-  const handleCategoriesMouseOver = async ({ target }) => {
-    const categoryCode = target.dataset.code;
-    const { data } = await axios.get(`${BASE_URL}/category/categorydetail/${categoryCode}`);
+  const handleCategoriesMouseOver = (event) => {
+    event.stopPropagation();
+    setCategoryDetailCodes(categoryDetails[event.target.dataset.index].data.data);
+    setCurrentIndex(event.target.dataset.index);
+  };
 
-    setCategoryDetails(data);
+  const handleCategoriesMouseLeave = () => {
+    setCategoryDetailCodes([]);
+    setCurrentIndex(null);
   };
 
   return (
@@ -250,19 +291,33 @@ function Header() {
               </span>
               <span className="category">카테고리</span>
               <div className="drop_down_container">
-                <div className="drop_down">
+                <div className="drop_down" onMouseLeave={handleCategoriesMouseLeave}>
                   <div>
                     <ul>
                       {categories.data &&
                         categories.data.map((category, index) => (
-                          <li onMouseOver={handleCategoriesMouseOver} data-code={category.categoryCode} key={index}>
-                            {category.name}
-                          </li>
+                          <CategoryList onMouseOver={handleCategoriesMouseOver} data-index={index} ishover={index == currentIndex} key={index}>
+                            {
+                              <Link to={"/category" + category.categoryCode} data-index={index}>
+                                {category.name}
+                              </Link>
+                            }
+                          </CategoryList>
                         ))}
                     </ul>
                   </div>
                   <div className="category_detail">
-                    <ul>{categoryDetails.data && categoryDetails.data.map((category, index) => <li key={index}>{category.name}</li>)}</ul>
+                    <ul>
+                      {categoryDetailCodes.map((category, index) => (
+                        <li key={index}>
+                          {
+                            <Link to={"/category" + category.categoryDetailCode} data-index={index}>
+                              {category.name}
+                            </Link>
+                          }
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </div>
