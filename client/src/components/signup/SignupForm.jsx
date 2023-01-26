@@ -171,12 +171,18 @@ function SignForm() {
               star={"*"}
               type={"text"}
               width={"100%"}
-              placeholder={"이메일을 입력해주세요"}
+              placeholder={"ex) Culinari@gmail.com"}
             ></BasicInput>
           </div>
           <div className="check_btn">
             <ModalContainer type={"checkEmail"} signupEmail={signupEmail} />
           </div>
+        </div>
+
+        <div className="error_box">
+          {signupEmail && !signupEmail.includes("@") ? (
+            <div className="error_text">이메일 형식으로 입력해주세요</div>
+          ) : null}
         </div>
 
         <div className="input_cotainer">
