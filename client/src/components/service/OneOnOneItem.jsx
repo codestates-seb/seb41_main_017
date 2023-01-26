@@ -22,6 +22,9 @@ const ItemCotainer = styled.div`
 
 const Notice = styled.div`
   width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 const Category = styled.div`
   width: 15%;
