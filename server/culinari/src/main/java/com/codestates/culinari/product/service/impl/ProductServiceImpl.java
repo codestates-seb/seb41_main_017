@@ -4,6 +4,7 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.global.search.SearchFilter;
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.ProductLikeDto;
+import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 import com.codestates.culinari.product.dto.response.ProductWithCustomerServiceResponse;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductLike;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -119,5 +121,10 @@ public class ProductServiceImpl implements ProductService {
         if(categoryCode.length() >3 && sortedType.equals(("lower"))) return productRepository.findAllByCategoryDetailCategoryDetailCode(categoryCode, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price"))).map(ProductDto::from);
         if(categoryCode.length() >3 && sortedType.equals(("higher"))) return productRepository.findAllByCategoryDetailCategoryDetailCode(categoryCode, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending())).map(ProductDto::from);
         else return productRepository.findAllByCategoryDetailCategoryDetailCode(categoryCode, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending())).map(ProductDto::from);
+    }
+
+    @Override
+    public Page<ProductResponseToPage> readFrequentOrderProduct(Integer searchMonths, Integer frequency, Pageable pageable, CustomPrincipal principal) {
+        return productRepository.findAllFrequentOrderProduct(LocalDateTime.now().minusMonths(searchMonths), frequency, principal.profileId(), pageable).map(ProductResponseToPage::from);
     }
 }

@@ -2,6 +2,7 @@ package com.codestates.culinari.product.dto.response;
 
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.ProductImageDto;
+import com.codestates.culinari.product.entitiy.Product;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -28,6 +29,18 @@ public record ProductResponseToPage(
                 dto.brand(),
                 dto.price(),
                 dto.productImageDtos()
+        );
+    }
+
+    public static ProductResponseToPage from(Product entity){
+        return new ProductResponseToPage(
+                entity.getId(),
+                entity.getName(),
+                entity.getBrand(),
+                entity.getPrice(),
+                entity.getProductImages().stream()
+                        .map(ProductImageDto::from)
+                        .toList()
         );
     }
 }
