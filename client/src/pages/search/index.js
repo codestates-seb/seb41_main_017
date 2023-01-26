@@ -15,7 +15,7 @@ const Container = styled.div`
   .product_list {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, 240px);
+    grid-template-columns: repeat(auto-fill, 195px);
     gap: 31px 18px;
   }
 
