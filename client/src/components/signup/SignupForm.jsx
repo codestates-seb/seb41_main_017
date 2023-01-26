@@ -45,6 +45,9 @@ function SignForm() {
 
   const navigate = useNavigate();
 
+  const regexp =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&*]{8,20}$/;
+
   function handleAllChecked() {
     setAllChecked(!allChecked);
     setTermsChecked(!allChecked);
@@ -134,6 +137,20 @@ function SignForm() {
             password={"password"}
             placeholder={"비밀번호를 입력해주세요"}
           ></BasicInput>
+        </div>
+
+        <div className="error_box">
+          {signupPassword && !regexp.test(signupPassword) ? (
+            <div className="error_text">
+              숫자, 알파벳, 특수문자(!@#$%^&*) 포함 8자 이상 20자 이하로
+              입력해주세요
+            </div>
+          ) : null}
+        </div>
+        <div className="error_box">
+          {checkPassword && signupPassword !== checkPassword ? (
+            <div className="error_text2">비밀번호가 일치하지 않습니다</div>
+          ) : null}
         </div>
 
         <div className="input_cotainer">

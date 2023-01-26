@@ -17,8 +17,11 @@ const Page = styled.div`
     color : red;
     font-size: 8px;
     margin-top: -20px;
-    
-
+  }
+  .error_text2{
+    color : red;
+    font-size: 8px;
+    margin-top: -10px;
   }
 
   .error_box{
