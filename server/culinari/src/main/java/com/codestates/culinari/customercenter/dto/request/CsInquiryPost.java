@@ -11,15 +11,18 @@ public record CsInquiryRequest(
         String title,
 
         @NotBlank(message = "내용 입력은 필수입니다.")
-        String content
+        String content,
+
+        @NotBlank(message = "카테고리 입력은 필수입니다.")
+        String category
 ) {
 
-    public static CsInquiryRequest of(String title, String content) {
-        return new CsInquiryRequest(
-                title,
-                content
-        );
-    }
+//    public static CsInquiryRequest of(String title, String content) {
+//        return new CsInquiryRequest(
+//                title,
+//                content
+//        );
+//    }
 
     public CsInquiryDto toDto(Profile profile) {
         return CsInquiryDto.of(
@@ -28,4 +31,5 @@ public record CsInquiryRequest(
                 profile
         );
     }
+
 }
