@@ -1,7 +1,8 @@
 package com.codestates.culinari.customercenter.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.customercenter.dto.request.CsInquiryRequest;
+import com.codestates.culinari.customercenter.dto.request.CsInquiryPatch;
+import com.codestates.culinari.customercenter.dto.request.CsInquiryPost;
 import com.codestates.culinari.customercenter.dto.response.CsInquiryResponse;
 import com.codestates.culinari.customercenter.service.CustomerInquiryService;
 import com.codestates.culinari.pagination.PageResponseDto;
@@ -31,15 +32,15 @@ public class CustomerInquiryController {
 
     @PostMapping
     public ResponseEntity postNewEnquire(@AuthenticationPrincipal CustomPrincipal customPrincipal,
-                                         @RequestBody CsInquiryRequest csInquiryRequest) {
-        customerInquiryService.createEnquire(customPrincipal, csInquiryRequest);
+                                         @RequestBody CsInquiryPost csInquiryPost) {
+        customerInquiryService.createEnquire(customPrincipal, csInquiryPost);
 
         return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
     }
 
     @GetMapping
     public ResponseEntity getEnquirePage(@AuthenticationPrincipal CustomPrincipal customPrincipal,
-                                     @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+                                         @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<CsInquiryResponse> csInquiryResponsePage = customerInquiryService.readEnquiriePage(customPrincipal, pageable);
         List<CsInquiryResponse> csInquiryResponses = csInquiryResponsePage.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), csInquiryResponsePage.getTotalPages());
@@ -70,8 +71,8 @@ public class CustomerInquiryController {
     @PatchMapping("/{inquiry-id}")
     public ResponseEntity patchEnquire(@AuthenticationPrincipal CustomPrincipal customPrincipal,
                                        @PathVariable("inquiry-id") Long inquiryId,
-                                       @RequestBody CsInquiryRequest csInquiryRequest) {
-        customerInquiryService.updateEnquire(customPrincipal, inquiryId, csInquiryRequest);
+                                       @RequestBody CsInquiryPatch csInquirypatch) {
+        customerInquiryService.updateEnquire(customPrincipal, inquiryId, csInquirypatch);
 
         return new ResponseEntity<>(HttpStatus.RESET_CONTENT);
     }
