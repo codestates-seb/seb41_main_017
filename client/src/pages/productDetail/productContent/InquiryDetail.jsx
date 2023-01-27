@@ -39,9 +39,9 @@ function InquiryDetail({ element }) {
         <td className="title" onClick={() => setIsOpen(!isOpen)}>
           {element.title}
         </td>
-        <td className="author">{element.author}</td>
+        <td className="author">{element.createdBy}</td>
         <td className="created_date">{element.createdAt}</td>
-        <td className="status">{element.status}</td>
+        <td className="status">{"답변대기"}</td>
       </tr>
       {isOpen ? (
         <InquiryContainer>
@@ -50,7 +50,7 @@ function InquiryDetail({ element }) {
               <QuestionIcon />
               <div className="question">{element.content}</div>
             </QuestionWrapper>
-            {element.status === "답변 완료" ? (
+            {element.status === "답변완료" ? (
               <AnswerWrapper>
                 <AnswerIcon />
                 <div className="answer">{element.answer}</div>
