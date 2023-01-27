@@ -1,8 +1,10 @@
+import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components";
 import BasicButton from "../../../components/BasicButton";
 
 import DeleteButton from "../../../components/DeleteButton";
+import BASE_URL from "../../../constants/BASE_URL";
 
 const Container = styled.div`
   display: flex;
@@ -153,6 +155,35 @@ function CreateInquiry({ data, setIsOpen }) {
   const [content, setContent] = useState("");
   const isActive = title && content;
 
+  const handleCreateInquiry = () => {
+    const trimTitle = title.trim();
+    const trimContent = content.trim();
+
+    if (!trimTitle || !trimContent) {
+      alert("제목이나 내용을 꼭 입력해주세요.");
+
+      return;
+    }
+
+    const body = {
+      title: trimTitle,
+      content: trimContent,
+    };
+
+    const config = {
+      headers: {
+        "Content-Type": `application/json`,
+        Authorization: JSON.parse(localStorage.getItem("token")).authorization,
+      },
+    };
+
+    try {
+      axios.post(`${BASE_URL}/product/${data.data.id}/inquiry`, body, config);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -183,7 +214,7 @@ function CreateInquiry({ data, setIsOpen }) {
         </div>
       </InquiryContent>
 
-      <ButtonWrapper isActive={isActive}>
+      <ButtonWrapper isActive={isActive} onClick={handleCreateInquiry}>
         <BasicButton children={"문의하기"} font={14} p_width={50} p_height={15} />
       </ButtonWrapper>
     </Container>
