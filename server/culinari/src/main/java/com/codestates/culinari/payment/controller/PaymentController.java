@@ -78,16 +78,13 @@ public class PaymentController {
             @RequestParam BigDecimal amount
     ) {
         paymentService.verifyRequest(paymentKey, orderId, amount);
-        try {
-            PaymentTossDto response = paymentService.requestApprovalPayment(paymentKey, orderId, amount);
+        //PaymentTossDto response =
+        paymentService.requestApprovalPayment(paymentKey, orderId, amount);
 
-            return new ResponseEntity<>(
-                    new SingleResponseDto<>(response),
-                    HttpStatus.OK
-            );
-        } catch (Exception e) {
-            throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
-        }
+        return new ResponseEntity<>(
+                //new SingleResponseDto<>(response),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/fail")
@@ -109,15 +106,13 @@ public class PaymentController {
             @RequestBody RefundRequest request,
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
-        try {
-            PaymentTossDto response = paymentService.requestPaymentCancel(request, principal);
+            //PaymentTossDto response =
+            paymentService.requestPaymentCancel(request, principal);
 
             return new ResponseEntity<>(
-                    new SingleResponseDto<>(response),
+                    //new SingleResponseDto<>(response),
                     HttpStatus.OK
             );
-        } catch (Exception e) {
-            throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
-        }
+
     }
 }

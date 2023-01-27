@@ -111,20 +111,23 @@ public class PaymentServiceImpl implements PaymentService {
                 );
     }
 
-    // TODO: 프론트와 상의 하여 반환값 변경, 해당 DTO 를 받는 Response 로 변환하고 반환
     @Override
-    public PaymentTossDto requestApprovalPayment(String paymentKey, String orderId, BigDecimal amount) {
+    public void requestApprovalPayment(String paymentKey, String orderId, BigDecimal amount) {
         JSONObject params = new JSONObject();
         params.put("amount", amount);
         params.put("orderId", orderId);
         params.put("paymentKey", paymentKey);
 
-        PaymentTossDto response =
-                new RestTemplate().postForEntity(
-                    String.format("%s/payments/confirm", tossOriginUrl),
-                    new HttpEntity<>(params, createAuthHeaders()),
-                    PaymentTossDto.class
-                ).getBody();
+        try {
+            PaymentTossDto response =
+                    new RestTemplate().postForEntity(
+                        String.format("%s/payments/confirm", tossOriginUrl),
+                        new HttpEntity<>(params, createAuthHeaders()),
+                        PaymentTossDto.class
+                    ).getBody();
+        } catch (Exception e) {
+            throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
+        }
 
         paymentRepository.findByOrder_id(Long.parseLong(orderId))
                 .ifPresentOrElse(
@@ -151,9 +154,8 @@ public class PaymentServiceImpl implements PaymentService {
         return PaymentFailResponse.of(errorCode, errorMsg, orderId);
     }
 
-    // TODO: 프론트와 상의 하여 반환값 변경, 해당 DTO 를 받는 Response 로 변환하고 반환
     @Override
-    public PaymentTossDto requestPaymentCancel(RefundRequest request, CustomPrincipal principal) {
+    public void requestPaymentCancel(RefundRequest request, CustomPrincipal principal) {
         verifyPrincipal(principal);
         RefundDto dto = request.toDto();
 
@@ -166,11 +168,19 @@ public class PaymentServiceImpl implements PaymentService {
         params.put("cancelReason", dto.cancelReason());
         params.put("cancelAmount", orderDetail.getPrice());
 
-        return new RestTemplate().postForEntity(
-                String.format(String.format("%s/payments/%s/cancel", tossOriginUrl, dto.paymentKey())),
-                new HttpEntity<>(params, createAuthHeaders()),
-                PaymentTossDto.class
-        ).getBody();
+            try {
+                PaymentTossDto paymentTossDto =
+                        new RestTemplate().postForEntity(
+                                String.format(String.format("%s/payments/%s/cancel", tossOriginUrl, request.paymentKey())),
+                                new HttpEntity<>(params, createAuthHeaders()),
+                                PaymentTossDto.class
+                        ).getBody();
+            } catch (Exception e) {
+                throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
+            }
+
+            refundRepository.save(dto.toEntity(orderDetail));
+        });
     }
 
     private void verifyPrincipal(CustomPrincipal principal) {
