@@ -83,11 +83,9 @@ function Inquiry({ data }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <>
+    <div id="inquiry">
       <Header>
-        <div id="inquiry" className="header_text">
-          상품 문의
-        </div>
+        <div className="header_text">상품 문의</div>
       </Header>
       <div>
         <InquiryTable>
@@ -108,7 +106,7 @@ function Inquiry({ data }) {
         </WriteInquiryButtonWrapper>
         {isOpen ? <ModalComponent component={<CreateInquiry data={data} setIsOpen={setIsOpen} />} /> : null}
       </div>
-    </>
+    </div>
   );
 }
 

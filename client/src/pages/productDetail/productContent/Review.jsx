@@ -5,10 +5,6 @@ import ReviewModal from "./ReviewModal";
 import ModalComponent from "./ModalComponent";
 import { ReactComponent as Star } from "../../../assets/star.svg";
 
-const Container = styled.div`
-  width: 100%;
-`;
-
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
   border-bottom: 2px solid black;
@@ -114,11 +110,9 @@ function Review() {
   };
 
   return (
-    <Container>
+    <div id="review">
       <Header>
-        <div id="review" className="header_text">
-          상품 후기
-        </div>
+        <div className="header_text">상품 후기</div>
         <div className="filter_buttons" onClick={handleFilterButtonClick}>
           <FilterList dataId="newest" sort={sort}>
             최신순
@@ -159,7 +153,7 @@ function Review() {
           </ReviewListContainer>
         );
       })}
-    </Container>
+    </div>
   );
 }
 

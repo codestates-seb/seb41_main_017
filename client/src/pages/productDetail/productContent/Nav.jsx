@@ -52,17 +52,17 @@ function Nav() {
     <Container>
       <ul>
         <li>
-          <Link to="detail" spy={true} smooth={true}>
+          <Link to="detail" spy={true} smooth={true} offset={-60} duration={400}>
             <span>상품상세</span>
           </Link>
         </li>
         <li>
-          <Link to="review" spy={true} smooth={true}>
+          <Link to="review" spy={true} smooth={true} offset={-60} duration={400}>
             <span>후기</span>
           </Link>
         </li>
         <li>
-          <Link to="inquiry" spy={true} smooth={true}>
+          <Link to="inquiry" spy={true} smooth={true} offset={-60} duration={400}>
             <span>문의</span>
           </Link>
         </li>
