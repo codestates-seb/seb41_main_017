@@ -8,8 +8,9 @@ import java.util.List;
 public record PaymentRequest(
         @NotNull(message = "결제 수단은 필수입니다.")
         PayType payType,
+        @NotNull(message = "해당 값은 필수입니다.")
         @Size(min = 1, message = "최소 1개 이상의 상품을 주문해야합니다.")
-        List<@Positive Long> productIds,
+        List<@Positive(message = "해당 값은 1이상이어야 합니다.") Long> productIds,
         @NotBlank(message = "주소 입력은 필수입니다.")
         String address,
         @NotBlank(message = "수령자 입력은 필수입니다.")
