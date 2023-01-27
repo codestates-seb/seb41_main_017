@@ -178,7 +178,7 @@ function EditInquiry({ data, element, setIsEditModalOpen }) {
     };
 
     try {
-      axios.post(`${BASE_URL}/product/${data.data.id}/inquiry`, body, config);
+      axios.patch(`${BASE_URL}/product/inquiry/${element.id}`, body, config);
     } catch (error) {
       console.error(error);
     }
