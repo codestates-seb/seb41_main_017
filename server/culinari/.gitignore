@@ -8,6 +8,7 @@
 
 **/src/main/resources/application-secret.yaml
 
+
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
