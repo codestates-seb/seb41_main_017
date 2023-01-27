@@ -89,10 +89,12 @@ function InquiryDetail({ data, element }) {
                 <div className="answer">{element.answer}</div>
               </AnswerWrapper>
             ) : null}
+            {isEditModalOpen ? (
+              <ModalComponent component={<EditInquiry data={data} element={element} setIsEditModalOpen={setIsEditModalOpen} />} />
+            ) : null}
           </td>
         </InquiryContainer>
       ) : null}
-      {isEditModalOpen ? <ModalComponent component={<EditInquiry data={data} element={element} setIsEditModalOpen={setIsEditModalOpen} />} /> : null}
     </>
   );
 }
