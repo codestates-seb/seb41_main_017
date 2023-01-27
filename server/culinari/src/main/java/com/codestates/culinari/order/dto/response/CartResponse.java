@@ -18,8 +18,7 @@ public record CartResponse(
         return CartResponse.of(
                 entity.getId(),
                 entity.getQuantity(),
-                // TODO: 이후 ProductResponseToPage.from(entity.getProduct())
-                ProductResponseToPage.from(ProductDto.from(entity.getProduct()))
+                ProductResponseToPage.from(entity.getProduct())
         );
     }
 }
