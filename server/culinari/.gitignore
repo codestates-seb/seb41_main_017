@@ -6,8 +6,8 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 ###프로퍼티###
 
-**/src/main/resources/application-secret.yaml
-
+**/src/main/resources/application-test.yaml
+**/src/main/resources/application-aws.yaml
 
 # User-specific stuff
 .idea/**/workspace.xml
