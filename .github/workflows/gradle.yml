@@ -67,20 +67,7 @@ jobs:
       run: chmod +x ./gradlew
       working-directory: ./server/culinari
       
-
-#     - name: Set Yaml
-#       uses: microsoft/variable-substitution@v3 
-#       with:
-#         files: ${{ env.RESOURCE_PATH }}
-#       env:
-#         spring.datasource.url: ${{ secrets.MYSQL_URL}}
-#         spring.datasource.id: ${{ secrets.MYSQL_ID}}
-#         spring.datasource.password: ${{ secrets.MYSQL_PWD }}
-#         jwt.secret-key: ${{ secrets.JWT_SECRET_KEY}}
-#         cloud.aws.credentials.access-key: ${{ secrets.AWS_ACCESS_KEY }}
-#         cloud.aws.credentials.secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     
-      
     - name: Build with Gradle
       run: ./gradlew build --exclude-task test
       working-directory: ./server/culinari/
