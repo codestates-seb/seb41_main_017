@@ -32,66 +32,20 @@ jobs:
         distribution: 'temurin'
     - name: Add permission
       run: chmod +x ./gradlew
+    
+    - name: Set Yaml
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ${{ env.RESOURCE_PATH }}
+      env:
+        spring.datasource.url: ${{ secrets.MYSQL_URL}}
+        spring.datasource.id: ${{ secrets.MYSQL_ID}}
+        spring.datasource.password: ${{ secrets.MYSQL_PWD }}
+        jwt.secret-key: ${{ secrets.JWT_SECRET_KEY}}
+        cloud.aws.credentials.access-key: ${{ secrets.AWS_ACCESS_KEY }}
+        cloud.aws.credentials.secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
       
-      #MySQl 연결 properties
-    - name: make MySql_url.properties
-      if: contains(github.ref, 'BE')
-      run: |
-        echo "ls -a . & url"
-        url
-        ls -a .
-        echo "mkdir & touch"
-        mkdir -p ./src/main/resources 
-        cd ./src/main/resources
-        touch ./MySql_url.properties
-        url
-        ls -a .
-        echo "copy properties"
-        echo $DEV_PROP >> ./MySql_url.properties
-        cat MySql_url.properties
-      shell: bash
-      env:
-          DEV_PROP: ${{ secrets.MYSQL_URL }}
-          
-    - name: make MySql_id.properties
-      if: contains(github.ref, 'BE')
-      run: |
-        echo "ls -a . & id"
-        id
-        ls -a .
-        echo "mkdir & touch"
-        mkdir -p ./src/main/resources 
-        cd ./src/main/resources
-        touch ./MySql_id.properties
-        id
-        ls -a .
-        echo "copy properties"
-        echo $DEV_PROP >> ./MySql_id.properties
-        cat MySql_id.properties
-      shell: bash
-      env:
-          DEV_PROP: ${{ secrets.MYSQL_ID }}
-          
-    - name: make MySql_pwd.properties
-      if: contains(github.ref, 'BE')
-      run: |
-        echo "ls -a . & pwd"
-        pwd
-        ls -a .
-        echo "mkdir & touch"
-        mkdir -p ./src/main/resources 
-        cd ./src/main/resources
-        touch ./MySql_pwd.properties
-        pwd
-        ls -a .
-        echo "copy properties"
-        echo $DEV_PROP >> ./MySql_pwd.properties
-        cat MySql_pwd.properties
-      shell: bash
-      env:
-          DEV_PROP: ${{ secrets.MYSQL_PWD }}
-          
-          
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
