@@ -17,7 +17,7 @@ permissions:
   contents: read
 env:
   S3_BUCKET_NAME: culinari
-#   RESOURCE_PATH: ./server/culinari/src/main/resources/application.yaml
+  APPLICATION: ${{ secrets.APPLICATION}}
 
 jobs:
   build:
@@ -31,28 +31,34 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    
-    - name: Setup Node
-      uses: actions/setup-node@v3
+      
+    - uses: actions/checkout@v3
+    - run: touch ./src/main/resources/application.yaml
+    - run: echo "${{env.APPLICATION}}" > ./src/main/resources/application.yaml
+    - uses: actions/upload-artifact@v2
       with:
-       node-version: 16
+       name: application.yaml
+       path: ./src/main/resources/application.yaml
+    
+
 
       
     - name: Add permission
       run: chmod +x ./gradlew
       working-directory: ./server/culinari
+      
 
-    - name: Set Yaml
-      uses: microsoft/variable-substitution@v3 
-      with:
-        files: ${{ env.RESOURCE_PATH }}
-      env:
-        spring.datasource.url: ${{ secrets.MYSQL_URL}}
-        spring.datasource.id: ${{ secrets.MYSQL_ID}}
-        spring.datasource.password: ${{ secrets.MYSQL_PWD }}
-        jwt.secret-key: ${{ secrets.JWT_SECRET_KEY}}
-        cloud.aws.credentials.access-key: ${{ secrets.AWS_ACCESS_KEY }}
-        cloud.aws.credentials.secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#     - name: Set Yaml
+#       uses: microsoft/variable-substitution@v3 
+#       with:
+#         files: ${{ env.RESOURCE_PATH }}
+#       env:
+#         spring.datasource.url: ${{ secrets.MYSQL_URL}}
+#         spring.datasource.id: ${{ secrets.MYSQL_ID}}
+#         spring.datasource.password: ${{ secrets.MYSQL_PWD }}
+#         jwt.secret-key: ${{ secrets.JWT_SECRET_KEY}}
+#         cloud.aws.credentials.access-key: ${{ secrets.AWS_ACCESS_KEY }}
+#         cloud.aws.credentials.secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     
       
     - name: Build with Gradle
