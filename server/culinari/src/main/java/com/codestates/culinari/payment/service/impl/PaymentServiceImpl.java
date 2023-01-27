@@ -61,6 +61,12 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${toss.test.origin-url}")
     private String tossOriginUrl;
 
+    @Value("${toss.test.success-url}")
+    private String tossSuccessUrl;
+
+    @Value("${toss.test.fail-url}")
+    private String tossFailUrl;
+
     @Override
     public PaymentInfoResponse createPayment(PaymentRequest request, CustomPrincipal principal) {
         verifyPrincipal(principal);
@@ -78,13 +84,16 @@ public class PaymentServiceImpl implements PaymentService {
                 .forEach(productId -> {
                     Cart cart = cartRepository.findByProfile_IdAndProduct_Id(profile.getId(), productId)
                             .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
-                    cartRepository.delete(cart);
 
                     OrderDetail orderDetail = orderDetailRepository.save(OrderDetailDto.of(cart.getQuantity()).toEntity(orders, cart.getProduct()));
                     orders.getOrderDetails().add(orderDetail);
                 });
 
-        return PaymentInfoResponse.from(paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile)));
+        return PaymentInfoResponse.from(
+                paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile)),
+                tossSuccessUrl,
+                tossFailUrl
+        );
     }
 
     @Override
