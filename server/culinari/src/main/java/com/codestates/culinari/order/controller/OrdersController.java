@@ -1,6 +1,7 @@
 package com.codestates.culinari.order.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.order.dto.response.OrderDetailResponse;
 import com.codestates.culinari.order.dto.response.OrderResponse;
 import com.codestates.culinari.order.service.OrdersService;
 import com.codestates.culinari.pagination.PageResponseDto;
@@ -47,6 +48,25 @@ public class OrdersController {
 
         return new ResponseEntity<>(
                 new PageResponseDto<>(orders, pageOrders, barNumber),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity getOrderDetails(
+            @Min(0) @RequestParam(defaultValue = "0", required = false) int page,
+            @Positive @RequestParam(defaultValue = "10", required = false) int size,
+            @Positive @RequestParam(defaultValue = "3") Integer searchMonths,
+            @AuthenticationPrincipal CustomPrincipal principal
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        Page<OrderDetailResponse> pageOrderDetails = ordersService.readOrderDetails(searchMonths, pageable, principal);
+        List<OrderDetailResponse> orderDetails = pageOrderDetails.getContent();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, pageOrderDetails.getTotalPages());
+
+        return new ResponseEntity<>(
+                new PageResponseDto<>(orderDetails, pageOrderDetails, barNumber),
                 HttpStatus.OK
         );
     }
