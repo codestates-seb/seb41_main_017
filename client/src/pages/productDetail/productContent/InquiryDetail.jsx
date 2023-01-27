@@ -16,6 +16,22 @@ const InquiryContainer = styled.tr`
     line-height: 19px;
     letter-spacing: -0.5px;
   }
+
+  .edit_delete_button_container {
+    display: flex;
+    justify-content: end;
+    margin: 0px 20px 10px 20px;
+
+    .edit,
+    .delete {
+      margin-left: 10px;
+      color: #8f8f8f;
+
+      &:hover {
+        color: #ff6767;
+      }
+    }
+  }
 `;
 
 const QuestionWrapper = styled.div`
@@ -36,6 +52,9 @@ function InquiryDetail({ element }) {
   const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
   const day = parsedDate.getDate();
   const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleEditButtonClick = () => {};
 
   return (
     <>
@@ -54,6 +73,10 @@ function InquiryDetail({ element }) {
               <QuestionIcon />
               <div className="question">{element.content}</div>
             </QuestionWrapper>
+            <div className="edit_delete_button_container">
+              <button className="edit">수정</button>
+              <button className="delete">삭제</button>
+            </div>
             {element.status === "답변완료" ? (
               <AnswerWrapper>
                 <AnswerIcon />
