@@ -33,12 +33,12 @@ jobs:
         distribution: 'temurin'
       
     - uses: actions/checkout@v3
-    - run: touch .culinari/src/main/resources/application.yaml
-    - run: echo "${{env.APPLICATION}}" > .culinari/src/main/resources/application.yaml
+    - run: touch .server/culinari/src/main/resources/application.yaml
+    - run: echo "${{env.APPLICATION}}" > .server/culinari/src/main/resources/application.yaml
     - uses: actions/upload-artifact@v2
       with:
        name: application.yaml
-       path: .culinari/src/main/resources/application.yaml
+       path: .server/culinari/src/main/resources/application.yaml
     
 
 
