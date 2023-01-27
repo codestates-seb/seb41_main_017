@@ -69,13 +69,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteCart(Long cartId, CustomPrincipal principal) {
+    public void deleteCarts(CartDelete delete, CustomPrincipal principal) {
         verifyPrincipal(principal);
 
-        if(cartRepository.existsByIdAndProfile_Id(cartId, principal.profileId()))
-            cartRepository.deleteById(cartId);
-        else
+        try {
+            cartRepository.deleteAllByIdsAndProfile_Id(delete.cartIds(), principal.profileId());
+        } catch (Exception e) {
             throw new BusinessLogicException(ExceptionCode.CART_NOT_FOUND);
+
+        }
     }
 
     public void verifyPrincipal(CustomPrincipal principal) {
