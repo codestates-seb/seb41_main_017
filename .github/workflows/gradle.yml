@@ -37,9 +37,9 @@ jobs:
       
 #     - name: Add permission
 #       run: chmod +x ./gradlew
-    
-    - name: Set Yaml
+
     - uses: actions/checkout@v2
+    - name: Set Yaml
     - uses: microsoft/variable-substitution@v1 
       with:
         files: ${{ env.RESOURCE_PATH }}
