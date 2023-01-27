@@ -155,7 +155,7 @@ function EditInquiry({ data, element, setIsEditModalOpen }) {
   const [content, setContent] = useState(element.content);
   const isActive = title && content;
 
-  const handleCreateInquiry = () => {
+  const handleEditInquiry = () => {
     const trimTitle = title.trim();
     const trimContent = content.trim();
 
@@ -216,8 +216,8 @@ function EditInquiry({ data, element, setIsEditModalOpen }) {
         </div>
       </InquiryContent>
 
-      <ButtonWrapper isActive={isActive} onClick={handleCreateInquiry}>
-        <BasicButton children={"문의하기"} font={14} p_width={50} p_height={15} />
+      <ButtonWrapper isActive={isActive} onClick={handleEditInquiry}>
+        <BasicButton children={"수정하기"} font={14} p_width={50} p_height={15} />
       </ButtonWrapper>
     </Container>
   );
