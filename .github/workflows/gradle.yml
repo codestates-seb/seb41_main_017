@@ -82,7 +82,7 @@ jobs:
     
       
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradle build
       working-directory: ./server/culinari/
 
 #     - name: Build with Gradle
