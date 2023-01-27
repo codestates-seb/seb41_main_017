@@ -31,10 +31,14 @@ const TableHead = styled.thead`
     border-bottom: 1px solid #ddd;
   }
 
-  .title,
+  .title {
+    vertical-align: middle;
+  }
+
   .author,
   .created_date,
   .status {
+    width: 140px;
     vertical-align: middle;
   }
 `;
@@ -51,6 +55,7 @@ const TableBody = styled.tbody`
 
   .title {
     padding-left: 10px;
+    cursor: pointer;
   }
 
   .title,
@@ -63,6 +68,7 @@ const TableBody = styled.tbody`
   .author,
   .created_date,
   .status {
+    width: 140px;
     text-align: center;
   }
 `;
@@ -77,11 +83,9 @@ function Inquiry({ data }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <>
+    <div id="inquiry">
       <Header>
-        <div id="inquiry" className="header_text">
-          상품 문의
-        </div>
+        <div className="header_text">상품 문의</div>
       </Header>
       <div>
         <InquiryTable>
@@ -93,14 +97,16 @@ function Inquiry({ data }) {
               <th className="status">답변 상태</th>
             </tr>
           </TableHead>
-          <TableBody>{data.data && data.data.productInquiryDtos.map((element, index) => <InquiryDetail element={element} key={index} />)}</TableBody>
+          <TableBody>
+            {data.data && data.data.productInquiryDtos.map((element, index) => <InquiryDetail data={data} element={element} key={index} />)}
+          </TableBody>
         </InquiryTable>
-        <WriteInquiryButtonWrapper onClick={() => setIsOpen(true)}>
-          <BasicButton children={"문의하기"} p_width={15} p_height={10} />
+        <WriteInquiryButtonWrapper>
+          <BasicButton children={"문의하기"} p_width={15} p_height={10} onClick={() => setIsOpen(true)} />
         </WriteInquiryButtonWrapper>
         {isOpen ? <ModalComponent component={<CreateInquiry data={data} setIsOpen={setIsOpen} />} /> : null}
       </div>
-    </>
+    </div>
   );
 }
 
