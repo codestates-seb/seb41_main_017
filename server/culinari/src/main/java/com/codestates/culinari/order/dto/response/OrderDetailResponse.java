@@ -21,8 +21,7 @@ public record OrderDetailResponse(
                 entity.getId(),
                 entity.getQuantity(),
                 entity.getStatusType(),
-                // TODO: 이후 ProductResponseToPage.from(entity.getProduct())
-                ProductResponseToPage.from(ProductDto.from(entity.getProduct()))
+                ProductResponseToPage.from(entity.getProduct())
         );
     }
 }

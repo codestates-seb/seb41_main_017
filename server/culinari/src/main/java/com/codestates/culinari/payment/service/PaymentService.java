@@ -16,7 +16,7 @@ public interface PaymentService {
     PaymentInfoResponse createPayment(PaymentRequest dto, CustomPrincipal principal);
     Page<PaymentResponseToPage> readPayments(Integer searchMonths, Pageable pageable, CustomPrincipal principal);
     void verifyRequest(String paymentKey, String orderId, BigDecimal amount);
-    PaymentTossDto requestApprovalPayment(String paymentKey, String orderId, BigDecimal amount);
+    void requestApprovalPayment(String paymentKey, String orderId, BigDecimal amount);
     PaymentFailResponse handleRequestFail(String errorCode, String errorMsg, String orderId);
-    PaymentTossDto requestPaymentCancel(RefundRequest request, CustomPrincipal principal);
+    void requestPaymentCancel(RefundRequest request, CustomPrincipal principal);
 }
