@@ -11,6 +11,7 @@ public enum ExceptionCode {
     ORDER_NOT_FOUND(404,"Order not found"),
     ORDER_DETAIL_NOT_FOUND(404,"Order detail not found"),
     INQUIRY_NOT_FOUND(404,"Inquiry not found"),
+    INQUIRYCOMMENT_NOT_FOUND(404,"InquiryComment not found"),
     DESTINATION_NOT_FOUND(404,"Destination not found"),
     REPRESENTATIVE_DESTINATION_NOT_FOUND(404,"Representative destination not found"),
     NOTICE_NOT_FOUND(404,"Notice not found"),
