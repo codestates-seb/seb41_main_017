@@ -74,28 +74,37 @@ const Modal = styled.div`
 `;
 
 function Postmodal() {
+  const [signupAddress, setSignupAddress] = useState("");
+  const [postAddress, setPostAddress] = useState("");
+  const [address, setAddress] = useState("");
+
+
   const [isopen, setIsopen] = useState(false);
   const [destinationName, setDestinationName] = useState("");
   const [receiverName, setReceiverName] = useState("");
   const [receiverPhoneNumber, setReceiverPhoneNumber] = useState("");
-  const [address, setAddress] = useState("");
-
-const save = ()=>{
-  console.log("save함수실행")
-    axios.post(`${process.env.REACT_APP_URL}/destination`, {
-      destinationName,
-      receiverName,
-      receiverPhoneNumber,
-      address,
-      defaultSelect: false,
-    },{
-      headers:{
-        Authorization : localStorage.getItem("accessToken"),
-      }
-    },
-    setIsopen(false)); 
+  
+  const save = () => {
+    console.log("save함수실행");
+    axios.post(
+      `${process.env.REACT_APP_URL}/destination`,
+      {
+        destinationName,
+        receiverName,
+        receiverPhoneNumber,
+        address: `${signupAddress} ${address}`,
+        defaultSelect: false,
+      },
+      {
+        headers: {
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
+        },
+      },
+      setIsopen(false)
+    );
     setTimeout(() => window.location.reload(), 1000);
-}
+  };
 
   return (
     <>
@@ -141,7 +150,7 @@ const save = ()=>{
                 defaultValue={receiverPhoneNumber}
                 onChange={(e) => setReceiverPhoneNumber(e.target.value)}
               />
-              
+
               <IdBlock>
                 <div className="input_cotainer">
                   <BasicInput
@@ -152,16 +161,19 @@ const save = ()=>{
                     address={"address"}
                     min_height={"0"}
                     placeholder={"주소를 입력해주세요"}
-                    defaultValue={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    setValue2={setAddress}
+                    defaultValue={signupAddress}
+                    onChange={(e) => setPostAddress(e.target.value)}
                   ></BasicInput>
-                  <ModalContainer setAddress={setAddress} type={"address"} />
+                  <ModalContainer setSignupAddress={setSignupAddress} type={"address"} />
                 </div>
               </IdBlock>
             </div>
             <div className="btns">
               <div>
-                <Basicbutton onClick={save}p_height={"5"}>저장하기</Basicbutton>
+                <Basicbutton onClick={save} p_height={"5"}>
+                  저장하기
+                </Basicbutton>
               </div>
               <div onClick={() => setIsopen(false)}>
                 <Basicbutton p_height={"5"}>닫기</Basicbutton>

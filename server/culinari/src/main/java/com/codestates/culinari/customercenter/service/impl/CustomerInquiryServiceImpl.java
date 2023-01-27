@@ -2,7 +2,8 @@ package com.codestates.culinari.customercenter.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.customercenter.dto.CsInquiryDto;
-import com.codestates.culinari.customercenter.dto.request.CsInquiryRequest;
+import com.codestates.culinari.customercenter.dto.request.CsInquiryPatch;
+import com.codestates.culinari.customercenter.dto.request.CsInquiryPost;
 import com.codestates.culinari.customercenter.dto.response.CsInquiryResponse;
 import com.codestates.culinari.customercenter.entity.CsInquiry;
 import com.codestates.culinari.customercenter.repository.CsInquiryRepository;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -26,9 +29,9 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
     private final ProfileRepository profileRepository;
 
     @Override
-    public void createEnquire(CustomPrincipal customPrincipal, CsInquiryRequest csInquiryRequest) {
+    public void createEnquire(CustomPrincipal customPrincipal, CsInquiryPost csInquiryPost) {
         Profile profile = profileRepository.getReferenceById(customPrincipal.profileId());
-        CsInquiryDto csInquiryDto = csInquiryRequest.toDto(profile);
+        CsInquiryDto csInquiryDto = csInquiryPost.toDto(profile);
 
         csInquiryRepository.save(csInquiryDto.toEntity());
     }
@@ -36,10 +39,8 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
     @Transactional(readOnly = true)
     @Override
     public Page<CsInquiryResponse> readEnquiriePage(CustomPrincipal customPrincipal, Pageable pageable) {
-        Page<CsInquiryDto> csInquiryDtoPage = csInquiryRepository.findAll(pageable)
-                .map(CsInquiryDto::from);
-
-        return csInquiryDtoPage.map(CsInquiryResponse::from);
+        return csInquiryRepository.findAll(pageable)
+                .map(CsInquiryResponse::from);
     }
 
     @Override
@@ -50,26 +51,28 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
     }
 
     @Override
-    public void updateEnquire(CustomPrincipal customPrincipal, Long inquiryId, CsInquiryRequest csInquiryRequest) {
-        CsInquiry csInquiry = csInquiryRepository.findById(inquiryId)
-                .filter(a -> verifyAuth(a.getProfile().getId(), customPrincipal.profileId()))
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.INQUIRY_NOT_FOUND));
+    public void updateEnquire(CustomPrincipal customPrincipal, Long inquiryId, CsInquiryPatch csInquiryPatch) {
+        CsInquiry csInquiry = writtenByMeFindInquiry(customPrincipal, inquiryId);
 
-        csInquiry.updateCsInquiry(csInquiryRequest);
+        Optional.ofNullable(csInquiryPatch.title())
+                .ifPresent(csInquiry::updateTitle);
+        Optional.ofNullable(csInquiryPatch.content())
+                .ifPresent(csInquiry::updateContent);
+        Optional.ofNullable(csInquiryPatch.category())
+                .ifPresent(csInquiry::updateCategory);
     }
 
     @Transactional(readOnly = true)
     @Override
     public CsInquiryResponse readEnquire(CustomPrincipal customPrincipal, Long inquiryId) {
-        CsInquiryDto csInquiryDto = writtenByMeFindInquiry(customPrincipal,inquiryId);
+        CsInquiry csInquiry = writtenByMeFindInquiry(customPrincipal,inquiryId);
 
-        return CsInquiryResponse.from(csInquiryDto);
+        return CsInquiryResponse.from(csInquiry);
     }
 
-    private CsInquiryDto writtenByMeFindInquiry(CustomPrincipal customPrincipal, Long inquiryId) {
+    private CsInquiry writtenByMeFindInquiry(CustomPrincipal customPrincipal, Long inquiryId) {
         return csInquiryRepository.findById(inquiryId)
-                .map(CsInquiryDto::from)
-                .filter(a -> verifyAuth(a.profile().getId(), customPrincipal.profileId()))
+                .filter(a -> verifyAuth(a.getProfile().getId(), customPrincipal.profileId()))
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.INQUIRY_NOT_FOUND));
     }
 

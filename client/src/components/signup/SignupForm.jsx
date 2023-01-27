@@ -19,11 +19,13 @@ import BasicButton from "../BasicButton";
 import axios from "axios";
 
 import BASE_URL from "../../constants/BASE_URL";
+import { useNavigate } from "react-router-dom";
 
 function SignForm() {
   const [signupAddress, setSignupAddress] = useState("");
   const [postAddress, setPostAddress] = useState("");
   const [signupId, setSignupId] = useState("");
+  const [errorId, setErrorId] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const [name, setName] = useState("");
@@ -38,9 +40,13 @@ function SignForm() {
   const [termsChecked, setTermsChecked] = useState(false);
   const [privacyChecked, setPrivacyChecked] = useState(false);
   const [response, setResponse] = useState("");
-
   const [successModal, setSuccessModal] = useState(false);
   const [rejectModal, setRecjectModal] = useState(false);
+
+  const navigate = useNavigate();
+
+  const regexp =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&*]{8,20}$/;
 
   function handleAllChecked() {
     setAllChecked(!allChecked);
@@ -86,6 +92,13 @@ function SignForm() {
       });
   };
 
+  const handleClickSignup = (e) => {
+    e.preventDefault();
+    setSuccessModal(false);
+    navigate("/login");
+    window.location.reload();
+  };
+
   return (
     <Page>
       <IdBlock>
@@ -105,6 +118,13 @@ function SignForm() {
             <ModalContainer type={"checkId"} signupId={signupId} />
           </div>
         </div>
+        <div className="error_box">
+          {signupId.length < 6 && 0 < signupId.length ? (
+            <div className="error_text">
+              6자 이상 16자 이하의 글자 수를 입력해주세요{" "}
+            </div>
+          ) : null}
+        </div>
 
         <div className="input_cotainer">
           <BasicInput
@@ -117,6 +137,20 @@ function SignForm() {
             password={"password"}
             placeholder={"비밀번호를 입력해주세요"}
           ></BasicInput>
+        </div>
+
+        <div className="error_box">
+          {signupPassword && !regexp.test(signupPassword) ? (
+            <div className="error_text">
+              숫자, 알파벳, 특수문자(!@#$%^&*) 포함 8자 이상 20자 이하로
+              입력해주세요
+            </div>
+          ) : null}
+        </div>
+        <div className="error_box">
+          {checkPassword && signupPassword !== checkPassword ? (
+            <div className="error_text2">비밀번호가 일치하지 않습니다</div>
+          ) : null}
         </div>
 
         <div className="input_cotainer">
@@ -137,12 +171,18 @@ function SignForm() {
               star={"*"}
               type={"text"}
               width={"100%"}
-              placeholder={"이메일을 입력해주세요"}
+              placeholder={"ex) Culinari@gmail.com"}
             ></BasicInput>
           </div>
           <div className="check_btn">
             <ModalContainer type={"checkEmail"} signupEmail={signupEmail} />
           </div>
+        </div>
+
+        <div className="error_box">
+          {signupEmail && !signupEmail.includes("@") ? (
+            <div className="error_text">이메일 형식으로 입력해주세요</div>
+          ) : null}
         </div>
 
         <div className="input_cotainer">
@@ -176,7 +216,6 @@ function SignForm() {
             />
           </div>
         </div>
-
         <div className="input_birth">
           <BasicInput
             setValue={setYear}
@@ -249,7 +288,7 @@ function SignForm() {
             <ModalText>가입이 완료되었습니다.</ModalText>
           </SignupSuccessContainer>
 
-          <CloseButton onClick={() => setSuccessModal(false)}>닫기</CloseButton>
+          <CloseButton onClick={handleClickSignup}>닫기</CloseButton>
         </ModalWrapper>
       )}
       {rejectModal && (

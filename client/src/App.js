@@ -1,8 +1,8 @@
 import "./App.css";
 import reset from "styled-reset";
 import { createGlobalStyle } from "styled-components";
-import { Route, Routes, BrowserRouter} from "react-router-dom";
-import Header from "./components/Header";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import Header from "./components/header";
 
 import Mypage from "./pages/mypage/index";
 import Login from "./pages/sign/login";
@@ -80,6 +80,7 @@ function App() {
             <Route path="/collections/new-product" element={<Collection />} />
             <Route path="/collections/best-product" element={<Collection />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/category/:code" element={<Search />} />
           </Routes>
         </main>
         <footer id="footer"></footer>
