@@ -103,7 +103,7 @@ public class PaymentController {
 
     @PostMapping("/cancel")
     public ResponseEntity requestPaymentCancel(
-            @RequestBody RefundRequest request,
+            @Valid @RequestBody RefundRequest request,
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
             //PaymentTossDto response =

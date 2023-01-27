@@ -42,6 +42,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -168,14 +169,13 @@ public class PaymentServiceImpl implements PaymentService {
         verifyPrincipal(principal);
         RefundDto dto = request.toDto();
 
-        OrderDetail orderDetail = orderDetailRepository.findByIdAndOrders_Profile_Id(dto.orderDetailId(), principal.profileId())
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_DETAIL_NOT_FOUND));
+        List<OrderDetail> orderDetails =
+                orderDetailRepository.findAllPaidByIdAndPaymentKeyAndProfileId(request.orderDetailIds(), request.paymentKey(), principal.profileId());
 
-        refundRepository.save(dto.toEntity(orderDetail));
-
-        JSONObject params = new JSONObject();
-        params.put("cancelReason", dto.cancelReason());
-        params.put("cancelAmount", orderDetail.getPrice());
+        orderDetails.forEach(orderDetail -> {
+            JSONObject params = new JSONObject();
+            params.put("cancelReason", request.cancelReason());
+            params.put("cancelAmount", orderDetail.getPrice());
 
             try {
                 PaymentTossDto paymentTossDto =
