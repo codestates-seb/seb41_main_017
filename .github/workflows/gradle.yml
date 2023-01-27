@@ -56,7 +56,7 @@ jobs:
     - name: make application-prod.properties
       if: contains(github.ref, 'BE')
       run: |
-          cd ./culinari/src/main/resources
+          cd ./server/culinari/src/main/resources
           touch ./application-prod.properties
           echo "${{ secrets.APPLICATION}}" > ./application-prod.properties
       shell: bash
