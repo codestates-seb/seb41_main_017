@@ -32,15 +32,24 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
       
-    - uses: actions/checkout@v3
-    - run: touch .server/culinari/src/main/resources/application.yaml
-    - run: echo "${{env.APPLICATION}}" > .server/culinari/src/main/resources/application.yaml
-    - uses: actions/upload-artifact@v2
-      with:
-       name: application.yaml
-       path: .server/culinari/src/main/resources/application.yaml
-    
+    ## create application-dev.properties
+    - name: make application-dev.properties
+      if: contains(github.ref, 'develop')
+      run: |
+        cd ./src/main/resources
+        touch ./application-dev.properties
+        echo "${{ secrets.APPLICATION }}" > ./application-dev.properties
+      shell: bash
 
+    ## create application-prod.properties
+    - name: make application-prod.properties
+      if: contains(github.ref, 'main')
+      run: |
+          cd ./src/main/resources
+          touch ./application-prod.properties
+          echo "${{ secrets.APPLICATION}}" > ./application-prod.properties
+      shell: bash
+  
 
       
     - name: Add permission
