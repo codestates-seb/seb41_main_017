@@ -216,8 +216,8 @@ function CreateInquiry({ data, setIsOpen }) {
         </div>
       </InquiryContent>
 
-      <ButtonWrapper isActive={isActive} onClick={handleCreateInquiry}>
-        <BasicButton children={"문의하기"} font={14} p_width={50} p_height={15} />
+      <ButtonWrapper isActive={isActive}>
+        <BasicButton children={"문의하기"} font={14} p_width={50} p_height={15} onClick={handleCreateInquiry} />
       </ButtonWrapper>
     </Container>
   );

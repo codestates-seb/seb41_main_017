@@ -216,8 +216,8 @@ function EditInquiry({ data, element, setIsEditModalOpen }) {
         </div>
       </InquiryContent>
 
-      <ButtonWrapper isActive={isActive} onClick={handleEditInquiry}>
-        <BasicButton children={"수정하기"} font={14} p_width={50} p_height={15} />
+      <ButtonWrapper isActive={isActive}>
+        <BasicButton children={"수정하기"} font={14} p_width={50} p_height={15} onClick={handleEditInquiry} />
       </ButtonWrapper>
     </Container>
   );
