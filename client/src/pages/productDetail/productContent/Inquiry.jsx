@@ -31,10 +31,14 @@ const TableHead = styled.thead`
     border-bottom: 1px solid #ddd;
   }
 
-  .title,
+  .title {
+    vertical-align: middle;
+  }
+
   .author,
   .created_date,
   .status {
+    width: 140px;
     vertical-align: middle;
   }
 `;
@@ -51,6 +55,7 @@ const TableBody = styled.tbody`
 
   .title {
     padding-left: 10px;
+    cursor: pointer;
   }
 
   .title,
@@ -63,6 +68,7 @@ const TableBody = styled.tbody`
   .author,
   .created_date,
   .status {
+    width: 140px;
     text-align: center;
   }
 `;
