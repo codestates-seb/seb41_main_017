@@ -103,8 +103,8 @@ function Inquiry({ data }) {
             {data.data && data.data.productInquiryDtos.map((element, index) => <InquiryDetail data={data} element={element} key={index} />)}
           </TableBody>
         </InquiryTable>
-        <WriteInquiryButtonWrapper onClick={() => setIsOpen(true)}>
-          <BasicButton children={"문의하기"} p_width={15} p_height={10} />
+        <WriteInquiryButtonWrapper>
+          <BasicButton children={"문의하기"} p_width={15} p_height={10} onClick={() => setIsOpen(true)} />
         </WriteInquiryButtonWrapper>
         {isOpen ? <ModalComponent component={<CreateInquiry data={data} setIsOpen={setIsOpen} />} /> : null}
       </div>
