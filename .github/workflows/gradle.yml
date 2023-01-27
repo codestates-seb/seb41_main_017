@@ -38,7 +38,7 @@ jobs:
       working-directory: ./server/culinari
 
     - name: Set Yaml
-    - uses: microsoft/variable-substitution@v1 
+      uses: microsoft/variable-substitution@v1 
       with:
         files: ${{ env.RESOURCE_PATH }}
       env:
