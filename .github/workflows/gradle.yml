@@ -49,7 +49,7 @@ jobs:
       run: |
         cd ./server/culinari/src/main/resources
         touch ./application-dev.properties
-        echo "${{ secrets.APPLICATION }}" > ./application-dev.properties
+        echo "${{ secrets.APPLICATION_TEST }}" > ./application-dev.properties
       shell: bash
 
     ## create application-prod.properties
