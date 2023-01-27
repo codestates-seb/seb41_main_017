@@ -106,6 +106,6 @@ jobs:
     
     # 압축한 프로젝트를 S3로 전송합니다.
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./practice-deploy.zip s3://culinari/culinari-deploy.zip
+      run: aws s3 cp --region ap-northeast-2 ./culinari-deploy.zip s3://culinari/culinari-deploy.zip
       
         
