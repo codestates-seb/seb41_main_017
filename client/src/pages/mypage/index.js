@@ -109,9 +109,9 @@ function Mypage () {
   //   .then(erros => erros)
   // },[]);
 
-  // if (window.location.pathname === '/mypage') {
-  //   window.location.pathname = '/mypage/userInfo'
-  // }
+  if (window.location.pathname === '/mypage') {
+    window.location.pathname = '/mypage/userInfo'
+  }
 
   const list = {
     "내정보": {

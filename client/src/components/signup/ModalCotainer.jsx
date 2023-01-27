@@ -14,7 +14,7 @@ const AddressBtn = styled.button`
   margin-top: 19.5px;
 `;
 
-function ModalContainer({ setSignupAddress, type, signupId, signupEmail }) {
+function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disabled}) {
   const [modalOpen, setModalOpen] = useState(false);
   const [response, setResponse] = useState("");
 
@@ -97,7 +97,10 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail }) {
   if (type === "checkEmail") {
     return (
       <>
-        <AddressBtn onClick={handleCheckEmailBtn}>중복확인</AddressBtn>
+        <AddressBtn 
+        onClick={handleCheckEmailBtn}
+        disabled={disabled}
+        >중복확인</AddressBtn>
         <GuideModal
           signupEmail={signupEmail}
           type={"checkEmail"}
@@ -106,6 +109,7 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail }) {
           open={modalOpen}
           close={closeModal}
           header="Modal heading"
+          
         ></GuideModal>
       </>
     );

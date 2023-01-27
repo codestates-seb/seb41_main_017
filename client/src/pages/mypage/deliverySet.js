@@ -70,7 +70,7 @@ function Addressset() {
   const [isfetch, setIsfetch] = useState(false);
 
 
-  console.log(addresList);
+  
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_URL}/destination`, {
@@ -82,6 +82,7 @@ function Addressset() {
       .then((res) => setAddresList(res.data.data))
       .then((erros) => erros);
   }, []);
+
 
   const isOpen = (e, state) => {
     setKeys(e);

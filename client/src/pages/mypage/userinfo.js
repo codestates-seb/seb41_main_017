@@ -299,8 +299,3 @@ function Userinfo() {
 }
 
 export default Userinfo;
-
-/*
-1. 정규식 표현에 맞지 않으면 버튼비활성화
-2.
-*/

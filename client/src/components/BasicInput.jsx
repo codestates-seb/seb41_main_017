@@ -16,6 +16,7 @@ const BasicInput = ({
   type,
   placeholder,
   defaultValue,
+  disabled = false
 }) => {
   const styles = {
     font,
@@ -26,6 +27,7 @@ const BasicInput = ({
     type,
     placeholder,
     defaultValue,
+    disabled
   };
 
   return (
@@ -88,6 +90,7 @@ const CustomInput = styled.input.attrs((props) => ({
   placeholder: props.placeholder,
   defaultValue: props.defaultValue,
   width: props.width,
+  disabled: props.disabled ? props.disabled : null
 }))`
   display: inline-block;
   width: ${(props) => props.width};
