@@ -31,6 +31,10 @@ const AnswerWrapper = styled.div`
 `;
 
 function InquiryDetail({ element }) {
+  const parsedDate = new Date(element.createdAt);
+  const year = parsedDate.getFullYear();
+  const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+  const day = parsedDate.getDate();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -40,7 +44,7 @@ function InquiryDetail({ element }) {
           {element.title}
         </td>
         <td className="author">{element.createdBy}</td>
-        <td className="created_date">{element.createdAt}</td>
+        <td className="created_date">{`${year}-${month}-${day}`}</td>
         <td className="status">{"답변대기"}</td>
       </tr>
       {isOpen ? (
