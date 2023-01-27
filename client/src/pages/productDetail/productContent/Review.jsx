@@ -49,6 +49,7 @@ const ReviewListContainer = styled.div`
     width: 124px;
     height: 124px;
     margin-right: 10px;
+    cursor: pointer;
   }
 `;
 
