@@ -182,6 +182,8 @@ function CreateInquiry({ data, setIsOpen }) {
     } catch (error) {
       console.error(error);
     }
+
+    window.location.reload();
   };
 
   return (
