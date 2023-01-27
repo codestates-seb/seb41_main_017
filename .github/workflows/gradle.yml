@@ -35,7 +35,7 @@ jobs:
       
       #MySQl 연결 properties
     - name: make MySql_url.properties
-      if: contains(github.ref, 'main')
+      if: contains(github.ref, 'BE')
       run: |
         echo "ls -a . & url"
         url
@@ -54,7 +54,7 @@ jobs:
           DEV_PROP: ${{ secrets.MYSQL_URL }}
           
     - name: make MySql_id.properties
-      if: contains(github.ref, 'main')
+      if: contains(github.ref, 'BE')
       run: |
         echo "ls -a . & id"
         id
@@ -73,7 +73,7 @@ jobs:
           DEV_PROP: ${{ secrets.MYSQL_ID }}
           
     - name: make MySql_pwd.properties
-      if: contains(github.ref, 'main')
+      if: contains(github.ref, 'BE')
       run: |
         echo "ls -a . & pwd"
         pwd
