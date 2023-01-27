@@ -39,7 +39,7 @@ jobs:
 #       run: chmod +x ./gradlew
     
     - name: Set Yaml
-      uses: microsoft/variable-substitution@v1
+      uses: microsoft/variable-substitution@v2
       with:
         files: ${{ env.RESOURCE_PATH }}
       env:
