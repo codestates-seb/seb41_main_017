@@ -16,7 +16,6 @@ public record CsInquiryCommentPost(
     public CsInquiryCommentPost( String content) {
         this.content = content;
     }
-
     public CsInquiryCommentDto toDto(CsInquiry csInquiry, Profile profile){
         return CsInquiryCommentDto.of(
                 content,

@@ -28,7 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.5.RELEASE'   // aws 클라우드
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'   // aws 클라우드
 	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
     compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -56,6 +56,14 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	//파라미티
+	implementation group: 'io.awspring.cloud', name: 'spring-cloud-aws-parameter-store-config', version: '2.4.2'
+	dependencyManagement {
+		imports {
+			mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:2.3.3"
+		}
+	}
 }
 
 // Querydsl 설정부
@@ -79,4 +87,9 @@ clean {
 // JUnitPlatform 을 사용하여 test 실행
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.named('asciidoctor') {
+	inputs.dir snippetsDir
+	dependsOn test
 }

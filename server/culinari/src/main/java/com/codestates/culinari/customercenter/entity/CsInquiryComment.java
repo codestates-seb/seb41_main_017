@@ -17,6 +17,7 @@ public class CsInquiryComment extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, length = 10000)
     private String content;
 
@@ -26,7 +27,7 @@ public class CsInquiryComment extends AuditingFields {
     @ManyToOne(optional = false)
     private Profile profile;
 
-    public static CsInquiryComment of(String content, CsInquiry csInquiry, Profile profile) {
+    public static CsInquiryComment of( String content, CsInquiry csInquiry, Profile profile) {
         return new CsInquiryComment(null, content, csInquiry, profile);
     }
     public void updateContent(String content) {
