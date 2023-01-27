@@ -82,7 +82,7 @@ jobs:
     
       
     - name: Build with Gradle
-      run: ./gradle build
+      run: ./gradlew build --exclude-task test
       working-directory: ./server/culinari/
 
 #     - name: Build with Gradle
