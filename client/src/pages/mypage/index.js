@@ -97,17 +97,17 @@ function Mypage () {
 
   const [user, setUser] = useState({});
 
-  // useEffect(()=>{
+  useEffect(()=>{
 
-  //   axios.get(`${process.env.REACT_APP_URL}/users`,{
-  //     headers: {
-  //       authorization: JSON.parse(localStorage.getItem("token"))
-  //         .authorization,
-  //     },
-  //   })
-  //   .then(res => setUser(res.data.data))
-  //   .then(erros => erros)
-  // },[]);
+    axios.get(`${process.env.REACT_APP_URL}/users`,{
+      headers: {
+        authorization: JSON.parse(localStorage.getItem("token"))
+          .authorization,
+      },
+    })
+    .then(res => setUser(res.data.data))
+    .then(erros => erros)
+  },[]);
 
   if (window.location.pathname === '/mypage') {
     window.location.pathname = '/mypage/userInfo'

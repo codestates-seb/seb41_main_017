@@ -297,5 +297,4 @@ function Userinfo() {
     </Mypagehead>
   );
 }
-
 export default Userinfo;
