@@ -1,11 +1,12 @@
 
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2
+
   datasource:
-    url: jdbc:h2:mem:test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username:
+    password:
+
   jpa:
     hibernate:
       ddl-auto: create  # ? ????? None ?? ??
@@ -17,7 +18,7 @@ spring:
   sql:
     init:
       data-locations: classpath*:data.sql
-
+      mode: always
 logging:
   level:
     org:
@@ -30,32 +31,24 @@ server:
       force-response: true
 mail:
   address:
-    admin: admin@email.com            #??? ??
-jwt:
-  secret-key: test1234asdf123412341234123451234123412341234512341234123412345123412341234123451234123412341234512341234123412345
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420
+    admin: admin@email.com
 
-file:
-  dir: C:/Users/J/Pictures/Screenshots/
+jwt:
+  secret-key:
+  access-token-expiration-minutes: 180
+  refresh-token-expiration-minutes: 420
 
 toss:
   test:
     secret-api-key: test_sk_P24xLea5zVAPgGnNPdb3QAMYNwW6
     origin-url: https://api.tosspayments.com/v1
-
----
-#EC2 ???? JWT
-spring:
-  config:
-    activate:
-      on-profile: test
-
-jwt:
-  secret-key: test1234asdf123412341234123451234123412341234512341234123412345123412341234123451234123412341234512341234123412345
-  access-token-expiration-minutes: 15
-  refresh-token-expiration-minutes: 30
-file:
-  dir: /home/ubuntu/
-
-
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: ap-northeast-2
+      auto: false
+    s3:
+      bucket: culinari-images
