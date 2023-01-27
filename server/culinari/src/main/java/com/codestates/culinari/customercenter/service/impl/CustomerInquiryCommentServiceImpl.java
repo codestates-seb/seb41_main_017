@@ -68,8 +68,6 @@ public class CustomerInquiryCommentServiceImpl implements CustomerInquiryComment
     public void updateEnquireComment(CustomPrincipal customPrincipal, Long commentId, CsInquiryCommentPatch csInquiryCommentPatch) {
         CsInquiryComment csInquiryComment = writtenByMeFindInquiryComment(customPrincipal, commentId);
 
-        Optional.ofNullable(csInquiryCommentPatch.title())
-                .ifPresent(csInquiryComment::updateTitle);
         Optional.ofNullable(csInquiryCommentPatch.content())
                 .ifPresent(csInquiryComment::updateContent);
     }
