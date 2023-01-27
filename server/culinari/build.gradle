@@ -56,6 +56,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
+<<<<<<< HEAD
 
 	//파라미티
 	implementation group: 'io.awspring.cloud', name: 'spring-cloud-aws-parameter-store-config', version: '2.4.2'
@@ -64,6 +65,8 @@ dependencies {
 			mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:2.3.3"
 		}
 	}
+=======
+>>>>>>> ac3ed7aa8540a10ba7c3ea5f338f0280890bb4d9
 }
 
 // Querydsl 설정부
