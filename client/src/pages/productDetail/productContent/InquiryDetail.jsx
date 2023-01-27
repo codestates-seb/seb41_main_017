@@ -1,7 +1,9 @@
+import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components";
 import AnswerIcon from "../../../components/AnswerIcon";
 import QuestionIcon from "../../../components/QuestionIcon";
+import BASE_URL from "../../../constants/BASE_URL";
 import ModalComponent from "../../../pages/productDetail/productContent/ModalComponent";
 import EditInquiry from "./EditInquiry";
 
@@ -60,6 +62,21 @@ function InquiryDetail({ data, element }) {
     setIsEditModalOpen(true);
   };
 
+  const handleDeleteButtonClick = () => {
+    if (window.confirm("해당 문의글을 삭제하시겠습니까?")) {
+      const config = {
+        headers: {
+          "Content-Type": `application/json`,
+          Authorization: JSON.parse(localStorage.getItem("token")).authorization,
+        },
+      };
+
+      axios.delete(`${BASE_URL}/product/inquiry/${element.id}`, config);
+
+      window.location.reload();
+    }
+  };
+
   return (
     <>
       <tr>
@@ -81,7 +98,9 @@ function InquiryDetail({ data, element }) {
               <button className="edit" onClick={handleEditButtonClick}>
                 수정
               </button>
-              <button className="delete">삭제</button>
+              <button className="delete" onClick={handleDeleteButtonClick}>
+                삭제
+              </button>
             </div>
             {element.status === "답변완료" ? (
               <AnswerWrapper>
