@@ -30,8 +30,8 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - name: Add permission
-      run: chmod +x ./gradlew
+#     - name: Add permission
+#       run: chmod +x ./gradlew
     
     - name: Set Yaml
       uses: microsoft/variable-substitution@v1
