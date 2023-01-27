@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import AnswerIcon from "../../../components/AnswerIcon";
 import QuestionIcon from "../../../components/QuestionIcon";
+import ModalComponent from "../../../pages/productDetail/productContent/ModalComponent";
+import EditInquiry from "./EditInquiry";
 
 const InquiryContainer = styled.tr`
   background-color: rgb(250, 250, 250);
@@ -46,15 +48,17 @@ const AnswerWrapper = styled.div`
   align-items: flex-start;
 `;
 
-function InquiryDetail({ element }) {
+function InquiryDetail({ data, element }) {
   const parsedDate = new Date(element.createdAt);
   const year = parsedDate.getFullYear();
   const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
   const day = parsedDate.getDate();
   const [isOpen, setIsOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const handleEditButtonClick = () => {};
+  const handleEditButtonClick = () => {
+    setIsEditModalOpen(true);
+  };
 
   return (
     <>
@@ -74,7 +78,9 @@ function InquiryDetail({ element }) {
               <div className="question">{element.content}</div>
             </QuestionWrapper>
             <div className="edit_delete_button_container">
-              <button className="edit">수정</button>
+              <button className="edit" onClick={handleEditButtonClick}>
+                수정
+              </button>
               <button className="delete">삭제</button>
             </div>
             {element.status === "답변완료" ? (
@@ -86,6 +92,7 @@ function InquiryDetail({ element }) {
           </td>
         </InquiryContainer>
       ) : null}
+      {isEditModalOpen ? <ModalComponent component={<EditInquiry data={data} element={element} setIsEditModalOpen={setIsEditModalOpen} />} /> : null}
     </>
   );
 }

@@ -99,7 +99,9 @@ function Inquiry({ data }) {
               <th className="status">답변 상태</th>
             </tr>
           </TableHead>
-          <TableBody>{data.data && data.data.productInquiryDtos.map((element, index) => <InquiryDetail element={element} key={index} />)}</TableBody>
+          <TableBody>
+            {data.data && data.data.productInquiryDtos.map((element, index) => <InquiryDetail data={data} element={element} key={index} />)}
+          </TableBody>
         </InquiryTable>
         <WriteInquiryButtonWrapper onClick={() => setIsOpen(true)}>
           <BasicButton children={"문의하기"} p_width={15} p_height={10} />
