@@ -164,9 +164,9 @@ function CreateInquiry({ data, setIsOpen }) {
 
       <ProductInfo>
         <div className="product_image">
-          <img src={data.image} />
+          <img src={data.data.productImageDtos?.[0]?.imgUrl} />
         </div>
-        <div className="product_title">{data.name}</div>
+        <div className="product_title">{data.data.name}</div>
       </ProductInfo>
 
       <InquiryTitle>
