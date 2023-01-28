@@ -31,7 +31,7 @@ public class OrderDetailRepositoryCustomImpl extends QuerydslRepositorySupport i
         List<OrderDetail> orderDetails =
                 from(orderDetail)
                         .where(orderDetail.orders.id.eq(
-                                JPAExpressions.select(payment.id).from(payment)
+                                JPAExpressions.select(payment.order.id).from(payment)
                                         .where(
                                                 payment.paySuccessTf.eq(true)
                                                 .and(payment.paymentKey.eq(paymentKey))
