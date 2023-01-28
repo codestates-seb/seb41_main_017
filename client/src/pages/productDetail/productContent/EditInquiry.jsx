@@ -150,12 +150,12 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-function CreateInquiry({ data, setIsOpen }) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+function EditInquiry({ data, element, setIsEditModalOpen }) {
+  const [title, setTitle] = useState(element.title);
+  const [content, setContent] = useState(element.content);
   const isActive = title && content;
 
-  const handleCreateInquiry = () => {
+  const handleEditInquiry = () => {
     const trimTitle = title.trim();
     const trimContent = content.trim();
 
@@ -178,7 +178,7 @@ function CreateInquiry({ data, setIsOpen }) {
     };
 
     try {
-      axios.post(`${BASE_URL}/product/${data.data.id}/inquiry`, body, config);
+      axios.patch(`${BASE_URL}/product/inquiry/${element.id}`, body, config);
     } catch (error) {
       console.error(error);
     }
@@ -190,7 +190,7 @@ function CreateInquiry({ data, setIsOpen }) {
     <Container>
       <Header>
         <div className="title">상품 문의하기</div>
-        <div onClick={() => setIsOpen(false)}>
+        <div onClick={() => setIsEditModalOpen(false)}>
           <DeleteButton />
         </div>
       </Header>
@@ -217,10 +217,10 @@ function CreateInquiry({ data, setIsOpen }) {
       </InquiryContent>
 
       <ButtonWrapper isActive={isActive}>
-        <BasicButton children={"문의하기"} font={14} p_width={50} p_height={15} onClick={handleCreateInquiry} />
+        <BasicButton children={"수정하기"} font={14} p_width={50} p_height={15} onClick={handleEditInquiry} />
       </ButtonWrapper>
     </Container>
   );
 }
 
-export default CreateInquiry;
+export default EditInquiry;

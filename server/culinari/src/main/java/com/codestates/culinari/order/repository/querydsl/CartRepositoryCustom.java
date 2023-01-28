@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface CartRepositoryCustom {
     void deleteAllByIdsAndProfile_Id(List<Long> cartIds, Long profileId);
-    void deleteAllByOrderId(Long orderId);
+    void deleteAllByOrderId(String orderId);
 }

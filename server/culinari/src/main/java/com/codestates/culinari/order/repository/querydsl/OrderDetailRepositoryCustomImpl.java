@@ -3,9 +3,7 @@ package com.codestates.culinari.order.repository.querydsl;
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.order.entitiy.OrderDetail;
-import com.codestates.culinari.order.entitiy.Orders;
 import com.codestates.culinari.order.entitiy.QOrderDetail;
-import com.codestates.culinari.order.entitiy.QOrders;
 import com.codestates.culinari.payment.entity.QPayment;
 import com.codestates.culinari.payment.entity.QRefund;
 import com.codestates.culinari.user.entitiy.QProfile;
@@ -33,7 +31,7 @@ public class OrderDetailRepositoryCustomImpl extends QuerydslRepositorySupport i
         List<OrderDetail> orderDetails =
                 from(orderDetail)
                         .where(orderDetail.orders.id.eq(
-                                JPAExpressions.select(payment.id).from(payment)
+                                JPAExpressions.select(payment.order.id).from(payment)
                                         .where(
                                                 payment.paySuccessTf.eq(true)
                                                 .and(payment.paymentKey.eq(paymentKey))
@@ -53,6 +51,7 @@ public class OrderDetailRepositoryCustomImpl extends QuerydslRepositorySupport i
     public Page<OrderDetail> findAllCreatedAfterAndProfile_Id(LocalDateTime createdAfterDateTime, Long profileId, Pageable pageable) {
         QOrderDetail orderDetail = QOrderDetail.orderDetail;
         QPayment payment = QPayment.payment;
+        QRefund refund = QRefund.refund;
         QProfile profile = QProfile.profile;
 
         JPQLQuery<OrderDetail> query =
@@ -60,7 +59,8 @@ public class OrderDetailRepositoryCustomImpl extends QuerydslRepositorySupport i
                         .innerJoin(orderDetail.orders.profile, profile).fetchJoin()
                         .where(orderDetail.createdAt.gt(createdAfterDateTime)
                                 .and(profile.id.eq(profileId))
-                                .and(orderDetail.orders.id.in(JPAExpressions.select(payment.order.id).from(payment).where(payment.paySuccessTf.eq(true)))));
+                                .and(orderDetail.orders.id.in(JPAExpressions.select(payment.order.id).from(payment).where(payment.paySuccessTf.eq(true))))
+                                .and(orderDetail.id.notIn(JPAExpressions.select(refund.orderDetail.id).from(refund))));
         List<OrderDetail> orderDetails = getQuerydsl().applyPagination(pageable, query).fetch();
 
         return new PageImpl<>(orderDetails, pageable, query.fetchCount());

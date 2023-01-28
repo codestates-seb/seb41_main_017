@@ -108,7 +108,7 @@ function ProductItemSlider() {
         data.data.map((element) => (
           <ProductItem
             id={element.id}
-            imgUrl={element.productImageDtos[0].imgUrl}
+            imgUrl={element.productImageDtos[0]?.imgUrl}
             name={element.name}
             price={element.price}
             key={element.id}

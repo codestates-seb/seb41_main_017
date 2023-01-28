@@ -40,7 +40,7 @@ public class OrdersController {
             @Positive @RequestParam(defaultValue = "3") Integer searchMonths,
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         Page<OrderResponse> pageOrders = ordersService.readOrders(searchMonths, pageable, principal);
         List<OrderResponse> orders = pageOrders.getContent();
@@ -59,7 +59,7 @@ public class OrdersController {
             @Positive @RequestParam(defaultValue = "3") Integer searchMonths,
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         Page<OrderDetailResponse> pageOrderDetails = ordersService.readOrderDetails(searchMonths, pageable, principal);
         List<OrderDetailResponse> orderDetails = pageOrderDetails.getContent();

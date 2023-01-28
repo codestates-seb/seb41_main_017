@@ -1,8 +1,6 @@
 package com.codestates.culinari.payment.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.global.exception.BusinessLogicException;
-import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.pagination.PageResponseDto;
 import com.codestates.culinari.pagination.service.PaginationService;
 import com.codestates.culinari.payment.dto.request.PaymentRequest;
@@ -10,7 +8,6 @@ import com.codestates.culinari.payment.dto.request.RefundRequest;
 import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
 import com.codestates.culinari.payment.dto.response.PaymentInfoResponse;
 import com.codestates.culinari.payment.dto.response.PaymentResponseToPage;
-import com.codestates.culinari.payment.dto.response.toss.PaymentTossDto;
 import com.codestates.culinari.payment.service.PaymentService;
 import com.codestates.culinari.response.SingleResponseDto;
 import jakarta.validation.Valid;

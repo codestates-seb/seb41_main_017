@@ -34,7 +34,7 @@ public class CartRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
-    public void deleteAllByOrderId(Long orderId) {
+    public void deleteAllByOrderId(String orderId) {
         QCart cart = QCart.cart;
         QCart cartSub = new QCart("cartSub");
         QOrders order = QOrders.orders;

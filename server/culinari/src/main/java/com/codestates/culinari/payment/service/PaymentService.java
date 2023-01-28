@@ -6,7 +6,6 @@ import com.codestates.culinari.payment.dto.request.RefundRequest;
 import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
 import com.codestates.culinari.payment.dto.response.PaymentInfoResponse;
 import com.codestates.culinari.payment.dto.response.PaymentResponseToPage;
-import com.codestates.culinari.payment.dto.response.toss.PaymentTossDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
