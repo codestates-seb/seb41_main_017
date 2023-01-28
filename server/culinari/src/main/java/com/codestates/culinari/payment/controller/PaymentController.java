@@ -1,8 +1,6 @@
 package com.codestates.culinari.payment.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.global.exception.BusinessLogicException;
-import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.pagination.PageResponseDto;
 import com.codestates.culinari.pagination.service.PaginationService;
 import com.codestates.culinari.payment.dto.request.PaymentRequest;
@@ -10,7 +8,6 @@ import com.codestates.culinari.payment.dto.request.RefundRequest;
 import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
 import com.codestates.culinari.payment.dto.response.PaymentInfoResponse;
 import com.codestates.culinari.payment.dto.response.PaymentResponseToPage;
-import com.codestates.culinari.payment.dto.response.toss.PaymentTossDto;
 import com.codestates.culinari.payment.service.PaymentService;
 import com.codestates.culinari.response.SingleResponseDto;
 import jakarta.validation.Valid;
@@ -78,16 +75,13 @@ public class PaymentController {
             @RequestParam BigDecimal amount
     ) {
         paymentService.verifyRequest(paymentKey, orderId, amount);
-        try {
-            PaymentTossDto response = paymentService.requestApprovalPayment(paymentKey, orderId, amount);
+        //PaymentTossDto response =
+        paymentService.requestApprovalPayment(paymentKey, orderId, amount);
 
-            return new ResponseEntity<>(
-                    new SingleResponseDto<>(response),
-                    HttpStatus.OK
-            );
-        } catch (Exception e) {
-            throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
-        }
+        return new ResponseEntity<>(
+                //new SingleResponseDto<>(response),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/fail")
@@ -106,18 +100,16 @@ public class PaymentController {
 
     @PostMapping("/cancel")
     public ResponseEntity requestPaymentCancel(
-            @RequestBody RefundRequest request,
+            @Valid @RequestBody RefundRequest request,
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
-        try {
-            PaymentTossDto response = paymentService.requestPaymentCancel(request, principal);
+            //PaymentTossDto response =
+            paymentService.requestPaymentCancel(request, principal);
 
             return new ResponseEntity<>(
-                    new SingleResponseDto<>(response),
+                    //new SingleResponseDto<>(response),
                     HttpStatus.OK
             );
-        } catch (Exception e) {
-            throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
-        }
+
     }
 }

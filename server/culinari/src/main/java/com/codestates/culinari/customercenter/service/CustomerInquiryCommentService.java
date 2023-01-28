@@ -15,7 +15,7 @@ public interface CustomerInquiryCommentService {
 
     CsInquiryCommentResponse readEnquireComment(CustomPrincipal customPrincipal, Long commentId);
 
-    void deleteEnquireComment(CustomPrincipal customPrincipal, Long commentId);
+    void deleteInquireComment(CustomPrincipal customPrincipal, Long commentId);
 
     void updateEnquireComment(CustomPrincipal customPrincipal, Long commentId, CsInquiryCommentPatch csInquiryCommentPatch);
 }

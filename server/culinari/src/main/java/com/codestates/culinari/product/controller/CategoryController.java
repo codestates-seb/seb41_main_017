@@ -5,6 +5,7 @@ import com.codestates.culinari.pagination.service.PaginationService;
 import com.codestates.culinari.product.dto.CategoryDto;
 import com.codestates.culinari.product.dto.response.CategoryDetailListResponse;
 import com.codestates.culinari.product.dto.response.CategoryListResponse;
+import com.codestates.culinari.product.dto.response.CategoryWithDetailListResponse;
 import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 import com.codestates.culinari.product.entitiy.Category;
 import com.codestates.culinari.product.service.CategoryDetailService;
@@ -46,7 +47,7 @@ public class CategoryController {
     public ResponseEntity getCategoryDetailList(
             @PathVariable("category-code") String categoryCode
     ){
-        List<CategoryDetailListResponse> categoryDetailList = categoryDetailService.findAllCategory(categoryCode);
+        List<CategoryWithDetailListResponse> categoryDetailList = categoryService.getCategoryWithDetailList(categoryCode);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(categoryDetailList), HttpStatus.OK
