@@ -7,6 +7,7 @@ import OrderInfo from "./OrderInfo";
 import ShipInfo from "./ShipInfo";
 import PayInfo from "./PayInfo";
 import InfoCheck from "./InfoCheck";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   max-width: 1050px;
@@ -47,6 +48,9 @@ const ButtonWrapper = styled.div`
 `;
 
 function Pay() {
+  const productIds = useSelector((state) => state.productIds.ids);
+
+  console.log(productIds);
   return (
     <Container>
       <TitleContainer>
@@ -58,13 +62,7 @@ function Pay() {
       <InfoCheck />
 
       <ButtonWrapper>
-        <BasicButton
-          children={"결제하기"}
-          font={"20"}
-          radius={"5"}
-          p_height={"14"}
-          p_width={"150"}
-        />
+        <BasicButton children={"결제하기"} font={"20"} radius={"5"} p_height={"14"} p_width={"150"} />
       </ButtonWrapper>
     </Container>
   );

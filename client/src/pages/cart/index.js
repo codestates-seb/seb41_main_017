@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { ReactComponent as CartIcon } from "../../assets/cart_icon.svg";
 import CartProductItem from "../../components/cart/CartProductItem";
@@ -11,6 +13,7 @@ import ProductItemSlider from "../../components/ProductItemSlider";
 import { Title, TodayRecommendProducts } from "..";
 
 import BASE_URL from "../../constants/BASE_URL";
+import { setProductIds } from "../../app/reducer/productId2Pay";
 
 const Container = styled.div`
   max-width: 1050px;
@@ -109,6 +112,8 @@ function Cart() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedList, setCheckedList] = useState([]);
   const [selectAllChecked, setSelectAllChecked] = useState(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getCartList = async () => {
@@ -131,7 +136,9 @@ function Cart() {
     (async () => {
       const data = await getCartList();
       setData(data);
-      setCheckedList(data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price })));
+      setCheckedList(
+        data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price, productId: element.product.id }))
+      );
     })();
   }, []);
 
@@ -152,7 +159,9 @@ function Cart() {
     }
 
     if (selectAllChecked === false) {
-      setCheckedList(data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price })));
+      setCheckedList(
+        data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price, productId: element.product.id }))
+      );
       setSelectAllChecked(!selectAllChecked);
     }
   };
@@ -182,6 +191,11 @@ function Cart() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleOrderButtonClick = () => {
+    dispatch(setProductIds(checkedList.map((list) => list.productId)));
+    navigate("/pay");
   };
 
   return (
@@ -235,7 +249,10 @@ function Cart() {
 
         <OrderButtonContainer>
           <BasicButton href={"/collections/best-product"} children={"상품 더 담기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
-          <ColorButton children={"주문하기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
+
+          <div onClick={handleOrderButtonClick}>
+            <ColorButton children={"주문하기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
+          </div>
         </OrderButtonContainer>
       </CartProductListContainer>
 

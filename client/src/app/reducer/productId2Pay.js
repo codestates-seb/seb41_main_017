@@ -10,4 +10,6 @@ export const productIdsSlice = createSlice({
   },
 });
 
+export const { setProductIds } = productIdsSlice.actions;
+
 export default productIdsSlice.reducer;
