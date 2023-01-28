@@ -240,7 +240,7 @@ function LogoutHeader() {
   }, []);
 
   const handleCategoriesMouseOver = ({ target }) => {
-    setCategoryDetailCodes(categoryDetails[target.dataset.index].data.data);
+    setCategoryDetailCodes(categoryDetails[target.dataset.index].data.data[0].categoryDetails);
     setCurrentIndex(target.dataset.index);
   };
 
