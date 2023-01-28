@@ -64,17 +64,20 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
 function Search() {
   const location = useLocation();
   const [data, setData] = useState("");
+  const [categoryData, setCategoryData] = useState([]);
   const [sort, setSort] = useState("newest");
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get(`${BASE_URL}/search${location.search}`);
+    const getProductData = async () => {
+      const { data } = await axios.get(`${BASE_URL}${location.pathname}${location.search}`);
 
-        return data;
-      } catch (error) {
-        console.log(`Error: ${error}`);
-      }
+      return data;
+    };
+
+    const getCategoryData = async () => {
+      const { data } = await axios.get(`${BASE_URL}/category/categorydetail/${location.pathname.split("/")[2].slice(3)}`);
+
+      return data;
     };
 
     const dataSortByPrice = (data) => {
@@ -96,10 +99,16 @@ function Search() {
     };
 
     (async () => {
-      const data = await getData();
-      const sortedData = dataSortByPrice(data);
+      try {
+        const productData = await getProductData();
+        const sortedData = dataSortByPrice(productData);
+        const categoryData = await getCategoryData();
 
-      setData(sortedData);
+        setData(sortedData);
+        setCategoryData(categoryData);
+      } catch (error) {
+        console.error(error);
+      }
     })();
   }, [location, sort]);
 
