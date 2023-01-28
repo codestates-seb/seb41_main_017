@@ -114,7 +114,7 @@ function Cart() {
       const config = {
         headers: {
           "Content-Type": `application/json`,
-          authorization: JSON.parse(localStorage.getItem("token")).authorization,
+          Authorization: JSON.parse(localStorage.getItem("token")).authorization,
         },
       };
 
@@ -161,14 +161,18 @@ function Cart() {
 
     try {
       const config = {
+        data: {
+          cartIds: checkedList.map((list) => list.id),
+        },
         headers: {
           "Content-Type": `application/json`,
           authorization: JSON.parse(localStorage.getItem("token")).authorization,
         },
       };
 
+      axios.delete(`${BASE_URL}/carts`, config);
+
       checkedList.forEach((list) => {
-        axios.delete(`${BASE_URL}/carts/${list.id}`, config);
         data.data = data.data.filter((element) => element.id !== list.id);
       });
 
