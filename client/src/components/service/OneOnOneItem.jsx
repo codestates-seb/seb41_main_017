@@ -49,13 +49,13 @@ function OneOnOneItem({ question }) {
       <div>
         <ItemCotainer>
           <Notice>{question.id} </Notice>
-          <Category>시스템 오류</Category>
+          <Category>{question.category}</Category>
 
           <Title>
             <Link to={`${question.id}`}>{question.title}</Link>
           </Title>
           <Writter>나</Writter>
-          <Time>23.01.24</Time>
+          <Time>{question.createdAt}</Time>
         </ItemCotainer>
       </div>
     </Page>
