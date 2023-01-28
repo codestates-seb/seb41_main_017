@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as CartIcon } from "../../assets/cart_icon.svg";
 import CartProductItem from "../../components/cart/CartProductItem";
@@ -109,6 +110,7 @@ function Cart() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedList, setCheckedList] = useState([]);
   const [selectAllChecked, setSelectAllChecked] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getCartList = async () => {
@@ -131,7 +133,10 @@ function Cart() {
     (async () => {
       const data = await getCartList();
       setData(data);
-      setCheckedList(data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price })));
+
+      setCheckedList(
+        data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price, productId: element.product.id }))
+      );
     })();
   }, []);
 
@@ -182,6 +187,11 @@ function Cart() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleOrderButtonClick = () => {
+    localStorage.setItem("productIds", JSON.stringify(checkedList.map((list) => list.productId)));
+    navigate("/pay");
   };
 
   return (
@@ -235,7 +245,9 @@ function Cart() {
 
         <OrderButtonContainer>
           <BasicButton href={"/collections/best-product"} children={"상품 더 담기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
-          <ColorButton children={"주문하기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
+          <div onClick={handleOrderButtonClick}>
+            <ColorButton children={"주문하기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
+          </div>
         </OrderButtonContainer>
       </CartProductListContainer>
 
