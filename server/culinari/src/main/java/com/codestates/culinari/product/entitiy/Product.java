@@ -21,7 +21,7 @@ public class Product extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 200)
     private String name;
 
     @Column(nullable = false, length = 65554)
@@ -51,7 +51,7 @@ public class Product extends AuditingFields {
     @Column(nullable = false, length = 50)
     private String countryOfOrigin;
 
-    @Column(length = 300)
+    @Column(length = 3000)
     private String allergyInfo;
 
     @JsonBackReference
