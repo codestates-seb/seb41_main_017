@@ -249,7 +249,6 @@ function Cart() {
 
         <OrderButtonContainer>
           <BasicButton href={"/collections/best-product"} children={"상품 더 담기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
-
           <div onClick={handleOrderButtonClick}>
             <ColorButton children={"주문하기"} font={"20"} radius={"5"} p_height={"10"} p_width={"30"} />
           </div>
