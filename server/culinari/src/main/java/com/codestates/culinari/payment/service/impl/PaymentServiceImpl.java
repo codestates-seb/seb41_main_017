@@ -39,10 +39,13 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
@@ -75,6 +78,7 @@ public class PaymentServiceImpl implements PaymentService {
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         Orders orders = ordersRepository.save(
                 OrderDto.of(
+                        generateOrderId(),
                         request.address(),
                         request.receiverName(),
                         request.receiverPhoneNumber()
@@ -204,5 +208,12 @@ public class PaymentServiceImpl implements PaymentService {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
         return headers;
+    }
+
+    private String generateOrderId() {
+        String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String uniqueKey = UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
+
+        return currentDate + uniqueKey;
     }
 }
