@@ -219,12 +219,12 @@ function Cart() {
           <div className="shipping-fee">
             <span className="sign">+</span>
             <span>배송비</span>
-            <span>3,000원</span>
+            <span>무료</span>
           </div>
           <div className="total-price">
             <span className="sign">=</span>
             <span>총 주문 금액</span>
-            <strong>{(totalPrice + 3000).toLocaleString()}원</strong>
+            <strong>{totalPrice.toLocaleString()}원</strong>
           </div>
         </TotalPriceBox>
 
