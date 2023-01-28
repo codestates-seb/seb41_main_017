@@ -5,10 +5,6 @@ import ReviewModal from "./ReviewModal";
 import ModalComponent from "./ModalComponent";
 import { ReactComponent as Star } from "../../../assets/star.svg";
 
-const Container = styled.div`
-  width: 100%;
-`;
-
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
   border-bottom: 2px solid black;
@@ -49,13 +45,28 @@ const ReviewListContainer = styled.div`
     width: 124px;
     height: 124px;
     margin-right: 10px;
+    cursor: pointer;
   }
+`;
+
+const FilterList = styled.li.attrs(({ dataId }) => ({
+  "data-id": dataId,
+}))`
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 14px;
+  color: rgb(153, 153, 153);
+  cursor: pointer;
+
+  color: ${({ dataId, sort }) => (dataId === sort ? "#ff6767" : "rgb(153, 153, 153)")};
 `;
 
 function Review() {
   const [modalOpen, setModalOpen] = useState(false);
-
-  const productReviewDtos = [
+  const [sort, setSort] = useState("newest");
+  const [productReviewDtos, setProductReviewDtos] = useState([
     {
       username: "닉네임1",
       createdAt: "2023.01.01",
@@ -74,18 +85,44 @@ function Review() {
         "https://s3.amazonaws.com/static.neostack.com/img/react-slick/abstract03.jpg",
       ],
     },
-  ];
+  ]);
+
+  const handleFilterButtonClick = ({ target }) => {
+    const id = target.dataset.id;
+
+    if (!id) return;
+
+    setSort(id);
+
+    if (id === "newest") return;
+
+    if (id === "higher") {
+      setProductReviewDtos(productReviewDtos.sort((a, b) => b.point - a.point));
+
+      return;
+    }
+
+    if (id === "lower") {
+      setProductReviewDtos(productReviewDtos.sort((a, b) => a.point - b.point));
+
+      return;
+    }
+  };
 
   return (
-    <Container>
+    <div id="review">
       <Header>
-        <div id="review" className="header_text">
-          상품 후기
-        </div>
-        <div className="filter_buttons">
-          <div>최신순</div>
-          <div>별점 높은순</div>
-          <div>별점 낮은순</div>
+        <div className="header_text">상품 후기</div>
+        <div className="filter_buttons" onClick={handleFilterButtonClick}>
+          <FilterList dataId="newest" sort={sort}>
+            최신순
+          </FilterList>
+          <FilterList dataId="higher" sort={sort}>
+            별점 높은순
+          </FilterList>
+          <FilterList dataId="lower" sort={sort}>
+            별점 낮은순
+          </FilterList>
         </div>
       </Header>
       {productReviewDtos.map((review, index) => {
@@ -116,7 +153,7 @@ function Review() {
           </ReviewListContainer>
         );
       })}
-    </Container>
+    </div>
   );
 }
 

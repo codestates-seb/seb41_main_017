@@ -60,7 +60,7 @@ function ProductDataList({ data }) {
             allergyInfo: "알러지 정보",
           };
 
-          if (productInfoTitle.hasOwnProperty(title)) {
+          if (content && productInfoTitle.hasOwnProperty(title)) {
             return <DataList title={productInfoTitle[title]} content={content} key={index} />;
           }
         })}
