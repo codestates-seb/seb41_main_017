@@ -34,7 +34,7 @@ function AnswerItem({ answer }) {
 
   const handleClickBtn = (e) => {
     e.preventDefault();
-    console.log(e.target.id);
+
     if (window.confirm("삭제하시겠습니까?")) {
       axios
         .delete(`${BASE_URL}/board/inquiry/comments/${e.target.id}`, {

@@ -54,7 +54,6 @@ const ContentBox = styled.div`
 `;
 
 function OftenDetail({ Dummy }) {
-  console.log(Dummy);
   const navigate = useNavigate();
 
   const handleClickBtn = (e) => {
