@@ -78,7 +78,8 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
 
     if (isChecked) {
       checkedList = checkedList.filter((element) => element.id !== item.id);
-      setCheckedList([...checkedList, { id: item.id, quantity, price: item.product.price }]);
+
+      setCheckedList([...checkedList, { id: item.id, quantity, price: item.product.price, productId: item.product.id }]);
     }
   }, [quantity]);
 
