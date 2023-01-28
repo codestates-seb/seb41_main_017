@@ -38,30 +38,6 @@ const Time = styled.div`
 `;
 
 function AnnouncementItem() {
-  // const data = [
-  //   {
-  //     id: 1,
-  //     notice: 1,
-  //     title: "공지사항입니다.",
-  //     writter: "운영자",
-  //     time: "2023.01.09",
-  //   },
-  //   {
-  //     id: 2,
-  //     notice: 2,
-  //     title: "공지사항2입니다.",
-  //     writter: "운영자",
-  //     time: "2023.01.11",
-  //   },
-  //   {
-  //     id: 3,
-  //     notice: 3,
-  //     title: "공지사항3입니다.",
-  //     writter: "운영자",
-  //     time: "2023.01.12",
-  //   },
-  // ];
-  // console.log(data);
   return (
     <Page>
       <div>
