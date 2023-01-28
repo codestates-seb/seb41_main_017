@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import ProductItem from "../../components/ProductItem";
 import BASE_URL from "../../constants/BASE_URL";
@@ -45,6 +45,35 @@ const PageHeader = styled.h3`
   .search_keyword {
     color: #ff6767;
   }
+
+  .category_details {
+    display: grid;
+    grid-template-columns: repeat(4, 180px);
+    gap: 16px 83px;
+    overflow: hidden;
+    margin-top: 28px;
+    padding: 30px 40px;
+    border: 1px solid rgb(226, 226, 226);
+    line-height: 20px;
+    font-size: 15px;
+    text-align: start;
+  }
+`;
+
+const CategoryList = styled.li`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  a {
+    color: ${({ datacode, code }) => (datacode === code ? "#ff6767" : "black")};
+    font-weight: ${({ datacode, code }) => (datacode === code ? 700 : 400)};
+
+    &:hover {
+      color: #ff6767;
+      font-weight: 700;
+    }
+  }
 `;
 
 const FilterList = styled.li.attrs(({ dataId }) => ({
@@ -63,6 +92,8 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
 
 function Search() {
   const location = useLocation();
+  const { code } = useParams();
+
   const [data, setData] = useState("");
   const [categoryData, setCategoryData] = useState([]);
   const [sort, setSort] = useState("newest");
@@ -75,7 +106,7 @@ function Search() {
     };
 
     const getCategoryData = async () => {
-      const { data } = await axios.get(`${BASE_URL}/category/categorydetail/${location.pathname.split("/")[2].slice(3)}`);
+      const { data } = await axios.get(`${BASE_URL}/category/categorydetail/${code.slice(0, 3)}`);
 
       return data;
     };
@@ -119,7 +150,28 @@ function Search() {
   return (
     <Container>
       <PageHeader>
-        '<span className="search_keyword">{decodeURIComponent(location.search.slice(9))}</span>'에 대한 검색결과
+        {location.search ? (
+          <div>
+            '<span className="search_keyword">{decodeURIComponent(location.search.slice(9))}</span>'에 대한 검색결과
+          </div>
+        ) : (
+          <>
+            <div>{categoryData.data && categoryData.data[0].name}</div>
+            <ul className="category_details">
+              <CategoryList code={code} datacode={categoryData.data && categoryData.data[0].categoryCode}>
+                <Link to={`/category/${categoryData.data && categoryData.data[0].categoryCode}`}>전체보기</Link>
+              </CategoryList>
+              {categoryData.data &&
+                categoryData.data[0].categoryDetails.map((category, index) => {
+                  return (
+                    <CategoryList code={code} datacode={category.categoryDetailCode} key={index}>
+                      <Link to={"/category/" + category.categoryDetailCode}>{category.name}</Link>
+                    </CategoryList>
+                  );
+                })}
+            </ul>
+          </>
+        )}
       </PageHeader>
       <div className="product_list_header">
         <div className="product_list_count">{`총 ${data && data.data.length}건`}</div>
