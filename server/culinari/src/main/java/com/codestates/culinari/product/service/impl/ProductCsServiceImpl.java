@@ -1,6 +1,9 @@
 package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.destination.entity.Destination;
+import com.codestates.culinari.global.exception.BusinessLogicException;
+import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.global.file.S3Uploader;
 import com.codestates.culinari.order.entitiy.OrderDetail;
 import com.codestates.culinari.order.repository.OrderDetailRepository;
@@ -28,6 +31,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -123,6 +128,18 @@ public class ProductCsServiceImpl implements ProductCsService {
     //문의 삭제
     @Override
     public void deleteProductInquiry(CustomPrincipal principal, Long productInquiryId){
+
+        ProductInquiry productInquiry = productInquiryRepository.getReferenceById(productInquiryId);
+
+        if(!Objects.equals(productInquiry.getProfile().getId(), principal.profileId())) {
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+        }
+
+        ProductInquiry productInquiry2 = productInquiryRepository.findById(productInquiryId)
+                .filter(d -> Objects.equals(d.getProfile().getId(), principal.profileId()))
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.INQUIRY_NOT_FOUND));
+
+
         productInquiryRepository.deleteById(productInquiryId);
     }
 

@@ -58,7 +58,8 @@ public class CustomerInquiryCommentServiceImpl implements CustomerInquiryComment
     }
 
     @Override
-    public void deleteEnquireComment(CustomPrincipal customPrincipal, Long commentId) {
+    public void deleteInquireComment(CustomPrincipal customPrincipal, Long commentId) {
+        //TODO 메소드 정상 작동 안함
         CsInquiryComment csInquiryComment = writtenByMeFindInquiryComment(customPrincipal, commentId);
 
         csInquiryCommentRepository.delete(csInquiryComment);

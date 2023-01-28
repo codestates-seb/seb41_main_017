@@ -38,8 +38,8 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<CsInquiryResponse> readEnquiriePage(CustomPrincipal customPrincipal, Pageable pageable) {
-        return csInquiryRepository.findAll(pageable)
+    public Page<CsInquiryResponse> readInquiriePage(CustomPrincipal customPrincipal, Pageable pageable) {
+        return csInquiryRepository.findAllByProfileId(customPrincipal.profileId(), pageable)
                 .map(CsInquiryResponse::from);
     }
 
@@ -64,7 +64,7 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
 
     @Transactional(readOnly = true)
     @Override
-    public CsInquiryResponse readEnquire(CustomPrincipal customPrincipal, Long inquiryId) {
+    public CsInquiryResponse readInquire(CustomPrincipal customPrincipal, Long inquiryId) {
         CsInquiry csInquiry = writtenByMeFindInquiry(customPrincipal,inquiryId);
 
         return CsInquiryResponse.from(csInquiry);
