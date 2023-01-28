@@ -1,7 +1,6 @@
 package com.codestates.culinari.order.dto.response;
 
 import com.codestates.culinari.order.entitiy.Cart;
-import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 
 public record CartResponse(

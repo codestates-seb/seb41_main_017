@@ -2,7 +2,6 @@ package com.codestates.culinari.order.dto.response;
 
 import com.codestates.culinari.order.constant.StatusType;
 import com.codestates.culinari.order.entitiy.OrderDetail;
-import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 
 public record OrderDetailResponse(

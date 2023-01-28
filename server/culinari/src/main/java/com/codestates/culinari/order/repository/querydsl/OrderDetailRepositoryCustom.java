@@ -1,7 +1,6 @@
 package com.codestates.culinari.order.repository.querydsl;
 
 import com.codestates.culinari.order.entitiy.OrderDetail;
-import com.codestates.culinari.order.entitiy.Orders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
