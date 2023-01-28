@@ -10,6 +10,7 @@ import {
   ContentBox,
   Page,
 } from "../../styles/OneOnOneStyle";
+import Answer from "../answer";
 
 function OneOnOneDetail() {
   const { id } = useParams();
@@ -52,6 +53,7 @@ function OneOnOneDetail() {
               .authorization,
           },
         })
+        .then((res) => console.log(res))
         .catch((err) => {
           console.log(err);
         });
@@ -70,11 +72,12 @@ function OneOnOneDetail() {
         </div>
         <DetailBar>
           <div className="writter">나</div>
-          <div className="category">카테고리</div>
-          <div className="time">23.01.24</div>
+          <div className="category">{data.category}</div>
+          <div className="time">{data.createdAt}</div>
         </DetailBar>
         <ContentBox>{data.content}</ContentBox>
       </DetailContainer>
+      <Answer />
       <div className="btn_container" onClick={handleClickBtn}>
         <BasicButton p_width={"20"} p_height={"7"}>
           목록으로{" "}
