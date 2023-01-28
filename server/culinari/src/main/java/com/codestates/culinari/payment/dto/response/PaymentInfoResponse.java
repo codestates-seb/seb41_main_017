@@ -22,7 +22,7 @@ public record PaymentInfoResponse(
         return PaymentInfoResponse.of(
                 entity.getPayType(),
                 entity.getAmount(),
-                String.format("%019d", entity.getOrder().getId()),
+                entity.getOrder().getId(),
                 entity.getProductName(),
                 successUrl,
                 failUrl

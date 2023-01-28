@@ -49,7 +49,7 @@ public class CartController {
             @Positive @RequestParam(defaultValue = "10", required = false) int size,
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         Page<CartResponse> pageCarts = cartService.readCarts(pageable, principal);
         List<CartResponse> carts = pageCarts.getContent();

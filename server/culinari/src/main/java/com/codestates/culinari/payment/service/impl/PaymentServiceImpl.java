@@ -107,7 +107,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void verifyRequest(String paymentKey, String orderId, BigDecimal amount) {
-        paymentRepository.findByOrder_id(Long.parseLong(orderId))
+        paymentRepository.findByOrder_id(orderId)
                 .ifPresentOrElse(
                         payment ->  {
                             if (payment.getAmount().equals(amount.setScale(2, RoundingMode.HALF_UP))) {
@@ -139,7 +139,7 @@ public class PaymentServiceImpl implements PaymentService {
             throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
         }
 
-        paymentRepository.findByOrder_id(Long.parseLong(orderId))
+        paymentRepository.findByOrder_id(orderId)
                 .ifPresentOrElse(
                         payment ->  {
                                 payment.setPaySuccessTf(true);
@@ -148,12 +148,12 @@ public class PaymentServiceImpl implements PaymentService {
                         }
                 );
 
-        cartRepository.deleteAllByOrderId(Long.parseLong(orderId));
+        cartRepository.deleteAllByOrderId(orderId);
     }
 
     @Override
     public PaymentFailResponse handleRequestFail(String errorCode, String errorMsg, String orderId) {
-        paymentRepository.findByOrder_id(Long.parseLong(orderId))
+        paymentRepository.findByOrder_id(orderId)
                 .ifPresentOrElse(
                         payment -> {
                             payment.setPaySuccessTf(false);

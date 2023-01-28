@@ -15,8 +15,8 @@ import java.util.List;
 @Entity
 public class Orders extends AuditingFields {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(length = 16)
+    private String id;
 
     @Column(nullable = false)
     private String address;
@@ -33,15 +33,16 @@ public class Orders extends AuditingFields {
     @OneToMany(mappedBy = "orders")
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
-    private Orders(String address, String receiverName, String receiverPhoneNumber, Profile profile) {
+    private Orders(String id, String address, String receiverName, String receiverPhoneNumber, Profile profile) {
+        this.id = id;
         this.address = address;
         this.receiverName = receiverName;
         this.receiverPhoneNumber = receiverPhoneNumber;
         this.profile = profile;
     }
 
-    public static Orders of(String address, String receiverName, String receiverPhoneNumber, Profile profile) {
-        return new Orders(address, receiverName, receiverPhoneNumber, profile);
+    public static Orders of(String id, String address, String receiverName, String receiverPhoneNumber, Profile profile) {
+        return new Orders(id, address, receiverName, receiverPhoneNumber, profile);
     }
 
 }
