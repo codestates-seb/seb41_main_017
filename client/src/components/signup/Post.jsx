@@ -23,14 +23,6 @@ const Post = ({ setSignupAddress, setModalOpen }) => {
       }
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
-    console.log(data);
-    // console.log(fullAddress);
-    // console.log(data.zonecode);
-
-    // setAddress.setcompany({
-    //   ...setAddress.company,
-    //   address: fullAddress,
-    // });
   };
 
   return (

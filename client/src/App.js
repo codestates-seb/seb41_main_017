@@ -3,7 +3,6 @@ import reset from "styled-reset";
 import { createGlobalStyle } from "styled-components";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Header from "./components/header";
-
 import Mypage from "./pages/mypage/index";
 import Login from "./pages/sign/login";
 import ServiceHome from "./components/service/index";
@@ -12,6 +11,7 @@ import Cart from "./pages/cart";
 import ProductDetail from "./pages/productDetail";
 import Collection from "./pages/collection";
 import Search from "./pages/search";
+import Pay from "./components/pay";
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -81,6 +81,7 @@ function App() {
             <Route path="/collections/best-product" element={<Collection />} />
             <Route path="/search" element={<Search />} />
             <Route path="/category/:code" element={<Search />} />
+            <Route path="/pay" element={<Pay />} />
           </Routes>
         </main>
         <footer id="footer"></footer>

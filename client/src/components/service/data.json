@@ -1,8 +1,8 @@
 {
   "Announcement": [
     {
-      "id": 3,
-      "notice": 3,
+      "id": 1,
+      "notice": 1,
       "title": "공지사항입니다.",
       "writter": "운영자",
       "time": "2023.01.09"
@@ -15,8 +15,8 @@
       "time": "2023.01.11"
     },
     {
-      "id": 1,
-      "notice": 1,
+      "id": 3,
+      "notice": 3,
       "title": "공지사항3입니다.",
       "writter": "운영자",
       "time": "2023.01.12"
@@ -24,16 +24,16 @@
   ],
   "Question": [
     {
-      "id": 5,
-      "notice": 5,
+      "id": 1,
+      "notice": 1,
       "category": "시스템 오류",
       "title": "주문내역이 안보여요",
       "writter": "운영팀",
       "time": "2023.01.09"
     },
     {
-      "id": 4,
-      "notice": 4,
+      "id": 2,
+      "notice": 2,
       "category": "주문/결제",
       "title": "결제가 안돼요.",
       "writter": "운영팀",
@@ -48,16 +48,16 @@
       "time": "2023.01.12"
     },
     {
-      "id": 2,
-      "notice": 2,
+      "id": 4,
+      "notice": 4,
       "category": "회원",
       "title": "회원정보 수정하고싶어요.",
       "writter": "운영팀",
       "time": "2023.01.12"
     },
     {
-      "id": 1,
-      "notice": 1,
+      "id": 5,
+      "notice": 5,
       "category": "배송",
       "title": "배송이 안와요.",
       "writter": "운영팀",

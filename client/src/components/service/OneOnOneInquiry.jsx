@@ -32,8 +32,13 @@ const InquiryCotainer = styled.form`
     height: 15.25em;
   }
   .title_content {
-    width: 100%;
+    width: 70%;
     height: 35px;
+  }
+  .category {
+    width: 27%;
+    height: 35px;
+    margin-left: 27px;
   }
 `;
 
@@ -42,6 +47,7 @@ function OneOnOneInquiry() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
 
   const handleChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -65,6 +71,7 @@ function OneOnOneInquiry() {
     let data = JSON.stringify({
       title: title,
       content: content,
+      category: selectedOption,
     });
 
     axios
@@ -96,7 +103,22 @@ function OneOnOneInquiry() {
         value={title}
         onChange={handleChangeTitle}
       />
-      {console.log(title)}
+      <select
+        className="category"
+        name="inquirt_category"
+        value={selectedOption}
+        onChange={(e) => setSelectedOption(e.target.value)}
+      >
+        <option disabled selected>
+          카테고리를 선택해주세요
+        </option>
+        <option value="배송">배송</option>
+        <option value="주문/결제">주문/결제</option>
+        <option value="취소/교환/환불">취소/교환/환불</option>
+        <option value="회원">회원</option>
+        <option value="시스템오류">시스템오류</option>
+      </select>
+
       <div className="content_container">
         <label htmlFor="content">글 내용</label>
       </div>
@@ -105,7 +127,6 @@ function OneOnOneInquiry() {
         value={content}
         onChange={handleChangeContent}
       ></textarea>
-      {console.log(content)}
 
       <div className="btn_container" onClick={handleSubmitInquiry}>
         <BasicButton p_width={"20"} p_height={"7"}>
