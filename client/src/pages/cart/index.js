@@ -50,17 +50,18 @@ const SelectButtonContainer = styled.div`
   border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
-  cursor: pointer;
 
   .select_all_container {
     margin-right: 10px;
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
 
   .delete-selection {
     color: #c26d53;
     margin-right: 10px;
+    cursor: pointer;
   }
 `;
 
@@ -223,12 +224,12 @@ function Cart() {
           <div className="shipping-fee">
             <span className="sign">+</span>
             <span>배송비</span>
-            <span>3,000원</span>
+            <span>무료</span>
           </div>
           <div className="total-price">
             <span className="sign">=</span>
             <span>총 주문 금액</span>
-            <strong>{(totalPrice + 3000).toLocaleString()}원</strong>
+            <strong>{totalPrice.toLocaleString()}원</strong>
           </div>
         </TotalPriceBox>
 
