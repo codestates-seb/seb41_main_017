@@ -48,9 +48,9 @@ const ButtonWrapper = styled.div`
 `;
 
 function Pay() {
-  const productIds = useSelector((state) => state.productIds.ids);
+  const productsInfo = useSelector((state) => state.productsInfo);
 
-  console.log(productIds);
+  console.log(productsInfo);
   return (
     <Container>
       <TitleContainer>

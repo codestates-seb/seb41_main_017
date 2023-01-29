@@ -13,7 +13,7 @@ import ProductItemSlider from "../../components/ProductItemSlider";
 import { Title, TodayRecommendProducts } from "..";
 
 import BASE_URL from "../../constants/BASE_URL";
-import { setProductIds } from "../../app/reducer/productId2Pay";
+import { setInfo } from "../../app/reducer/productId2Pay";
 
 const Container = styled.div`
   max-width: 1050px;
@@ -194,7 +194,7 @@ function Cart() {
   };
 
   const handleOrderButtonClick = () => {
-    dispatch(setProductIds(checkedList.map((list) => list.productId)));
+    dispatch(setInfo({ ids: checkedList.map((list) => list.productId), totalPrice }));
     navigate("/pay");
   };
 
