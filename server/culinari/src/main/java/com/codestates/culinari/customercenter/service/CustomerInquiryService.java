@@ -10,11 +10,11 @@ import org.springframework.data.domain.Pageable;
 public interface CustomerInquiryService {
     void createEnquire(CustomPrincipal customPrincipal, CsInquiryPost csInquiryPost);
 
-    Page<CsInquiryResponse> readEnquiriePage(CustomPrincipal customPrincipal, Pageable pageable);
+    Page<CsInquiryResponse> readInquiriePage(CustomPrincipal customPrincipal, Pageable pageable);
 
     void deleteEnquire(CustomPrincipal customPrincipal, Long inquiryId);
 
     void updateEnquire(CustomPrincipal customPrincipal, Long inquiryId, CsInquiryPatch csInquiryPatch);
 
-    CsInquiryResponse readEnquire(CustomPrincipal customPrincipal, Long inquiryId);
+    CsInquiryResponse readInquire(CustomPrincipal customPrincipal, Long inquiryId);
 }

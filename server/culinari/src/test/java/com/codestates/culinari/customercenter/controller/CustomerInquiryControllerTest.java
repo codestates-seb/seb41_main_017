@@ -82,7 +82,7 @@ class CustomerInquiryControllerTest {
     @Test
     void givenNothing_whenRequesting_thenCsInquiryPageResponse() throws Exception {
         //given
-        given(customerInquiryService.readEnquiriePage(any(CustomPrincipal.class), any(Pageable.class)))
+        given(customerInquiryService.readInquiriePage(any(CustomPrincipal.class), any(Pageable.class)))
                 .willReturn(Page.empty());
         given(paginationService.getPaginationBarNumbers(anyInt(), anyInt()))
                 .willReturn(List.of(1, 2, 3, 4, 5));
@@ -96,7 +96,7 @@ class CustomerInquiryControllerTest {
         //then
         actions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.pageInfo.totalElements").value(0));
-        then(customerInquiryService.readEnquiriePage(any(CustomPrincipal.class), any(Pageable.class)));
+        then(customerInquiryService.readInquiriePage(any(CustomPrincipal.class), any(Pageable.class)));
         then(paginationService.getPaginationBarNumbers(anyInt(), anyInt()));
     }
 
@@ -107,7 +107,7 @@ class CustomerInquiryControllerTest {
         CsInquiryResponse csInquiryResponse = createCsInquiryResponse();
         Long inquiryId = 1L;
 
-        given(customerInquiryService.readEnquire(any(CustomPrincipal.class), anyLong()))
+        given(customerInquiryService.readInquire(any(CustomPrincipal.class), anyLong()))
                 .willReturn(csInquiryResponse);
 
         //when
@@ -121,7 +121,7 @@ class CustomerInquiryControllerTest {
                 .andExpect(jsonPath("$.data.id").value(1L))
                 .andExpect(jsonPath("$.data.title").value("test_title"))
                 .andExpect(jsonPath("$.data.content").value("test_content"));
-        then(customerInquiryService).should().readEnquire(any(CustomPrincipal.class), anyLong());
+        then(customerInquiryService).should().readInquire(any(CustomPrincipal.class), anyLong());
     }
 
     @DisplayName("[DELETE] 내가 등록한 1:1 문의 삭제  - 정상호출")

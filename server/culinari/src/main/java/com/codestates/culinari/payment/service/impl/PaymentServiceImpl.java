@@ -39,9 +39,13 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
@@ -61,6 +65,12 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${toss.test.origin-url}")
     private String tossOriginUrl;
 
+    @Value("${toss.test.success-url}")
+    private String tossSuccessUrl;
+
+    @Value("${toss.test.fail-url}")
+    private String tossFailUrl;
+
     @Override
     public PaymentInfoResponse createPayment(PaymentRequest request, CustomPrincipal principal) {
         verifyPrincipal(principal);
@@ -68,6 +78,7 @@ public class PaymentServiceImpl implements PaymentService {
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         Orders orders = ordersRepository.save(
                 OrderDto.of(
+                        generateOrderId(),
                         request.address(),
                         request.receiverName(),
                         request.receiverPhoneNumber()
@@ -78,13 +89,16 @@ public class PaymentServiceImpl implements PaymentService {
                 .forEach(productId -> {
                     Cart cart = cartRepository.findByProfile_IdAndProduct_Id(profile.getId(), productId)
                             .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
-                    cartRepository.delete(cart);
 
                     OrderDetail orderDetail = orderDetailRepository.save(OrderDetailDto.of(cart.getQuantity()).toEntity(orders, cart.getProduct()));
                     orders.getOrderDetails().add(orderDetail);
                 });
 
-        return PaymentInfoResponse.from(paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile)));
+        return PaymentInfoResponse.from(
+                paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile)),
+                tossSuccessUrl,
+                tossFailUrl
+        );
     }
 
     @Override
@@ -97,7 +111,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void verifyRequest(String paymentKey, String orderId, BigDecimal amount) {
-        paymentRepository.findByOrder_id(Long.parseLong(orderId))
+        paymentRepository.findByOrder_id(orderId)
                 .ifPresentOrElse(
                         payment ->  {
                             if (payment.getAmount().equals(amount.setScale(2, RoundingMode.HALF_UP))) {
@@ -111,22 +125,25 @@ public class PaymentServiceImpl implements PaymentService {
                 );
     }
 
-    // TODO: 프론트와 상의 하여 반환값 변경, 해당 DTO 를 받는 Response 로 변환하고 반환
     @Override
-    public PaymentTossDto requestApprovalPayment(String paymentKey, String orderId, BigDecimal amount) {
+    public void requestApprovalPayment(String paymentKey, String orderId, BigDecimal amount) {
         JSONObject params = new JSONObject();
         params.put("amount", amount);
         params.put("orderId", orderId);
         params.put("paymentKey", paymentKey);
 
-        PaymentTossDto response =
-                new RestTemplate().postForEntity(
-                    String.format("%s/payments/confirm", tossOriginUrl),
-                    new HttpEntity<>(params, createAuthHeaders()),
-                    PaymentTossDto.class
-                ).getBody();
+        try {
+            PaymentTossDto response =
+                    new RestTemplate().postForEntity(
+                        String.format("%s/payments/confirm", tossOriginUrl),
+                        new HttpEntity<>(params, createAuthHeaders()),
+                        PaymentTossDto.class
+                    ).getBody();
+        } catch (Exception e) {
+            throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
+        }
 
-        paymentRepository.findByOrder_id(Long.parseLong(orderId))
+        paymentRepository.findByOrder_id(orderId)
                 .ifPresentOrElse(
                         payment ->  {
                                 payment.setPaySuccessTf(true);
@@ -135,12 +152,12 @@ public class PaymentServiceImpl implements PaymentService {
                         }
                 );
 
-        return response;
+        cartRepository.deleteAllByOrderId(orderId);
     }
 
     @Override
     public PaymentFailResponse handleRequestFail(String errorCode, String errorMsg, String orderId) {
-        paymentRepository.findByOrder_id(Long.parseLong(orderId))
+        paymentRepository.findByOrder_id(orderId)
                 .ifPresentOrElse(
                         payment -> {
                             payment.setPaySuccessTf(false);
@@ -151,26 +168,32 @@ public class PaymentServiceImpl implements PaymentService {
         return PaymentFailResponse.of(errorCode, errorMsg, orderId);
     }
 
-    // TODO: 프론트와 상의 하여 반환값 변경, 해당 DTO 를 받는 Response 로 변환하고 반환
     @Override
-    public PaymentTossDto requestPaymentCancel(RefundRequest request, CustomPrincipal principal) {
+    public void requestPaymentCancel(RefundRequest request, CustomPrincipal principal) {
         verifyPrincipal(principal);
         RefundDto dto = request.toDto();
 
-        OrderDetail orderDetail = orderDetailRepository.findByIdAndOrders_Profile_Id(dto.orderDetailId(), principal.profileId())
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_DETAIL_NOT_FOUND));
+        List<OrderDetail> orderDetails =
+                orderDetailRepository.findAllPaidByIdAndPaymentKeyAndProfileId(request.orderDetailIds(), request.paymentKey(), principal.profileId());
 
-        refundRepository.save(dto.toEntity(orderDetail));
+        orderDetails.forEach(orderDetail -> {
+            JSONObject params = new JSONObject();
+            params.put("cancelReason", request.cancelReason());
+            params.put("cancelAmount", orderDetail.getPrice());
 
-        JSONObject params = new JSONObject();
-        params.put("cancelReason", dto.cancelReason());
-        params.put("cancelAmount", orderDetail.getPrice());
+            try {
+                PaymentTossDto paymentTossDto =
+                        new RestTemplate().postForEntity(
+                                String.format(String.format("%s/payments/%s/cancel", tossOriginUrl, request.paymentKey())),
+                                new HttpEntity<>(params, createAuthHeaders()),
+                                PaymentTossDto.class
+                        ).getBody();
+            } catch (Exception e) {
+                throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
+            }
 
-        return new RestTemplate().postForEntity(
-                String.format(String.format("%s/payments/%s/cancel", tossOriginUrl, dto.paymentKey())),
-                new HttpEntity<>(params, createAuthHeaders()),
-                PaymentTossDto.class
-        ).getBody();
+            refundRepository.save(dto.toEntity(orderDetail));
+        });
     }
 
     private void verifyPrincipal(CustomPrincipal principal) {
@@ -185,5 +208,12 @@ public class PaymentServiceImpl implements PaymentService {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
         return headers;
+    }
+
+    private String generateOrderId() {
+        String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String uniqueKey = UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
+
+        return currentDate + uniqueKey;
     }
 }

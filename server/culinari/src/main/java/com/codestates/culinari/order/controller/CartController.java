@@ -1,6 +1,7 @@
 package com.codestates.culinari.order.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.order.dto.request.CartDelete;
 import com.codestates.culinari.order.dto.request.CartPatch;
 import com.codestates.culinari.order.dto.request.CartPost;
 import com.codestates.culinari.order.dto.response.CartResponse;
@@ -48,7 +49,7 @@ public class CartController {
             @Positive @RequestParam(defaultValue = "10", required = false) int size,
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         Page<CartResponse> pageCarts = cartService.readCarts(pageable, principal);
         List<CartResponse> carts = pageCarts.getContent();
@@ -71,12 +72,12 @@ public class CartController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{cart-id}")
+    @DeleteMapping
     public ResponseEntity deleteCart(
-            @PathVariable("cart-id") @Positive Long cartId,
+            @Valid @RequestBody CartDelete delete,
             @AuthenticationPrincipal CustomPrincipal principal
     ) {
-        cartService.deleteCart(cartId, principal);
+        cartService.deleteCarts(delete, principal);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

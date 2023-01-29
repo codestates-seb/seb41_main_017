@@ -32,6 +32,9 @@ public interface ProductService {
     @Transactional(readOnly = true)
     Page<ProductDto> readProductWithSortedType(String sortedType, String filter, Pageable pageable) throws UnsupportedEncodingException;
 
+    //베스트 조회
+    Page<ProductDto> readBestProductWithSortedType(String sortedType, String filter, Integer frequency, Pageable pageable) throws UnsupportedEncodingException;
+
     public Page<ProductDto> readProductWithCategoryCode(String categoryCode, String sortedType, Pageable pageable);
 
     Page<ProductResponseToPage> readFrequentOrderProduct(Integer searchMonths, Integer frequency, Pageable pageable, CustomPrincipal principal);

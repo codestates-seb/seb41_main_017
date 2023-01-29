@@ -111,6 +111,29 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductDto::from);
 
     }
+    //베스트 조회
+    @Override
+    public Page<ProductDto> readBestProductWithSortedType(String sortedType, String filter, Integer frequency, Pageable pageable) throws UnsupportedEncodingException {
+        if(filter != null){
+            HashMap<String, String> filterMap = searchFilter.hashFilterMap(filter);
+            String category = filterMap.get("category");
+            String brand = filterMap.get("brand");
+
+            List<String> categoryList = searchFilter.listFilter(category);
+            List<String> brandList = searchFilter.listFilter(brand);
+
+            if(sortedType.equals("lower"))
+                return productRepository.findBestProducts(categoryList,brandList,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
+                        .map(ProductDto::from);
+            else if(sortedType.equals("higher"))
+                return productRepository.findBestProducts(categoryList,brandList,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
+                        .map(ProductDto::from);
+            return productRepository.findBestProducts(categoryList,brandList,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
+                    .map(ProductDto::from);
+        }
+        return productRepository.findBestProducts(null,null,frequency, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
+                .map(ProductDto::from);
+    }
 
     //카테고리 조회
     @Transactional(readOnly = true)

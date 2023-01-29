@@ -2,7 +2,7 @@ package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.product.dto.CategoryDto;
 import com.codestates.culinari.product.dto.response.CategoryListResponse;
-import com.codestates.culinari.product.entitiy.Category;
+import com.codestates.culinari.product.dto.response.CategoryWithDetailListResponse;
 import com.codestates.culinari.product.repository.CategoryRepository;
 import com.codestates.culinari.product.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +27,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryListResponse> findAllCategory(){
         return categoryRepository.findAll().stream().map(CategoryListResponse::from).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CategoryWithDetailListResponse> getCategoryWithDetailList(String categoryCode){
+        return categoryRepository.findByCategoryCode(categoryCode).stream().map(CategoryWithDetailListResponse::from).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
