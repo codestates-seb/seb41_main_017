@@ -2,7 +2,7 @@ import "./App.css";
 import reset from "styled-reset";
 import { createGlobalStyle } from "styled-components";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import Header from "./components/header";
+import Header from "./components/header/Header";
 import Mypage from "./pages/mypage/index";
 import Login from "./pages/sign/login";
 import ServiceHome from "./components/service/index";
@@ -69,7 +69,7 @@ function App() {
       <GlobalStyle />
       <div id="container">
         <div id="header">
-          <Header />
+          <Header />{" "}
         </div>
         <main id="main">
           <Routes>
