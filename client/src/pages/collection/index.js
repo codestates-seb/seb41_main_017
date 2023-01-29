@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import styled from "styled-components";
 import axios from "axios";
 
-import CheckBox from "../../components/CheckBox";
 import MainBanner from "../../components/MainBanner";
 import BASE_URL from "../../constants/BASE_URL";
 import ProductItem from "../../components/ProductItem";
+import CategoryList from "./CategoryList";
 
 const PageHeader = styled.h3`
   margin-top: 50px;
@@ -27,11 +27,11 @@ const Content = styled.div`
 
   .category {
     position: sticky;
-    width: 180px;
+    width: 220px;
     height: 100%;
     max-height: calc(100vh - 120px);
-    top: 80px;
-    margin-right: 47px;
+    top: 30px;
+    margin-right: 17px;
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     overflow: hidden scroll;
@@ -39,22 +39,6 @@ const Content = styled.div`
 
     .category_title {
       margin: 10px 10px 20px 10px;
-    }
-
-    .category_list {
-      margin: 10px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-
-      svg {
-        cursor: pointer;
-      }
-
-      span {
-        padding-bottom: 2px;
-        font-size: 14px;
-      }
     }
   }
 
@@ -78,16 +62,12 @@ const Content = styled.div`
       position: relative;
       display: flex;
       align-items: center;
-    }
 
-    .product_filter_list {
-      margin-left: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      font-size: 14px;
-      color: rgb(153, 153, 153);
-      cursor: pointer;
+      li {
+        margin: 0px;
+        padding-left: 4px;
+        padding-right: 4px;
+      }
     }
 
     .product_list {
@@ -116,21 +96,31 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
 function Collection() {
   const [data, setData] = useState(null);
   const [sort, setSort] = useState("newest");
+  const [categories, setCategories] = useState([]);
+  const [checkedCategoryCodes, setCheckedCategoryCodes] = useState([]);
 
-  const handleSortListClick = ({ target }) => {
-    setSort(target.dataset.id);
-  };
+  const { params } = useParams();
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const { data } = await axios.get(`${BASE_URL}/category`);
+      setCategories(data.data);
+    };
+
+    getCategories();
+  }, []);
 
   useEffect(() => {
     const query = {
       sorted_type: sort,
-      size: 100,
+      filter: checkedCategoryCodes.length ? `category%3A${checkedCategoryCodes.join("%2C")}` : null,
+      size: 20,
     };
-    const queryString = Object.entries(query).reduce((acc, [key, value]) => `${acc}&${key}=${value}`, "");
+    const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
 
     const getData = async () => {
       try {
-        const { data } = await axios.get(`${BASE_URL}/collections/newproduct?${queryString}`);
+        const { data } = await axios.get(`${BASE_URL}/collections/${params}?${queryString}`);
 
         setData(data);
       } catch (error) {
@@ -139,93 +129,34 @@ function Collection() {
     };
 
     getData();
-  }, []);
+  }, [checkedCategoryCodes, sort]);
 
-  const [isFisheryChecked, setIsFisheryChecked] = useState(false);
-  const [isNoodlesChecked, setNoodlesChecked] = useState(false);
-  const [isMeatAndEggsChecked, setIsMeatAndEggsChecked] = useState(false);
-  const [isFruitsAndVegetablesChecked, setIsFruitsAndVegetablesChecked] = useState(false);
-  const [isDrinkChecked, setIsDrinkChecked] = useState(false);
-  const [isGrainChecked, setIsGrainChecked] = useState(false);
-  const [isSnackAndBreadChecked, setIsSnackAndBreadChecked] = useState(false);
-
-  const { pathname } = useLocation();
-  const pageMap = {
-    "/collections/new-product": "신상품",
-    "/collections/best-product": "베스트",
-  };
-
-  const isAllChecked =
-    isFisheryChecked &&
-    isNoodlesChecked &&
-    isMeatAndEggsChecked &&
-    isFruitsAndVegetablesChecked &&
-    isDrinkChecked &&
-    isGrainChecked &&
-    isSnackAndBreadChecked;
-
-  const categories = [
-    {
-      text: "전체",
-      checked: isAllChecked,
-      setChecked: () => {
-        if (!isAllChecked) {
-          setIsFisheryChecked(true);
-          setNoodlesChecked(true);
-          setIsMeatAndEggsChecked(true);
-          setIsFruitsAndVegetablesChecked(true);
-          setIsDrinkChecked(true);
-          setIsGrainChecked(true);
-          setIsSnackAndBreadChecked(true);
-
-          return;
-        }
-
-        if (isAllChecked) {
-          setIsFisheryChecked(false);
-          setNoodlesChecked(false);
-          setIsMeatAndEggsChecked(false);
-          setIsFruitsAndVegetablesChecked(false);
-          setIsDrinkChecked(false);
-          setIsGrainChecked(false);
-          setIsSnackAndBreadChecked(false);
-        }
-      },
-    },
-    { text: "수산·해산·건어물", checked: isFisheryChecked, setChecked: () => setIsFisheryChecked(!isFisheryChecked) },
-    { text: "면·양념·오일", checked: isNoodlesChecked, setChecked: () => setNoodlesChecked(!isNoodlesChecked) },
-    { text: "정육·계란", checked: isMeatAndEggsChecked, setChecked: () => setIsMeatAndEggsChecked(!isMeatAndEggsChecked) },
-    { text: "과일·야채", checked: isFruitsAndVegetablesChecked, setChecked: () => setIsFruitsAndVegetablesChecked(!isFruitsAndVegetablesChecked) },
-    { text: "생수·음료·우유", checked: isDrinkChecked, setChecked: () => setIsDrinkChecked(!isDrinkChecked) },
-    { text: "견과·쌀", checked: isGrainChecked, setChecked: () => setIsGrainChecked(!isGrainChecked) },
-    { text: "간식·과자·빵", checked: isSnackAndBreadChecked, setChecked: () => setIsSnackAndBreadChecked(!isSnackAndBreadChecked) },
-  ];
-
-  const CategoryList = ({ category }) => {
-    return (
-      <li className="category_list" onClick={category.setChecked}>
-        <CheckBox isChecked={category.checked} size="18px" />
-        <span>{category.text}</span>
-      </li>
-    );
+  const handleSortListClick = ({ target }) => {
+    setSort(target.dataset.id);
   };
 
   return (
     <>
       <MainBanner />
-      <PageHeader>{pageMap[pathname]}</PageHeader>
+      <PageHeader>{params === "newproduct" ? "신상품" : "베스트"}</PageHeader>
       <Content>
         <div className="category">
           <div className="category_title">카테고리</div>
           <ul>
-            {categories.map((category, index) => (
-              <CategoryList category={category} key={index} />
-            ))}
+            {categories &&
+              categories.map((category, index) => (
+                <CategoryList
+                  category={category}
+                  checkedCategoryCodes={checkedCategoryCodes}
+                  setCheckedCategoryCodes={setCheckedCategoryCodes}
+                  key={index}
+                />
+              ))}
           </ul>
         </div>
         <div className="product_container">
           <div className="product_list_header">
-            <div className="product_list_count">{`총 ${data && data.pageInfo.totalElements}건`}</div>
+            <div className="product_list_count">{`총 ${(data && data.pageInfo.totalElements) ?? 0}건`}</div>
             <ul className="product_filter" onClick={handleSortListClick}>
               <FilterList dataId="newest" sort={sort}>
                 신상품순
@@ -246,7 +177,7 @@ function Collection() {
                   imgUrl={element.productImageDtos[0]?.imgUrl}
                   name={element.name}
                   price={element.price}
-                  key={Math.random()}
+                  key={element.id}
                 />
               ))}
           </div>

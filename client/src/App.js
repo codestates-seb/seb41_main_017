@@ -79,8 +79,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/collections/new-product" element={<Collection />} />
-            <Route path="/collections/best-product" element={<Collection />} />
+            <Route path="/collections/:params" element={<Collection />} />
             <Route path="/search" element={<Search />} />
             <Route path="/category/:code" element={<Search />} />
             <Route path="/pay" element={<Pay />} />
