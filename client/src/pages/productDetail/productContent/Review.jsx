@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 import ReviewModal from "./ReviewModal";
 import ModalComponent from "./ModalComponent";
 import { ReactComponent as Star } from "../../../assets/star.svg";
+import Pagination from "../../../components/Pagination";
+
+import BASE_URL from "../../../constants/BASE_URL";
 
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
@@ -66,47 +71,25 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
 function Review() {
   const [modalOpen, setModalOpen] = useState(false);
   const [sort, setSort] = useState("newest");
-  const [productReviewDtos, setProductReviewDtos] = useState([
-    {
-      username: "닉네임1",
-      createdAt: "2023.01.01",
-      point: 4,
-      content: "상품 정말 너무 좋네요. 완전 잘쓰고 있어요 배송 늦어서 별 하나 뺌",
-      image: null,
-    },
-    {
-      username: "닉네임2",
-      createdAt: "2023.01.01",
-      point: 5,
-      content: "상품 정말 너무 좋네요. 완전 잘쓰고 있어요 배송 늦어서 별 하나 안뺌",
-      image: [
-        "https://img-cf.kurly.com/shop/data/goods/1657528646107l0.jpg",
-        "https://s3.amazonaws.com/static.neostack.com/img/react-slick/abstract04.jpg",
-        "https://s3.amazonaws.com/static.neostack.com/img/react-slick/abstract03.jpg",
-      ],
-    },
-  ]);
+  const [data, setData] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const { id } = useParams();
+
+  useEffect(() => {
+    (async () => {
+      const query = {
+        page: currentPage,
+        sorted_type: sort,
+      };
+      const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
+      const { data } = await axios.get(`${BASE_URL}/product/${id}/review?${queryString}`);
+
+      setData(data);
+    })();
+  }, [currentPage, sort]);
 
   const handleFilterButtonClick = ({ target }) => {
-    const id = target.dataset.id;
-
-    if (!id) return;
-
-    setSort(id);
-
-    if (id === "newest") return;
-
-    if (id === "higher") {
-      setProductReviewDtos(productReviewDtos.sort((a, b) => b.point - a.point));
-
-      return;
-    }
-
-    if (id === "lower") {
-      setProductReviewDtos(productReviewDtos.sort((a, b) => a.point - b.point));
-
-      return;
-    }
+    setSort(target.dataset.id);
   };
 
   return (
@@ -125,34 +108,37 @@ function Review() {
           </FilterList>
         </div>
       </Header>
-      {productReviewDtos.map((review, index) => {
-        return (
-          <ReviewListContainer key={index}>
-            <div className="reviewer_info">
-              <div>{review.username}</div>
-              <div>{review.createdAt}</div>
-            </div>
+      {data
+        ? data.data.map((review, index) => {
+            return (
+              <ReviewListContainer key={index}>
+                <div className="reviewer_info">
+                  <div>{review.modifiedBy}</div>
+                  <div>{review.modifiedAt.slice(0, 10)}</div>
+                </div>
 
-            <div className="review-content">
-              <div>상품명</div>
+                <div className="review-content">
+                  <div>상품명</div>
 
-              {new Array(5)
-                .fill(null)
-                .map((_, index) => index < review.point)
-                .map((point) =>
-                  point ? <Star width="20px" fill="#ff6767" key={Math.random()} /> : <Star width="20px" fill="#ddd" key={Math.random()} />
-                )}
+                  {new Array(5)
+                    .fill(null)
+                    .map((_, index) => index < review.reviewStar)
+                    .map((point) =>
+                      point ? <Star width="20px" fill="#ff6767" key={Math.random()} /> : <Star width="20px" fill="#ddd" key={Math.random()} />
+                    )}
 
-              <div className="review-content">{review.content}</div>
+                  <div className="review-content">{review.content}</div>
 
-              {review.image?.map((src) => (
-                <img className="review-image" src={src} onClick={() => setModalOpen(true)} key={Math.random()} />
-              ))}
-            </div>
-            {modalOpen ? <ModalComponent component={<ReviewModal setModalOpen={setModalOpen} />} /> : null}
-          </ReviewListContainer>
-        );
-      })}
+                  {review.image?.map((src) => (
+                    <img className="review-image" src={src} onClick={() => setModalOpen(true)} key={Math.random()} />
+                  ))}
+                </div>
+                {modalOpen ? <ModalComponent component={<ReviewModal setModalOpen={setModalOpen} />} /> : null}
+              </ReviewListContainer>
+            );
+          })
+        : null}
+      <Pagination pageInfo={data && data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={false} />
     </div>
   );
 }
