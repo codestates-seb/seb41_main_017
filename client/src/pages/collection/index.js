@@ -124,7 +124,7 @@ function Collection() {
       filter: checkedCategoryCodes.length ? `category%3A${checkedCategoryCodes.join("%2C")}` : null,
       size: 20,
     };
-    const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : ""), "");
+    const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
 
     const getData = async () => {
       try {
@@ -137,7 +137,7 @@ function Collection() {
     };
 
     getData();
-  }, [checkedCategoryCodes]);
+  }, [checkedCategoryCodes, sort]);
 
   const handleSortListClick = ({ target }) => {
     setSort(target.dataset.id);
