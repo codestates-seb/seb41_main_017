@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { IdBlock } from "../../styles/signupStyle";
@@ -10,13 +10,30 @@ import GenderRadio from "../../components/signup/GenderRadio";
 import BasicButton from "../../components/BasicButton";
 import Guidance from "../../components/Guidance";
 
-
 const Layout = styled.div`
   width: 450px;
   margin: 0 auto;
 
   .input_cotainer {
     position: relative;
+  }
+
+  .validation{
+    position: absolute;
+    bottom: 8px;
+    color: red;
+    font-size: 12px;
+  }
+
+
+  .input_birth{
+    position: relative;
+  }
+  .validation_date{
+    position: absolute;
+    bottom: 8px;
+    color: red;
+    font-size: 12px;
   }
 
   .submit {
@@ -30,15 +47,14 @@ const Layout = styled.div`
     position: absolute;
     left: 0;
     bottom: 8px;
-    color:red;
-
+    color: red;
   }
 
   .password {
     position: relative;
     .cover {
       position: absolute;
-      z-index:1;
+      z-index: 1;
       top: 20px;
       display: flex;
       justify-content: center;
@@ -60,14 +76,17 @@ const Layout = styled.div`
     .passwordBtn {
       position: absolute;
       right: 10px;
-      top: 39px;
+      top: 31px;
+      color: #ff6767;
+      border: 1px solid #ff6767;
+      border-radius: 3px;
+      background-color: #fff7f5;
+      padding:5px;
+
     }
   }
 `;
 function Userinfo() {
-
-
-
   const [userData, setUserData] = useState({});
   const [userName, setUserName] = useState(undefined);
   const [userPassword, setUserPassword] = useState(undefined);
@@ -80,14 +99,12 @@ function Userinfo() {
   const [isdisabled, setIsdisabled] = useState(false);
   const [ismodal, setIsmodal] = useState(false);
   const userBirthDate = `${userYear}-${userMonth}-${userDay}`;
-  const regexp =
-  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&*]{8,20}$/;
+  const nameCheck = /^[ㄱ-ㅎ|가-힣|A-Za-z]+\s*[ㄱ-ㅎ|가-힣|A-Za-z]+$/g;
+  const passwordCheck = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&*]{8,20}$/;
+  const emailCheck = /^^[A-Za-z0-9]+@[A-Za-z]+\.?[A-Za-z]{2,3}\.[A-Za-z]{2,3}$$/;
+  const phoneCheck = /^\d{3}-\d{3,4}-\d{4}$/;
+  const birthDateCheck = /^(19[0-9][0-9]|20[0-9][0-9])-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/g;
   const navigate = useNavigate();
-
-  /*
-  id: wkdwnsdlr
-  ps: wkdwnsdlr1!
-  */
 
   useEffect(() => {
     axios
@@ -98,13 +115,13 @@ function Userinfo() {
         },
       })
       .then((res) => {
-        setCheck(res.data.data.gender)
-        setUserData(res.data.data)
+        setCheck(res.data.data.gender);
+        setUserData(res.data.data);
       });
   }, []);
 
   const userPatch = () => {
-
+    
     if (isdisabled === true) {
       axios
         .patch(
@@ -117,13 +134,10 @@ function Userinfo() {
             },
           }
         )
-        .then(() =>{
-          window.localStorage.removeItem("token")
-          navigate("/login")
-          console.log("삭제완료 및 페이지 이동")
-        
-
-        })
+        .then(() => {
+          window.localStorage.removeItem("token");
+          navigate("/login");
+        });
     }
 
     if (isdisabled === false) {
@@ -150,17 +164,13 @@ function Userinfo() {
           }
         )
         .then(() => {
-          setIsmodal(false)
-          window.location.reload()
-        }
-        )
-        .catch(() => alert("변경사항이 수정되지 않았습니다."));
+          setIsmodal(false);
+          window.location.reload();
+        })
+        .catch(() => alert("변경사항이 적용되지 않았습니다."));
     }
-
   };
 
-  console.log(userData)
-  
   return (
     <Mypagehead>
       <Layout isdisabled={isdisabled}>
@@ -174,6 +184,9 @@ function Userinfo() {
               placeholder={`${userData.name}`}
               disabled={isdisabled ? true : false}
             />
+            {userName && userName.length > 0 && !nameCheck.test(userName) ?(
+              <div className="validation">올바르지 않은 이름입니다. (공백,특수문자,숫자는 사용불가합니다.)</div>
+            ): null}
           </div>
           <div className="input_cotainer password">
             <BasicInput
@@ -189,10 +202,14 @@ function Userinfo() {
                 {"비밀번호 변경하기"}
               </div>
             )}
-            {!regexp.test(userPassword) === false ? <button className="passwordBtn" onClick={()=>setIsmodal(true)}>{"변경하기"}</button> : null}
+            {!passwordCheck.test(userPassword) === false ? (
+              <button className="passwordBtn" onClick={() => setIsmodal(true)}>
+                {"변경하기"}
+              </button>
+            ) : null}
             {isdisabled ? (
               <div className="error_box">
-                {userPassword && !regexp.test(userPassword) ? (
+                {userPassword && !passwordCheck.test(userPassword) ? (
                   <div className="error_text">
                     숫자, 알파벳, 특수문자(!@#$%^&*) 포함 8자 이상 20자 이하로
                     입력해주세요
@@ -212,15 +229,9 @@ function Userinfo() {
                 placeholder={`${userData.email}`}
                 disabled={isdisabled ? true : false}
               />
-              {isdisabled ? null : (
-                <div className="error_box">
-                  {userEmail && !userEmail.includes("@") ? (
-                    <div className="error_text">
-                      {"이메일 형식으로 입력해주세요"}
-                    </div>
-                  ) : null}
-                </div>
-              )}
+              {userEmail && userEmail.length > 0 && !emailCheck.test(userEmail) ?(
+              <div className="validation">올바르지 않은 이메일 입니다. [공백, 특수문자(!@#$%^&*-_)는 사용불가합니다.]</div>
+            ): null}
             </div>
             <div className="check_btn">
               <ModalContainer
@@ -239,6 +250,9 @@ function Userinfo() {
               placeholder={`${userData.phoneNumber}`}
               disabled={isdisabled ? true : false}
             />
+             {userPhone && userPhone.length > 0 && !phoneCheck.test(userPhone) ?(
+              <div className="validation">올바르지 않은 번호 입니다. [ex 010-0000-0000]</div>
+            ): null}
           </div>
           <div className="input_birth" onClick={() => setIsdisabled(false)}>
             <BasicInput
@@ -263,17 +277,15 @@ function Userinfo() {
               width={"90%"}
               disabled={isdisabled ? true : false}
             ></BasicInput>
+            {userBirthDate.length !== 29 && !birthDateCheck.test(userBirthDate) ?(
+              <div className="validation_date">올바르지 않습니다. [ex 2000-12-12]</div>
+            ): null}
           </div>
-          {/* {userYear === undefined ? null : userYear.length === 4 ? null : <div>{`올바르지 않은 년도입니다.`}</div>} */}
-          {/* {userMonth === undefined ? null : userMonth.length === 2 ? null : <div>{`올바르지 않은 달 입니다.`}</div>} */}
-          {/* {userDay === undefined ? null : userDay.length === 2 ? null : <div>{`올바르지 않은 날짜입니다.`}</div>} */}
           <div onClick={() => setIsdisabled(false)}>
             <span>성별</span>
             <GenderRadio
               setCheck={setCheck}
               isdisabled={isdisabled}
-              // 데이터넘어올때 값표시가 안되서 현재보류
-              // text={userData.gender}
             ></GenderRadio>
           </div>
           <div className="submit">
@@ -283,14 +295,15 @@ function Userinfo() {
               radius={"5"}
               p_height={"14"}
               p_width={"150"}
-              onClick={()=>setIsmodal(true)}
-              disabled={isdisabled}
-            />
-            {ismodal ? <Guidance
-              text={"해당변경 사항을 적용하시겠습니까?"}
-              ok={userPatch}
-              close={() => setIsmodal(false)}
-              /> : null}
+              onClick={() => setIsmodal(true)}
+              disabled={false}/>
+            {console.log(isdisabled)}
+            {ismodal ? (
+              <Guidance
+                text={"해당변경 사항을 적용하시겠습니까?"}
+                ok={userPatch}
+                close={() => setIsmodal(false)}/>
+            ) : null}
           </div>
         </IdBlock>
       </Layout>
