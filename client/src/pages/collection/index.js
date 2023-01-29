@@ -8,6 +8,7 @@ import MainBanner from "../../components/MainBanner";
 import BASE_URL from "../../constants/BASE_URL";
 import ProductItem from "../../components/ProductItem";
 import CategoryList from "./CategoryList";
+import Pagination from "../../components/Pagination";
 
 const PageHeader = styled.h3`
   margin-top: 50px;
@@ -98,7 +99,7 @@ function Collection() {
   const [sort, setSort] = useState("newest");
   const [categories, setCategories] = useState([]);
   const [checkedCategoryCodes, setCheckedCategoryCodes] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(0);
   const { params } = useParams();
 
   useEffect(() => {
@@ -115,6 +116,7 @@ function Collection() {
       sorted_type: sort,
       filter: checkedCategoryCodes.length ? `category%3A${checkedCategoryCodes.join("%2C")}` : null,
       size: 20,
+      page: currentPage,
     };
     const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
 
@@ -129,7 +131,7 @@ function Collection() {
     };
 
     getData();
-  }, [checkedCategoryCodes, sort]);
+  }, [checkedCategoryCodes, sort, currentPage]);
 
   const handleSortListClick = ({ target }) => {
     setSort(target.dataset.id);
@@ -181,6 +183,7 @@ function Collection() {
                 />
               ))}
           </div>
+          <Pagination pageInfo={data && data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={true} />
         </div>
       </Content>
     </>
