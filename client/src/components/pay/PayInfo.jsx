@@ -29,7 +29,7 @@ const PayInfoBox = styled.div`
   }
 `;
 
-function PayInfo() {
+function PayInfo({ price }) {
   return (
     <>
       <PayInfoContainer>
@@ -38,11 +38,11 @@ function PayInfo() {
       <PayInfoBox>
         <div className="price">
           <div className="title">총 결제 가격</div>
-          <div className="content">짱준익</div>
+          <div className="content">{price.info.totalPrice}원</div>
         </div>
         <div className="payment">
           <div className="title">결제수단</div>
-          <div className="content">토스</div>
+          <div className="content">토스페이먼츠</div>
         </div>
       </PayInfoBox>
     </>
