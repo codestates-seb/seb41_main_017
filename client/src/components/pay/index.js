@@ -49,9 +49,9 @@ const ButtonWrapper = styled.div`
 
 function Pay() {
   const ProductIds = localStorage.getItem("productIds");
-
   const [data, setData] = useState([]);
   const [filterData, setFilterData] = useState("");
+  const [userData, setUserData] = useState("");
 
   const handlePayBtnClick = async (e) => {
     e.preventDefault();
@@ -73,7 +73,7 @@ function Pay() {
       receiverPhoneNumber: filterData[0].receiverPhoneNumber,
     };
 
-    const clientKey = "test_ck_jkYG57Eba3G7GdKlLJL3pWDOxmA1"; // 고정 값입니다. 환경변수나 git에 올라가지 않는 파일로 빼주시면 감사하겠습니다.
+    const clientKey = "test_ck_jkYG57Eba3G7GdKlLJL3pWDOxmA1";
     const res = await axios.post(`${BASE_URL}/payments`, data, header);
 
     const tossPayments = await loadTossPayments(clientKey);
@@ -88,6 +88,7 @@ function Pay() {
     });
   };
 
+  // 배송지 정보 (배송지 수령인, 수령인 번호, 수령인 주소)
   const fetchData = () => {
     axios
       .get(`${BASE_URL}/destination`, {
@@ -108,12 +109,30 @@ function Pay() {
     fetchData();
   }, []);
 
+  // 유저 정보 (사용자 이름, 사용자 번호, 사용자 이메일)
+  const userFetchData = () => {
+    axios
+      .get(`${BASE_URL}/users`, {
+        headers: {
+          "Content-Type": `application/json`,
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
+        },
+      })
+      .then((res) => setUserData(res.data.data))
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    userFetchData();
+  }, []);
+
   return (
     <Container>
       <TitleContainer>
         <h2>결제하기</h2>
       </TitleContainer>
-      <OrderInfo />
+      <OrderInfo userData={userData} />
       <ShipInfo />
       <PayInfo />
       <InfoCheck />
