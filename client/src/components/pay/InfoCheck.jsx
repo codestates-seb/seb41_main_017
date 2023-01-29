@@ -32,7 +32,7 @@ const InfoCheckBox = styled.div`
   }
 `;
 
-function InfoCheck() {
+function InfoCheck({ setReject, reject }) {
   const [allChecked, setAllChecked] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [privacyChecked, setPrivacyChecked] = useState(false);
@@ -43,6 +43,7 @@ function InfoCheck() {
     setTermsChecked(!allChecked);
     setPrivacyChecked(!allChecked);
     setServiceChecked(!allChecked);
+    setReject(!reject);
   }
 
   return (
