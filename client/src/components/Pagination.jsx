@@ -49,7 +49,7 @@ const PageSpan = styled.span`
   }
 `;
 
-const Pagination = ({ pageInfo, currentPage, setCurrentPage, scrollTop }) => {
+function Pagination({ pageInfo, currentPage, setCurrentPage, scrollTop }) {
   const pageNumbers = Array.from({ length: pageInfo?.totalPages }, (_, index) => index + 1);
 
   const scroll2Top = () => {
@@ -100,6 +100,6 @@ const Pagination = ({ pageInfo, currentPage, setCurrentPage, scrollTop }) => {
       ) : null}
     </Nav>
   );
-};
+}
 
 export default Pagination;
