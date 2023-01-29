@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import BasicButton from "../../../components/BasicButton";
+import axios from "axios";
 
 import InquiryDetail from "./InquiryDetail";
 import ModalComponent from "./ModalComponent";
 import CreateInquiry from "./CreateInquiry";
+
+import BASE_URL from "../../../constants/BASE_URL";
+import { useParams } from "react-router-dom";
+import Pagination from "../../../components/Pagination";
 
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
@@ -79,8 +84,19 @@ const WriteInquiryButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-function Inquiry({ data }) {
+function Inquiry() {
   const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const { id } = useParams();
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get(`${BASE_URL}/product/${id}/inquiry?page=${currentPage}`);
+
+      setData(data);
+    })();
+  }, [currentPage]);
 
   return (
     <div id="inquiry">
@@ -97,10 +113,9 @@ function Inquiry({ data }) {
               <th className="status">답변 상태</th>
             </tr>
           </TableHead>
-          <TableBody>
-            {data.data && data.data.productInquiryDtos.map((element, index) => <InquiryDetail data={data} element={element} key={index} />)}
-          </TableBody>
+          <TableBody>{data.data && data.data.map((element, index) => <InquiryDetail data={data} element={element} key={index} />)}</TableBody>
         </InquiryTable>
+        <Pagination pageInfo={data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={false} />
         <WriteInquiryButtonWrapper>
           <BasicButton children={"문의하기"} p_width={15} p_height={10} onClick={() => setIsOpen(true)} />
         </WriteInquiryButtonWrapper>
