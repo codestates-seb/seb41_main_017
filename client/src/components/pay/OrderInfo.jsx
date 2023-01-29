@@ -28,7 +28,7 @@ const OrderBox = styled.div`
   }
 `;
 
-function OrderInfo() {
+function OrderInfo({ userData }) {
   return (
     <>
       <OrderContainer>
@@ -37,15 +37,15 @@ function OrderInfo() {
       <OrderBox>
         <div className="name">
           <div className="title">이름</div>
-          <div className="content">최준호</div>
+          <div className="content">{userData.name}</div>
         </div>
         <div className="phone">
           <div className="title">휴대폰</div>
-          <div className="content">휴대폰 번호</div>
+          <div className="content">{userData.phoneNumber}</div>
         </div>
         <div className="email">
           <div className="title">이메일</div>
-          <div className="content">hello@gmail.com</div>
+          <div className="content">{userData.email}</div>
         </div>
       </OrderBox>
     </>

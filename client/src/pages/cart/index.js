@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { ReactComponent as CartIcon } from "../../assets/cart_icon.svg";
 import CartProductItem from "../../components/cart/CartProductItem";
@@ -12,6 +13,7 @@ import ProductItemSlider from "../../components/ProductItemSlider";
 import { Title, TodayRecommendProducts } from "..";
 
 import BASE_URL from "../../constants/BASE_URL";
+import { setInfo } from "../../app/reducer/productId2Pay";
 
 const Container = styled.div`
   max-width: 1050px;
@@ -111,6 +113,7 @@ function Cart() {
   const [checkedList, setCheckedList] = useState([]);
   const [selectAllChecked, setSelectAllChecked] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getCartList = async () => {
@@ -133,7 +136,6 @@ function Cart() {
     (async () => {
       const data = await getCartList();
       setData(data);
-
       setCheckedList(
         data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price, productId: element.product.id }))
       );
@@ -157,7 +159,9 @@ function Cart() {
     }
 
     if (selectAllChecked === false) {
-      setCheckedList(data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price })));
+      setCheckedList(
+        data.data.map((element) => ({ id: element.id, quantity: element.quantity, price: element.product.price, productId: element.product.id }))
+      );
       setSelectAllChecked(!selectAllChecked);
     }
   };
@@ -190,7 +194,7 @@ function Cart() {
   };
 
   const handleOrderButtonClick = () => {
-    localStorage.setItem("productIds", JSON.stringify(checkedList.map((list) => list.productId)));
+    dispatch(setInfo({ ids: checkedList.map((list) => list.productId), totalPrice }));
     navigate("/pay");
   };
 
