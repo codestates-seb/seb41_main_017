@@ -83,7 +83,7 @@ function Addressset() {
       .then((erros) => erros);
   }, []);
 
-
+  
   const isOpen = (e, state) => {
     setKeys(e);
     switch (state) {
@@ -112,7 +112,7 @@ function Addressset() {
               .authorization,
           },
         }
-      );
+      ).then(() => window.location.reload());
       setIscheckd(!ischeckd);
     }
     if (state === "isdelete") {
@@ -121,10 +121,9 @@ function Addressset() {
           authorization: JSON.parse(localStorage.getItem("token"))
             .authorization,
         },
-      });
+      }).then(() => window.location.reload());
       setIsdelete(!isdelete);
     }
-    setTimeout(() => window.location.reload(), 100);
   };
  
   return (
@@ -152,6 +151,7 @@ function Addressset() {
                     ok={() => changeValue(keys, "ischeckd")}
                   />
                 ) : null}
+                {console.log(keys)}
               </div>
               <div className="list_content">
                 <div className="list_in_top">

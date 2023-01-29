@@ -109,13 +109,14 @@ function Mypage () {
     .then(erros => erros)
   },[]);
 
-  if (window.location.pathname === '/mypage') {
-    window.location.pathname = '/mypage/userInfo'
-  }
+  // if (window.location.pathname === '/mypage') {
+  //   window.location.pathname = '/mypage/userInfo'
+  // }
+  //  배송중, 주문목록, 찜한상품, 자주 산 상품등은 리덕스툴킷을 사용하자
 
   const list = {
     "내정보": {
-      'userInfo': <Userinfo/>
+      'userInfo?': <Userinfo/>
     },
     "배송지 설정": {
       'addressSet': <DeliverySet/>
