@@ -133,10 +133,13 @@ function Search() {
       try {
         const productData = await getProductData();
         const sortedData = dataSortByPrice(productData);
-        const categoryData = await getCategoryData();
 
         setData(sortedData);
-        setCategoryData(categoryData);
+
+        if (code) {
+          const categoryData = await getCategoryData();
+          setCategoryData(categoryData);
+        }
       } catch (error) {
         console.error(error);
       }
