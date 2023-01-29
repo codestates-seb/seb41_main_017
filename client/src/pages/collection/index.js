@@ -8,6 +8,7 @@ import CheckBox from "../../components/CheckBox";
 import MainBanner from "../../components/MainBanner";
 import BASE_URL from "../../constants/BASE_URL";
 import ProductItem from "../../components/ProductItem";
+import CategoryList from "./CategoryList";
 
 const PageHeader = styled.h3`
   margin-top: 50px;
@@ -39,22 +40,6 @@ const Content = styled.div`
 
     .category_title {
       margin: 10px 10px 20px 10px;
-    }
-
-    .category_list {
-      margin: 10px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-
-      svg {
-        cursor: pointer;
-      }
-
-      span {
-        padding-bottom: 2px;
-        font-size: 14px;
-      }
     }
   }
 
@@ -200,15 +185,6 @@ function Collection() {
     { text: "견과·쌀", checked: isGrainChecked, setChecked: () => setIsGrainChecked(!isGrainChecked) },
     { text: "간식·과자·빵", checked: isSnackAndBreadChecked, setChecked: () => setIsSnackAndBreadChecked(!isSnackAndBreadChecked) },
   ];
-
-  const CategoryList = ({ category }) => {
-    return (
-      <li className="category_list" onClick={category.setChecked}>
-        <CheckBox isChecked={category.checked} size="18px" />
-        <span>{category.text}</span>
-      </li>
-    );
-  };
 
   return (
     <>
