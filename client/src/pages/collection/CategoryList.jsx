@@ -19,15 +19,23 @@ const Container = styled.li`
   }
 `;
 
-function CategoryList({ category }) {
+function CategoryList({ category, checkedCategoryCodes, setCheckedCategoryCodes }) {
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleCheckButtonClick = () => {
+  const handleCheckButtonClick = ({ target }) => {
     setIsChecked(!isChecked);
+
+    const code = target.closest("li").dataset.code;
+    if (!checkedCategoryCodes.includes(code)) {
+      setCheckedCategoryCodes([...checkedCategoryCodes, code]);
+
+      return;
+    }
+    setCheckedCategoryCodes(checkedCategoryCodes.filter((element) => element !== code));
   };
 
   return (
-    <Container onClick={handleCheckButtonClick}>
+    <Container onClick={handleCheckButtonClick} data-code={category.categoryCode}>
       <CheckBox isChecked={isChecked} size="18px" />
       <span>{category.name}</span>
     </Container>

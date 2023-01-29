@@ -101,6 +101,7 @@ function Collection() {
   const [data, setData] = useState(null);
   const [sort, setSort] = useState("newest");
   const [categories, setCategories] = useState([]);
+  const [checkedCategoryCodes, setCheckedCategoryCodes] = useState([]);
   const { pathname } = useLocation();
 
   const pageMap = {
@@ -120,9 +121,10 @@ function Collection() {
   useEffect(() => {
     const query = {
       sorted_type: sort,
-      size: 100,
+      filter: checkedCategoryCodes.length ? `category%3A${checkedCategoryCodes.join("%2C")}` : null,
+      size: 20,
     };
-    const queryString = Object.entries(query).reduce((acc, [key, value]) => `${acc}&${key}=${value}`, "");
+    const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : ""), "");
 
     const getData = async () => {
       try {
@@ -135,7 +137,7 @@ function Collection() {
     };
 
     getData();
-  }, []);
+  }, [checkedCategoryCodes]);
 
   const handleSortListClick = ({ target }) => {
     setSort(target.dataset.id);
@@ -149,9 +151,15 @@ function Collection() {
         <div className="category">
           <div className="category_title">카테고리</div>
           <ul>
-            {categories.map((category, index) => (
-              <CategoryList category={category} key={index} />
-            ))}
+            {categories &&
+              categories.map((category, index) => (
+                <CategoryList
+                  category={category}
+                  checkedCategoryCodes={checkedCategoryCodes}
+                  setCheckedCategoryCodes={setCheckedCategoryCodes}
+                  key={index}
+                />
+              ))}
           </ul>
         </div>
         <div className="product_container">
