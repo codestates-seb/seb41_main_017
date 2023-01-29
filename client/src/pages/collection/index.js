@@ -27,11 +27,11 @@ const Content = styled.div`
 
   .category {
     position: sticky;
-    width: 180px;
+    width: 220px;
     height: 100%;
     max-height: calc(100vh - 120px);
-    top: 80px;
-    margin-right: 47px;
+    top: 30px;
+    margin-right: 17px;
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     overflow: hidden scroll;
