@@ -8,6 +8,7 @@ import ShipInfo from "./ShipInfo";
 import PayInfo from "./PayInfo";
 import InfoCheck from "./InfoCheck";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   max-width: 1050px;
@@ -48,10 +49,13 @@ const ButtonWrapper = styled.div`
 `;
 
 function Pay() {
-  const ProductIds = localStorage.getItem("productIds");
+  const ProductIds = useSelector((state) => state.productsInfo);
   const [data, setData] = useState([]);
   const [filterData, setFilterData] = useState("");
   const [userData, setUserData] = useState("");
+  const [price, setPrice] = useState("");
+  console.log(ProductIds.info.totalPrice);
+  console.log(ProductIds.info.ids);
 
   const handlePayBtnClick = async (e) => {
     e.preventDefault();
@@ -67,7 +71,7 @@ function Pay() {
 
     let data = {
       payType: "CARD",
-      productIds: ProductIds.slice(1, ProductIds.length - 1).split(","),
+      productIds: ProductIds.info.ids,
       address: filterData[0].address,
       receiverName: filterData[0].receiverName,
       receiverPhoneNumber: filterData[0].receiverPhoneNumber,
@@ -134,7 +138,7 @@ function Pay() {
       </TitleContainer>
       <OrderInfo userData={userData} />
       <ShipInfo filterData={{ filterData }} />
-      <PayInfo />
+      <PayInfo price={ProductIds} />
       <InfoCheck />
 
       <ButtonWrapper onClick={handlePayBtnClick}>
