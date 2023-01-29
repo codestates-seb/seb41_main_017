@@ -84,8 +84,8 @@ function Pay() {
         orderId: res.data.data.orderId,
         orderName: res.data.data.orderName,
         customerName: "test",
-        successUrl: res.data.data.successUrl,
-        failUrl: res.data.data.failUrl,
+        successUrl: "http://localhost:3000/pay/successpage",
+        failUrl: "http://localhost:3000/pay/failpage",
       });
     }
   };
