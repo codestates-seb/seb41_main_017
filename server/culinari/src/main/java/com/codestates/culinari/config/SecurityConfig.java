@@ -54,7 +54,7 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.GET, "/users/**").hasRole("USER")
 //                        .requestMatchers(HttpMethod.PATCH, "/users/**").hasRole("USER")
 //                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("USER")
-                        .anyRequest().permitAll() // 모든 HTTP request 요청에 접근 허용
+                                .anyRequest().permitAll() // 모든 HTTP request 요청에 접근 허용
                 );
 //                .logout()
 
@@ -87,7 +87,16 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                         "http://localhost:8080",
                         "http://localhost:3000",
-                        "https://localhost:3000"
+                        "https://localhost:3000",
+                        //toss
+                        "http://13.124.18.147",
+                        "https://13.124.18.147",
+                        "http://13.124.108.35",
+                        "https://13.124.108.35",
+                        "http://3.36.173.151",
+                        "https://3.36.173.151",
+                        "http://3.38.81.32",
+                        "https://3.38.81.32"
                 )
         ); // * 은 문제 발생
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "UPDATE"));

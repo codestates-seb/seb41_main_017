@@ -152,7 +152,7 @@ public class PaymentServiceImpl implements PaymentService {
                         }
                 );
 
-        cartRepository.deleteAllByOrderId(orderId);
+//        cartRepository.deleteAllByOrderId(orderId);
     }
 
     @Override

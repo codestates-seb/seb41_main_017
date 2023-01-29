@@ -85,10 +85,10 @@ public class ProductCsServiceImpl implements ProductCsService {
 
     // 후기 작성
     @Override
-    public void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, List<MultipartFile> multipartFiles) throws IOException {
+    public void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, Long orderId, List<MultipartFile> multipartFiles) throws IOException {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
-        OrderDetail orderDetail = orderDetailRepository.findByProductIdAndProductReviewIsNull(productId);
+        OrderDetail orderDetail = orderDetailRepository.findByIdAndOrders_Profile_Id(orderId,principal.profileId());
         ProductReview productReview = ProductReview.of( productReviewRequest.content(), productReviewRequest.reviewStar(),product, profile);
         List<String> image = s3Uploader.uploads(multipartFiles);
         List<String> imgList = new ArrayList<>();

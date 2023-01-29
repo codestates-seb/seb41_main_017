@@ -114,12 +114,13 @@ public class ProductController {
     @PostMapping(value = "/{product-id}/review", consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity postProductReview(
             @PathVariable("product-id") Long productId,
+            @RequestParam("order-id") Long orderId,
             @AuthenticationPrincipal CustomPrincipal principal,
             @RequestPart(value = "request") ProductReviewRequest productReviewRequest,
             @RequestPart(value = "images", required = false) List<MultipartFile> images) throws IOException {
 
 
-        productCsService.createProductReview(productReviewRequest,principal,productId,images);
+        productCsService.createProductReview(productReviewRequest,principal,productId,orderId,images);
 
 
         return new ResponseEntity(HttpStatus.RESET_CONTENT);

@@ -31,9 +31,9 @@ public interface ProductCsService {
 
     // 상품 리뷰 호출
     Page<ProductReview> readProductReview(Long productId, Pageable pageable);
-
     // 후기 작성
-    void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, List<MultipartFile> multipartFiles) throws IOException;
+    void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, Long orderId, List<MultipartFile> multipartFiles) throws IOException;
+
     //문의 수정
     void updateProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal, Long productInquiryId);
     //리뷰 수정
