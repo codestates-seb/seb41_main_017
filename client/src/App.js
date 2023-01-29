@@ -12,6 +12,7 @@ import ProductDetail from "./pages/productDetail";
 import Collection from "./pages/collection";
 import Search from "./pages/search";
 import Pay from "./components/pay";
+import SuccessPayment from "./components/pay/SuccessPayment";
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -82,6 +83,7 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/category/:code" element={<Search />} />
             <Route path="/pay" element={<Pay />} />
+            <Route path="/pay/successpage" element={<SuccessPayment />} />
           </Routes>
         </main>
         <footer id="footer"></footer>
