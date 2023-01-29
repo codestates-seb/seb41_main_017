@@ -1,15 +1,24 @@
 package com.codestates.culinari.product.controller;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.pagination.PageResponseDto;
+import com.codestates.culinari.pagination.service.PaginationService;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
-import com.codestates.culinari.product.dto.response.ProductWithCustomerServiceResponse;
+import com.codestates.culinari.product.dto.response.ProductInquiryResponse;
+import com.codestates.culinari.product.dto.response.ProductResponse;
+import com.codestates.culinari.product.dto.response.ProductReviewResponse;
 import com.codestates.culinari.product.service.ProductCsService;
 import com.codestates.culinari.product.service.ProductService;
 import com.codestates.culinari.response.SingleResponseDto;
 import com.codestates.culinari.user.service.ProfileService;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +36,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductCsService productCsService;
+    private final PaginationService paginationService;
     private final ProfileService profileService;
 
     //상품 상세 조회
@@ -34,7 +44,7 @@ public class ProductController {
     public ResponseEntity getProduct(
             @PathVariable("product-id") Long productId){
 
-        ProductWithCustomerServiceResponse product = productService.readProductWithCS(productId);
+        ProductResponse product = productService.readProductWithCS(productId);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(product), HttpStatus.OK);
@@ -59,6 +69,36 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/{product-id}/inquiry")
+    public ResponseEntity getProductInquiry(
+            @PathVariable("product-id") Long productId,
+            @Min (0) @RequestParam(defaultValue = "0",required = false) int page,
+            @Positive @RequestParam(defaultValue = "10", required = false) int size
+    ){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductInquiryResponse> productInquiryPage = productCsService.readProductInquiry(productId, pageable).map(ProductInquiryResponse::from);
+        List<ProductInquiryResponse> productInquiry = productInquiryPage.getContent();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, productInquiryPage.getTotalPages());
+
+        return new ResponseEntity(
+                new PageResponseDto<>(productInquiry, productInquiryPage, barNumber), HttpStatus.OK);
+    }
+
+    @GetMapping("/{product-id}/review")
+    public ResponseEntity getProductReview(
+            @PathVariable("product-id") Long productId,
+            @Min (0) @RequestParam(defaultValue = "0",required = false) int page,
+            @Positive @RequestParam(defaultValue = "5", required = false) int size
+    ){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductReviewResponse> productReviewPage = productCsService.readProductReview(productId, pageable).map(ProductReviewResponse::from);
+        List<ProductReviewResponse> productReview = productReviewPage.getContent();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, productReviewPage.getTotalPages());
+
+        return new ResponseEntity(
+                new PageResponseDto<>(productReview, productReviewPage, barNumber), HttpStatus.OK);
+    }
+
     //상품 문의 등록
     @PostMapping("/{product-id}/inquiry")
     public ResponseEntity postProductInquiry(
@@ -77,6 +117,7 @@ public class ProductController {
             @AuthenticationPrincipal CustomPrincipal principal,
             @RequestPart(value = "request") ProductReviewRequest productReviewRequest,
             @RequestPart(value = "images", required = false) List<MultipartFile> images) throws IOException {
+
 
         productCsService.createProductReview(productReviewRequest,principal,productId,images);
 

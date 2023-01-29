@@ -1,7 +1,6 @@
 package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.destination.entity.Destination;
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.global.file.S3Uploader;
@@ -32,7 +31,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -72,6 +70,17 @@ public class ProductCsServiceImpl implements ProductCsService {
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         ProductInquiry productInquiry = ProductInquiry.of(productInquiryRequest.title(), productInquiryRequest.content(), product, profile);
         productInquiryRepository.save(productInquiry);
+    }
+    // 상품 문의 호출
+    @Override
+    public Page<ProductInquiry> readProductInquiry(Long productId, Pageable pageable){
+        return productInquiryRepository.findByProductId(productId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()));
+    }
+
+    // 상품 리뷰 호출
+    @Override
+    public Page<ProductReview> readProductReview(Long productId, Pageable pageable){
+        return productReviewRepository.findByProductId(productId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()));
     }
 
     // 후기 작성

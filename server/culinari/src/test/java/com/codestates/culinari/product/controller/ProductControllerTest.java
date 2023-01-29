@@ -5,7 +5,7 @@ import com.codestates.culinari.order.Stub.Stub;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
-import com.codestates.culinari.product.dto.response.ProductWithCustomerServiceResponse;
+import com.codestates.culinari.product.dto.response.ProductResponse;
 import com.codestates.culinari.product.entitiy.CategoryDetail;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.service.ProductCsService;
@@ -65,7 +65,7 @@ class ProductControllerTest {
         // Given
         long productId = 1L;
         Product product = Stub.createProduct(1L);
-        ProductWithCustomerServiceResponse response = ProductWithCustomerServiceResponse.from(product);
+        ProductResponse response = ProductResponse.from(product);
         given(productService.readProductWithCS(productId)).willReturn(response);
         // When
         mvc.perform(get("/product/{product-id}", productId)

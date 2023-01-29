@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record ProductWithCustomerServiceResponse(
+public record ProductResponse(
         Long id,
         List<ProductImageDto> productImageDtos,
         String name,
@@ -27,14 +27,12 @@ public record ProductWithCustomerServiceResponse(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         String createdBy,
-        String modifiedBy,
-        List<ProductInquiryDto> productInquiryDtos,
-        List<ProductReviewDto> productReviewDtos
+        String modifiedBy
 
 )
 {
 
-    public static ProductWithCustomerServiceResponse of(
+    public static ProductResponse of(
             Long id,
             List<ProductImageDto> productImageDtos,
             String name,
@@ -51,11 +49,9 @@ public record ProductWithCustomerServiceResponse(
             LocalDateTime createdAt,
             LocalDateTime modifiedAt,
             String createdBy,
-            String modifiedBy,
-            List<ProductInquiryDto> productInquiryDtos,
-            List<ProductReviewDto> productReviewDtos
+            String modifiedBy
     ) {
-        return new ProductWithCustomerServiceResponse(
+        return new ProductResponse(
                 id,
                 productImageDtos,
                 name,
@@ -72,14 +68,12 @@ public record ProductWithCustomerServiceResponse(
                 createdAt,
                 modifiedAt,
                 createdBy,
-                modifiedBy,
-                productInquiryDtos,
-                productReviewDtos
+                modifiedBy
         );
     }
 
-    public static ProductWithCustomerServiceResponse from(Product entity){
-        return new ProductWithCustomerServiceResponse(
+    public static ProductResponse from(Product entity){
+        return new ProductResponse(
                 entity.getId(),
                 entity.getProductImages().stream()
                         .map(ProductImageDto::from)
@@ -98,13 +92,7 @@ public record ProductWithCustomerServiceResponse(
                 entity.getCreatedAt(),
                 entity.getModifiedAt(),
                 entity.getCreatedBy(),
-                entity.getModifiedBy(),
-                entity.getProductInquiry().stream()
-                        .map(ProductInquiryDto::from)
-                        .collect(Collectors.toList()),
-                entity.getProductReview().stream()
-                        .map(ProductReviewDto::from)
-                        .collect(Collectors.toList())
+                entity.getModifiedBy()
         );
     }
 }
