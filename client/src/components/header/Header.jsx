@@ -97,11 +97,13 @@ const Layout = styled.div`
           }
 
           .new_product {
-            color: ${({ pathname }) => (pathname.includes("/newproduct") ? "#ff6767" : null)};
+            color: ${({ pathname }) =>
+              pathname.includes("/newproduct") ? "#ff6767" : null};
           }
 
           .best_products {
-            color: ${({ pathname }) => (pathname.includes("/bestproducts") ? "#ff6767" : null)};
+            color: ${({ pathname }) =>
+              pathname.includes("/bestproducts") ? "#ff6767" : null};
           }
 
           span {
@@ -194,7 +196,7 @@ const CategoryList = styled.li`
   }
 `;
 
-function LogoutHeader() {
+function Header() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
@@ -220,7 +222,11 @@ function LogoutHeader() {
     };
 
     const getCategoryDetails = async (codes) => {
-      const data = await Promise.all(codes.map((code) => axios.get(`${BASE_URL}/category/categorydetail/${code}`)));
+      const data = await Promise.all(
+        codes.map((code) =>
+          axios.get(`${BASE_URL}/category/categorydetail/${code}`)
+        )
+      );
 
       return data;
     };
@@ -240,7 +246,9 @@ function LogoutHeader() {
   }, []);
 
   const handleCategoriesMouseOver = ({ target }) => {
-    setCategoryDetailCodes(categoryDetails[target.dataset.index].data.data[0].categoryDetails);
+    setCategoryDetailCodes(
+      categoryDetails[target.dataset.index].data.data[0].categoryDetails
+    );
     setCurrentIndex(target.dataset.index);
   };
 
@@ -248,12 +256,17 @@ function LogoutHeader() {
     setCategoryDetailCodes([]);
     setCurrentIndex(null);
   };
+  const isLogin = localStorage.getItem("token");
 
   return (
     <Layout pathname={pathname}>
       <div className="top flex">
         <div>
-          <a href="/login">로그인 / 회원가입</a>
+          {isLogin ? (
+            <a href="/">로그아웃</a>
+          ) : (
+            <a href="/login">로그인 / 회원가입</a>
+          )}
         </div>
 
         <div>
@@ -262,10 +275,16 @@ function LogoutHeader() {
       </div>
       <div className="mid flex">
         <div className="logo">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png" alt="logo"></img>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"
+            alt="logo"
+          ></img>
         </div>
         <form className="serach" onSubmit={handleSearchProductSubmit}>
-          <input placeholder="검색어를 입력해주세요" onChange={({ target }) => setSearchText(target.value)}></input>
+          <input
+            placeholder="검색어를 입력해주세요"
+            onChange={({ target }) => setSearchText(target.value)}
+          ></input>
           <button>
             <BsSearch />
           </button>
@@ -292,14 +311,25 @@ function LogoutHeader() {
               </span>
               <span className="category">카테고리</span>
               <div className="drop_down_container">
-                <div className="drop_down" onMouseLeave={handleCategoriesMouseLeave}>
+                <div
+                  className="drop_down"
+                  onMouseLeave={handleCategoriesMouseLeave}
+                >
                   <div>
                     <ul>
                       {categories.data &&
                         categories.data.map((category, index) => (
-                          <CategoryList onMouseOver={handleCategoriesMouseOver} data-index={index} ishover={index == currentIndex} key={index}>
+                          <CategoryList
+                            onMouseOver={handleCategoriesMouseOver}
+                            data-index={index}
+                            ishover={index == currentIndex}
+                            key={index}
+                          >
                             {
-                              <Link to={"/category/" + category.categoryCode} data-index={index}>
+                              <Link
+                                to={"/category/" + category.categoryCode}
+                                data-index={index}
+                              >
                                 {category.name}
                               </Link>
                             }
@@ -312,7 +342,10 @@ function LogoutHeader() {
                       {categoryDetailCodes.map((category, index) => (
                         <li key={index}>
                           {
-                            <Link to={"/category/" + category.categoryDetailCode} data-index={index}>
+                            <Link
+                              to={"/category/" + category.categoryDetailCode}
+                              data-index={index}
+                            >
                               {category.name}
                             </Link>
                           }
@@ -346,4 +379,4 @@ function LogoutHeader() {
   );
 }
 
-export default LogoutHeader;
+export default Header;
