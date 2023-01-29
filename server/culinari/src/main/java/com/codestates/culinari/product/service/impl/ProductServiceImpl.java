@@ -130,8 +130,15 @@ public class ProductServiceImpl implements ProductService {
                         .map(ProductDto::from);
             return productRepository.findBestProducts(categoryList,brandList,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
                     .map(ProductDto::from);
+        } else {
+            if(sortedType.equals("lower"))
+                return productRepository.findBestProducts(null,null,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
+                        .map(ProductDto::from);
+            else if(sortedType.equals("higher"))
+                return productRepository.findBestProducts(null,null,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
+                        .map(ProductDto::from);
         }
-        return productRepository.findBestProducts(null,null,frequency, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
+        return productRepository.findBestProducts(null,null,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
                 .map(ProductDto::from);
     }
 
