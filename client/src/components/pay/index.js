@@ -54,8 +54,6 @@ function Pay() {
   const [filterData, setFilterData] = useState("");
   const [userData, setUserData] = useState("");
   const [price, setPrice] = useState("");
-  console.log(ProductIds.info.totalPrice);
-  console.log(ProductIds.info.ids);
 
   const handlePayBtnClick = async (e) => {
     e.preventDefault();
