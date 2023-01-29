@@ -30,7 +30,7 @@ const ShippingBox = styled.div`
   }
 `;
 
-function ShipInfo() {
+function ShipInfo({ filterData }) {
   return (
     <>
       <ShippingContainer>
@@ -39,15 +39,19 @@ function ShipInfo() {
       <ShippingBox>
         <div className="name">
           <div className="title">수령인</div>
-          <div className="content">1</div>
+          <div className="content">
+            {filterData.filterData[0]?.receiverName}
+          </div>
         </div>
         <div className="phone">
           <div className="title">수령인 연락처</div>
-          <div className="content">2</div>
+          <div className="content">
+            {filterData.filterData[0]?.receiverPhoneNumber}
+          </div>
         </div>
         <div className="address">
           <div className="title">주소</div>
-          <div className="content">3</div>
+          <div className="content"> {filterData.filterData[0]?.address}</div>
         </div>
       </ShippingBox>
     </>

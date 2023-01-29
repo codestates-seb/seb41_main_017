@@ -133,7 +133,7 @@ function Pay() {
         <h2>결제하기</h2>
       </TitleContainer>
       <OrderInfo userData={userData} />
-      <ShipInfo />
+      <ShipInfo filterData={{ filterData }} />
       <PayInfo />
       <InfoCheck />
 
