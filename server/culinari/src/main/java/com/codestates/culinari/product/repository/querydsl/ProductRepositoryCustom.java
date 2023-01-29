@@ -15,4 +15,6 @@ public interface ProductRepositoryCustom{
     Page<Product> findAllWithSortAndFilter(List<String> category, List<String> brand, Pageable pageable) throws UnsupportedEncodingException;
 
     Page<Product> findAllFrequentOrderProduct(LocalDateTime createdAfterDateTime, Integer frequency, Long profileId, Pageable pageable);
+
+    Page<Product> findBestProducts(List<String> category, List<String> brand, Integer frequency, Pageable pageable);
 }

@@ -53,6 +53,27 @@ public class ProductCollectionsController {
 
     }
 
+    @GetMapping("/bestproducts")
+    public ResponseEntity getBestProducts(
+            @RequestParam(required = false , value = "sorted_type") String sortedType,
+            @RequestParam(required = false, value = "filter") String filter,
+            @Positive @RequestParam(defaultValue = "3") Integer frequency,
+            @Min (0)@RequestParam(defaultValue = "0", required = false) int page,
+            @Positive @RequestParam(defaultValue = "15", required = false) int size) throws UnsupportedEncodingException {
+
+        if(sortedType == null) sortedType = "newest";
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<ProductResponseToPage> bestProductsPage = productService.readBestProductWithSortedType(sortedType,filter,frequency,pageable).map(ProductResponseToPage::from);
+        List<ProductResponseToPage> productPage = bestProductsPage.getContent();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, bestProductsPage.getTotalPages());
+
+        return new ResponseEntity<>(
+                new PageResponseDto<>(productPage, bestProductsPage, barNumber), HttpStatus.OK);
+
+    }
+
     @GetMapping("/frequent")
     public ResponseEntity getFrequentOrders(
             @Min(0) @RequestParam(defaultValue = "0", required = false) int page,

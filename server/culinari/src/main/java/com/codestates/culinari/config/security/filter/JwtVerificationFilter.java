@@ -93,8 +93,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         Long profileId = Long.valueOf((Integer) claims.get("profileId"));
         // 권한 정보를 얻음
         Collection<? extends GrantedAuthority> authorities = (Collection<? extends GrantedAuthority>) ((List) claims.get("roles")).stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                        .collect(Collectors.toUnmodifiableSet());
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toUnmodifiableSet());
 
         log.info("authorities : {} ", authorities);
 
