@@ -14,6 +14,7 @@ const PrevButtonContainer = styled.div`
   left: -25px;
   z-index: 3;
   display: ${({ isFirstPage }) => (isFirstPage ? "none" : "block")};
+  cursor: pointer;
 
   &:hover {
     path {
@@ -37,6 +38,7 @@ const NextButtonContainer = styled.div`
   z-index: 3;
   transform: rotate(180deg);
   display: ${({ isLastPage }) => (isLastPage ? "none" : "block")};
+  cursor: pointer;
 
   &:hover {
     path {
