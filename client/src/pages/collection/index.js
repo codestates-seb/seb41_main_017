@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
-import CheckBox from "../../components/CheckBox";
 import MainBanner from "../../components/MainBanner";
 import BASE_URL from "../../constants/BASE_URL";
 import ProductItem from "../../components/ProductItem";
@@ -101,10 +100,22 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
 function Collection() {
   const [data, setData] = useState(null);
   const [sort, setSort] = useState("newest");
+  const [categories, setCategories] = useState([]);
+  const { pathname } = useLocation();
 
-  const handleSortListClick = ({ target }) => {
-    setSort(target.dataset.id);
+  const pageMap = {
+    "/collections/new-product": "신상품",
+    "/collections/best-product": "베스트",
   };
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const { data } = await axios.get(`${BASE_URL}/category`);
+      setCategories(data.data);
+    };
+
+    getCategories();
+  }, []);
 
   useEffect(() => {
     const query = {
@@ -126,65 +137,9 @@ function Collection() {
     getData();
   }, []);
 
-  const [isFisheryChecked, setIsFisheryChecked] = useState(false);
-  const [isNoodlesChecked, setNoodlesChecked] = useState(false);
-  const [isMeatAndEggsChecked, setIsMeatAndEggsChecked] = useState(false);
-  const [isFruitsAndVegetablesChecked, setIsFruitsAndVegetablesChecked] = useState(false);
-  const [isDrinkChecked, setIsDrinkChecked] = useState(false);
-  const [isGrainChecked, setIsGrainChecked] = useState(false);
-  const [isSnackAndBreadChecked, setIsSnackAndBreadChecked] = useState(false);
-
-  const { pathname } = useLocation();
-  const pageMap = {
-    "/collections/new-product": "신상품",
-    "/collections/best-product": "베스트",
+  const handleSortListClick = ({ target }) => {
+    setSort(target.dataset.id);
   };
-
-  const isAllChecked =
-    isFisheryChecked &&
-    isNoodlesChecked &&
-    isMeatAndEggsChecked &&
-    isFruitsAndVegetablesChecked &&
-    isDrinkChecked &&
-    isGrainChecked &&
-    isSnackAndBreadChecked;
-
-  const categories = [
-    {
-      text: "전체",
-      checked: isAllChecked,
-      setChecked: () => {
-        if (!isAllChecked) {
-          setIsFisheryChecked(true);
-          setNoodlesChecked(true);
-          setIsMeatAndEggsChecked(true);
-          setIsFruitsAndVegetablesChecked(true);
-          setIsDrinkChecked(true);
-          setIsGrainChecked(true);
-          setIsSnackAndBreadChecked(true);
-
-          return;
-        }
-
-        if (isAllChecked) {
-          setIsFisheryChecked(false);
-          setNoodlesChecked(false);
-          setIsMeatAndEggsChecked(false);
-          setIsFruitsAndVegetablesChecked(false);
-          setIsDrinkChecked(false);
-          setIsGrainChecked(false);
-          setIsSnackAndBreadChecked(false);
-        }
-      },
-    },
-    { text: "수산·해산·건어물", checked: isFisheryChecked, setChecked: () => setIsFisheryChecked(!isFisheryChecked) },
-    { text: "면·양념·오일", checked: isNoodlesChecked, setChecked: () => setNoodlesChecked(!isNoodlesChecked) },
-    { text: "정육·계란", checked: isMeatAndEggsChecked, setChecked: () => setIsMeatAndEggsChecked(!isMeatAndEggsChecked) },
-    { text: "과일·야채", checked: isFruitsAndVegetablesChecked, setChecked: () => setIsFruitsAndVegetablesChecked(!isFruitsAndVegetablesChecked) },
-    { text: "생수·음료·우유", checked: isDrinkChecked, setChecked: () => setIsDrinkChecked(!isDrinkChecked) },
-    { text: "견과·쌀", checked: isGrainChecked, setChecked: () => setIsGrainChecked(!isGrainChecked) },
-    { text: "간식·과자·빵", checked: isSnackAndBreadChecked, setChecked: () => setIsSnackAndBreadChecked(!isSnackAndBreadChecked) },
-  ];
 
   return (
     <>

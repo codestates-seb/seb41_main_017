@@ -29,7 +29,7 @@ function CategoryList({ category }) {
   return (
     <Container onClick={handleCheckButtonClick}>
       <CheckBox isChecked={isChecked} size="18px" />
-      <span>{category.text}</span>
+      <span>{category.name}</span>
     </Container>
   );
 }
