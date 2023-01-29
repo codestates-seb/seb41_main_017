@@ -62,16 +62,12 @@ const Content = styled.div`
       position: relative;
       display: flex;
       align-items: center;
-    }
 
-    .product_filter_list {
-      margin-left: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      font-size: 14px;
-      color: rgb(153, 153, 153);
-      cursor: pointer;
+      li {
+        margin: 0px;
+        padding-left: 4px;
+        padding-right: 4px;
+      }
     }
 
     .product_list {
