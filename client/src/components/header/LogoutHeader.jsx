@@ -97,11 +97,11 @@ const Layout = styled.div`
           }
 
           .new_product {
-            color: ${({ pathname }) => (pathname.includes("/new-product") ? "#ff6767" : null)};
+            color: ${({ pathname }) => (pathname.includes("/newproduct") ? "#ff6767" : null)};
           }
 
-          .best_product {
-            color: ${({ pathname }) => (pathname.includes("/best-product") ? "#ff6767" : null)};
+          .best_products {
+            color: ${({ pathname }) => (pathname.includes("/bestproducts") ? "#ff6767" : null)};
           }
 
           span {
@@ -329,13 +329,13 @@ function LogoutHeader() {
               </a>
             </li>
             <li>
-              <a href="/collections/new-product">
+              <a href="/collections/newproduct">
                 <span className="new_product">신상품</span>
               </a>
             </li>
             <li>
-              <a href="/collections/best-product">
-                <span className="best_product">베스트</span>
+              <a href="/collections/bestproducts">
+                <span className="best_products">베스트</span>
               </a>
             </li>
             <li>이벤트</li>

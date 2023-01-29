@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import styled from "styled-components";
 import axios from "axios";
@@ -98,12 +98,8 @@ function Collection() {
   const [sort, setSort] = useState("newest");
   const [categories, setCategories] = useState([]);
   const [checkedCategoryCodes, setCheckedCategoryCodes] = useState([]);
-  const { pathname } = useLocation();
 
-  const pageMap = {
-    "/collections/new-product": "신상품",
-    "/collections/best-product": "베스트",
-  };
+  const { params } = useParams();
 
   useEffect(() => {
     const getCategories = async () => {
@@ -124,7 +120,7 @@ function Collection() {
 
     const getData = async () => {
       try {
-        const { data } = await axios.get(`${BASE_URL}/collections/newproduct?${queryString}`);
+        const { data } = await axios.get(`${BASE_URL}/collections/${params}?${queryString}`);
 
         setData(data);
       } catch (error) {
@@ -142,7 +138,7 @@ function Collection() {
   return (
     <>
       <MainBanner />
-      <PageHeader>{pageMap[pathname]}</PageHeader>
+      <PageHeader>{params === "newproduct" ? "신상품" : "베스트"}</PageHeader>
       <Content>
         <div className="category">
           <div className="category_title">카테고리</div>
@@ -160,7 +156,7 @@ function Collection() {
         </div>
         <div className="product_container">
           <div className="product_list_header">
-            <div className="product_list_count">{`총 ${data && data.pageInfo.totalElements}건`}</div>
+            <div className="product_list_count">{`총 ${(data && data.pageInfo.totalElements) ?? 0}건`}</div>
             <ul className="product_filter" onClick={handleSortListClick}>
               <FilterList dataId="newest" sort={sort}>
                 신상품순
@@ -181,7 +177,7 @@ function Collection() {
                   imgUrl={element.productImageDtos[0]?.imgUrl}
                   name={element.name}
                   price={element.price}
-                  key={Math.random()}
+                  key={element.id}
                 />
               ))}
           </div>
