@@ -8,5 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProductLikeRepository extends JpaRepository<ProductLike, Long> {
     Page<ProductLike> findAllByProfileId(Long profileId, Pageable pageable);
 
+    ProductLike findByProductIdAndProfileId(Long productId, Long profileId);
+
     void deleteByProductId(Long productId);
 }

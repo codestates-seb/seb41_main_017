@@ -10,23 +10,26 @@ import java.util.stream.Collectors;
 
 public record ProductLikeDto(
         Long id,
+        Long productId,
         String name,
         BigDecimal price,
         List<ProductImageDto> productImageDtos
 ){
     public static ProductLikeDto of(
             Long id,
+            Long productId,
             String name,
             BigDecimal price,
             List<ProductImageDto> productImageDtos
     )
     {
-        return new ProductLikeDto(id,name,price,productImageDtos);
+        return new ProductLikeDto(id,productId,name,price,productImageDtos);
     }
 
     public static ProductLikeDto from(ProductLike entity){
         return new ProductLikeDto(
                 entity.getId(),
+                entity.getProduct().getId(),
                 entity.getProduct().getName(),
                 entity.getProduct().getPrice(),
                 entity.getProduct().getProductImages().stream()
