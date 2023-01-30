@@ -117,6 +117,19 @@ function Cart() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
+
+    if (!accessToken) {
+      if (window.confirm("해당 기능은 로그인 후에 사용할 수 있습니다. 로그인 페이지으로 이동하시겠습니까?")) {
+        navigate("/login");
+
+        return;
+      }
+
+      navigate(-1);
+      return;
+    }
+
     const getCartList = async () => {
       const config = {
         headers: {
