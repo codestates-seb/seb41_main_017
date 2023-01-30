@@ -10,6 +10,7 @@ import com.codestates.culinari.config.security.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -51,12 +52,34 @@ public class SecurityConfig {
                 .apply(new CustomFilterConfigurer()) // 직접 구현한 JwtAuthenticationFilter 등록
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers(HttpMethod.GET, "/users/**").hasRole("USER")
-//                        .requestMatchers(HttpMethod.PATCH, "/users/**").hasRole("USER")
-//                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("USER")
-                                .anyRequest().permitAll() // 모든 HTTP request 요청에 접근 허용
+                        // User
+                        .requestMatchers(HttpMethod.GET, "/users/**").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.PATCH, "/users").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.PATCH, "/users/password-edit").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.GET, "/logout").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.GET, "/mypage/**").hasRole("{authority=일반 유저}")
+                        // Product 관련
+                        .requestMatchers(HttpMethod.GET, "/collections/frequent").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.POST, "/product/**").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.PATCH, "/product/**").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("{authority=일반 유저}")
+                        // Cart
+                        .requestMatchers(HttpMethod.POST, "/carts").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.GET, "/carts").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.PATCH, "/carts/**").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.DELETE, "/carts/**").hasRole("{authority=일반 유저}")
+                        // Order
+                        .requestMatchers(HttpMethod.GET, "/orders/**").hasRole("{authority=일반 유저}")
+                        // Payment
+                        .requestMatchers(HttpMethod.POST, "/payments/**").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.GET, "/payments/**").hasRole("{authority=일반 유저}")
+                        // CustomerCenter
+                        .requestMatchers(HttpMethod.POST, "/board/inquiry/").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.GET, "/board/inquiry/").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.PATCH, "/board/inquiry/").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.DELETE, "/board/inquiry/").hasRole("{authority=일반 유저}")
+                        .anyRequest().permitAll() // 모든 HTTP request 요청에 접근 허용
                 );
-//                .logout()
 
         return http.build();
     }
@@ -87,16 +110,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                         "http://localhost:8080",
                         "http://localhost:3000",
-                        "https://localhost:3000",
-                        //toss
-                        "http://13.124.18.147",
-                        "https://13.124.18.147",
-                        "http://13.124.108.35",
-                        "https://13.124.108.35",
-                        "http://3.36.173.151",
-                        "https://3.36.173.151",
-                        "http://3.38.81.32",
-                        "https://3.38.81.32"
+                        "https://localhost:3000"
                 )
         ); // * 은 문제 발생
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "UPDATE"));
