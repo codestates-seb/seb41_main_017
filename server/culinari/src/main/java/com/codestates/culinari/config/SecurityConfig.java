@@ -70,11 +70,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/carts/**").hasRole("{authority=일반 유저}")
                         // Order
                         .requestMatchers(HttpMethod.GET, "/orders/**").hasRole("{authority=일반 유저}")
-                        // Payment
+                        // Payment 세부 먼저 큰거 나중
                         .requestMatchers(HttpMethod.POST, "/payments/**").hasRole("{authority=일반 유저}")
-                        .requestMatchers(HttpMethod.GET,"/payments/**").hasRole("{authority=일반 유저}")
                         .requestMatchers(HttpMethod.GET, "/payments/success").permitAll()
                         .requestMatchers(HttpMethod.GET,"payments/fail").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/payments/**").hasRole("{authority=일반 유저}")
                         // CustomerCenter
                         .requestMatchers(HttpMethod.POST, "/board/inquiry/").hasRole("{authority=일반 유저}")
                         .requestMatchers(HttpMethod.GET, "/board/inquiry/").hasRole("{authority=일반 유저}")
