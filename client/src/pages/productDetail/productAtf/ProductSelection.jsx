@@ -140,7 +140,7 @@ function ProductSelection({ position, data, quantity, setQuantity, totalPrice })
     const config = {
       headers: {
         "Content-Type": `application/json`,
-        authorization: JSON.parse(localStorage.getItem("token")).authorization,
+        authorization: accessToken,
       },
     };
 
