@@ -4,6 +4,7 @@ import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import logo from "../../assets/fitlogo.png";
 import BASE_URL from "../../constants/BASE_URL";
 
 const Layout = styled.div`
@@ -30,7 +31,8 @@ const Layout = styled.div`
     .logo {
       margin-right: 10px;
       img {
-        width: 40px;
+        width: 100px;
+        margin-left: -70px;
       }
     }
 
@@ -74,7 +76,9 @@ const Layout = styled.div`
   }
 
   .bottom {
-    border-bottom: 1px solid #a9a9a9;
+    // border-bottom: 1px solid #a9a9a9;
+    box-shadow: 0 3px 4px 0 rgb(0 0 0 / 7%);
+
     margin-top: 20px;
 
     .GNB {
@@ -283,10 +287,7 @@ function Header() {
       </div>
       <div className="mid flex">
         <div className="logo">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"
-            alt="logo"
-          ></img>
+          <img src={logo} alt="logo"></img>
         </div>
         <form className="serach" onSubmit={handleSearchProductSubmit}>
           <input
