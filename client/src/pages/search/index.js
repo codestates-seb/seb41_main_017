@@ -2,7 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
+
+import Pagination from "../../components/Pagination";
 import ProductItem from "../../components/ProductItem";
+
 import BASE_URL from "../../constants/BASE_URL";
 
 const Container = styled.div`
@@ -97,10 +100,17 @@ function Search() {
   const [data, setData] = useState("");
   const [categoryData, setCategoryData] = useState([]);
   const [sort, setSort] = useState("newest");
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
+    const query = {
+      size: 20,
+      page: currentPage,
+      sorted_type: sort,
+    };
+    const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
     const getProductData = async () => {
-      const { data } = await axios.get(`${BASE_URL}${location.pathname}${location.search}`);
+      const { data } = await axios.get(`${BASE_URL}${location.pathname}${location.search}?${queryString}`);
 
       return data;
     };
@@ -111,37 +121,20 @@ function Search() {
       return data;
     };
 
-    const dataSortByPrice = (data) => {
-      if (sort === "newest") {
-        return data;
-      }
-
-      if (sort === "lower") {
-        data.data = data.data.sort((a, b) => a.price - b.price);
-
-        return data;
-      }
-
-      if (sort === "higher") {
-        data.data = data.data.sort((a, b) => b.price - a.price);
-
-        return data;
-      }
-    };
-
     (async () => {
       try {
         const productData = await getProductData();
-        const sortedData = dataSortByPrice(productData);
-        const categoryData = await getCategoryData();
+        setData(productData);
 
-        setData(sortedData);
-        setCategoryData(categoryData);
+        if (code) {
+          const categoryData = await getCategoryData();
+          setCategoryData(categoryData);
+        }
       } catch (error) {
         console.error(error);
       }
     })();
-  }, [location, sort]);
+  }, [location, sort, currentPage]);
 
   const handleSortListClick = ({ target }) => {
     setSort(target.dataset.id);
@@ -174,7 +167,7 @@ function Search() {
         )}
       </PageHeader>
       <div className="product_list_header">
-        <div className="product_list_count">{`총 ${data && data.data.length}건`}</div>
+        <div className="product_list_count">{`총 ${data && data.pageInfo.totalElements}건`}</div>
         <ul className="product_filter" onClick={handleSortListClick}>
           <FilterList dataId="newest" sort={sort}>
             신상품순
@@ -193,6 +186,7 @@ function Search() {
             <ProductItem id={element.id} imgUrl={element.productImageDtos[0]?.imgUrl} name={element.name} price={element.price} key={Math.random()} />
           ))}
       </div>
+      <Pagination pageInfo={data && data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={true} />
     </Container>
   );
 }
