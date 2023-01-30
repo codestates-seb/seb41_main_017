@@ -110,7 +110,7 @@ function Search() {
     };
     const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
     const getProductData = async () => {
-      const { data } = await axios.get(`${BASE_URL}${location.pathname}${location.search}?${queryString}`);
+      const { data } = await axios.get(`${BASE_URL}${location.pathname}${location.search}${queryString}`);
 
       return data;
     };
