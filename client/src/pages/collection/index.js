@@ -135,7 +135,7 @@ function Collection() {
   }, [checkedCategoryCodes, sort, currentPage]);
 
   const handleSortListClick = ({ target }) => {
-    setSort(target.dataset.id);
+    setSort(target.closest("li").dataset.id);
   };
 
   return (
