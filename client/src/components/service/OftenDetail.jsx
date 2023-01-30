@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BasicButton from "../BasicButton";
-// import { Page } from "../../styles/OneOnOneStyle";
 
 const Page = styled.div`
   max-width: 900px;
@@ -14,7 +13,6 @@ const Page = styled.div`
 `;
 
 const DetailContainer = styled.div`
-  //   background-color: red;
   width: 900px;
   height: 550px;
   border-bottom: 1px solid gray;
