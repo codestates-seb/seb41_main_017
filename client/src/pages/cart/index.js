@@ -112,6 +112,7 @@ function Cart() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedList, setCheckedList] = useState([]);
   const [selectAllChecked, setSelectAllChecked] = useState(true);
+  const [bestProductData, setBestProductData] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -149,6 +150,24 @@ function Cart() {
 
     setTotalPrice(calcTotalPrice(checkedList));
   }, [checkedList]);
+
+  useEffect(() => {
+    const getBestProductData = async () => {
+      const { data } = await axios.get(`${BASE_URL}/collections/bestproducts?size=20`);
+
+      return data;
+    };
+
+    (async () => {
+      try {
+        const bestProductData = await getBestProductData();
+
+        setBestProductData(bestProductData);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
 
   const handleSelectAllButtonClick = () => {
     if (selectAllChecked === true) {
@@ -263,7 +282,7 @@ function Cart() {
 
       <TodayRecommendProducts>
         <Title>이달의 추천 상품</Title>
-        <ProductItemSlider />
+        <ProductItemSlider data={bestProductData && bestProductData.data} />
       </TodayRecommendProducts>
     </Container>
   );
