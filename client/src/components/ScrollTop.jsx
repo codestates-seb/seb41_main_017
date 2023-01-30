@@ -11,7 +11,7 @@ const Icon = styled.img`
   user-select: none;
 
   transition: transform 0.5s;
-  transform: ${({ position }) => (position > 1000 ? "translate(0px, -50px)" : "translate(0px, 100px)")};
+  transform: ${({ position }) => (position > 500 ? "translate(0px, -50px)" : "translate(0px, 100px)")};
 `;
 
 function ScrollTop() {
