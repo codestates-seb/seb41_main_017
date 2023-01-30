@@ -10,7 +10,7 @@ const Page = styled.div`
 const ItemCotainer = styled.div`
   width: 900px;
   height: 60px;
-  border-top: 1px solid black;
+
   border-bottom: 1px solid black;
   display: flex;
   align-items: center;
