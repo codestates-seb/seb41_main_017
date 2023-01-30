@@ -110,7 +110,7 @@ function Search() {
     };
     const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
     const getProductData = async () => {
-      const { data } = await axios.get(`${BASE_URL}${location.pathname}${location.search}?${queryString}`);
+      const { data } = await axios.get(`${BASE_URL}${location.pathname}${location.search}${queryString}`);
 
       return data;
     };
@@ -121,10 +121,30 @@ function Search() {
       return data;
     };
 
+    const dataSortByPrice = (data) => {
+      if (sort === "newest") {
+        return data;
+      }
+
+      if (sort === "lower") {
+        data.data = data.data.sort((a, b) => a.price - b.price);
+
+        return data;
+      }
+
+      if (sort === "higher") {
+        data.data = data.data.sort((a, b) => b.price - a.price);
+
+        return data;
+      }
+    };
+
     (async () => {
       try {
         const productData = await getProductData();
-        setData(productData);
+        const sortedData = dataSortByPrice(productData);
+
+        setData(sortedData);
 
         if (code) {
           const categoryData = await getCategoryData();
@@ -137,7 +157,7 @@ function Search() {
   }, [location, sort, currentPage]);
 
   const handleSortListClick = ({ target }) => {
-    setSort(target.dataset.id);
+    setSort(target.closest("li").dataset.id);
   };
 
   return (

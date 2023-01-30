@@ -125,6 +125,7 @@ const InquiryContent = styled.div`
       line-height: 21px;
       z-index: 1;
       color: rgb(51, 51, 51);
+      resize: none;
 
       ::placeholder {
         color: #cccccc;
