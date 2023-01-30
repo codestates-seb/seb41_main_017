@@ -3,7 +3,6 @@ import styled from "styled-components";
 import BasicButton from "../BasicButton";
 
 const DetailContainer = styled.div`
-  //   background-color: red;
   width: 900px;
   height: 550px;
   border-bottom: 1px solid gray;
