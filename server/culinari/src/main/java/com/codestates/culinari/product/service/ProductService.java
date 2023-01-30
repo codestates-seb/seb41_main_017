@@ -4,7 +4,7 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.ProductLikeDto;
 import com.codestates.culinari.product.dto.response.ProductResponseToPage;
-import com.codestates.culinari.product.dto.response.ProductWithCustomerServiceResponse;
+import com.codestates.culinari.product.dto.response.ProductResponse;
 import com.codestates.culinari.product.entitiy.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,7 @@ public interface ProductService {
     public Product findProduct(Long productId);
 
     @Transactional(readOnly = true)
-    ProductWithCustomerServiceResponse readProductWithCS(Long productId);
+    ProductResponse readProductWithCS(Long productId);
     //통합 검색 (Name, Seller, Brand)
     Page<ProductDto> readProductWithKeyWord(String keyWord, Pageable pageable);
 //    public Page<ProductDto> readProductWithSortedType(String filter, Pageable pageable);

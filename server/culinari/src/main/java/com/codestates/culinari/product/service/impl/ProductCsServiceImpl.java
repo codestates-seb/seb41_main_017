@@ -1,7 +1,6 @@
 package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.destination.entity.Destination;
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.global.file.S3Uploader;
@@ -32,7 +31,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -73,13 +71,24 @@ public class ProductCsServiceImpl implements ProductCsService {
         ProductInquiry productInquiry = ProductInquiry.of(productInquiryRequest.title(), productInquiryRequest.content(), product, profile);
         productInquiryRepository.save(productInquiry);
     }
+    // 상품 문의 호출
+    @Override
+    public Page<ProductInquiry> readProductInquiry(Long productId, Pageable pageable){
+        return productInquiryRepository.findByProductId(productId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()));
+    }
+
+    // 상품 리뷰 호출
+    @Override
+    public Page<ProductReview> readProductReview(Long productId, Pageable pageable){
+        return productReviewRepository.findByProductId(productId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()));
+    }
 
     // 후기 작성
     @Override
-    public void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, List<MultipartFile> multipartFiles) throws IOException {
+    public void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, Long orderId, List<MultipartFile> multipartFiles) throws IOException {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다"));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
-        OrderDetail orderDetail = orderDetailRepository.findByProductIdAndProductReviewIsNull(productId);
+        OrderDetail orderDetail = orderDetailRepository.findByIdAndOrders_Profile_Id(orderId,principal.profileId());
         ProductReview productReview = ProductReview.of( productReviewRequest.content(), productReviewRequest.reviewStar(),product, profile);
         List<String> image = s3Uploader.uploads(multipartFiles);
         List<String> imgList = new ArrayList<>();

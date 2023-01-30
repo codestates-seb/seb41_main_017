@@ -1,6 +1,7 @@
 package com.codestates.culinari.product.dto.response;
 
 import com.codestates.culinari.product.dto.ProductInquiryDto;
+import com.codestates.culinari.product.entitiy.ProductInquiry;
 
 import java.time.LocalDateTime;
 
@@ -20,17 +21,17 @@ public record ProductInquiryResponse(
         return new ProductInquiryResponse(id, productId, profileId, title, content, createdAt, modifiedAt, createdBy, modifiedBy);
     }
 
-    public static ProductInquiryResponse from(ProductInquiryDto dto){
+    public static ProductInquiryResponse from(ProductInquiry entity){
         return new ProductInquiryResponse(
-                dto.id(),
-                dto.productId(),
-                dto.profileId(),
-                dto.title(),
-                dto.content(),
-                dto.createdAt(),
-                dto.modifiedAt(),
-                dto.createdBy(),
-                dto.modifiedBy()
+                entity.getId(),
+                entity.getProduct().getId(),
+                entity.getProfile().getId(),
+                entity.getTitle(),
+                entity.getContent(),
+                entity.getCreatedAt(),
+                entity.getModifiedAt(),
+                entity.getCreatedBy(),
+                entity.getModifiedBy()
         );
     }
 }

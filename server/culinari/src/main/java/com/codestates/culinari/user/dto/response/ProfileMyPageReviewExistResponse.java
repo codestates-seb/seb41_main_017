@@ -15,11 +15,12 @@ public record ProfileMyPageReviewExistResponse(
         String name,
         BigDecimal price,
         Integer quantity,
-        String content
+        String content,
+        Integer reviewStar
 ) {
 
-    private static ProfileMyPageReviewExistResponse of(Long id, Long productId, List<ProductImageDto> images, String name, BigDecimal price, Integer quantity,String content) {
-        return new ProfileMyPageReviewExistResponse(id, productId,images,name,price,quantity,content);
+    private static ProfileMyPageReviewExistResponse of(Long id, Long productId, List<ProductImageDto> images, String name, BigDecimal price, Integer quantity,String content,Integer reviewStar) {
+        return new ProfileMyPageReviewExistResponse(id, productId,images,name,price,quantity,content,reviewStar);
     }
 
     public static ProfileMyPageReviewExistResponse from(ProductReview productReview){
@@ -31,7 +32,8 @@ public record ProfileMyPageReviewExistResponse(
                 productReview.getProduct().getName(),
                 productReview.getOrderDetail().getPrice(),
                 productReview.getOrderDetail().getQuantity(),
-                productReview.getContent()
+                productReview.getContent(),
+                productReview.getReviewStar()
         );
     }
 }

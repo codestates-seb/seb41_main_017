@@ -36,20 +36,14 @@ public class CartRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     @Override
     public void deleteAllByOrderId(String orderId) {
         QCart cart = QCart.cart;
-        QCart cartSub = new QCart("cartSub");
         QOrders order = QOrders.orders;
         QOrderDetail orderDetail = QOrderDetail.orderDetail;
 
-        delete(cart)
-                .where(cart.id.in(
-                        JPAExpressions
-                                .select(cartSub.id)
-                                .from(cartSub)
-                                .where(
-                                        cart.profile.id.eq(JPAExpressions.select(order.profile.id).from(order).where(order.id.eq(orderId)))
-                                                .and(cart.product.id.in(JPAExpressions.select(orderDetail.product.id).from(orderDetail).where(orderDetail.orders.id.eq(orderId))))
-                                )
-                ))
-                .execute();
+        List<Long> cartIds = from(cart).select(cart.id)
+                .where(cart.profile.id.eq(JPAExpressions.select(order.profile.id).from(order).where(order.id.eq(orderId)))
+                        .and(cart.product.id.in(JPAExpressions.select(orderDetail.product.id).from(orderDetail).where(orderDetail.orders.id.eq(orderId))))
+                ).fetch();
+
+        delete(cart).where(cart.id.in(cartIds)).execute();
     }
 }

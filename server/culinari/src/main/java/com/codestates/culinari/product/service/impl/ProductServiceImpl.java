@@ -5,7 +5,7 @@ import com.codestates.culinari.global.search.SearchFilter;
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.ProductLikeDto;
 import com.codestates.culinari.product.dto.response.ProductResponseToPage;
-import com.codestates.culinari.product.dto.response.ProductWithCustomerServiceResponse;
+import com.codestates.culinari.product.dto.response.ProductResponse;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.ProductLike;
 import com.codestates.culinari.product.repository.ProductLikeRepository;
@@ -69,8 +69,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional(readOnly = true)
     @Override
-    public ProductWithCustomerServiceResponse readProductWithCS(Long productId){
-        return ProductWithCustomerServiceResponse.from(findProduct(productId));
+    public ProductResponse readProductWithCS(Long productId){
+        return ProductResponse.from(findProduct(productId));
     }
 
     //통합 검색 (Name, Seller, Brand)
@@ -130,8 +130,15 @@ public class ProductServiceImpl implements ProductService {
                         .map(ProductDto::from);
             return productRepository.findBestProducts(categoryList,brandList,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
                     .map(ProductDto::from);
+        } else {
+            if(sortedType.equals("lower"))
+                return productRepository.findBestProducts(null,null,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price")))
+                        .map(ProductDto::from);
+            else if(sortedType.equals("higher"))
+                return productRepository.findBestProducts(null,null,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("price").descending()))
+                        .map(ProductDto::from);
         }
-        return productRepository.findBestProducts(null,null,frequency, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
+        return productRepository.findBestProducts(null,null,frequency,PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()))
                 .map(ProductDto::from);
     }
 

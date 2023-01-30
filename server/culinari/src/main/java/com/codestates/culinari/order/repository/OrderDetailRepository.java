@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long>, OrderDetailRepositoryCustom {
 
-    Optional<OrderDetail> findByIdAndOrders_Profile_Id(Long orderDetailId, Long profileId);
+    OrderDetail findByIdAndOrders_Profile_Id(Long orderDetailId, Long profileId);
 
     Page<OrderDetail> findAllByOrdersProfileIdAndProductReviewIsNull(Long profileId, Pageable pageable);
 
-    OrderDetail findByProductIdAndProductReviewIsNull(Long productId);
+    OrderDetail findDistinctByProductIdAndProductReviewIsNull(Long productId);
 }
