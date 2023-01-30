@@ -204,6 +204,7 @@ function Header() {
   const [categoryDetails, setCategoryDetails] = useState([]);
   const [categoryDetailCodes, setCategoryDetailCodes] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(null);
+  const isLogin = localStorage.getItem("token");
 
   const handleSearchProductSubmit = (event) => {
     event.preventDefault();
@@ -256,14 +257,21 @@ function Header() {
     setCategoryDetailCodes([]);
     setCurrentIndex(null);
   };
-  const isLogin = localStorage.getItem("token");
+
+  const handleClickLogoutBtn = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
 
   return (
     <Layout pathname={pathname}>
       <div className="top flex">
         <div>
           {isLogin ? (
-            <a href="/">로그아웃</a>
+            <a onClick={handleClickLogoutBtn} href="/">
+              로그아웃
+            </a>
           ) : (
             <a href="/login">로그인 / 회원가입</a>
           )}
