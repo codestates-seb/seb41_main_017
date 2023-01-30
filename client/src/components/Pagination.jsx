@@ -10,13 +10,11 @@ const Nav = styled.nav`
 const PageUl = styled.ul`
   list-style: none;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 5px;
   color: black;
   padding: 1px;
   margin-top: 50px;
   display: inline-block;
-  border-top: 3px solid #ff6767;
-  border-bottom: 3px solid #ff6767;
   background-color: #ffeaea;
 `;
 
