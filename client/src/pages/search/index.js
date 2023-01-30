@@ -121,10 +121,30 @@ function Search() {
       return data;
     };
 
+    const dataSortByPrice = (data) => {
+      if (sort === "newest") {
+        return data;
+      }
+
+      if (sort === "lower") {
+        data.data = data.data.sort((a, b) => a.price - b.price);
+
+        return data;
+      }
+
+      if (sort === "higher") {
+        data.data = data.data.sort((a, b) => b.price - a.price);
+
+        return data;
+      }
+    };
+
     (async () => {
       try {
         const productData = await getProductData();
-        setData(productData);
+        const sortedData = dataSortByPrice(productData);
+
+        setData(sortedData);
 
         if (code) {
           const categoryData = await getCategoryData();
