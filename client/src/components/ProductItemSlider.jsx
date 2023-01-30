@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
 
-import axios from "axios";
 import Slider from "react-slick";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
@@ -9,7 +7,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { ReactComponent as WhiteArrow } from "../assets/white_arrow.svg";
 
 import ProductItem from "./ProductItem";
-import BASE_URL from "../constants/BASE_URL";
 
 const PrevButtonContainer = styled.div`
   position: absolute;
@@ -17,6 +14,7 @@ const PrevButtonContainer = styled.div`
   left: -25px;
   z-index: 3;
   display: ${({ isFirstPage }) => (isFirstPage ? "none" : "block")};
+  cursor: pointer;
 
   &:hover {
     path {
@@ -32,14 +30,6 @@ const PrevButtonContainer = styled.div`
     }
   }
 `;
-
-function PrevButton({ isFirstPage, onClick }) {
-  return (
-    <PrevButtonContainer isFirstPage={isFirstPage} onClick={onClick}>
-      <WhiteArrow />
-    </PrevButtonContainer>
-  );
-}
 
 const NextButtonContainer = styled.div`
   position: absolute;
@@ -48,6 +38,7 @@ const NextButtonContainer = styled.div`
   z-index: 3;
   transform: rotate(180deg);
   display: ${({ isLastPage }) => (isLastPage ? "none" : "block")};
+  cursor: pointer;
 
   &:hover {
     path {
@@ -64,33 +55,28 @@ const NextButtonContainer = styled.div`
   }
 `;
 
-function NextButton({ isLastPage, onClick }) {
-  return (
-    <NextButtonContainer isLastPage={isLastPage} onClick={onClick}>
-      <WhiteArrow />
-    </NextButtonContainer>
-  );
-}
-
-function ProductItemSlider() {
+function ProductItemSlider({ data }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [data, setData] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await axios.get(`${BASE_URL}/collections/newproduct?page=4&size=10`);
+  function NextButton({ isLastPage, onClick }) {
+    return (
+      <NextButtonContainer isLastPage={isLastPage} onClick={onClick}>
+        <WhiteArrow />
+      </NextButtonContainer>
+    );
+  }
 
-        setData(data);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
+  function PrevButton({ isFirstPage, onClick }) {
+    return (
+      <PrevButtonContainer isFirstPage={isFirstPage} onClick={onClick}>
+        <WhiteArrow />
+      </PrevButtonContainer>
+    );
+  }
 
   const slidesToShow = 5;
   const isFirstPage = () => currentPage === 1;
-  const isLastPage = () => currentPage === data.length - slidesToShow + 1;
+  const isLastPage = () => currentPage === (data && data.length) - slidesToShow + 1;
 
   const settings = {
     infinite: false,
@@ -104,11 +90,11 @@ function ProductItemSlider() {
 
   return (
     <Slider {...settings}>
-      {data.data &&
-        data.data.map((element) => (
+      {data &&
+        data.map((element) => (
           <ProductItem
             id={element.id}
-            imgUrl={element.productImageDtos[0].imgUrl}
+            imgUrl={element.productImageDtos[0]?.imgUrl}
             name={element.name}
             price={element.price}
             key={element.id}

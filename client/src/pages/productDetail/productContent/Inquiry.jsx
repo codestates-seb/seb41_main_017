@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import BasicButton from "../../../components/BasicButton";
+import axios from "axios";
 
 import InquiryDetail from "./InquiryDetail";
 import ModalComponent from "./ModalComponent";
 import CreateInquiry from "./CreateInquiry";
+
+import BASE_URL from "../../../constants/BASE_URL";
+import { useParams } from "react-router-dom";
+import Pagination from "../../../components/Pagination";
 
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
@@ -31,10 +36,14 @@ const TableHead = styled.thead`
     border-bottom: 1px solid #ddd;
   }
 
-  .title,
+  .title {
+    vertical-align: middle;
+  }
+
   .author,
   .created_date,
   .status {
+    width: 140px;
     vertical-align: middle;
   }
 `;
@@ -51,6 +60,7 @@ const TableBody = styled.tbody`
 
   .title {
     padding-left: 10px;
+    cursor: pointer;
   }
 
   .title,
@@ -63,6 +73,7 @@ const TableBody = styled.tbody`
   .author,
   .created_date,
   .status {
+    width: 140px;
     text-align: center;
   }
 `;
@@ -73,15 +84,24 @@ const WriteInquiryButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-function Inquiry({ data }) {
+function Inquiry() {
   const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const { id } = useParams();
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get(`${BASE_URL}/product/${id}/inquiry?page=${currentPage}`);
+
+      setData(data);
+    })();
+  }, [currentPage]);
 
   return (
-    <>
+    <div id="inquiry">
       <Header>
-        <div id="inquiry" className="header_text">
-          상품 문의
-        </div>
+        <div className="header_text">상품 문의</div>
       </Header>
       <div>
         <InquiryTable>
@@ -93,14 +113,15 @@ function Inquiry({ data }) {
               <th className="status">답변 상태</th>
             </tr>
           </TableHead>
-          <TableBody>{data.data && data.data.productInquiryDtos.map((element, index) => <InquiryDetail element={element} key={index} />)}</TableBody>
+          <TableBody>{data.data && data.data.map((element, index) => <InquiryDetail data={data} element={element} key={index} />)}</TableBody>
         </InquiryTable>
-        <WriteInquiryButtonWrapper onClick={() => setIsOpen(true)}>
-          <BasicButton children={"문의하기"} p_width={15} p_height={10} />
+        <Pagination pageInfo={data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={false} />
+        <WriteInquiryButtonWrapper>
+          <BasicButton children={"문의하기"} p_width={15} p_height={10} onClick={() => setIsOpen(true)} />
         </WriteInquiryButtonWrapper>
         {isOpen ? <ModalComponent component={<CreateInquiry data={data} setIsOpen={setIsOpen} />} /> : null}
       </div>
-    </>
+    </div>
   );
 }
 

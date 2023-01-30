@@ -117,10 +117,14 @@ function ProductSelection({ position, data, quantity, setQuantity, totalPrice })
   const navigate = useNavigate();
 
   const handleAddCartClick = async () => {
-    const body = JSON.stringify({
-      productId: data.data.id,
-      quantity,
-    });
+    const body = {
+      cartItems: [
+        {
+          productId: data.data.id,
+          quantity,
+        },
+      ],
+    };
     const config = {
       headers: {
         "Content-Type": `application/json`,

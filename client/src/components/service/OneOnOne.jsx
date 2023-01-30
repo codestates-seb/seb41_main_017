@@ -28,15 +28,19 @@ function OneOnOne() {
 
   const fetchData = async () => {
     await axios
-      .get(`${BASE_URL}/board/inquiry?page=0&size=10`)
+      .get(`${BASE_URL}/board/inquiry?page=0&size=10`, {
+        headers: {
+          "Content-Type": `application/json`,
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
+        },
+      })
       .then((res) => setQuestion(res.data.data))
       .catch((err) => console.log(err));
   };
   useEffect(() => {
     fetchData();
   }, []);
-
-  // console.log(question);
 
   return (
     <Page>

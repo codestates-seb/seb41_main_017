@@ -2,7 +2,8 @@ package com.codestates.culinari.customercenter.entity;
 
 import com.codestates.culinari.audit.AuditingFields;
 import com.codestates.culinari.customercenter.constant.ProcessStatus;
-import com.codestates.culinari.customercenter.dto.request.CsInquiryRequest;
+import com.codestates.culinari.customercenter.dto.request.CsInquiryPatch;
+import com.codestates.culinari.customercenter.dto.request.CsInquiryPost;
 import com.codestates.culinari.user.entitiy.Profile;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,6 +26,9 @@ public class CsInquiry extends AuditingFields {
     @Column(nullable = false, length = 65554)
     private String content;
 
+    @Column(nullable = false, length = 20)
+    private String category;
+
     @ManyToOne(optional = false)
     private Profile profile;
 
@@ -32,12 +36,19 @@ public class CsInquiry extends AuditingFields {
     @Column(nullable = false)
     private ProcessStatus processStatus;
 
-    public static CsInquiry of(Long id, String title, String content, Profile profile, ProcessStatus processStatus) {
-        return new CsInquiry(id, title, content, profile, processStatus);
+    public static CsInquiry of(Long id, String title, String content, String category, Profile profile, ProcessStatus processStatus) {
+        return new CsInquiry(id, title, content,category ,profile, processStatus);
     }
 
-    public void updateCsInquiry(CsInquiryRequest csInquiryRequest) {
-        this.title = csInquiryRequest.title();
-        this.content = csInquiryRequest.content();
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
+    public void updateCategory(String category) {
+        this.category = category;
     }
 }

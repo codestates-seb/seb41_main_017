@@ -151,7 +151,6 @@ function Addressset() {
                     ok={() => changeValue(keys, "ischeckd")}
                   />
                 ) : null}
-                {console.log(keys)}
               </div>
               <div className="list_content">
                 <div className="list_in_top">

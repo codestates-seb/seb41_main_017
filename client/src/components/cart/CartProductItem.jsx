@@ -78,7 +78,7 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
 
     if (isChecked) {
       checkedList = checkedList.filter((element) => element.id !== item.id);
-      setCheckedList([...checkedList, { id: item.id, quantity, price: item.product.price }]);
+      setCheckedList([...checkedList, { id: item.id, quantity, price: item.product.price, productId: item.product.id }]);
     }
   }, [quantity]);
 
@@ -90,13 +90,17 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
     if (window.confirm("해당 상품을 삭제하시겠습니까?")) {
       const deleteCartList = async () => {
         const config = {
+          data: {
+            cartIds: [item.id],
+          },
           headers: {
             "Content-Type": `application/json`,
-            authorization: JSON.parse(localStorage.getItem("token")).authorization,
+            Authorization: JSON.parse(localStorage.getItem("token")).authorization,
           },
         };
+
         try {
-          await axios.delete(`${BASE_URL}/carts/${item.id}`, config);
+          await axios.delete(`${BASE_URL}/carts`, config);
 
           setCheckedList(checkedList.filter((element) => element.id !== item.id));
           data.data = data.data.filter((_, idx) => idx !== index);

@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
+
+import Pagination from "../../components/Pagination";
 import ProductItem from "../../components/ProductItem";
+
 import BASE_URL from "../../constants/BASE_URL";
 
 const Container = styled.div`
@@ -45,6 +48,35 @@ const PageHeader = styled.h3`
   .search_keyword {
     color: #ff6767;
   }
+
+  .category_details {
+    display: grid;
+    grid-template-columns: repeat(4, 180px);
+    gap: 16px 83px;
+    overflow: hidden;
+    margin-top: 28px;
+    padding: 30px 40px;
+    border: 1px solid rgb(226, 226, 226);
+    line-height: 20px;
+    font-size: 15px;
+    text-align: start;
+  }
+`;
+
+const CategoryList = styled.li`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  a {
+    color: ${({ datacode, code }) => (datacode === code ? "#ff6767" : "black")};
+    font-weight: ${({ datacode, code }) => (datacode === code ? 700 : 400)};
+
+    &:hover {
+      color: #ff6767;
+      font-weight: 700;
+    }
+  }
 `;
 
 const FilterList = styled.li.attrs(({ dataId }) => ({
@@ -63,45 +95,46 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
 
 function Search() {
   const location = useLocation();
+  const { code } = useParams();
+
   const [data, setData] = useState("");
+  const [categoryData, setCategoryData] = useState([]);
   const [sort, setSort] = useState("newest");
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get(`${BASE_URL}/search${location.search}`);
+    const query = {
+      size: 20,
+      page: currentPage,
+      sorted_type: sort,
+    };
+    const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
+    const getProductData = async () => {
+      const { data } = await axios.get(`${BASE_URL}${location.pathname}${location.search}?${queryString}`);
 
-        return data;
-      } catch (error) {
-        console.log(`Error: ${error}`);
-      }
+      return data;
     };
 
-    const dataSortByPrice = (data) => {
-      if (sort === "newest") {
-        return data;
-      }
+    const getCategoryData = async () => {
+      const { data } = await axios.get(`${BASE_URL}/category/categorydetail/${code.slice(0, 3)}`);
 
-      if (sort === "lower") {
-        data.data = data.data.sort((a, b) => a.price - b.price);
-
-        return data;
-      }
-
-      if (sort === "higher") {
-        data.data = data.data.sort((a, b) => b.price - a.price);
-
-        return data;
-      }
+      return data;
     };
 
     (async () => {
-      const data = await getData();
-      const sortedData = dataSortByPrice(data);
+      try {
+        const productData = await getProductData();
+        setData(productData);
 
-      setData(sortedData);
+        if (code) {
+          const categoryData = await getCategoryData();
+          setCategoryData(categoryData);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     })();
-  }, [location, sort]);
+  }, [location, sort, currentPage]);
 
   const handleSortListClick = ({ target }) => {
     setSort(target.dataset.id);
@@ -110,10 +143,31 @@ function Search() {
   return (
     <Container>
       <PageHeader>
-        '<span className="search_keyword">{decodeURIComponent(location.search.slice(9))}</span>'에 대한 검색결과
+        {location.search ? (
+          <div>
+            '<span className="search_keyword">{decodeURIComponent(location.search.slice(9))}</span>'에 대한 검색결과
+          </div>
+        ) : (
+          <>
+            <div>{categoryData.data && categoryData.data[0].name}</div>
+            <ul className="category_details">
+              <CategoryList code={code} datacode={categoryData.data && categoryData.data[0].categoryCode}>
+                <Link to={`/category/${categoryData.data && categoryData.data[0].categoryCode}`}>전체보기</Link>
+              </CategoryList>
+              {categoryData.data &&
+                categoryData.data[0].categoryDetails.map((category, index) => {
+                  return (
+                    <CategoryList code={code} datacode={category.categoryDetailCode} key={index}>
+                      <Link to={"/category/" + category.categoryDetailCode}>{category.name}</Link>
+                    </CategoryList>
+                  );
+                })}
+            </ul>
+          </>
+        )}
       </PageHeader>
       <div className="product_list_header">
-        <div className="product_list_count">{`총 ${data && data.data.length}건`}</div>
+        <div className="product_list_count">{`총 ${data && data.pageInfo.totalElements}건`}</div>
         <ul className="product_filter" onClick={handleSortListClick}>
           <FilterList dataId="newest" sort={sort}>
             신상품순
@@ -132,6 +186,7 @@ function Search() {
             <ProductItem id={element.id} imgUrl={element.productImageDtos[0]?.imgUrl} name={element.name} price={element.price} key={Math.random()} />
           ))}
       </div>
+      <Pagination pageInfo={data && data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={true} />
     </Container>
   );
 }

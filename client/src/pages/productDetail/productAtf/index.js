@@ -72,7 +72,7 @@ const ProductInfo = styled.section`
 function ProductAtf({ data, quantity, setQuantity, totalPrice }) {
   return (
     <Container>
-      <ProductImage src="https://img-cf.kurly.com/shop/data/goods/1657528646107l0.jpg" />
+      <ProductImage src={data.data && data.data.productImageDtos?.[0].imgUrl} />
       <ProductInfo>
         <ProductHeader data={data} />
 

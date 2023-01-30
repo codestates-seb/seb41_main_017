@@ -1,8 +1,10 @@
+import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components";
 import BasicButton from "../../../components/BasicButton";
 
 import DeleteButton from "../../../components/DeleteButton";
+import BASE_URL from "../../../constants/BASE_URL";
 
 const Container = styled.div`
   display: flex;
@@ -153,6 +155,37 @@ function CreateInquiry({ data, setIsOpen }) {
   const [content, setContent] = useState("");
   const isActive = title && content;
 
+  const handleCreateInquiry = () => {
+    const trimTitle = title.trim();
+    const trimContent = content.trim();
+
+    if (!trimTitle || !trimContent) {
+      alert("제목이나 내용을 꼭 입력해주세요.");
+
+      return;
+    }
+
+    const body = {
+      title: trimTitle,
+      content: trimContent,
+    };
+
+    const config = {
+      headers: {
+        "Content-Type": `application/json`,
+        Authorization: JSON.parse(localStorage.getItem("token")).authorization,
+      },
+    };
+
+    try {
+      axios.post(`${BASE_URL}/product/${data.data.id}/inquiry`, body, config);
+    } catch (error) {
+      console.error(error);
+    }
+
+    window.location.reload();
+  };
+
   return (
     <Container>
       <Header>
@@ -164,9 +197,9 @@ function CreateInquiry({ data, setIsOpen }) {
 
       <ProductInfo>
         <div className="product_image">
-          <img src={data.image} />
+          <img src={data.data.productImageDtos?.[0]?.imgUrl} />
         </div>
-        <div className="product_title">{data.name}</div>
+        <div className="product_title">{data.data.name}</div>
       </ProductInfo>
 
       <InquiryTitle>
@@ -184,7 +217,7 @@ function CreateInquiry({ data, setIsOpen }) {
       </InquiryContent>
 
       <ButtonWrapper isActive={isActive}>
-        <BasicButton children={"문의하기"} font={14} p_width={50} p_height={15} />
+        <BasicButton children={"문의하기"} font={14} p_width={50} p_height={15} onClick={handleCreateInquiry} />
       </ButtonWrapper>
     </Container>
   );

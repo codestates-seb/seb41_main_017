@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import Mypagehead from "../../components/MypageHead";
-import ListLayout from "../../components/ListLayout";
-import BasicButton from "../../components/BasicButton";
+import ReviewList from "../../components/ReviewList";
 import styled from "styled-components";
-
+import axios from "axios";
 
 const TapLayout = styled.div`
   display:flex;
@@ -34,9 +33,21 @@ const Tab = ({setState, state})=>{
 }
 
 
-
 function ItemreviewList() {
   const [tabs, setTabs] = useState(true);
+
+  useEffect(()=>{
+    axios.get(`${process.env.REACT_APP_URL}/mypage/review?type=nonexistent`,{
+      headers: {
+        authorization: JSON.parse(localStorage.getItem("token"))
+          .authorization,
+      }
+    })
+    .then((res)=>{
+      console.log(res);
+    })
+  
+  },[]);
 
   return (
     <Mypagehead
@@ -45,8 +56,9 @@ function ItemreviewList() {
       line={true}
       filltap={true}
       tab={<Tab state={tabs} setState={setTabs}/>}>
-        {tabs === true ? <div>
-          작성 가능 후기
+        {tabs === true ? 
+        <div>
+          <ReviewList/>
         </div> :
         <div>
           작성한 후기

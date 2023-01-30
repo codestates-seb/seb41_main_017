@@ -1,11 +1,13 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import { format, add } from "date-fns";
 import ListLayout from "../../components/ListLayout";
 import Mypagehead from "../../components/MypageHead";
 import BasicButton from "../../components/BasicButton";
-import { format, add } from "date-fns";
-import { useEffect, useState } from "react";
-import axios from "axios";
-
+import PaginationBtn from "../../components/PaginationBtn";
+import CreateInquiry from "../productDetail/productContent/CreateInquiry";
 
 const testData = {
   data: [
@@ -73,7 +75,13 @@ const testData = {
   barNumber: [0],
 };
 
-// _-------------
+const ClassList = styled.div`
+.items_question {
+  position: fixed;
+  top:0;
+}
+  
+`
 
 const Layout = styled.div`
   display: flex;
@@ -85,7 +93,8 @@ const Layout = styled.div`
 
   .left {
     flex: 1;
-    text-align:center;
+    text-align: center;
+    cursor: pointer;
 
     img {
       border-radius: 5px;
@@ -108,6 +117,10 @@ const Layout = styled.div`
       span {
         color: #067303;
         font-size: 14px;
+      }
+
+      h5 {
+        cursor: pointer;
       }
     }
 
@@ -135,6 +148,8 @@ const Layout = styled.div`
       flex-direction: column;
       gap: 7px;
     }
+
+   
   }
 
   .sub_list {
@@ -185,157 +200,150 @@ const Layout = styled.div`
 
 function DeliveryLook() {
   const time = format(add(new Date(), { days: 2 }), "MM/dd");
-  // 하나의 state로 서브리스트 관리
-  const [bottomTap, setBottomTap] = useState([]);
   // 기본데이터 뿌리는 용도
-  const [ordersData, setOrders] = useState([]);
+  const [ordersData, setOrders] = useState(testData.data);
+  // 하나의 state로 서브리스트 관리
+  const [bottomTab, setBottomTab] = useState(0);
+  const navigate = useNavigate();
+  // 클릭시 해당상품의 데이터를 담는다.
+  const [datas, setDatas] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
 
-  const arr = []
-  
   useEffect(() => {
-    setOrders(testData.data);
+    // setOrders(testData.data);
     // axios.get(`${process.env.REACT_APP_URL}/orders/details`,{
     //   headers: {
     //     authorization: JSON.parse(localStorage.getItem("token"))
     //       .authorization,
     //   },
     // }).then( res => setOrders(res.data))
-    
+    // recv를 받으면 처리
+    // test1
+    // const test = testData.data.map((data) => {
+    //   // const num = ;
+    //   return { [data.id] : false};
+    // });
   }, []);
-  
+
+  const setData = (id) => {
+    // 클릭한데이터를 저장
+    setDatas(id);
+    setIsOpen(true);
+  };
+
+  const movePage = (id) => {
+    navigate(`/product/:${id}`);
+  };
+
   return (
     <Mypagehead title={"배송 조회"}>
-      {ordersData.map((data) => {
-        arr.push(...bottomTap,{[data.id]: false});
-        // setBottomTap(...bottomTap,{[data.id]: false})
-        // setBottomTap({...bottomTap, [data.id]: false})
-        console.log(arr);
-        return (
-          <ListLayout padding_width={"10px"} key={data.id}>
-            <Layout>
-              <div className="main_list">
-                <div className="left">
-                  <img
-                    src={`${data.product.productImageDtos[0].imgUrl}`}
-                    alt="#"
-                  ></img>
+      <ClassList>
+        {ordersData.map((data) => {
+          return (
+            <ListLayout padding_width={"10px"} key={data.id}>
+              <Layout>
+                <div className="main_list">
+                  <div
+                    className="left"
+                    onClick={() => movePage(data.product.id)}
+                  >
+                    <img
+                      src={`${data.product.productImageDtos[0].imgUrl}`}
+                      alt="#"
+                    ></img>
+                  </div>
+                  <div className="center">
+                    <div className="title">
+                      <h5
+                        onClick={() => movePage(data.product.id)}
+                      >{`${data.product.name} ${data.product.brand}`}</h5>
+                      <BasicButton>{"준비중"}</BasicButton>
+                      <span>{`${time} 도착예정`}</span>
+                    </div>
+                    <div className="count">
+                      <span>{`${data.product.price.toLocaleString()}원`}</span>
+                      <span>{`${data.quantity}개`}</span>
+                    </div>
+                    <div className="items_states">
+                      <div>{"상태들어올 예정"}</div>
+                    </div>
+                  </div>
+                  <div className="right">
+                    <div className="btns">
+                      <BasicButton>{"취소,교환,반품 신청"}</BasicButton>
+                      <BasicButton onClick={() => setData(data)}>
+                        {"문의하기"}
+                      </BasicButton>
+                    </div>
+                    <button
+                      value={data.id}
+                      onClick={(e) => setBottomTab(Number(e.target.value))}
+                    >
+                      {"자세히보기"}
+                    </button>
+                  </div>
                 </div>
-                <div className="center">
-                  <div className="title">
-                    <h5>{`${data.product.name} ${data.product.brand}`}</h5>
-                    <BasicButton>{"준비중"}</BasicButton>
-                    <span>{`${time} 도착예정`}</span>
+                {data.id === bottomTab ? (
+                  <div className="sub_list">
+                    <div className="sub_title">
+                      <div>{"시간"}</div>
+                      <div>{"위치"}</div>
+                      <div>{"상태"}</div>
+                    </div>
+                    <ul className="sub_content">
+                      <li>
+                        <span>{"YY/MM/DD hh:mm:ss"}</span>
+                        <span>{"위치"}</span>
+                        <span>{"배송중(배송기사: 최준호 010-0000-0000)"}</span>
+                      </li>
+                      <li>
+                        <span>{"YY/MM/DD hh:mm:ss"}</span>
+                        <span>{"위치"}</span>
+                        <span>{"간선 상차"}</span>
+                      </li>
+                      <li>
+                        <span>{"YY/MM/DD hh:mm:ss"}</span>
+                        <span>{"위치"}</span>
+                        <span>{"배송 준비중"}</span>
+                      </li>
+                    </ul>
                   </div>
-                  <div className="count">
-                    <span>{`${data.product.price.toLocaleString()}원`}</span>
-                    <span>{`${data.quantity}개`}</span>
-                  </div>
-                  <div className="items_states">
-                    <div>{"상태들어올 예정"}</div>
-                  </div>
-                </div>
-                <div className="right">
-                  <div className="btns">
-                    <BasicButton>{"취소,교환,반품 신청"}</BasicButton>
-                    <BasicButton>{"문의하기"}</BasicButton>
-                  </div>
-                  <div onClick={() => setBottomTap(!bottomTap)}>
-                  {/* <div onClick={() => console.log("오류")}> */}
-                    {"자세히보기"}
-                  </div>
-                </div>
-              </div>
-              {bottomTap ? (
-                <div className="sub_list">
-                  <div className="sub_title">
-                    <div>{"시간"}</div>
-                    <div>{"위치"}</div>
-                    <div>{"상태"}</div>
-                  </div>
-                  <ul className="sub_content">
-                    <li>
-                      <span>{"YY/MM/DD hh:mm:ss"}</span>
-                      <span>{"위치"}</span>
-                      <span>{"배송중(배송기사: 최준호 010-0000-0000)"}</span>
-                    </li>
-                    <li>
-                      <span>{"YY/MM/DD hh:mm:ss"}</span>
-                      <span>{"위치"}</span>
-                      <span>{"간선 상차"}</span>
-                    </li>
-                    <li>
-                      <span>{"YY/MM/DD hh:mm:ss"}</span>
-                      <span>{"위치"}</span>
-                      <span>{"배송 준비중"}</span>
-                    </li>
-                  </ul>
-                </div>
-              ) : undefined}
-            </Layout>
-          </ListLayout>
-        );
-      })}
-      {/* <ListLayout padding_width={"10px"}>
-        <Layout>
-          <div className="main_list">
-            <div className="left">
-              <img
-                src="https://www.wjfood.co.kr/Psd/Main/3A3326.png"
-                alt="#"
-              ></img>
-            </div>
-            <div className="center">
-              <div className="title">
-                <h5>상품이름입니다</h5>
-                <BasicButton>배송중</BasicButton>
-                <span>{`${time} 도착예정`}</span>
-              </div>
-              <div className="count">
-                <span>{"00,000원"}</span>
-                <span>{"00개"}</span>
-              </div>
-              <div className="items_states">
-                <div>{"상태들어올 예정"}</div>
-              </div>
-            </div>
-            <div className="right">
-              <div className="btns">
-                <BasicButton>{"취소,교환,반품 신청"}</BasicButton>
-                <BasicButton>{"문의하기"}</BasicButton>
-              </div>
-              <div onClick={() => setBottomTap(!bottomTap)}>{"자세히보기"}</div>
-            </div>
-          </div>
-          {bottomTap ? (
-            <div className="sub_list">
-              <div className="sub_title">
-                <div>{"시간"}</div>
-                <div>{"위치"}</div>
-                <div>{"상태"}</div>
-              </div>
-              <ul className="sub_content">
-                <li>
-                  <span>{"YY/MM/DD hh:mm:ss"}</span>
-                  <span>{"위치"}</span>
-                  <span>{"배송중(배송기사: 최준호 010-0000-0000)"}</span>
-                </li>
-                <li>
-                  <span>{"YY/MM/DD hh:mm:ss"}</span>
-                  <span>{"위치"}</span>
-                  <span>{"간선 상차"}</span>
-                </li>
-                <li>
-                  <span>{"YY/MM/DD hh:mm:ss"}</span>
-                  <span>{"위치"}</span>
-                  <span>{"배송 준비중"}</span>
-                </li>
-              </ul>
-            </div>
-          ) : undefined}
-        </Layout>
-      </ListLayout> */}
+                ) : undefined}
+              </Layout>
+            </ListLayout>
+          );
+        })}
+        <div className="items_question">
+          {isOpen ? (
+            <CreateInquiry
+              data={{
+                image: datas?.product?.productImageDtos[0]?.imgUrl,
+                name: datas?.product?.name,
+              }}
+              setIsOpen={setIsOpen}
+            />
+          ) : null}
+        </div>
+      </ClassList>
     </Mypagehead>
   );
 }
 
 export default DeliveryLook;
+
+/*
+ [내가 해결해야할 문제점]
+ * 결제부분문제로 현재 더미데이터를 사용중
+ 1. 자세히보기를 클릭시 동시에 여러개를 열수가없음 개별적으로는 열림 다시클릭시 닫히지않음
+ 2. 문의하기 클릭시 어디로 ? 내문의 창으로?
+ 3. 취소,교환,반품,신청 클릭시
+ 4. 리스트 가운데 상태 필요
+ 5. 이미지 or 상품이름 클릭시 해당상품으로 이동?
+ 6. 페이지네이션필요-> 페이지별 공통
+
+ [요청할 문제점]
+  1. 취소,교환,반품,신청 버튼필요 -> 주문취소(결제까지 취소가 되어야 삭제된다?)
+  2. 상태표 데이터는 어떻게해야하나?(시간, 위치, 상태) 이동중인 상품을애기함
+  
+ 
+*/

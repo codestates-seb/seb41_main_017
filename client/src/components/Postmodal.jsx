@@ -77,15 +77,30 @@ function Postmodal() {
   const [signupAddress, setSignupAddress] = useState("");
   const [postAddress, setPostAddress] = useState("");
   const [address, setAddress] = useState("");
-
-
   const [isopen, setIsopen] = useState(false);
   const [destinationName, setDestinationName] = useState("");
   const [receiverName, setReceiverName] = useState("");
   const [receiverPhoneNumber, setReceiverPhoneNumber] = useState("");
   
   const save = () => {
-    console.log("save함수실행");
+
+    if(destinationName === ""){
+      return alert("배송지명이 입력되지 않았습니다.")
+    }
+    if(receiverName === ""){
+      return alert("수령인이 입력되지 않았습니다.")
+    }
+    if(receiverPhoneNumber === ""){
+      return alert("연락처가 입력되지 않았습니다")
+    }
+    if(signupAddress === ""){
+      return alert("주소가 입력되지 않았습니다")
+    }
+    if(address === ""){
+      return alert("상세주소가 입력되지 않았습니다.")
+    }
+
+
     axios.post(
       `${process.env.REACT_APP_URL}/destination`,
       {
@@ -102,8 +117,7 @@ function Postmodal() {
         },
       },
       setIsopen(false)
-    );
-    setTimeout(() => window.location.reload(), 1000);
+    ).then(() => window.location.reload());
   };
 
   return (

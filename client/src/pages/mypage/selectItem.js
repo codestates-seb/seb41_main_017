@@ -104,6 +104,7 @@ function Serachitem() {
   }
 
   const cartPost = ()=>{
+      console.log("테스트:",item)
       axios.post(`${process.env.REACT_APP_URL}/carts`,
     {
       cartItems:[item]

@@ -2,8 +2,7 @@ import "./App.css";
 import reset from "styled-reset";
 import { createGlobalStyle } from "styled-components";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import Header from "./components/header";
-
+import Header from "./components/header/Header";
 import Mypage from "./pages/mypage/index";
 import Login from "./pages/sign/login";
 import ServiceHome from "./components/service/index";
@@ -12,6 +11,9 @@ import Cart from "./pages/cart";
 import ProductDetail from "./pages/productDetail";
 import Collection from "./pages/collection";
 import Search from "./pages/search";
+import Pay from "./components/pay";
+import SuccessPayment from "./components/pay/SuccessPayment";
+import FailPayment from "./components/pay/FailPayment";
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -67,7 +69,7 @@ function App() {
       <GlobalStyle />
       <div id="container">
         <div id="header">
-          <Header />
+          <Header />{" "}
         </div>
         <main id="main">
           <Routes>
@@ -77,10 +79,12 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/collections/new-product" element={<Collection />} />
-            <Route path="/collections/best-product" element={<Collection />} />
+            <Route path="/collections/:params" element={<Collection />} />
             <Route path="/search" element={<Search />} />
             <Route path="/category/:code" element={<Search />} />
+            <Route path="/pay" element={<Pay />} />
+            <Route path="/pay/successpage" element={<SuccessPayment />} />
+            <Route path="/pay/failpage" element={<FailPayment />} />
           </Routes>
         </main>
         <footer id="footer"></footer>

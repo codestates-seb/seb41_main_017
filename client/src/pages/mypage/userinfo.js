@@ -296,8 +296,7 @@ function Userinfo() {
               p_height={"14"}
               p_width={"150"}
               onClick={() => setIsmodal(true)}
-              disabled={false}/>
-            {console.log(isdisabled)}
+              disabled={isdisabled}/>
             {ismodal ? (
               <Guidance
                 text={"해당변경 사항을 적용하시겠습니까?"}

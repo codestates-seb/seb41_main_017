@@ -4,7 +4,7 @@ import styled from "styled-components";
 const GenderRadio = ({ setCheck, isdisabled }) => {
   const [select, setSelect] = useState(`남성`);
   // 현재오류부분
-  // setCheck(select);
+  setCheck(select);
   const handleSelectChange = (event) => {
     const value = event.target.value;
     setSelect(value);

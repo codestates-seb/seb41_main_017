@@ -53,8 +53,6 @@ const Page = styled.div`
 `;
 
 function ServiceDetailpage({ Dummy }) {
-  console.log(Dummy);
-
   const navigate = useNavigate();
 
   const handleClickBtn = (e) => {
