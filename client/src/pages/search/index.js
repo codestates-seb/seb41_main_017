@@ -7,6 +7,7 @@ import Pagination from "../../components/Pagination";
 import ProductItem from "../../components/ProductItem";
 
 import BASE_URL from "../../constants/BASE_URL";
+import productNone from "../../assets/product_none.png";
 
 const Container = styled.div`
   margin-top: 50px;
@@ -91,6 +92,11 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
   cursor: pointer;
 
   color: ${({ dataId, sort }) => (dataId === sort ? "#ff6767" : "rgb(153, 153, 153)")};
+`;
+
+const ProductNoneImageWrapper = styled.div`
+  margin-top: 50px;
+  text-align: center;
 `;
 
 function Search() {
@@ -186,6 +192,11 @@ function Search() {
             <ProductItem id={element.id} imgUrl={element.productImageDtos[0]?.imgUrl} name={element.name} price={element.price} key={Math.random()} />
           ))}
       </div>
+      {data && data.data.length ? null : (
+        <ProductNoneImageWrapper>
+          <img src={productNone} />
+        </ProductNoneImageWrapper>
+      )}
       <Pagination pageInfo={data && data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={true} />
     </Container>
   );
