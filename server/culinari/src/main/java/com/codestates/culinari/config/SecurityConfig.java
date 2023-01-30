@@ -72,7 +72,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/orders/**").hasRole("{authority=일반 유저}")
                         // Payment
                         .requestMatchers(HttpMethod.POST, "/payments/**").hasRole("{authority=일반 유저}")
-                        .requestMatchers(HttpMethod.GET, "/payments/**").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.GET,"/payments/**").hasRole("{authority=일반 유저}")
+                        .requestMatchers(HttpMethod.GET, "/payments/success").permitAll()
+                        .requestMatchers(HttpMethod.GET,"payments/fail").permitAll()
                         // CustomerCenter
                         .requestMatchers(HttpMethod.POST, "/board/inquiry/").hasRole("{authority=일반 유저}")
                         .requestMatchers(HttpMethod.GET, "/board/inquiry/").hasRole("{authority=일반 유저}")
