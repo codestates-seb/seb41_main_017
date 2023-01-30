@@ -54,7 +54,7 @@ const Layout = styled.div`
     .serach {
       display: flex;
       border: 1px solid #ffc3b1;
-      width: 400px;
+      width: 500px;
       height: 48px;
       border-radius: 10px;
       justify-content: space-around;
@@ -101,13 +101,11 @@ const Layout = styled.div`
           }
 
           .new_product {
-            color: ${({ pathname }) =>
-              pathname.includes("/newproduct") ? "#ff6767" : null};
+            color: ${({ pathname }) => (pathname.includes("/newproduct") ? "#ff6767" : null)};
           }
 
           .best_products {
-            color: ${({ pathname }) =>
-              pathname.includes("/bestproducts") ? "#ff6767" : null};
+            color: ${({ pathname }) => (pathname.includes("/bestproducts") ? "#ff6767" : null)};
           }
 
           span {
@@ -227,11 +225,7 @@ function Header() {
     };
 
     const getCategoryDetails = async (codes) => {
-      const data = await Promise.all(
-        codes.map((code) =>
-          axios.get(`${BASE_URL}/category/categorydetail/${code}`)
-        )
-      );
+      const data = await Promise.all(codes.map((code) => axios.get(`${BASE_URL}/category/categorydetail/${code}`)));
 
       return data;
     };
@@ -251,9 +245,7 @@ function Header() {
   }, []);
 
   const handleCategoriesMouseOver = ({ target }) => {
-    setCategoryDetailCodes(
-      categoryDetails[target.dataset.index].data.data[0].categoryDetails
-    );
+    setCategoryDetailCodes(categoryDetails[target.dataset.index].data.data[0].categoryDetails);
     setCurrentIndex(target.dataset.index);
   };
 
@@ -290,10 +282,7 @@ function Header() {
           <img src={logo} alt="logo"></img>
         </div>
         <form className="serach" onSubmit={handleSearchProductSubmit}>
-          <input
-            placeholder="검색어를 입력해주세요"
-            onChange={({ target }) => setSearchText(target.value)}
-          ></input>
+          <input placeholder="검색어를 입력해주세요" onChange={({ target }) => setSearchText(target.value)}></input>
           <button>
             <BsSearch />
           </button>
@@ -320,25 +309,14 @@ function Header() {
               </span>
               <span className="category">카테고리</span>
               <div className="drop_down_container">
-                <div
-                  className="drop_down"
-                  onMouseLeave={handleCategoriesMouseLeave}
-                >
+                <div className="drop_down" onMouseLeave={handleCategoriesMouseLeave}>
                   <div>
                     <ul>
                       {categories.data &&
                         categories.data.map((category, index) => (
-                          <CategoryList
-                            onMouseOver={handleCategoriesMouseOver}
-                            data-index={index}
-                            ishover={index == currentIndex}
-                            key={index}
-                          >
+                          <CategoryList onMouseOver={handleCategoriesMouseOver} data-index={index} ishover={index == currentIndex} key={index}>
                             {
-                              <Link
-                                to={"/category/" + category.categoryCode}
-                                data-index={index}
-                              >
+                              <Link to={"/category/" + category.categoryCode} data-index={index}>
                                 {category.name}
                               </Link>
                             }
@@ -351,10 +329,7 @@ function Header() {
                       {categoryDetailCodes.map((category, index) => (
                         <li key={index}>
                           {
-                            <Link
-                              to={"/category/" + category.categoryDetailCode}
-                              data-index={index}
-                            >
+                            <Link to={"/category/" + category.categoryDetailCode} data-index={index}>
                               {category.name}
                             </Link>
                           }
