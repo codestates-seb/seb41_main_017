@@ -10,6 +10,7 @@ import ProductItem from "../../components/ProductItem";
 import CategoryList from "./CategoryList";
 import Pagination from "../../components/Pagination";
 import ScrollTop from "../../components/ScrollTop";
+import productNone from "../../assets/product_none.png";
 
 const PageHeader = styled.h3`
   margin-top: 50px;
@@ -93,6 +94,11 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
   cursor: pointer;
 
   color: ${({ dataId, sort }) => (dataId === sort ? "#ff6767" : "rgb(153, 153, 153)")};
+`;
+
+const ProductNoneImageWrapper = styled.div`
+  margin-top: 50px;
+  text-align: center;
 `;
 
 function Collection() {
@@ -184,6 +190,11 @@ function Collection() {
                 />
               ))}
           </div>
+          {data && data.data.length === 0 ? (
+            <ProductNoneImageWrapper>
+              <img src={productNone} />
+            </ProductNoneImageWrapper>
+          ) : null}
           <Pagination pageInfo={data && data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={true} />
         </div>
         <ScrollTop />
