@@ -45,7 +45,7 @@ function ProductHeader({ data }) {
     const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
 
     if (!accessToken) {
-      if (window.confirm("찜 기능은 로그인 후에 가능합니다. 로그인 페이지으로 이동하시겠습니까?")) {
+      if (window.confirm("찜 기능은 로그인 후에 사용할 수 있습니다. 로그인 페이지으로 이동하시겠습니까?")) {
         navigate("/login");
 
         return;
