@@ -9,6 +9,7 @@ import BASE_URL from "../../constants/BASE_URL";
 import ProductItem from "../../components/ProductItem";
 import CategoryList from "./CategoryList";
 import Pagination from "../../components/Pagination";
+import ScrollTop from "../../components/ScrollTop";
 
 const PageHeader = styled.h3`
   margin-top: 50px;
@@ -185,6 +186,7 @@ function Collection() {
           </div>
           <Pagination pageInfo={data && data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={true} />
         </div>
+        <ScrollTop />
       </Content>
     </>
   );
