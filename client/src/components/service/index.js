@@ -18,7 +18,7 @@ function ServiceHome() {
 
   const list = {
     공지사항: {
-      announcement: <Announcement />,
+      "announcement?": <Announcement />,
       children: [
         {
           "/announcement/detail/1": (
