@@ -1,5 +1,7 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { ReactComponent as Heart } from "../../../assets/heart.svg";
@@ -13,19 +15,34 @@ const HeartIconWrapper = styled.div`
 `;
 
 function ProductHeader({ data }) {
+  const [isLiked, setIsLiked] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const handleIconClick = () => {
+  useEffect(() => {
     const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
-    const postProductLike = async () => {
+
+    if (!accessToken) return;
+
+    const getProductLikes = () => {
       const config = {
         headers: {
           "Content-Type": `application/json`,
           Authorization: accessToken,
         },
       };
-      axios.post(`${BASE_URL}/product/${data.data.id}/like`, null, config);
+
+      return axios.get(`${BASE_URL}/mypage/productlike`, config);
     };
+
+    (async () => {
+      const likes = await getProductLikes();
+      setIsLiked(likes.data.data.some((element) => element.productId == id ?? false));
+    })();
+  }, []);
+
+  const handleIconClick = () => {
+    const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
 
     if (!accessToken && window.confirm("찜 기능은 로그인 후에 가능합니다. 로그인 페이지으로 이동하시겠습니까?")) {
       navigate("/login");
@@ -33,10 +50,44 @@ function ProductHeader({ data }) {
       return;
     }
 
-    try {
-      postProductLike();
-    } catch (error) {
-      console.error(error);
+    if (isLiked === true) {
+      const deleteProductLike = () => {
+        const config = {
+          headers: {
+            "Content-Type": `application/json`,
+            Authorization: accessToken,
+          },
+        };
+
+        axios.delete(`${BASE_URL}/product/${id}/like`, config);
+      };
+
+      try {
+        deleteProductLike();
+        setIsLiked(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (isLiked === false) {
+      const postProductLike = () => {
+        const config = {
+          headers: {
+            "Content-Type": `application/json`,
+            Authorization: accessToken,
+          },
+        };
+
+        axios.post(`${BASE_URL}/product/${id}/like`, null, config);
+      };
+
+      try {
+        postProductLike();
+        setIsLiked(true);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -47,7 +98,7 @@ function ProductHeader({ data }) {
       <div className="title-container">
         <h1>{data.data && data.data.name}</h1>
         <HeartIconWrapper onClick={handleIconClick}>
-          {true ? <Heart width="30" height="30" fill="red" /> : <Heart width="30" height="30" fill="#ddd" />}
+          {isLiked ? <Heart width="30" height="30" fill="red" /> : <Heart width="30" height="30" fill="#ddd" />}
         </HeartIconWrapper>
       </div>
 
