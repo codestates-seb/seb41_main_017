@@ -279,7 +279,9 @@ function Header() {
       </div>
       <div className="mid flex">
         <div className="logo">
-          <img src={logo} alt="logo"></img>
+          <a href="/">
+            <img src={logo} alt="logo"></img>
+          </a>
         </div>
         <form className="serach" onSubmit={handleSearchProductSubmit}>
           <input placeholder="검색어를 입력해주세요" onChange={({ target }) => setSearchText(target.value)}></input>
