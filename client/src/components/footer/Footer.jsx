@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import logo from "../../../src/assets/logo.jpg";
+import githubLogo from "../../assets/github-logo.png";
 
 const Page = styled.div`
   box-shadow: 0 -3px 4px 0 rgb(0 0 0 / 7%);
@@ -74,30 +75,30 @@ function Footer() {
             <div className="top_name">
               <p>장준익 </p>
               <a href="https://github.com/JangIkIk">
-                <img className="github" src="img/github-logo.png"></img>
+                <img className="github" src={githubLogo}></img>
               </a>{" "}
               <p>전성훈 </p>
               <a href="https://github.com/jsh3418">
-                <img className="github" src="img/github-logo.png"></img>
+                <img className="github" src={githubLogo}></img>
               </a>{" "}
               <p>최준호 </p>
               <a href="https://github.com/junpotatoes">
-                <img className="github" src="img/github-logo.png"></img>
+                <img className="github" src={githubLogo}></img>
               </a>
             </div>
 
             <div className="bottom_name">
               <p>김진수 </p>
               <a href="https://github.com/frontLine-kim">
-                <img className="github" src="img/github-logo.png"></img>
+                <img className="github" src={githubLogo}></img>
               </a>{" "}
               <p>배용현 </p>
               <a href="https://github.com/Baeyonghyeon">
-                <img className="github" src="img/github-logo.png"></img>
+                <img className="github" src={githubLogo}></img>
               </a>{" "}
               <p>허석진 </p>
               <a href="https://github.com/sGOM">
-                <img className="github" src="img/github-logo.png"></img>
+                <img className="github" src={githubLogo}></img>
               </a>
             </div>
           </div>
