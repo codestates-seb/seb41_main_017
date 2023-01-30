@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import styled from "styled-components";
-import BASE_URL from "../../constants/BASE_URL";
 
+import ScrollTop from "../../components/ScrollTop";
 import ProductAtf from "./productAtf/index";
 import ProductContent from "./productContent/index";
+
+import BASE_URL from "../../constants/BASE_URL";
 
 const Container = styled.div`
   max-width: 1050px;
@@ -45,6 +46,7 @@ function ProductDetail() {
     <Container>
       <ProductAtf data={data} quantity={quantity} setQuantity={setQuantity} totalPrice={totalPrice} />
       <ProductContent data={data} quantity={quantity} setQuantity={setQuantity} totalPrice={totalPrice} />
+      <ScrollTop />
     </Container>
   );
 }
