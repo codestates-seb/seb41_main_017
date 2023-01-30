@@ -194,6 +194,12 @@ function Cart() {
   };
 
   const handleOrderButtonClick = () => {
+    if (checkedList.length === 0) {
+      alert("체크한 상품이 없습니다. 구매하실 상품 체크하여 주문하기를 눌러주세요.");
+
+      return;
+    }
+
     dispatch(setInfo({ ids: checkedList.map((list) => list.productId), totalPrice }));
     navigate("/pay");
   };
