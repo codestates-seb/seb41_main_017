@@ -10,4 +10,5 @@ public interface ProductReviewRepository extends JpaRepository<ProductReview, Lo
     Page<ProductReview> findByProfileId(Long profileId, Pageable pageable);
 
     Page<ProductReview> findByProductId(Long productId, Pageable pageable);
+    ProductReview deleteByProductIdAndOrderDetailIdAndProfileId(Long productId, Long orderDetailId, Long profileId);
 }
