@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import BasicButton from "../../../components/BasicButton";
 
+import BasicButton from "../../../components/BasicButton";
 import DeleteButton from "../../../components/DeleteButton";
+
 import BASE_URL from "../../../constants/BASE_URL";
 
 const Container = styled.div`
@@ -155,8 +157,21 @@ function CreateInquiry({ id, imgUrl, name, setIsOpen }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const isActive = title && content;
+  const navigate = useNavigate();
 
   const handleCreateInquiry = () => {
+    const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
+
+    if (!accessToken) {
+      if (window.confirm("해당 기능은 로그인 후에 사용할 수 있습니다. 로그인 페이지으로 이동하시겠습니까?")) {
+        navigate("/login");
+
+        return;
+      }
+
+      return;
+    }
+
     const trimTitle = title.trim();
     const trimContent = content.trim();
 
