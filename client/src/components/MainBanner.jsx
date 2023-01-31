@@ -3,7 +3,11 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
+
 import { ReactComponent as GrayArrow } from "../assets/gray_arrow.svg";
+import bannerImage1 from "../assets/banner-image1.png";
+import bannerImage2 from "../assets/banner-image2.png";
+import bannerImage3 from "../assets/banner-image3.png";
 
 const StyledSlideWrapper = styled.div`
   display: flex;
@@ -124,9 +128,13 @@ const StyledSlideWrapper = styled.div`
 
 const StyledSlide = styled(Slider)`
   .slick-list {
-    max-width: 1050px;
+    max-width: 700px;
     margin: 0 auto;
     background-color: #f0f9ff;
+  }
+
+  .slick-slide {
+    width: 700px !important;
   }
 `;
 
@@ -134,8 +142,8 @@ const PrevButtonContainer = styled.div`
   position: absolute;
   width: 60px;
   height: 60px;
-  top: 35%;
-  left: 100px;
+  top: 42%;
+  left: 0px;
   z-index: 3;
   transform: rotate(180deg);
 `;
@@ -152,8 +160,8 @@ const NextButtonContainer = styled.div`
   position: absolute;
   width: 60px;
   height: 60px;
-  top: 39%;
-  right: 100px;
+  top: 43.6%;
+  right: 0px;
   z-index: 3;
 `;
 
@@ -168,7 +176,10 @@ function NextButton({ onClick }) {
 const Image = styled.img`
   display: block;
   margin: 0 auto;
-  height: 204px;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
 `;
 
 const PageBoxWrapper = styled.div`
@@ -208,23 +219,21 @@ function MainBanner() {
     beforeChange: (_, index) => setCurrentPage(index + 1),
   };
 
-  const srcArr = [
-    "https://product-image.kurly.com/cdn-cgi/image/quality=85/banner/main/pc/img/129f346e-53a2-4251-bad4-d69e6dfdd048.jpg",
-    "https://product-image.kurly.com/cdn-cgi/image/quality=85/banner/main/pc/img/e4622953-61b8-4062-830d-8435fa11efa3.jpg",
-    "https://product-image.kurly.com/cdn-cgi/image/quality=85/banner/main/pc/img/080a72ca-8a03-4532-a9f3-60d3630be21d.jpg",
-  ];
+  const srcArr = [bannerImage1, bannerImage2, bannerImage3];
 
   return (
-    <StyledSlideWrapper>
-      <StyledSlide {...settings}>
-        {srcArr.map((src, index) => {
-          return <Image src={src} key={index}></Image>;
-        })}
-      </StyledSlide>
-      <PageBoxWrapper>
-        <PageBox>{`${currentPage} / ${srcArr.length}`}</PageBox>
-      </PageBoxWrapper>
-    </StyledSlideWrapper>
+    <>
+      <StyledSlideWrapper>
+        <StyledSlide {...settings}>
+          {srcArr.map((src, index) => {
+            return <Image src={src} key={index} alt="" />;
+          })}
+        </StyledSlide>
+        <PageBoxWrapper>
+          <PageBox>{`${currentPage} / ${srcArr.length}`}</PageBox>
+        </PageBoxWrapper>
+      </StyledSlideWrapper>
+    </>
   );
 }
 
