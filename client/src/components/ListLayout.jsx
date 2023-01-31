@@ -13,7 +13,6 @@ const Container = styled.div`
     position: absolute;
     padding: 5px;
   }
-
 `;
 
 function ListLayout({ 

@@ -3,131 +3,9 @@ import ListLayout from "../../components/ListLayout";
 import Mypagehead from "../../components/MypageHead";
 import BasicButton from "../../components/BasicButton";
 import Guidance from "../../components/Guidance";
-import { format } from "date-fns";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const testData = {
-  data: [
-    {
-      id: 2,
-      address: "수원시",
-      receiverName: "첫번째",
-      receiverPhoneNumber: "010-0000-0000",
-      status: "ORDER_RECEIVED",
-      createdAt: "2023-01-27T13:57:24.538228",
-      orderDetails: [
-        {
-          id: 4,
-          quantity: 1,
-          status: "ORDER_RECEIVED",
-          product: {
-            id: 1,
-            name: "무농약 깐쪽파 200g",
-            brand: null,
-            price: 3090.0,
-            productImageDtos: [
-              {
-                id: 1,
-                imgUrl:
-                  "https://culinari-images.s3.ap-northeast-2.amazonaws.com/products/20230124_001.png",
-              },
-            ],
-          },
-        },
-        {
-          id: 5,
-          quantity: 1,
-          status: "ORDER_RECEIVED",
-          product: {
-            id: 2,
-            name: "친환경 마 300g",
-            brand: null,
-            price: 6900.0,
-            productImageDtos: [
-              {
-                id: 2,
-                imgUrl:
-                  "https://culinari-images.s3.ap-northeast-2.amazonaws.com/products/20230124_002.png",
-              },
-            ],
-          },
-        },
-      ],
-    },
-    {
-      id: 1,
-      address: "성남시",
-      receiverName: "두번째",
-      receiverPhoneNumber: "010-0000-0000",
-      status: "ORDER_RECEIVED",
-      createdAt: "2023-01-27T13:50:32.732622",
-      orderDetails: [
-        {
-          id: 1,
-          quantity: 1,
-          status: "ORDER_RECEIVED",
-          product: {
-            id: 1,
-            name: "무농약 깐쪽파 200g",
-            brand: null,
-            price: 3090.0,
-            productImageDtos: [
-              {
-                id: 1,
-                imgUrl:
-                  "https://culinari-images.s3.ap-northeast-2.amazonaws.com/products/20230124_001.png",
-              },
-            ],
-          },
-        },
-        {
-          id: 2,
-          quantity: 1,
-          status: "ORDER_RECEIVED",
-          product: {
-            id: 2,
-            name: "친환경 마 300g",
-            brand: null,
-            price: 6900.0,
-            productImageDtos: [
-              {
-                id: 2,
-                imgUrl:
-                  "https://culinari-images.s3.ap-northeast-2.amazonaws.com/products/20230124_002.png",
-              },
-            ],
-          },
-        },
-        {
-          id: 3,
-          quantity: 1,
-          status: "ORDER_RECEIVED",
-          product: {
-            id: 3,
-            name: "친환경 볶음밥용 채소 120gx3입",
-            brand: null,
-            price: 4990.0,
-            productImageDtos: [
-              {
-                id: 3,
-                imgUrl:
-                  "https://culinari-images.s3.ap-northeast-2.amazonaws.com/products/20230124_003.png",
-              },
-            ],
-          },
-        },
-      ],
-    },
-  ],
-  pageInfo: {
-    page: 1,
-    size: 10,
-    totalElements: 2,
-    totalPages: 1,
-  },
-  barNumber: [0],
-};
 
 const Layout = styled.div`
   display: flex;
@@ -279,29 +157,19 @@ const Layout = styled.div`
 `;
 
 function Orderitem() {
-  // 하나의 state로 서브리스트 관리
-  const [bottomTab, setBottomTab] = useState(0);
-  // 상품데이터 뿌리는 용도
-  const [ordersData, setOrders] = useState(testData.data);
-  // 카트창
+  const [bottomTab, setBottomTab] = useState("");
+  const [ordersData, setOrders] = useState([]);
   const [cartModal, setCartModal] = useState(false);
-  // 데이터값 구분
   const [keysData, setKeysData] = useState([]);
 
   useEffect(() => {
-    // setOrders(testData.data);
-    // axios.get(`${process.env.REACT_APP_URL}/orders`,{
-    // headers: {
-    //   authorization: JSON.parse(localStorage.getItem("token"))
-    //     .authorization,
-    // },
-    // }).then( res => setOrders(res.data))
-    // recv를 받으면 처리
-    // test1
-    // const test = testData.data.map((data) => {
-    //   // const num = ;
-    //   return { [data.id] : false};
-    // });
+    
+    axios.get(`${process.env.REACT_APP_URL}/orders`,{
+    headers: {
+      authorization: JSON.parse(localStorage.getItem("token"))
+        .authorization,
+    },
+    }).then( res => setOrders(res.data))
   }, []);
 
   const isOpen = (data)=>{
@@ -332,7 +200,7 @@ function Orderitem() {
 
   return (
     <Mypagehead title={"주문 목록 조회"}>
-      {ordersData.map((data) => {
+      {ordersData.data?.map((data) => {
         return (
           <ListLayout
             key={data.id}
@@ -392,8 +260,9 @@ function Orderitem() {
                   </div>
                   <button
                     value={data.id}
-                    onClick={(e) => setBottomTab(Number(e.target.value))}
+                    onClick={(e) => setBottomTab(e.target.value)}
                   >
+                    {console.log(data.id === bottomTab )}
                     {"주문 상세보기"}
                   </button>
                 </div>
@@ -481,19 +350,3 @@ function Orderitem() {
 }
 
 export default Orderitem;
-
-/*
- [내가 해결해야할 문제점]
- * 결제부분문제로 현재 더미데이터를 사용중
- 1. 주문상세보기를 클릭시 동시에 여러개를 열수가없음 개별적으로는 열림 다시클릭시 닫히지않음
- 2. 문의하기 클릭시 어디로 ? 내문의 창으로?
- 3. 취소,교환,반품,신청 클릭시
- 4. 전체 장바구니 담기구현
- 5. 이미지 or 상품이름 클릭시 해당상품으로 이동?
- 6. 페이지네이션필요-> 페이지별 공통
-
- [요청할 문제점]
-  1. 주문번호 DB가 빠져있음
-  2. 결제시 배송요청사항의 DB가 주문목록조회에 빠져있음
-  3. 결제방식DB도 빠져있음
-*/
