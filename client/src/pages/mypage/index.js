@@ -111,7 +111,7 @@ function Mypage () {
 
   const list = {
     "내정보": {
-      'userInfo': <Userinfo/>
+      'userInfo?': <Userinfo/>
     },
     "배송지 설정": {
       'addressSet': <DeliverySet/>
@@ -152,7 +152,7 @@ function Mypage () {
           <div className="acName">
             <span>{`${user.name} 님의 회원카드`}</span>
             <div>
-              <BasicButton href={"/mypage/userInfo"} radius={12}>
+              <BasicButton href={"/mypage/userinfo"} radius={12}>
                 내 정보 수정
               </BasicButton>
             </div>

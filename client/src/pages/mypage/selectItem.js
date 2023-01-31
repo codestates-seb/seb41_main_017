@@ -1,41 +1,37 @@
-import { BiHeartCircle } from "react-icons/bi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Mypagehead from "../../components/MypageHead";
 import styled from "styled-components";
 import ListLayout from "../../components/ListLayout";
 import ProductItem from "../../components/ProductItem";
-import QuantityBox from "../../components/QuantityBox";
 import BasicButton from "../../components/BasicButton";
+import axios from "axios";
+import CountBox from "../../components/CountBox";
+import Guidance from "../../components/Guidance";
+import { BiHeartCircle } from "react-icons/bi";
+
 
 const Layout = styled.div`
   flex-wrap: wrap;
   display: flex;
   gap: 10px;
-
-  & > div {
-    width: calc(24%);
-  }
+  justify-content: flex-start;
 `;
 
 const ItemLayout = styled.div`
+  padding: 6.6px;
   display: flex;
   flex-direction: column;
-  padding: 10px;
-
   .items {
-    width: 150px;
-    height: 220px;
-    margin: 0 auto;
     position: relative;
+  }
 
-    .select {
-      color: ${(porps) => (porps.test ? "red" : "black")};
-      cursor: pointer;
-      font-size: 40px;
-      position: absolute;
-      right: 0px;
-      bottom: 0px;
-    }
+  .select_item{
+    position: absolute;
+    bottom:60px;
+    right:15px;
+    font-size:30px;
+    color:red;
+    cursor: pointer;
   }
 
   .counts {
@@ -60,110 +56,109 @@ const ItemLayout = styled.div`
 `;
 
 function Serachitem() {
-  const [item1, setItem1] = useState(0);
-  const [item2, setItem2] = useState(0);
-  const [item3, setItem3] = useState(0);
-  const [item4, setItem4] = useState(0);
-  const [item5, setItem5] = useState(0);
-  const [test, setTest] = useState(false);
+  const [selectItems, setSelectItems] = useState({});
+  const [selects, setSelects] = useState(false);
+  const [cartModal, setCartModal] = useState(false);
+  const [item, setItem] = useState([]);
+  const [keysData, setKeysData] = useState(0);
+  
+  useEffect(() => {
+    
+    axios.get(`${process.env.REACT_APP_URL}/mypage/productlike`,{
+    headers: {
+      authorization: JSON.parse(localStorage.getItem("token"))
+        .authorization,
+    },
+    })
+    .then( res => setSelectItems(res.data))
 
-  const items1 = {
-    image: "https://t1.daumcdn.net/cfile/tistory/992642435D04DE9B27",
-    name: "상품 이름입니다",
-    price: 10000,
-  };
-  const items2 = {
-    image: "https://t1.daumcdn.net/cfile/tistory/99885A485D04E42234",
-    name: "상품 이름입니다",
-    price: 10000,
-  };
-  const items3 = {
-    image: "https://t1.daumcdn.net/cfile/tistory/99256C3D5D04E12810",
-    name: "상품 이름입니다",
-    price: 10000,
-  };
-  const items4 = {
-    image: "https://t1.daumcdn.net/cfile/tistory/99D71F485D04E42205",
-    name: "상품 이름입니다",
-    price: 10000,
-  };
-  const items5 = {
-    image: "https://t1.daumcdn.net/cfile/tistory/99D970465D04E18205",
-    name: "상품 이름입니다",
-    price: 10000,
-  };
+  }, []);
+
+  const isOpen = ()=>{
+    setCartModal(true);
+  }
+
+  const selectsValue = (id)=>{
+    setKeysData(id.productImageDtos[0].id);
+    setSelects(true);
+  }
+
+  const selectsPost = ()=>{
+
+    axios.delete(`${process.env.REACT_APP_URL}/product/${keysData}/like`,
+    {
+      headers: {
+        authorization: JSON.parse(localStorage.getItem("token"))
+          .authorization,
+      },
+    }).then(()=>{
+      setSelects(false);
+      window.location.reload();
+    }).catch(error => console.log("실패"));
+    
+  }
+
+
+  const countValue = (e)=>{
+    setItem(e)
+  }
+
+  const cartPost = ()=>{
+      console.log("테스트:",item)
+      axios.post(`${process.env.REACT_APP_URL}/carts`,
+    {
+      cartItems:[item]
+    },
+    {
+      headers: {
+        authorization: JSON.parse(localStorage.getItem("token"))
+          .authorization,
+      },
+    }).then(()=>setCartModal(false))
+  }
 
   return (
-    <Mypagehead title={"찜한 상품"} subtitle={"최대 N개까지 저장됩니다."} icon={<BiHeartCircle color="red" size={15} />} line={true}>
+    <Mypagehead
+      title={"찜한 상품"}
+      subtitle={"최대 N개까지 저장됩니다."}
+      icon={<BiHeartCircle color="red" size={15} />}
+      width={"90%"}
+      line={true}
+      >
       <Layout>
-        <ListLayout>
-          <ItemLayout test={test}>
-            <div className="items">
-              <div className="select" onClick={() => setTest(!test)}>
-                <BiHeartCircle />
-              </div>
-              <ProductItem imgUrl={items1.image} name={items1.name} price={items1.price}></ProductItem>
-            </div>
-            <div className="counts">
-              <QuantityBox quantity={item1} setQuantity={setItem1}></QuantityBox>
-            </div>
-            <div className="buttons">
-              <BasicButton p_height={6}>장바구니 담기</BasicButton>
-            </div>
-          </ItemLayout>
-        </ListLayout>
-        <ListLayout>
-          <ItemLayout>
-            <div className="items">
-              <ProductItem imgUrl={items2.image} name={items2.name} price={items2.price}></ProductItem>
-            </div>
-            <div className="counts">
-              <QuantityBox quantity={item2} setQuantity={setItem2}></QuantityBox>
-            </div>
-            <div className="buttons">
-              <BasicButton p_height={6}>장바구니 담기</BasicButton>
-            </div>
-          </ItemLayout>
-        </ListLayout>
-        <ListLayout>
-          <ItemLayout>
-            <div className="items">
-              <ProductItem imgUrl={items3.image} name={items3.name} price={items3.price}></ProductItem>
-            </div>
-            <div className="counts">
-              <QuantityBox quantity={item3} setQuantity={setItem3}></QuantityBox>
-            </div>
-            <div className="buttons">
-              <BasicButton p_height={6}>장바구니 담기</BasicButton>
-            </div>
-          </ItemLayout>
-        </ListLayout>
-        <ListLayout>
-          <ItemLayout>
-            <div className="items">
-              <ProductItem imgUrl={items4.image} name={items4.name} price={items4.price}></ProductItem>
-            </div>
-            <div className="counts">
-              <QuantityBox quantity={item4} setQuantity={setItem4}></QuantityBox>
-            </div>
-            <div className="buttons">
-              <BasicButton p_height={6}>장바구니 담기</BasicButton>
-            </div>
-          </ItemLayout>
-        </ListLayout>
-        <ListLayout>
-          <ItemLayout>
-            <div className="items">
-              <ProductItem imgUrl={items5.image} name={items5.name} price={items5.price}></ProductItem>
-            </div>
-            <div className="counts">
-              <QuantityBox quantity={item5} setQuantity={setItem5}></QuantityBox>
-            </div>
-            <div className="buttons">
-              <BasicButton p_height={6}>장바구니 담기</BasicButton>
-            </div>
-          </ItemLayout>
-        </ListLayout>
+        {selectItems?.data?.map((data) => {
+          return (
+            <ListLayout key={data.id}>
+              <ItemLayout>
+                <div className="items">
+                  <ProductItem
+                    imgUrl={data.productImageDtos[0].imgUrl}
+                    name={data.name}
+                    price={data.price}/>
+                    <div className="select_item" onClick={()=>selectsValue(data)}><BiHeartCircle/></div>
+                    {selects ? (
+                      <Guidance
+                        text={"찜 상품을 삭제하시겠습니까?"}
+                        close={() => setSelects(false)}
+                        ok={selectsPost}/>
+                    ) : null}
+                </div>
+                <div className="counts">
+                  <CountBox itemId={data.id} props={countValue}/>
+                </div>
+                <div className="buttons">
+                  <BasicButton p_height={6} onClick={isOpen}>장바구니 담기</BasicButton>
+                  {cartModal ? (
+                      <Guidance
+                        text={"해당 상품을 장바구니에 담으시겠습니까?"}
+                        close={() => setCartModal(false)}
+                        ok={cartPost}/>
+                    ) : null}
+                </div>
+              </ItemLayout>
+            </ListLayout>
+          );
+        })}
       </Layout>
     </Mypagehead>
   );

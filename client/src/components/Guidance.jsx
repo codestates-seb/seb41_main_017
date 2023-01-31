@@ -7,6 +7,7 @@ const Layout = styled.div`
   justify-content: center;
   align-items: center;
   position: fixed;
+  z-index:10;
   top: 0;
   right: 0;
   bottom: 0;
@@ -26,7 +27,7 @@ const Layout = styled.div`
     border-radius: 5px;
     height: 100px;
 
-    .btns{
+    .guidance_btns{
       display:flex;
       justify-content: space-around;
       gap:10px;
@@ -44,7 +45,7 @@ function Guidance({ text, close, ok}) {
         <div>
           <p>{text}</p>
         </div>
-        <div className="btns">
+        <div className="guidance_btns">
           {ok === undefined ? null : <div onClick={ok}><BasicButton>확인</BasicButton></div>}
           <div onClick={close}><BasicButton>취소</BasicButton></div>
         </div>

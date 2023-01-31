@@ -70,7 +70,7 @@ function Addressset() {
   const [isfetch, setIsfetch] = useState(false);
 
 
-  console.log(addresList);
+  
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_URL}/destination`, {
@@ -83,6 +83,7 @@ function Addressset() {
       .then((erros) => erros);
   }, []);
 
+  
   const isOpen = (e, state) => {
     setKeys(e);
     switch (state) {
@@ -111,7 +112,7 @@ function Addressset() {
               .authorization,
           },
         }
-      );
+      ).then(() => window.location.reload());
       setIscheckd(!ischeckd);
     }
     if (state === "isdelete") {
@@ -120,10 +121,9 @@ function Addressset() {
           authorization: JSON.parse(localStorage.getItem("token"))
             .authorization,
         },
-      });
+      }).then(() => window.location.reload());
       setIsdelete(!isdelete);
     }
-    setTimeout(() => window.location.reload(), 100);
   };
  
   return (

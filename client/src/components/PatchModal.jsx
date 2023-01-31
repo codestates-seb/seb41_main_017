@@ -58,6 +58,20 @@ function PatchModal({ close, data }) {
   const [receiverPhoneNumber, setReceiverPhoneNumber] = useState(data[0].receiverPhoneNumber);
 
   const changeValue = () => {
+
+    if(destinationName === "" ){
+      return alert("배송지명을 입력해주세요")
+    }
+    if(address === ""){
+      return alert("주소를 입력해주세요")
+    }
+    if(receiverName === ""){
+      return alert("수취인을 입력해주세요")
+    }
+    if(receiverPhoneNumber === ""){
+      return alert("연락처를 입력해주세요")
+    }
+
     axios.patch(
       `${process.env.REACT_APP_URL}/destination/${data[0].id}`,
       {
@@ -72,9 +86,8 @@ function PatchModal({ close, data }) {
             .authorization,
         },
       }
-    );
+    ).then(() => window.location.reload());
     close();
-    setTimeout(() => window.location.reload(), 1000);
   };
 
   return (
@@ -92,7 +105,7 @@ function PatchModal({ close, data }) {
             flex_d={"column"}
             padding_b={"20px"}
             defaultValue={destinationName}
-            onChange={(e) => setDestinationName(e.target.value)}
+            onChange={(e) => e === undefined ? setDestinationName(data[0].destinationName) : setDestinationName(e.target.value)}
           />
           <SideInput
             label={"주소"}
@@ -130,3 +143,4 @@ function PatchModal({ close, data }) {
 }
 
 export default PatchModal;
+
