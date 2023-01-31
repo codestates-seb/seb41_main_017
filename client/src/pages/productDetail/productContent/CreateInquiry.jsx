@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import BasicButton from "../../../components/BasicButton";
 
+import BasicButton from "../../../components/BasicButton";
 import DeleteButton from "../../../components/DeleteButton";
+
 import BASE_URL from "../../../constants/BASE_URL";
 
 const Container = styled.div`
@@ -151,12 +153,25 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-function CreateInquiry({ data, setIsOpen }) {
+function CreateInquiry({ id, imgUrl, name, setIsOpen }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const isActive = title && content;
+  const navigate = useNavigate();
 
   const handleCreateInquiry = () => {
+    const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
+
+    if (!accessToken) {
+      if (window.confirm("해당 기능은 로그인 후에 사용할 수 있습니다. 로그인 페이지으로 이동하시겠습니까?")) {
+        navigate("/login");
+
+        return;
+      }
+
+      return;
+    }
+
     const trimTitle = title.trim();
     const trimContent = content.trim();
 
@@ -179,7 +194,7 @@ function CreateInquiry({ data, setIsOpen }) {
     };
 
     try {
-      axios.post(`${BASE_URL}/product/${data.data.id}/inquiry`, body, config);
+      axios.post(`${BASE_URL}/product/${id}/inquiry`, body, config);
     } catch (error) {
       console.error(error);
     }
@@ -198,9 +213,9 @@ function CreateInquiry({ data, setIsOpen }) {
 
       <ProductInfo>
         <div className="product_image">
-          <img src={data.data.productImageDtos?.[0]?.imgUrl} />
+          <img src={imgUrl} />
         </div>
-        <div className="product_title">{data.data.name}</div>
+        <div className="product_title">{name}</div>
       </ProductInfo>
 
       <InquiryTitle>

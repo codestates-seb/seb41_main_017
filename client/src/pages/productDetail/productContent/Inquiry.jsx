@@ -121,7 +121,13 @@ function Inquiry({ data }) {
         <WriteInquiryButtonWrapper>
           <BasicButton children={"문의하기"} p_width={15} p_height={10} onClick={() => setIsOpen(true)} />
         </WriteInquiryButtonWrapper>
-        {isOpen ? <ModalComponent component={<CreateInquiry data={data} setIsOpen={setIsOpen} />} /> : null}
+        {isOpen ? (
+          <ModalComponent
+            component={
+              <CreateInquiry id={data.data.id} imgUrl={data.data.productImageDtos?.[0]?.imgUrl} name={data.data.name} setIsOpen={setIsOpen} />
+            }
+          />
+        ) : null}
       </div>
     </div>
   );
