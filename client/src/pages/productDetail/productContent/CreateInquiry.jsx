@@ -151,7 +151,7 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-function CreateInquiry({ data, setIsOpen }) {
+function CreateInquiry({ id, imgUrl, name, setIsOpen }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const isActive = title && content;
@@ -179,7 +179,7 @@ function CreateInquiry({ data, setIsOpen }) {
     };
 
     try {
-      axios.post(`${BASE_URL}/product/${data.data.id}/inquiry`, body, config);
+      axios.post(`${BASE_URL}/product/${id}/inquiry`, body, config);
     } catch (error) {
       console.error(error);
     }
@@ -198,9 +198,9 @@ function CreateInquiry({ data, setIsOpen }) {
 
       <ProductInfo>
         <div className="product_image">
-          <img src={data.data.productImageDtos?.[0]?.imgUrl} />
+          <img src={imgUrl} />
         </div>
-        <div className="product_title">{data.data.name}</div>
+        <div className="product_title">{name}</div>
       </ProductInfo>
 
       <InquiryTitle>
