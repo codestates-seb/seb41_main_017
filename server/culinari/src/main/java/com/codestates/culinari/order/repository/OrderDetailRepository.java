@@ -14,5 +14,5 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long>,
 
     Page<OrderDetail> findAllByOrdersProfileIdAndProductReviewIsNull(Long profileId, Pageable pageable);
 
-    OrderDetail findDistinctByProductIdAndProductReviewIsNull(Long productId);
+    OrderDetail findByProductIdAndProductReviewIdAndProductReviewIsNotNull(Long productId,Long productReviewId);
 }

@@ -175,9 +175,10 @@ public class ProductController {
     @DeleteMapping("/review/{review-id}")
     public ResponseEntity deleteProductReview(
             @PathVariable("review-id") Long productReviewId,
+            @RequestParam("product-id") Long productId,
             @AuthenticationPrincipal CustomPrincipal principal){
 
-        productCsService.deleteProductReview(principal,productReviewId);
+        productCsService.deleteProductReview(principal,productId,productReviewId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

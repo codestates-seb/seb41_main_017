@@ -154,7 +154,9 @@ public class ProductCsServiceImpl implements ProductCsService {
 
     //리뷰 삭제
     @Override
-    public void deleteProductReview(CustomPrincipal principal,Long productReviewId){
+    public void deleteProductReview(CustomPrincipal principal,Long productId, Long productReviewId){
+        OrderDetail orderDetail = orderDetailRepository.findByProductIdAndProductReviewIdAndProductReviewIsNotNull(productId, productReviewId);
+        orderDetail.setProductReview(null);
         productReviewRepository.deleteById(productReviewId);
     }
 

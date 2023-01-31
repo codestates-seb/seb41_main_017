@@ -41,6 +41,9 @@ public interface ProductCsService {
     //문의 삭제
     void deleteProductInquiry(CustomPrincipal principal, Long productInquiryId);
     //리뷰 삭제
-    void deleteProductReview(CustomPrincipal principal, Long productReviewId);
+
+    //리뷰 삭제
+    void deleteProductReview(CustomPrincipal principal, Long productId, Long productReviewId);
+
     void updateLike(ProductReviewLikeRequest productReviewLikePost, CustomPrincipal principal, Long productReviewId);
 }

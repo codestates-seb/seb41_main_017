@@ -1,6 +1,8 @@
 package com.codestates.culinari.product.service.impl;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
+import com.codestates.culinari.global.exception.BusinessLogicException;
+import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.global.search.SearchFilter;
 import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.ProductLikeDto;
@@ -50,6 +52,11 @@ public class ProductServiceImpl implements ProductService {
     public void createProductLike(Long productId, CustomPrincipal principal){
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("상품이 없습니다."));
         Profile profile = profileRepository.getReferenceById(principal.profileId());
+        ProductLike productLike = productLikeRepository.findByProductIdAndProfileId(productId, principal.profileId());
+        if(productLike != null){
+            throw new BusinessLogicException(ExceptionCode.PRODUCT_LIKE_IS_EXIST);
+        }
+        else
         productLikeRepository.save(ProductLike.of(profile, product));
     }
 
