@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import BasicButton from "../../../components/BasicButton";
 import axios from "axios";
@@ -6,10 +7,10 @@ import axios from "axios";
 import InquiryDetail from "./InquiryDetail";
 import ModalComponent from "./ModalComponent";
 import CreateInquiry from "./CreateInquiry";
+import Pagination from "../../../components/Pagination";
 
 import BASE_URL from "../../../constants/BASE_URL";
-import { useParams } from "react-router-dom";
-import Pagination from "../../../components/Pagination";
+import icon from "../../../assets/docs-icon.png";
 
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
@@ -84,6 +85,16 @@ const WriteInquiryButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
+const NoInquiryDataWrapper = styled.div`
+  margin: 100px 300px 0px 300px;
+  opacity: 0.3;
+
+  .text {
+    margin-top: 20px;
+    text-align: center;
+  }
+`;
+
 function Inquiry({ data }) {
   const [isOpen, setIsOpen] = useState(false);
   const [inquiryData, setInquiryData] = useState([]);
@@ -117,6 +128,12 @@ function Inquiry({ data }) {
             {inquiryData.data && inquiryData.data.map((element, index) => <InquiryDetail data={data} element={element} key={index} />)}
           </TableBody>
         </InquiryTable>
+        {inquiryData.data && inquiryData.data.length ? null : (
+          <NoInquiryDataWrapper>
+            <img src={icon} />
+            <div className="text">상품 문의가 없습니다.</div>
+          </NoInquiryDataWrapper>
+        )}
         <Pagination pageInfo={inquiryData.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={false} />
         <WriteInquiryButtonWrapper>
           <BasicButton children={"문의하기"} p_width={15} p_height={10} onClick={() => setIsOpen(true)} />

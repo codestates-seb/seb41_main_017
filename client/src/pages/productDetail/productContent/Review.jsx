@@ -9,6 +9,7 @@ import { ReactComponent as Star } from "../../../assets/star.svg";
 import Pagination from "../../../components/Pagination";
 
 import BASE_URL from "../../../constants/BASE_URL";
+import icon from "../../../assets/docs-icon.png";
 
 const Header = styled.div`
   padding: 72px 10px 10px 10px;
@@ -66,6 +67,16 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
   cursor: pointer;
 
   color: ${({ dataId, sort }) => (dataId === sort ? "#ff6767" : "rgb(153, 153, 153)")};
+`;
+
+const NoReviewDataWrapper = styled.div`
+  margin: 100px 300px 100px 300px;
+  opacity: 0.3;
+
+  .text {
+    margin-top: 20px;
+    text-align: center;
+  }
 `;
 
 function Review() {
@@ -138,6 +149,12 @@ function Review() {
             );
           })
         : null}
+      {data && data.data.length ? null : (
+        <NoReviewDataWrapper>
+          <img src={icon} />
+          <div className="text">상품 후기가 없습니다.</div>
+        </NoReviewDataWrapper>
+      )}
       <Pagination pageInfo={data && data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={false} />
     </div>
   );
