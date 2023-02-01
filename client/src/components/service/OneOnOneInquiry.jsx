@@ -28,7 +28,7 @@ const InquiryCotainer = styled.form`
 
   textarea {
     width: 100%;
-
+    resize: none;
     height: 15.25em;
   }
   .title_content {
@@ -109,9 +109,7 @@ function OneOnOneInquiry() {
         value={selectedOption}
         onChange={(e) => setSelectedOption(e.target.value)}
       >
-        <option disabled selected>
-          카테고리를 선택해주세요
-        </option>
+        <option value="카테고리">카테고리를 선택해주세요</option>
         <option value="배송">배송</option>
         <option value="주문/결제">주문/결제</option>
         <option value="취소/교환/환불">취소/교환/환불</option>

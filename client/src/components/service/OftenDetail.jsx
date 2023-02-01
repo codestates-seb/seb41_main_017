@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BasicButton from "../BasicButton";
-// import { Page } from "../../styles/OneOnOneStyle";
 
 const Page = styled.div`
   max-width: 900px;
@@ -14,7 +13,6 @@ const Page = styled.div`
 `;
 
 const DetailContainer = styled.div`
-  //   background-color: red;
   width: 900px;
   height: 550px;
   border-bottom: 1px solid gray;
@@ -51,6 +49,7 @@ const DetailBar = styled.div`
 const ContentBox = styled.div`
   margin-top: 45px;
   margin-left: 10px;
+  line-height: 2;
 `;
 
 function OftenDetail({ Dummy }) {
@@ -71,7 +70,13 @@ function OftenDetail({ Dummy }) {
           <div className="category">{Dummy.category}</div>
           <div className="time">{Dummy.time}</div>
         </DetailBar>
-        <ContentBox>내용</ContentBox>
+        <ContentBox>
+          <p>안녕하세요 고객님, Culinari 서비스를 이용해주셔서 감사합니다.</p>
+        </ContentBox>
+        <ContentBox>{Dummy.content}</ContentBox>
+        <ContentBox>
+          <p>감사합니다</p>
+        </ContentBox>
       </DetailContainer>
       <div className="btn_container" onClick={handleClickBtn}>
         <BasicButton p_width={"20"} p_height={"7"}>

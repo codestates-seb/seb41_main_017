@@ -8,6 +8,30 @@ import ListLayout from "../../components/ListLayout";
 import Postmodal from "../../components/Postmodal";
 import Guidance from "../../components/Guidance";
 import PatchModal from "../../components/PatchModal";
+import {OtherPagination} from "../../components/OtherPagination"
+
+
+// 테스트
+const testData = {
+  "data": [
+    {
+      "id": 1,
+      "destinationName": "test destinationName",
+      "address": "test address",
+      "receiverName": "test name",
+      "receiverPhoneNumber": "010-1111-2222",
+      "defaultSelect": true
+    },
+    {
+      "id": 2,
+      "destinationName": "test destinationName",
+      "address": "test address",
+      "receiverName": "test name",
+      "receiverPhoneNumber": "010-9999-9999",
+      "defaultSelect": false
+    }
+  ]
+}
 
 const Classlist = styled.div`
   .check_box {
@@ -63,7 +87,9 @@ const Classlist = styled.div`
 `;
 
 function Addressset() {
-  const [addresList, setAddresList] = useState([]);
+  // const [addresList, setAddresList] = useState([]);
+  // 테스트용도
+  const [addresList, setAddresList] = useState(testData.data);
   const [keys, setKeys] = useState(0);
   const [ischeckd, setIscheckd] = useState(false);
   const [isdelete, setIsdelete] = useState(false);
@@ -208,6 +234,7 @@ function Addressset() {
           );
         })}
       </Classlist>
+      <OtherPagination></OtherPagination>
     </Mypagehead>
   );
 }

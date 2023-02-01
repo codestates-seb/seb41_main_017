@@ -9,6 +9,8 @@ import BASE_URL from "../../constants/BASE_URL";
 import ProductItem from "../../components/ProductItem";
 import CategoryList from "./CategoryList";
 import Pagination from "../../components/Pagination";
+import ScrollTop from "../../components/ScrollTop";
+import productNone from "../../assets/product_none.png";
 
 const PageHeader = styled.h3`
   margin-top: 50px;
@@ -94,6 +96,11 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
   color: ${({ dataId, sort }) => (dataId === sort ? "#ff6767" : "rgb(153, 153, 153)")};
 `;
 
+const ProductNoneImageWrapper = styled.div`
+  margin-top: 50px;
+  text-align: center;
+`;
+
 function Collection() {
   const [data, setData] = useState(null);
   const [sort, setSort] = useState("newest");
@@ -134,7 +141,7 @@ function Collection() {
   }, [checkedCategoryCodes, sort, currentPage]);
 
   const handleSortListClick = ({ target }) => {
-    setSort(target.dataset.id);
+    setSort(target.closest("li").dataset.id);
   };
 
   return (
@@ -183,8 +190,14 @@ function Collection() {
                 />
               ))}
           </div>
+          {data && data.data.length === 0 ? (
+            <ProductNoneImageWrapper>
+              <img src={productNone} />
+            </ProductNoneImageWrapper>
+          ) : null}
           <Pagination pageInfo={data && data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={true} />
         </div>
+        <ScrollTop />
       </Content>
     </>
   );

@@ -43,8 +43,8 @@ const Modal = styled.div`
 
     .close {
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: 10px;
+      right: 10px;
 
       button {
         font-size: 18px;
@@ -56,6 +56,7 @@ const Modal = styled.div`
       justify-content: center;
 
       .title_child {
+        padding-top: 10px;
         font-size: 18px;
       }
     }
@@ -69,7 +70,28 @@ const Modal = styled.div`
     display: flex;
     justify-content: center;
     gap: 10px;
+    padding-top: 60px;
     padding-bottom: 10px;
+  }
+
+  .input_cotainer {
+    flex-direction: column;
+
+    .input_cotainer_input {
+      position: relative;
+      .input_cotainer_addresbtn {
+        position: absolute;
+        margin-top:32%;
+        top:0;
+        right:20px;
+        bottom:0;
+        left:-20px;
+        & button{
+          background-color:#BDBDBD;
+        }
+
+      }
+    }
   }
 `;
 
@@ -81,43 +103,43 @@ function Postmodal() {
   const [destinationName, setDestinationName] = useState("");
   const [receiverName, setReceiverName] = useState("");
   const [receiverPhoneNumber, setReceiverPhoneNumber] = useState("");
-  
+
   const save = () => {
+    if (destinationName === "") {
+      return alert("배송지명이 입력되지 않았습니다.");
+    }
+    if (receiverName === "") {
+      return alert("수령인이 입력되지 않았습니다.");
+    }
+    if (receiverPhoneNumber === "") {
+      return alert("연락처가 입력되지 않았습니다");
+    }
+    if (signupAddress === "") {
+      return alert("주소가 입력되지 않았습니다");
+    }
+    if (address === "") {
+      return alert("상세주소가 입력되지 않았습니다.");
+    }
 
-    if(destinationName === ""){
-      return alert("배송지명이 입력되지 않았습니다.")
-    }
-    if(receiverName === ""){
-      return alert("수령인이 입력되지 않았습니다.")
-    }
-    if(receiverPhoneNumber === ""){
-      return alert("연락처가 입력되지 않았습니다")
-    }
-    if(signupAddress === ""){
-      return alert("주소가 입력되지 않았습니다")
-    }
-    if(address === ""){
-      return alert("상세주소가 입력되지 않았습니다.")
-    }
-
-
-    axios.post(
-      `${process.env.REACT_APP_URL}/destination`,
-      {
-        destinationName,
-        receiverName,
-        receiverPhoneNumber,
-        address: `${signupAddress} ${address}`,
-        defaultSelect: false,
-      },
-      {
-        headers: {
-          authorization: JSON.parse(localStorage.getItem("token"))
-            .authorization,
+    axios
+      .post(
+        `${process.env.REACT_APP_URL}/destination`,
+        {
+          destinationName,
+          receiverName,
+          receiverPhoneNumber,
+          address: `${signupAddress} ${address}`,
+          defaultSelect: false,
         },
-      },
-      setIsopen(false)
-    ).then(() => window.location.reload());
+        {
+          headers: {
+            authorization: JSON.parse(localStorage.getItem("token"))
+              .authorization,
+          },
+        },
+        setIsopen(false)
+      )
+      .then(() => window.location.reload());
   };
 
   return (
@@ -167,30 +189,37 @@ function Postmodal() {
 
               <IdBlock>
                 <div className="input_cotainer">
-                  <BasicInput
-                    label={"주소"}
-                    star={"*"}
-                    width={"100%"}
-                    type={"text"}
-                    address={"address"}
-                    min_height={"0"}
-                    placeholder={"주소를 입력해주세요"}
-                    setValue2={setAddress}
-                    defaultValue={signupAddress}
-                    onChange={(e) => setPostAddress(e.target.value)}
-                  ></BasicInput>
-                  <ModalContainer setSignupAddress={setSignupAddress} type={"address"} />
+                  <div className="input_cotainer_input">
+                    <BasicInput
+                      label={"주소"}
+                      star={"*"}
+                      width={"100%"}
+                      type={"text"}
+                      address={"address"}
+                      min_height={"0"}
+                      placeholder={"주소를 입력해주세요"}
+                      setValue2={setAddress}
+                      defaultValue={signupAddress}
+                      onChange={(e) => setPostAddress(e.target.value)}
+                    ></BasicInput>
+                    <div className="input_cotainer_addresbtn">
+                      <ModalContainer
+                        setSignupAddress={setSignupAddress}
+                        type={"address"}
+                      />
+                    </div>
+                  </div>
                 </div>
               </IdBlock>
             </div>
             <div className="btns">
               <div>
-                <Basicbutton onClick={save} p_height={"5"}>
+                <Basicbutton onClick={save} p_height={"10"} p_width={"10"}>
                   저장하기
                 </Basicbutton>
               </div>
               <div onClick={() => setIsopen(false)}>
-                <Basicbutton p_height={"5"}>닫기</Basicbutton>
+                <Basicbutton p_height={"10"} p_width={"10"}>닫기</Basicbutton>
               </div>
             </div>
           </div>

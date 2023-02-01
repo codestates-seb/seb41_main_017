@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { json, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import styled from "styled-components";
 import { GoChevronRight } from "react-icons/go";
@@ -93,28 +94,30 @@ const Mycard = styled.div`
 `;
 
 function Mypage () {
-
-
   const [user, setUser] = useState({});
+  const [isToken, setIsToken] = useState(JSON.parse(localStorage.getItem("token"))?.authorization);
 
+  
+
+  // "username": "id2",
+  // "password": "!@#123password"
   useEffect(()=>{
+      axios.get(`${process.env.REACT_APP_URL}/users`,{
+        headers: {
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
+        },
+      })
+      .then(res => setUser(res.data.data))
 
-    axios.get(`${process.env.REACT_APP_URL}/users`,{
-      headers: {
-        authorization: JSON.parse(localStorage.getItem("token"))
-          .authorization,
-      },
-    })
-    .then(res => setUser(res.data.data))
-    .then(erros => erros)
   },[]);
 
   const list = {
     "내정보": {
-      'userInfo?': <Userinfo/>
+      'userInfo': <Userinfo/>
     },
     "배송지 설정": {
-      'addressSet': <DeliverySet/>
+      'deliverySet': <DeliverySet/>
     },
     "배송 조회": {
       'deliveryLook': <DeliveryLook/>
@@ -162,7 +165,7 @@ function Mypage () {
               <a href="/point">
                 <span>내 포인트</span>
                 <span>
-                  {`${user.point}P`}
+                  {`${user.point === undefined ? "0" : user.point}P`}
                   <GoChevronRight />
                 </span>
               </a>

@@ -140,7 +140,7 @@ function DeliveryLook() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  console.log(ordersData)
+  
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_URL}/orders/details`,{
@@ -151,10 +151,10 @@ function DeliveryLook() {
     }).then( res => setOrders(res.data))
   }, []);
 
-  // const setData = (id) => {
-  //   setDatas(id);
-  //   setIsOpen(true);
-  // };
+  const setData = (id) => {
+    setDatas(id);
+    setIsOpen(true);
+  };
 
   const movePage = (id) => {
     navigate(`/product/:${id}`);

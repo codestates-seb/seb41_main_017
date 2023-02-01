@@ -7,6 +7,7 @@ import Pagination from "../../components/Pagination";
 import ProductItem from "../../components/ProductItem";
 
 import BASE_URL from "../../constants/BASE_URL";
+import productNone from "../../assets/product_none.png";
 
 const Container = styled.div`
   margin-top: 50px;
@@ -93,6 +94,11 @@ const FilterList = styled.li.attrs(({ dataId }) => ({
   color: ${({ dataId, sort }) => (dataId === sort ? "#ff6767" : "rgb(153, 153, 153)")};
 `;
 
+const ProductNoneImageWrapper = styled.div`
+  margin-top: 50px;
+  text-align: center;
+`;
+
 function Search() {
   const location = useLocation();
   const { code } = useParams();
@@ -110,7 +116,7 @@ function Search() {
     };
     const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
     const getProductData = async () => {
-      const { data } = await axios.get(`${BASE_URL}${location.pathname}${location.search}?${queryString}`);
+      const { data } = await axios.get(`${BASE_URL}${location.pathname}${!!location.search ? location.search : "?"}${queryString}`);
 
       return data;
     };
@@ -121,10 +127,30 @@ function Search() {
       return data;
     };
 
+    const dataSortByPrice = (data) => {
+      if (sort === "newest") {
+        return data;
+      }
+
+      if (sort === "lower") {
+        data.data = data.data.sort((a, b) => a.price - b.price);
+
+        return data;
+      }
+
+      if (sort === "higher") {
+        data.data = data.data.sort((a, b) => b.price - a.price);
+
+        return data;
+      }
+    };
+
     (async () => {
       try {
         const productData = await getProductData();
-        setData(productData);
+        const sortedData = dataSortByPrice(productData);
+
+        setData(sortedData);
 
         if (code) {
           const categoryData = await getCategoryData();
@@ -137,7 +163,7 @@ function Search() {
   }, [location, sort, currentPage]);
 
   const handleSortListClick = ({ target }) => {
-    setSort(target.dataset.id);
+    setSort(target.closest("li").dataset.id);
   };
 
   return (
@@ -186,6 +212,11 @@ function Search() {
             <ProductItem id={element.id} imgUrl={element.productImageDtos[0]?.imgUrl} name={element.name} price={element.price} key={Math.random()} />
           ))}
       </div>
+      {data && data.data.length ? null : (
+        <ProductNoneImageWrapper>
+          <img src={productNone} />
+        </ProductNoneImageWrapper>
+      )}
       <Pagination pageInfo={data && data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={true} />
     </Container>
   );

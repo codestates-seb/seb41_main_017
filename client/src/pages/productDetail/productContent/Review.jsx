@@ -89,7 +89,7 @@ function Review() {
   }, [currentPage, sort]);
 
   const handleFilterButtonClick = ({ target }) => {
-    setSort(target.dataset.id);
+    setSort(target.closest("li").dataset.id);
   };
 
   return (

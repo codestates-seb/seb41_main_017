@@ -117,6 +117,18 @@ function ProductSelection({ position, data, quantity, setQuantity, totalPrice })
   const navigate = useNavigate();
 
   const handleAddCartClick = async () => {
+    const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
+
+    if (!accessToken) {
+      if (window.confirm("해당 기능은 로그인 후에 사용할 수 있습니다. 로그인 페이지으로 이동하시겠습니까?")) {
+        navigate("/login");
+
+        return;
+      }
+
+      return;
+    }
+
     const body = {
       cartItems: [
         {
@@ -128,7 +140,7 @@ function ProductSelection({ position, data, quantity, setQuantity, totalPrice })
     const config = {
       headers: {
         "Content-Type": `application/json`,
-        authorization: JSON.parse(localStorage.getItem("token")).authorization,
+        authorization: accessToken,
       },
     };
 

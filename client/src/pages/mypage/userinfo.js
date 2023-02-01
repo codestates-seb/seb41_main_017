@@ -10,6 +10,10 @@ import GenderRadio from "../../components/signup/GenderRadio";
 import BasicButton from "../../components/BasicButton";
 import Guidance from "../../components/Guidance";
 
+// id2
+// !@#123password
+
+
 const Layout = styled.div`
   width: 450px;
   margin: 0 auto;
@@ -106,6 +110,7 @@ function Userinfo() {
   const birthDateCheck = /^(19[0-9][0-9]|20[0-9][0-9])-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/g;
   const navigate = useNavigate();
 
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_URL}/users`, {
@@ -117,7 +122,10 @@ function Userinfo() {
       .then((res) => {
         setCheck(res.data.data.gender);
         setUserData(res.data.data);
-      });
+      })
+      .catch((error) => {
+        console.log("실패");
+      })
   }, []);
 
   const userPatch = () => {
@@ -282,11 +290,11 @@ function Userinfo() {
             ): null}
           </div>
           <div onClick={() => setIsdisabled(false)}>
-            <span>성별</span>
+            {/* <span>성별</span>
             <GenderRadio
               setCheck={setCheck}
               isdisabled={isdisabled}
-            ></GenderRadio>
+            ></GenderRadio> */}
           </div>
           <div className="submit">
             <BasicButton

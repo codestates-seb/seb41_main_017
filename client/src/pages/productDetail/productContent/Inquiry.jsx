@@ -84,9 +84,9 @@ const WriteInquiryButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-function Inquiry() {
+function Inquiry({ data }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState([]);
+  const [inquiryData, setInquiryData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const { id } = useParams();
 
@@ -94,7 +94,7 @@ function Inquiry() {
     (async () => {
       const { data } = await axios.get(`${BASE_URL}/product/${id}/inquiry?page=${currentPage}`);
 
-      setData(data);
+      setInquiryData(data);
     })();
   }, [currentPage]);
 
@@ -113,13 +113,21 @@ function Inquiry() {
               <th className="status">답변 상태</th>
             </tr>
           </TableHead>
-          <TableBody>{data.data && data.data.map((element, index) => <InquiryDetail data={data} element={element} key={index} />)}</TableBody>
+          <TableBody>
+            {inquiryData.data && inquiryData.data.map((element, index) => <InquiryDetail data={data} element={element} key={index} />)}
+          </TableBody>
         </InquiryTable>
-        <Pagination pageInfo={data.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={false} />
+        <Pagination pageInfo={inquiryData.pageInfo} currentPage={currentPage} setCurrentPage={setCurrentPage} scrollTop={false} />
         <WriteInquiryButtonWrapper>
           <BasicButton children={"문의하기"} p_width={15} p_height={10} onClick={() => setIsOpen(true)} />
         </WriteInquiryButtonWrapper>
-        {isOpen ? <ModalComponent component={<CreateInquiry data={data} setIsOpen={setIsOpen} />} /> : null}
+        {isOpen ? (
+          <ModalComponent
+            component={
+              <CreateInquiry id={data.data.id} imgUrl={data.data.productImageDtos?.[0]?.imgUrl} name={data.data.name} setIsOpen={setIsOpen} />
+            }
+          />
+        ) : null}
       </div>
     </div>
   );

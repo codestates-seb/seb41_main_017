@@ -4,6 +4,7 @@ import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import logo from "../../assets/fitlogo.png";
 import BASE_URL from "../../constants/BASE_URL";
 
 const Layout = styled.div`
@@ -30,7 +31,8 @@ const Layout = styled.div`
     .logo {
       margin-right: 10px;
       img {
-        width: 40px;
+        width: 100px;
+        margin-left: -70px;
       }
     }
 
@@ -52,7 +54,7 @@ const Layout = styled.div`
     .serach {
       display: flex;
       border: 1px solid #ffc3b1;
-      width: 400px;
+      width: 500px;
       height: 48px;
       border-radius: 10px;
       justify-content: space-around;
@@ -74,7 +76,9 @@ const Layout = styled.div`
   }
 
   .bottom {
-    border-bottom: 1px solid #a9a9a9;
+    // border-bottom: 1px solid #a9a9a9;
+    box-shadow: 0 3px 4px 0 rgb(0 0 0 / 7%);
+
     margin-top: 20px;
 
     .GNB {
@@ -97,13 +101,11 @@ const Layout = styled.div`
           }
 
           .new_product {
-            color: ${({ pathname }) =>
-              pathname.includes("/newproduct") ? "#ff6767" : null};
+            color: ${({ pathname }) => (pathname.includes("/newproduct") ? "#ff6767" : null)};
           }
 
           .best_products {
-            color: ${({ pathname }) =>
-              pathname.includes("/bestproducts") ? "#ff6767" : null};
+            color: ${({ pathname }) => (pathname.includes("/bestproducts") ? "#ff6767" : null)};
           }
 
           span {
@@ -206,6 +208,7 @@ function Header() {
   const [currentIndex, setCurrentIndex] = useState(null);
   const isLogin = localStorage.getItem("token");
 
+
   const handleSearchProductSubmit = (event) => {
     event.preventDefault();
     const text = searchText.trim();
@@ -223,11 +226,7 @@ function Header() {
     };
 
     const getCategoryDetails = async (codes) => {
-      const data = await Promise.all(
-        codes.map((code) =>
-          axios.get(`${BASE_URL}/category/categorydetail/${code}`)
-        )
-      );
+      const data = await Promise.all(codes.map((code) => axios.get(`${BASE_URL}/category/categorydetail/${code}`)));
 
       return data;
     };
@@ -247,9 +246,7 @@ function Header() {
   }, []);
 
   const handleCategoriesMouseOver = ({ target }) => {
-    setCategoryDetailCodes(
-      categoryDetails[target.dataset.index].data.data[0].categoryDetails
-    );
+    setCategoryDetailCodes(categoryDetails[target.dataset.index].data.data[0].categoryDetails);
     setCurrentIndex(target.dataset.index);
   };
 
@@ -261,7 +258,7 @@ function Header() {
   const handleClickLogoutBtn = (e) => {
     e.preventDefault();
     localStorage.removeItem("token");
-    window.location.reload();
+    navigate("/login");
   };
 
   return (
@@ -283,23 +280,19 @@ function Header() {
       </div>
       <div className="mid flex">
         <div className="logo">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DaangnMarket_logo.png/800px-DaangnMarket_logo.png"
-            alt="logo"
-          ></img>
+          <a href="/">
+            <img src={logo} alt="logo"></img>
+          </a>
         </div>
         <form className="serach" onSubmit={handleSearchProductSubmit}>
-          <input
-            placeholder="검색어를 입력해주세요"
-            onChange={({ target }) => setSearchText(target.value)}
-          ></input>
+          <input placeholder="검색어를 입력해주세요" onChange={({ target }) => setSearchText(target.value)}></input>
           <button>
             <BsSearch />
           </button>
         </form>
         <div className="myIcons flex">
           <div className="icons">
-            <a href="/mypage">
+            <a href="/mypage/userInfo">
               <BsFillPersonFill className="icon" />
             </a>
           </div>
@@ -319,25 +312,14 @@ function Header() {
               </span>
               <span className="category">카테고리</span>
               <div className="drop_down_container">
-                <div
-                  className="drop_down"
-                  onMouseLeave={handleCategoriesMouseLeave}
-                >
+                <div className="drop_down" onMouseLeave={handleCategoriesMouseLeave}>
                   <div>
                     <ul>
                       {categories.data &&
                         categories.data.map((category, index) => (
-                          <CategoryList
-                            onMouseOver={handleCategoriesMouseOver}
-                            data-index={index}
-                            ishover={index == currentIndex}
-                            key={index}
-                          >
+                          <CategoryList onMouseOver={handleCategoriesMouseOver} data-index={index} ishover={index == currentIndex} key={index}>
                             {
-                              <Link
-                                to={"/category/" + category.categoryCode}
-                                data-index={index}
-                              >
+                              <Link to={"/category/" + category.categoryCode} data-index={index}>
                                 {category.name}
                               </Link>
                             }
@@ -350,10 +332,7 @@ function Header() {
                       {categoryDetailCodes.map((category, index) => (
                         <li key={index}>
                           {
-                            <Link
-                              to={"/category/" + category.categoryDetailCode}
-                              data-index={index}
-                            >
+                            <Link to={"/category/" + category.categoryDetailCode} data-index={index}>
                               {category.name}
                             </Link>
                           }

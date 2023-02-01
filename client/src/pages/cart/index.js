@@ -112,10 +112,24 @@ function Cart() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedList, setCheckedList] = useState([]);
   const [selectAllChecked, setSelectAllChecked] = useState(true);
+  const [bestProductData, setBestProductData] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
+    const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
+    
+    if (!accessToken) {
+      if (window.confirm("해당 기능은 로그인 후에 사용할 수 있습니다. 로그인 페이지으로 이동하시겠습니까?")) {
+        navigate("/login");
+
+        return;
+      }
+
+      navigate(-1);
+      return;
+    }
+
     const getCartList = async () => {
       const config = {
         headers: {
@@ -149,6 +163,24 @@ function Cart() {
 
     setTotalPrice(calcTotalPrice(checkedList));
   }, [checkedList]);
+
+  useEffect(() => {
+    const getBestProductData = async () => {
+      const { data } = await axios.get(`${BASE_URL}/collections/bestproducts?size=20`);
+
+      return data;
+    };
+
+    (async () => {
+      try {
+        const bestProductData = await getBestProductData();
+
+        setBestProductData(bestProductData);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
 
   const handleSelectAllButtonClick = () => {
     if (selectAllChecked === true) {
@@ -194,6 +226,12 @@ function Cart() {
   };
 
   const handleOrderButtonClick = () => {
+    if (checkedList.length === 0) {
+      alert("체크한 상품이 없습니다. 구매하실 상품 체크하여 주문하기를 눌러주세요.");
+
+      return;
+    }
+
     dispatch(setInfo({ ids: checkedList.map((list) => list.productId), totalPrice }));
     navigate("/pay");
   };
@@ -257,7 +295,7 @@ function Cart() {
 
       <TodayRecommendProducts>
         <Title>이달의 추천 상품</Title>
-        <ProductItemSlider />
+        <ProductItemSlider data={bestProductData && bestProductData.data} />
       </TodayRecommendProducts>
     </Container>
   );
