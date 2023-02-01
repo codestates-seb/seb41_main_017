@@ -35,13 +35,14 @@ function SignForm() {
   const [year, setYear] = useState("");
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
-  const [check, setCheck] = useState("");
+  const [check, setCheck] = useState("남성");
   const [allChecked, setAllChecked] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [privacyChecked, setPrivacyChecked] = useState(false);
   const [response, setResponse] = useState("");
   const [successModal, setSuccessModal] = useState(false);
   const [rejectModal, setRecjectModal] = useState(false);
+  const [failModal, setFailModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -53,6 +54,20 @@ function SignForm() {
     setTermsChecked(!allChecked);
     setPrivacyChecked(!allChecked);
   }
+
+  const isWriteUserInfo = () => {
+    return (
+      signupId !== "" &&
+      signupPassword !== "" &&
+      checkPassword !== "" &&
+      name !== "" &&
+      signupEmail !== "" &&
+      phoneNum !== "" &&
+      year !== "" &&
+      month !== "" &&
+      day !== ""
+    );
+  };
 
   const handleSignupBtn = (e) => {
     e.preventDefault();
@@ -88,6 +103,9 @@ function SignForm() {
           response === 405
         ) {
           setRecjectModal(true);
+        }
+        if (!isWriteUserInfo()) {
+          setFailModal(true);
         }
       });
   };
@@ -156,6 +174,7 @@ function SignForm() {
         <div className="input_cotainer">
           <BasicInput
             setValue={setName}
+            star={"*"}
             label={"이름"}
             width={"100%"}
             type={"text"}
@@ -240,7 +259,7 @@ function SignForm() {
         </div>
 
         <span>성별</span>
-        <GenderRadio setCheck={setCheck}></GenderRadio>
+        <GenderRadio check={check} setCheck={setCheck}></GenderRadio>
 
         <CheckboxContent>
           <div className="autoContent">
@@ -281,6 +300,7 @@ function SignForm() {
           />
         </ButtonWrapper>
       </IdBlock>
+
       {successModal && (
         <ModalWrapper>
           <SignupSuccessContainer>
@@ -300,6 +320,15 @@ function SignForm() {
             </ModalText>
           </SignupFailureContainer>
           <CloseButton onClick={() => setRecjectModal(false)}>닫기</CloseButton>
+        </ModalWrapper>
+      )}
+      {failModal && (
+        <ModalWrapper>
+          <SignupFailureContainer>
+            <ModalTitle>가입 실패</ModalTitle>
+            <ModalText>필수입력사항을 입력해주세요</ModalText>
+          </SignupFailureContainer>
+          <CloseButton onClick={() => setFailModal(false)}>닫기</CloseButton>
         </ModalWrapper>
       )}
     </Page>

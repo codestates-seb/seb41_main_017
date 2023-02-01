@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const GenderRadio = ({ setCheck, isdisabled }) => {
-  const [select, setSelect] = useState(`남성`);
-  // 현재오류부분
-  setCheck(select);
-  const handleSelectChange = (event) => {
-    const value = event.target.value;
-    setSelect(value);
+const GenderRadio = ({ setCheck, check }) => {
+  const handleSelectChange = ({ target }) => {
+    setCheck(target.value);
   };
   return (
     <Wrapper>
@@ -16,9 +12,8 @@ const GenderRadio = ({ setCheck, isdisabled }) => {
           type="radio"
           name="radio"
           value="남성"
-          checked={select === "남성"}
-          onChange={(event) => handleSelectChange(event)}
-          disabled={isdisabled}
+          checked={check === "남성"}
+          onChange={handleSelectChange}
         />
         <RadioButtonLabel />
         <div>남자</div>
@@ -28,9 +23,8 @@ const GenderRadio = ({ setCheck, isdisabled }) => {
           type="radio"
           name="radio"
           value="여성"
-          checked={select === "여성"}
-          onChange={(event) => handleSelectChange(event)}
-          disabled={isdisabled}
+          checked={check === "여성"}
+          onChange={handleSelectChange}
         />
         <RadioButtonLabel />
         <div>여자</div>
@@ -88,7 +82,6 @@ const RadioButton = styled.input`
 `;
 
 export default GenderRadio;
-
 
 /*
 1. 값이입력되지 않았을때 문구 노출은 안보이게
