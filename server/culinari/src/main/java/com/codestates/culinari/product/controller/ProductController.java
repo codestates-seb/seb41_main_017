@@ -87,11 +87,13 @@ public class ProductController {
     @GetMapping("/{product-id}/review")
     public ResponseEntity getProductReview(
             @PathVariable("product-id") Long productId,
+            @RequestParam(value = "sorted-type",required = false) String sortedType,
             @Min (0) @RequestParam(defaultValue = "0",required = false) int page,
             @Positive @RequestParam(defaultValue = "5", required = false) int size
     ){
+        if(sortedType == null) sortedType = "newest";
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductReviewResponse> productReviewPage = productCsService.readProductReview(productId, pageable).map(ProductReviewResponse::from);
+        Page<ProductReviewResponse> productReviewPage = productCsService.readProductReviewWithSortedType(sortedType,productId, pageable).map(ProductReviewResponse::from);
         List<ProductReviewResponse> productReview = productReviewPage.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(page, productReviewPage.getTotalPages());
 

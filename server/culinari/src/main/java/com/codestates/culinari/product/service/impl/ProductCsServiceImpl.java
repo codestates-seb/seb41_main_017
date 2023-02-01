@@ -79,7 +79,12 @@ public class ProductCsServiceImpl implements ProductCsService {
 
     // 상품 리뷰 호출
     @Override
-    public Page<ProductReview> readProductReview(Long productId, Pageable pageable){
+    public Page<ProductReview> readProductReviewWithSortedType(String sortedType,Long productId, Pageable pageable){
+        if(sortedType.equals("lower"))
+        return productReviewRepository.findByProductId(productId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("reviewStar")));
+        else if (sortedType.equals("higher")) {
+            return productReviewRepository.findByProductId(productId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("reviewStar").descending()));
+        }
         return productReviewRepository.findByProductId(productId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()));
     }
 

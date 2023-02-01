@@ -30,7 +30,8 @@ public interface ProductCsService {
     Page<ProductInquiry> readProductInquiry(Long productId, Pageable pageable);
 
     // 상품 리뷰 호출
-    Page<ProductReview> readProductReview(Long productId, Pageable pageable);
+    Page<ProductReview> readProductReviewWithSortedType(String sortedType, Long productId, Pageable pageable);
+
     // 후기 작성
     void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, Long orderId, List<MultipartFile> multipartFiles) throws IOException;
 
