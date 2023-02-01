@@ -25,7 +25,10 @@ const Item = styled.div`
   }
 
   .price {
+    margin-top: 10px;
     margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
   }
 
   img {
@@ -45,7 +48,7 @@ function ProductItem({ id, imgUrl, name, price }) {
     <Item>
       <a href={ref}>
         <div className="image_wrapper">
-          <img src={imgUrl}></img>
+          <img src={imgUrl} />
         </div>
 
         <div>
