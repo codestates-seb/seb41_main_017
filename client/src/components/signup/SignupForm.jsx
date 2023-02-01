@@ -35,7 +35,7 @@ function SignForm() {
   const [year, setYear] = useState("");
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
-  const [check, setCheck] = useState("");
+  const [check, setCheck] = useState("남성");
   const [allChecked, setAllChecked] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [privacyChecked, setPrivacyChecked] = useState(false);
@@ -259,7 +259,7 @@ function SignForm() {
         </div>
 
         <span>성별</span>
-        <GenderRadio setCheck={setCheck}></GenderRadio>
+        <GenderRadio check={check} setCheck={setCheck}></GenderRadio>
 
         <CheckboxContent>
           <div className="autoContent">
