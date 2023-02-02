@@ -53,6 +53,8 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         // User
+                        .requestMatchers(HttpMethod.GET, "/users/username-check").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users/email-check").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users/**").hasRole("{authority=일반 유저}")
                         .requestMatchers(HttpMethod.PATCH, "/users").hasRole("{authority=일반 유저}")
                         .requestMatchers(HttpMethod.PATCH, "/users/password-edit").hasRole("{authority=일반 유저}")
