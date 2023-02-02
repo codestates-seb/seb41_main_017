@@ -29,7 +29,7 @@ function ProductContent({ data, quantity, setQuantity, totalPrice }) {
 
         <img id="detail" src="https://user-images.githubusercontent.com/57666791/212521455-cac803e3-3159-4c0a-bb8c-b1889afd1bbc.jpeg"></img>
 
-        <Review />
+        <Review productName={data.data && data.data.name} />
 
         <Inquiry data={data} />
       </DetailContainer>

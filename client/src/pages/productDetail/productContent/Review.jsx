@@ -79,7 +79,7 @@ const NoReviewDataWrapper = styled.div`
   }
 `;
 
-function Review() {
+function Review({ productName }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [sort, setSort] = useState("newest");
   const [data, setData] = useState(null);
@@ -89,10 +89,12 @@ function Review() {
   useEffect(() => {
     (async () => {
       const query = {
-        page: currentPage,
         sorted_type: sort,
+        page: currentPage,
       };
-      const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
+      const queryString = Object.entries(query)
+        .map(([key, value]) => `${key}=${value}`)
+        .join("&");
       const { data } = await axios.get(`${BASE_URL}/product/${id}/review?${queryString}`);
 
       setData(data);
@@ -129,7 +131,7 @@ function Review() {
                 </div>
 
                 <div className="review-content">
-                  <div>상품명</div>
+                  <div>{productName}</div>
 
                   {new Array(5)
                     .fill(null)
