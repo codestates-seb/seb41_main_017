@@ -146,8 +146,8 @@ function Review({ productName }) {
 
                   <div className="review-content">{review.content}</div>
 
-                  {review.image?.map((src) => (
-                    <img className="review-image" src={src} onClick={() => setModalOpen(true)} key={Math.random()} />
+                  {review.productReviewImageDtos.map((src) => (
+                    <img className="review-image" src={src.imgUrl} onClick={() => setModalOpen(true)} key={Math.random()} />
                   ))}
                 </div>
                 {modalOpen ? <ModalComponent component={<ReviewModal setModalOpen={setModalOpen} />} /> : null}
