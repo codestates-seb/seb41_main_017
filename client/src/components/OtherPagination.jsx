@@ -1,80 +1,95 @@
-import { useState } from "react";
 import styled from "styled-components";
 
-
-const testData = {
-    "pageInfo": {
-        "page": 1,
-        "size": 10,
-        "totalElements": 3,
-        "totalPages": 2
-      },
-      "barNumber": [
-        0
-      ]
-}
-
 const Layout = styled.div`
-    justify-content:center;
-    display:flex;
+    justify-content: center;
+    display: flex;
+    font-family: 'Times New Roman', Times, serif;
 
-    .box{
-        display:flex;
-        align-items: center;
-        height:100%;
-        background-color:#FFEAEA;
-
-
-        span{
-            padding: 10px;
-            display: inline-block;
-        }
+    & > div:first-child{
+        border-radius:10px 0px 0px 10px;
     }
-
-    .current{
-        background-color: #FF6767;
-        color:white;
+    & > div:last-child{
+        border-radius:0px 10px 10px 0px;
     }
 
 
-`
+  .box {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    background-color: #ffeaea;
 
 
-export const OtherPagination = ()=>{
-    const [pageData, setPageData] = useState(testData.pageInfo)
-    const [currentPage, setCurrentPage] = useState(testData.pageInfo.page)
-    
+    span {
+      padding: 10px
+      display: inline-block;
+      cursor: pointer;
+      border-radius: 8px;
 
-    const left = ()=>{
-
-        if(currentPage === 1){
-           return setCurrentPage(1)
-        } else{
-            setCurrentPage(currentPage - 1)
-        }
+      &:hover{
+        background-color: #ff6767;
+        color: white;
+        border-radius: 8px;
+      }
     }
+  }
 
-    const right = ()=>{
 
-        if(currentPage === pageData.totalPages){
-            setCurrentPage(pageData.totalPages)
-        } else{
-            setCurrentPage(currentPage + 1)
-        }
-        
-    }   
 
-    return(
-        <Layout>
-            {currentPage === 1 ? null : <div className="box" onClick={left}><span>{"<"}</span></div>}
-            <div className="box">
-                {Array(pageData.totalPages).fill(pageData.totalPages).map( (el,idx) => {
-                    return  <span 
-                    className={`${currentPage === idx + 1 ? "current" : null}`}
-                    key={idx + 1}>{ idx + 1}</span>})}
-            </div>
-            {pageData.totalPages === 1 ? null :
-             currentPage === pageData.totalPages ? null  : <div className="box" onClick={right}><span>{">"}</span></div>}
-        </Layout>
-    );
-}
+  .current {
+    background-color: #ff6767;
+    color: white;
+  }
+`;
+
+export const OtherPagination = ({ state, setState, pageInfo }) => {
+  const pageData = pageInfo;
+  const left = () => {
+    if (state === 1) {
+      return setState(0);
+    } else {
+      setState(state - 1);
+    }
+  };
+  const right = () => {
+    if (state === state.totalPages) {
+      setState(pageData.totalPages);
+    } else {
+      setState(state + 1);
+    }
+  };
+  const clickNum = (e) => {
+    setState(e - 1);
+  };
+
+  return (
+    <Layout>
+        {state === 0 ? null : (
+          <div className="box" onClick={left}>
+            <span>{"<"}</span>
+          </div>
+        )}
+        <div className="box">
+          {Array(pageData?.totalPages)
+            .fill()
+            .map((el, idx) => {
+              return (
+                <span
+                  onClick={(e) => clickNum(e.target.innerText)}
+                  className={`${state === idx ? "current" : "simple"}`}
+                  key={idx}
+                >
+                  {idx + 1}
+                </span>
+              );
+            })}
+        </div>
+        {pageData?.totalPages === 0 ? null : state ===
+          pageData?.totalPages - 1 ? null : (
+          <div className="box" onClick={right}>
+            <span>{">"}</span>
+          </div>
+        )}
+    </Layout>
+  );
+};
