@@ -89,10 +89,12 @@ function Review() {
   useEffect(() => {
     (async () => {
       const query = {
-        page: currentPage,
         sorted_type: sort,
+        page: currentPage,
       };
-      const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
+      const queryString = Object.entries(query)
+        .map(([key, value]) => `${key}=${value}`)
+        .join("&");
       const { data } = await axios.get(`${BASE_URL}/product/${id}/review?${queryString}`);
 
       setData(data);
