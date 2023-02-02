@@ -23,20 +23,14 @@ public class OrderDetailRepositoryCustomImpl extends QuerydslRepositorySupport i
     }
 
     @Override
-    public List<OrderDetail> findAllPaidByIdAndPaymentKeyAndProfileId(List<Long> orderDetailIds, String paymentKey, Long profileId) {
+    public List<OrderDetail> findAllPaidByIdAndProfileId(List<Long> orderDetailIds, Long profileId) {
         QOrderDetail orderDetail = QOrderDetail.orderDetail;
-        QPayment payment = QPayment.payment;
         QRefund refund = QRefund.refund;
 
         List<OrderDetail> orderDetails =
                 from(orderDetail)
-                        .where(orderDetail.orders.id.eq(
-                                JPAExpressions.select(payment.order.id).from(payment)
-                                        .where(
-                                                payment.paySuccessTf.eq(true)
-                                                .and(payment.paymentKey.eq(paymentKey))
-                                                .and(payment.profile.id.eq(profileId))
-                                        ))
+                        .where(orderDetail.orders.payment.paySuccessTf.eq(true)
+                                .and(orderDetail.orders.profile.id.eq(profileId))
                                 .and(orderDetail.id.in(orderDetailIds))
                                 .and(orderDetail.id.notIn(JPAExpressions.select(refund.orderDetail.id).from(refund)))
                         )

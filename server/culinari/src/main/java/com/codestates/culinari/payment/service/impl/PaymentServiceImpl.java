@@ -19,6 +19,7 @@ import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
 import com.codestates.culinari.payment.dto.response.PaymentInfoResponse;
 import com.codestates.culinari.payment.dto.response.PaymentResponseToPage;
 import com.codestates.culinari.payment.dto.response.toss.PaymentTossDto;
+import com.codestates.culinari.payment.entity.Payment;
 import com.codestates.culinari.payment.repository.PaymentRepository;
 import com.codestates.culinari.payment.repository.RefundRepository;
 import com.codestates.culinari.payment.service.PaymentService;
@@ -173,7 +174,11 @@ public class PaymentServiceImpl implements PaymentService {
         RefundDto dto = request.toDto();
 
         List<OrderDetail> orderDetails =
-                orderDetailRepository.findAllPaidByIdAndPaymentKeyAndProfileId(request.orderDetailIds(), request.paymentKey(), principal.profileId());
+                orderDetailRepository.findAllPaidByIdAndProfileId(request.orderDetailIds(), principal.profileId());
+
+        // 들어온 모든 OrderDetailIds 가 같은 결제 키를 가진다는 전제로 흘러감
+        // N+1 문제 개선 에서 수정할 예정
+        String paymentKey = orderDetails.get(0).getOrders().getPayment().getPaymentKey();
 
         orderDetails.forEach(orderDetail -> {
             JSONObject params = new JSONObject();
@@ -183,7 +188,7 @@ public class PaymentServiceImpl implements PaymentService {
             try {
                 PaymentTossDto paymentTossDto =
                         new RestTemplate().postForEntity(
-                                String.format(String.format("%s/payments/%s/cancel", tossOriginUrl, request.paymentKey())),
+                                String.format(String.format("%s/payments/%s/cancel", tossOriginUrl, paymentKey)),
                                 new HttpEntity<>(params, createAuthHeaders()),
                                 PaymentTossDto.class
                         ).getBody();
@@ -191,7 +196,7 @@ public class PaymentServiceImpl implements PaymentService {
                 throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
             }
 
-            refundRepository.save(dto.toEntity(orderDetail));
+            refundRepository.save(dto.toEntity(orderDetail, paymentKey));
         });
     }
 

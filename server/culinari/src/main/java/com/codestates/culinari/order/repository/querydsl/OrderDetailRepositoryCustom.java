@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderDetailRepositoryCustom {
-    List<OrderDetail> findAllPaidByIdAndPaymentKeyAndProfileId(List<Long> orderDetailIds, String paymentKey, Long profileId);
+    List<OrderDetail> findAllPaidByIdAndProfileId(List<Long> orderDetailIds, Long profileId);
 
     Page<OrderDetail> findAllCreatedAfterAndProfile_Id(LocalDateTime createdAfterDateTime, Long profileId, Pageable pageable);
 }
