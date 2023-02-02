@@ -7,8 +7,6 @@ import ReviewModal from "./ReviewModal";
 import ModalComponent from "./ModalComponent";
 import { ReactComponent as Star } from "../../../assets/star.svg";
 import Pagination from "../../../components/Pagination";
-
-import BASE_URL from "../../../constants/BASE_URL";
 import icon from "../../../assets/docs-icon.png";
 
 const Header = styled.div`
@@ -95,7 +93,7 @@ function Review({ productName }) {
       const queryString = Object.entries(query)
         .map(([key, value]) => `${key}=${value}`)
         .join("&");
-      const { data } = await axios.get(`${BASE_URL}/product/${id}/review?${queryString}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}/product/${id}/review?${queryString}`);
 
       setData(data);
     })();
