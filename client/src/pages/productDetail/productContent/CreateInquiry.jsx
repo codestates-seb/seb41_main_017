@@ -194,7 +194,8 @@ function CreateInquiry({ id, imgUrl, name, setIsOpen }) {
     };
 
     try {
-      axios.post(`${BASE_URL}/product/${id}/inquiry`, body, config);
+      axios.post(`${BASE_URL}/product/${id}/inquiry`, body, config)
+      .then(res => console.log(`${BASE_URL}/product/${id}/inquiry`, body, config,res));
     } catch (error) {
       console.error(error);
     }
