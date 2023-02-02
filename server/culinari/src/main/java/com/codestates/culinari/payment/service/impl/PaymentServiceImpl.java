@@ -167,7 +167,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         // 들어온 모든 OrderDetailIds 가 같은 결제 키를 가진다는 전제로 흘러감
         // N+1 문제 개선 에서 수정할 예정
-        String paymentKey = orderDetails.get(0).getOrders().getPayment().getPaymentKey();
+        String paymentKey = orderDetailRepository.findPaymentKey(orderDetails.get(0).getId());
 
         orderDetails.forEach(orderDetail -> {
             JSONObject params = new JSONObject();

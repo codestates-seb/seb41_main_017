@@ -13,4 +13,6 @@ public interface OrderDetailRepositoryCustom {
     Page<OrderDetail> findAllCreatedAfterAndProfile_Id(LocalDateTime createdAfterDateTime, Long profileId, Pageable pageable);
 
     Long countOnShippingByProfileId(LocalDateTime createdAfterDateTime, Long profileId);
+
+    String findPaymentKey(Long orderId);
 }
