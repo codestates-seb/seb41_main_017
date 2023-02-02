@@ -79,7 +79,7 @@ const NoReviewDataWrapper = styled.div`
   }
 `;
 
-function Review() {
+function Review({ productName }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [sort, setSort] = useState("newest");
   const [data, setData] = useState(null);
@@ -131,7 +131,7 @@ function Review() {
                 </div>
 
                 <div className="review-content">
-                  <div>상품명</div>
+                  <div>{productName}</div>
 
                   {new Array(5)
                     .fill(null)
