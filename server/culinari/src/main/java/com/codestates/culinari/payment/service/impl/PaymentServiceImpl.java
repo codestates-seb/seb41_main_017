@@ -94,11 +94,10 @@ public class PaymentServiceImpl implements PaymentService {
                     orders.getOrderDetails().add(orderDetail);
                 });
 
-        return PaymentInfoResponse.from(
-                paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile)),
-                tossSuccessUrl,
-                tossFailUrl
-        );
+        Payment payment = paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile));
+        orders.setPayment(payment);
+
+        return PaymentInfoResponse.from(payment);
     }
 
     @Override

@@ -1,11 +1,14 @@
 package com.codestates.culinari.order.entitiy;
 
 import com.codestates.culinari.audit.AuditingFields;
+import com.codestates.culinari.payment.entity.Payment;
+import com.codestates.culinari.product.entitiy.ProductReviewLike;
 import com.codestates.culinari.user.entitiy.Profile;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,10 @@ public class Orders extends AuditingFields {
 
     @OneToMany(mappedBy = "orders")
     private List<OrderDetail> orderDetails = new ArrayList<>();
+
+    @Setter
+    @OneToOne
+    private Payment payment;
 
     private Orders(String id, String address, String receiverName, String receiverPhoneNumber, Profile profile) {
         this.id = id;
