@@ -4,8 +4,8 @@ import Mypagehead from "../../components/MypageHead";
 import BasicButton from "../../components/BasicButton";
 import Guidance from "../../components/Guidance";
 import { useState, useEffect } from "react";
+import {OtherPagination} from "../../components/OtherPagination"
 import axios from "axios";
-
 
 const Layout = styled.div`
   display: flex;
@@ -161,41 +161,49 @@ function Orderitem() {
   const [ordersData, setOrders] = useState([]);
   const [cartModal, setCartModal] = useState(false);
   const [keysData, setKeysData] = useState([]);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
-    
-    axios.get(`${process.env.REACT_APP_URL}/orders`,{
-    headers: {
-      authorization: JSON.parse(localStorage.getItem("token"))
-        .authorization,
-    },
-    }).then( res => setOrders(res.data))
+    axios
+      .get(`${process.env.REACT_APP_URL}/orders?page=${page}&size=5&searchMonths=3`, {
+        headers: {
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
+        },
+      })
+      .then((res) => {
+        setOrders(res.data);
+      });
   }, []);
-
-  const isOpen = (data)=>{
+  console.log(ordersData.pageInfo)
+  const isOpen = (data) => {
     console.log(data);
     setCartModal(true);
-    setKeysData(data)
-  }
+    setKeysData(data);
+  };
 
   const cartAll = () => {
-   const cartItems = []
-    for(let i of keysData){
+    const cartItems = [];
+    for (let i of keysData) {
       cartItems.push({
         productId: i.product.id,
-        quantity: i.quantity
-      })
+        quantity: i.quantity,
+      });
     }
-    axios.post(`${process.env.REACT_APP_URL}/carts`,
-    {
-      cartItems
-    },
-    {
-      headers: {
-        authorization: JSON.parse(localStorage.getItem("token"))
-          .authorization,
-      },
-    }).then(()=>setCartModal(false))
+    axios
+      .post(
+        `${process.env.REACT_APP_URL}/carts`,
+        {
+          cartItems,
+        },
+        {
+          headers: {
+            authorization: JSON.parse(localStorage.getItem("token"))
+              .authorization,
+          },
+        }
+      )
+      .then(() => setCartModal(false));
   };
 
   return (
@@ -236,7 +244,7 @@ function Orderitem() {
                       <span>{`${data.id}`}</span>
                       <br />
                       <span>{`${data.orderDetails
-                        .map((el) => el.product.price)
+                        .map((el) => el.product.price * el.quantity)
                         .reduce((acc, cur) => acc + cur)
                         .toLocaleString()}원`}</span>
                     </div>
@@ -262,7 +270,6 @@ function Orderitem() {
                     value={data.id}
                     onClick={(e) => setBottomTab(e.target.value)}
                   >
-                    {console.log(data.id === bottomTab )}
                     {"주문 상세보기"}
                   </button>
                 </div>
@@ -331,10 +338,12 @@ function Orderitem() {
                           .toLocaleString()}원`}</span>
                         <span>{"0원"}</span>
                         <span>{"3000원"}</span>
-                        <span>{`${data.orderDetails
-                          .map((el) => el.product.price)
-                          .reduce((acc, cur) => acc + cur + 3000)
-                          .toLocaleString()}원`}</span>
+                        <span>
+                          {`${data.orderDetails
+                            .map((el) => el.product.price * el.quantity)
+                            .reduce((acc, cur) => acc + cur + 3000)
+                            .toLocaleString()}원`}
+                        </span>
                         <span>{"Toss"}</span>
                       </div>
                     </div>
@@ -345,6 +354,7 @@ function Orderitem() {
           </ListLayout>
         );
       })}
+      <OtherPagination state={page} setState={setPage} pageInfo={ordersData.pageInfo}/>
     </Mypagehead>
   );
 }

@@ -99,7 +99,7 @@ function Userinfo() {
   const [userYear, setUserYear] = useState(undefined);
   const [userMonth, setUserMonth] = useState(undefined);
   const [userDay, setUserDay] = useState(undefined);
-  const [userCheck, setCheck] = useState(undefined);
+  const [userCheck, setUserCheck] = useState(undefined);
   const [isdisabled, setIsdisabled] = useState(false);
   const [ismodal, setIsmodal] = useState(false);
   const userBirthDate = `${userYear}-${userMonth}-${userDay}`;
@@ -120,13 +120,14 @@ function Userinfo() {
         },
       })
       .then((res) => {
-        setCheck(res.data.data.gender);
+        setUserCheck(res.data.data.gender);
         setUserData(res.data.data);
       })
       .catch((error) => {
         console.log("실패");
       })
   }, []);
+
 
   const userPatch = () => {
     
@@ -290,11 +291,12 @@ function Userinfo() {
             ): null}
           </div>
           <div onClick={() => setIsdisabled(false)}>
-            {/* <span>성별</span>
+            <span>성별</span>
             <GenderRadio
-              setCheck={setCheck}
+              check={userCheck}
+              setCheck={setUserCheck}
               isdisabled={isdisabled}
-            ></GenderRadio> */}
+            ></GenderRadio>
           </div>
           <div className="submit">
             <BasicButton
