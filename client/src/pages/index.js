@@ -5,8 +5,6 @@ import styled from "styled-components";
 import MainBanner from "../components/MainBanner";
 import ProductItemSlider from "../components/ProductItemSlider";
 
-import BASE_URL from "../constants/BASE_URL";
-
 const Container = styled.div`
   min-width: 1050px;
 `;
@@ -30,13 +28,13 @@ export function Main() {
 
   useEffect(() => {
     const getNewProductData = async () => {
-      const { data } = await axios.get(`${BASE_URL}/collections/newproduct?size=20`);
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}/collections/newproduct?size=20`);
 
       return data;
     };
 
     const getBestProductData = async () => {
-      const { data } = await axios.get(`${BASE_URL}/collections/bestproducts?size=20`);
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}/collections/bestproducts?size=20`);
 
       return data;
     };
