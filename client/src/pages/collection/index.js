@@ -141,6 +141,10 @@ function Collection() {
   }, [checkedCategoryCodes, sort, currentPage]);
 
   const handleSortListClick = ({ target }) => {
+    const id = target.closest("li")?.dataset.id;
+
+    if (!id) return;
+
     setSort(target.closest("li").dataset.id);
   };
 

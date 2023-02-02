@@ -102,6 +102,10 @@ function Review({ productName }) {
   }, [currentPage, sort]);
 
   const handleFilterButtonClick = ({ target }) => {
+    const id = target.closest("li")?.dataset.id;
+
+    if (!id) return;
+
     setSort(target.closest("li").dataset.id);
   };
 
