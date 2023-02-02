@@ -8,6 +8,9 @@ import axios from "axios";
 import CountBox from "../../components/CountBox";
 import Guidance from "../../components/Guidance";
 import { BiHeartCircle } from "react-icons/bi";
+import { ReactComponent as Heart} from "../../assets/heart.svg";
+import {OtherPagination} from "../../components/OtherPagination"
+
 
 
 const Layout = styled.div`
@@ -15,20 +18,23 @@ const Layout = styled.div`
   display: flex;
   gap: 10px;
   justify-content: flex-start;
+  position: relative;
 `;
 
 const ItemLayout = styled.div`
   padding: 6.6px;
   display: flex;
   flex-direction: column;
+  position: relative;
   .items {
     position: relative;
+    height: 330px;
   }
 
   .select_item{
     position: absolute;
-    bottom:60px;
-    right:15px;
+    bottom:30%;
+    right:10%;
     font-size:30px;
     color:red;
     cursor: pointer;
@@ -57,14 +63,16 @@ const ItemLayout = styled.div`
 
 function Serachitem() {
   const [selectItems, setSelectItems] = useState({});
-  const [selects, setSelects] = useState(false);
   const [cartModal, setCartModal] = useState(false);
-  const [item, setItem] = useState([]);
-  const [keysData, setKeysData] = useState(0);
-  
+  const [productId, setProductId] = useState(0);
+  const [quantity, setQuantity] = useState(0);
+  const [page, setPage] = useState(0);
+  const [selectsValue, setSelectsValue] = useState(0);
+  const [deleteModal, setDeleteModal] = useState(false)
+
   useEffect(() => {
     
-    axios.get(`${process.env.REACT_APP_URL}/mypage/productlike`,{
+    axios.get(`${process.env.REACT_APP_URL}/mypage/productlike?page=${page}&size=5&searchMonths=12&frequency=3`,{
     headers: {
       authorization: JSON.parse(localStorage.getItem("token"))
         .authorization,
@@ -72,42 +80,15 @@ function Serachitem() {
     })
     .then( res => setSelectItems(res.data))
 
-  }, []);
+  }, [page]);
 
-  const isOpen = ()=>{
-    setCartModal(true);
-  }
-
-  const selectsValue = (id)=>{
-    setKeysData(id.productImageDtos[0].id);
-    setSelects(true);
-  }
-
-  const selectsPost = ()=>{
-
-    axios.delete(`${process.env.REACT_APP_URL}/product/${keysData}/like`,
-    {
-      headers: {
-        authorization: JSON.parse(localStorage.getItem("token"))
-          .authorization,
-      },
-    }).then(()=>{
-      setSelects(false);
-      window.location.reload();
-    }).catch(error => console.log("실패"));
-    
-  }
-
-
-  const countValue = (e)=>{
-    setItem(e)
-  }
 
   const cartPost = ()=>{
-      console.log("테스트:",item)
+
+      
       axios.post(`${process.env.REACT_APP_URL}/carts`,
     {
-      cartItems:[item]
+      cartItems:[{"productId":productId, "quantity":quantity}]
     },
     {
       headers: {
@@ -117,6 +98,28 @@ function Serachitem() {
     }).then(()=>setCartModal(false))
   }
 
+  const selectPost = ()=>{
+    axios.delete(`${process.env.REACT_APP_URL}/product/${selectsValue}/like`,
+    {
+      headers: {
+        authorization: JSON.parse(localStorage.getItem("token"))
+          .authorization,
+      },
+    }).then(()=>{
+      setDeleteModal(false)
+      window.location.reload();
+    })
+  }
+
+  const selectDelete = (e)=>{
+    setSelectsValue(e)
+    setDeleteModal(true)
+  }
+
+  const cartKey = (e)=>{
+    setProductId(e)
+    setCartModal(true)
+  }
   return (
     <Mypagehead
       title={"찜한 상품"}
@@ -135,24 +138,27 @@ function Serachitem() {
                     imgUrl={data.productImageDtos[0].imgUrl}
                     name={data.name}
                     price={data.price}/>
-                    <div className="select_item" onClick={()=>selectsValue(data)}><BiHeartCircle/></div>
-                    {selects ? (
+                    <div className="select_item" onClick={()=>selectDelete(data.productId)}>
+                      <Heart width="30" height="30" fill="red"/>
+                    </div>
+                    {deleteModal ? (
                       <Guidance
                         text={"찜 상품을 삭제하시겠습니까?"}
-                        close={() => setSelects(false)}
-                        ok={selectsPost}/>
+                        close={() => setDeleteModal(false)}
+                        ok={selectPost}/>
                     ) : null}
                 </div>
                 <div className="counts">
-                  <CountBox itemId={data.id} props={countValue}/>
+                  <CountBox setState={setQuantity}/>
                 </div>
                 <div className="buttons">
-                  <BasicButton p_height={6} onClick={isOpen}>장바구니 담기</BasicButton>
+                  <BasicButton p_height={6} onClick={()=>cartKey(data.productId)}>장바구니 담기</BasicButton>
                   {cartModal ? (
                       <Guidance
                         text={"해당 상품을 장바구니에 담으시겠습니까?"}
                         close={() => setCartModal(false)}
-                        ok={cartPost}/>
+                        ok={cartPost}
+                        />
                     ) : null}
                 </div>
               </ItemLayout>
@@ -160,6 +166,7 @@ function Serachitem() {
           );
         })}
       </Layout>
+      <OtherPagination state={page} setState={setPage} pageInfo={selectItems.pageInfo}/>
     </Mypagehead>
   );
 }
