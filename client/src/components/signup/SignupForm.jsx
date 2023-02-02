@@ -45,6 +45,13 @@ function SignForm() {
 
   const navigate = useNavigate();
 
+  const nameCheck = /^[ㄱ-ㅎ|가-힣|A-Za-z]+\s*[ㄱ-ㅎ|가-힣|A-Za-z]+$/g;
+  const emailCheck =
+    /^^[A-Za-z0-9]+@[A-Za-z]+\.?[A-Za-z]{2,3}\.[A-Za-z]{2,3}$$/;
+  const phoneCheck = /^\d{3}-\d{3,4}-\d{4}$/;
+  const birthDateCheck =
+    /^(19[0-9][0-9]|20[0-9][0-9])-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/g;
+
   const regexp =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&*]{8,20}$/;
 
@@ -65,9 +72,7 @@ function SignForm() {
       year !== "" &&
       month !== "" &&
       day !== "" &&
-      // signupAddress !== "" &&
       detailAddress !== ""
-      // postAddress !== ""
     );
   };
 
@@ -184,6 +189,14 @@ function SignForm() {
           ></BasicInput>
         </div>
 
+        <div className="error_box">
+          {name && name.length > 0 && !nameCheck.test(name) ? (
+            <div className="error_text">
+              올바르지 않은 이름입니다. (공백,특수문자,숫자는 사용불가합니다.)
+            </div>
+          ) : null}
+        </div>
+
         <div className="input_cotainer">
           <div className="input_box">
             <BasicInput
@@ -201,8 +214,13 @@ function SignForm() {
         </div>
 
         <div className="error_box">
-          {signupEmail && !signupEmail.includes("@") ? (
-            <div className="error_text">이메일 형식으로 입력해주세요</div>
+          {signupEmail &&
+          signupEmail.length > 0 &&
+          !emailCheck.test(signupEmail) ? (
+            <div className="error_text">
+              올바르지 않은 이메일 입니다. [공백, 특수문자(!@#$%^&*-_)는
+              사용불가합니다.]
+            </div>
           ) : null}
         </div>
 
@@ -215,6 +233,14 @@ function SignForm() {
             type={"text"}
             placeholder={"-를 포함한 숫자를 입력해주세요"}
           ></BasicInput>
+        </div>
+
+        <div className="error_box">
+          {phoneNum && phoneNum.length > 0 && !phoneCheck.test(phoneNum) ? (
+            <div className="error_text">
+              올바르지 않은 번호 입니다. [ex 010-0000-0000]
+            </div>
+          ) : null}
         </div>
         <div className="input_cotainer">
           <div className="input_box">
@@ -251,7 +277,7 @@ function SignForm() {
             star={"*"}
             type={"text"}
             width={"90%"}
-            placeholder={"YY"}
+            placeholder={"YYYY"}
           ></BasicInput>
           <BasicInput
             setValue={setMonth}
