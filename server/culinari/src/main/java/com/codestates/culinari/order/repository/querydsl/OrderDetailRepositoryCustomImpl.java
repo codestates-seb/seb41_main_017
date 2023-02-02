@@ -47,16 +47,17 @@ public class OrderDetailRepositoryCustomImpl extends QuerydslRepositorySupport i
     @Override
     public Page<OrderDetail> findAllCreatedAfterAndProfile_Id(LocalDateTime createdAfterDateTime, Long profileId, Pageable pageable) {
         QOrderDetail orderDetail = QOrderDetail.orderDetail;
-        QPayment payment = QPayment.payment;
+        QProduct product = QProduct.product;
+        QProductImage productImage = QProductImage.productImage;
         QRefund refund = QRefund.refund;
-        QProfile profile = QProfile.profile;
 
         JPQLQuery<OrderDetail> query =
                 from(orderDetail)
-                        .innerJoin(orderDetail.orders.profile, profile).fetchJoin()
+                        .innerJoin(orderDetail.product, product).fetchJoin()
+                        .innerJoin(product.productImages, productImage).fetchJoin()
                         .where(orderDetail.createdAt.gt(createdAfterDateTime)
-                                .and(profile.id.eq(profileId))
-                                .and(orderDetail.orders.id.in(JPAExpressions.select(payment.order.id).from(payment).where(payment.paySuccessTf.eq(true))))
+                                .and(orderDetail.orders.profile.id.eq(profileId))
+                                .and(orderDetail.orders.payment.paySuccessTf.eq(true))
                                 .and(orderDetail.id.notIn(JPAExpressions.select(refund.orderDetail.id).from(refund))));
         List<OrderDetail> orderDetails = getQuerydsl().applyPagination(pageable, query).fetch();
 
