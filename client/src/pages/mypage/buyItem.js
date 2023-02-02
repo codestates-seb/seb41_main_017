@@ -7,6 +7,7 @@ import { useEffect, useState} from "react";
 import CountBox from "../../components/CountBox";
 import axios from "axios";
 import Guidance from "../../components/Guidance";
+import {OtherPagination} from "../../components/OtherPagination"
 
 const Layout = styled.div`
   flex-wrap: wrap;
@@ -48,33 +49,32 @@ const ItemLayout = styled.div`
 function Buyitem() {
   const [buyItems, setBuyItems] = useState([]);
   const [cartModal, setCartModal] = useState(false);
-  const [item, setItem] = useState([]);
+  const [productId, setProductId] = useState(0);
+  const [page, setPage] = useState(0)
+  const [quantity, setQuantity] = useState(0);
+  
   
   useEffect(() => {
     
-    axios.get(`${process.env.REACT_APP_URL}/collections/frequent`,{
+    axios.get(`${process.env.REACT_APP_URL}/collections/frequent?page=${page}&size=10&searchMonths=12&frequency=3`,{
     headers: {
       authorization: JSON.parse(localStorage.getItem("token"))
         .authorization,
     },
     }).then( res => setBuyItems(res.data))
-  }, []);
+  }, [page]);
 
 
-  const isOpen = ()=>{
-    setCartModal(true);
-  }
-
-  const countValue = (e)=>{
-    setItem(e)
+  const cartKey = (e)=>{
+    setProductId(e)
+    setCartModal(true)
   }
 
   const cartAll = ()=>{
-    console.log("테스트:",item)
 
       axios.post(`${process.env.REACT_APP_URL}/carts`,
     {
-      cartItems:[item]
+      cartItems:[{"productId":productId, "quantity":quantity}]
     },
     {
       headers: {
@@ -101,10 +101,10 @@ function Buyitem() {
                     price={data.price}/>
                 </div>
                 <div className="counts">
-                  <CountBox itemId={data.id} props={countValue}/>
+                  <CountBox setState={setQuantity}/>
                 </div>
                 <div className="buttons">
-                  <BasicButton p_height={6} onClick={isOpen}>장바구니 담기</BasicButton>
+                  <BasicButton p_height={6} onClick={()=>cartKey(data.id)}>장바구니 담기</BasicButton>
                   {cartModal ? (
                       <Guidance
                         text={"해당 상품을 장바구니에 담으시겠습니까?"}
@@ -117,6 +117,7 @@ function Buyitem() {
           );
         })}
       </Layout>
+      <OtherPagination state={page} setState={setPage} pageInfo={buyItems.pageInfo}/>
     </Mypagehead>
   );
 }
