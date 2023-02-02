@@ -62,9 +62,11 @@ function ProductContent({ data, quantity, setQuantity, totalPrice }) {
     <Container>
       <DetailContainer>
         <Nav />
-        <img id="detail" src={data.data && data.data.productImageDtos[0].imgUrl}></img>
-        <div className="">
-          <ProductNoticeInfo className="">상품고시정보</ProductNoticeInfo>
+
+        <div id="detail">
+          <img src={data.data && data.data.productImageDtos[0].imgUrl}></img>
+
+          <ProductNoticeInfo>상품고시정보</ProductNoticeInfo>
           <ProductNoticeInfoUl>
             <li className="product_notice_info_li_title">제품명</li>
             <li className="product_notice_info_li_content">상품설명 및 상품이미지 참조</li>
