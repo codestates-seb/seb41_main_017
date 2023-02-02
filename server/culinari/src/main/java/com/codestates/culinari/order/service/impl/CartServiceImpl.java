@@ -32,8 +32,6 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void createCart(CartPost post, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         post.cartItems().forEach(cartInfo -> {
                     Product product = productRepository.findById(cartInfo.productId())
                             .orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
@@ -55,15 +53,11 @@ public class CartServiceImpl implements CartService {
     @Transactional(readOnly = true)
     @Override
     public Page<CartResponse> readCarts(Pageable pageable, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         return cartRepository.findAllByProfile_Id(pageable, principal.profileId()).map(CartResponse::from);
     }
 
     @Override
     public void updateCart(CartPatch patch, Long cartId, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         Cart cart = cartRepository.findByIdAndProfile_Id(cartId, principal.profileId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
 
@@ -73,17 +67,11 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void deleteCarts(CartDelete delete, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         try {
             cartRepository.deleteAllByIdsAndProfile_Id(delete.cartIds(), principal.profileId());
         } catch (Exception e) {
             throw new BusinessLogicException(ExceptionCode.CART_NOT_FOUND);
 
         }
-    }
-
-    public void verifyPrincipal(CustomPrincipal principal) {
-        if (principal == null) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 }

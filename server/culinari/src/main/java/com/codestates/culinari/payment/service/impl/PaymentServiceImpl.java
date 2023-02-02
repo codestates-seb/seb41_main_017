@@ -74,8 +74,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentInfoResponse createPayment(PaymentRequest request, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         Orders orders = ordersRepository.save(
                 OrderDto.of(
@@ -103,8 +101,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Page<PaymentResponseToPage> readPayments(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         return paymentRepository.findAllCreatedAfterAndProfile_Id(LocalDateTime.now().minusMonths(searchMonths), principal.profileId(), pageable)
                 .map(PaymentResponseToPage::from);
     }
@@ -170,7 +166,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void requestPaymentCancel(RefundRequest request, CustomPrincipal principal) {
-        verifyPrincipal(principal);
         RefundDto dto = request.toDto();
 
         List<OrderDetail> orderDetails =
@@ -198,10 +193,6 @@ public class PaymentServiceImpl implements PaymentService {
 
             refundRepository.save(dto.toEntity(orderDetail, paymentKey));
         });
-    }
-
-    private void verifyPrincipal(CustomPrincipal principal) {
-        if (principal == null) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
     private HttpHeaders createAuthHeaders() {

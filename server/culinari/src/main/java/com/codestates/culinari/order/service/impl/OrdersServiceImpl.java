@@ -36,21 +36,13 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Page<OrderResponse> readOrders(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         return ordersRepository.findAllCreatedAfterAndProfile_Id(LocalDateTime.now().minusMonths(searchMonths), principal.profileId(), pageable)
                 .map(OrderResponse::from);
     }
 
     @Override
     public Page<OrderDetailResponse> readOrderDetails(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         return orderDetailRepository.findAllCreatedAfterAndProfile_Id(LocalDateTime.now().minusMonths(searchMonths), principal.profileId(), pageable)
                 .map(OrderDetailResponse::from);
-    }
-
-    public void verifyPrincipal(CustomPrincipal principal) {
-        if (principal == null) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 }
