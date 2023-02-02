@@ -69,21 +69,19 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <BrowserRouter>
-    {/* <AuthProvider> */}
+    <AuthProvider>
       <GlobalStyle />
       <div id="container">
         <div id="header">
           <Header />
         </div>
         <main id="main">
-          {/* <Routes>
-            <Route path="/mypage/*" element={
+          <Routes>
+          <Route path="/mypage/*" element={
               <RequireAuth>
                 <Mypage />
               </RequireAuth>
-            }/> */}
-          <Routes>
-            <Route path="/mypage/*" element={<Mypage />}/>
+            }/>
             <Route path="/login" element={<Login />} />
             <Route path="/service/*" element={<ServiceHome />} />
             <Route path="/" element={<Main />} />
@@ -97,10 +95,10 @@ function App() {
             <Route path="/pay/failpage" element={<FailPayment />} />
           </Routes>
         </main>
-        {/* <footer id="footer"></footer> */}
+        <footer id="footer"></footer>
         <Footer />
       </div>
-      {/* </AuthProvider> */}
+      </AuthProvider>
     </BrowserRouter>
   );
 }
