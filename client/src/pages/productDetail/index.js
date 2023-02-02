@@ -7,8 +7,6 @@ import ScrollTop from "../../components/ScrollTop";
 import ProductAtf from "./productAtf/index";
 import ProductContent from "./productContent/index";
 
-import BASE_URL from "../../constants/BASE_URL";
-
 const Container = styled.div`
   max-width: 1050px;
   margin: 44px auto;
@@ -30,7 +28,7 @@ function ProductDetail() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get(`${BASE_URL}/product/${id}`);
+        const { data } = await axios.get(`${process.env.REACT_APP_URL}/product/${id}`);
 
         setData(data);
         setTotalPrice(data.data.price.toLocaleString());
