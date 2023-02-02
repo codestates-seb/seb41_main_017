@@ -110,20 +110,8 @@ const Content = styled.div`
   }
 `;
 
-function ReviewModal({ setModalOpen }) {
-  const data = {
-    username: "닉네임2",
-    srcArr: [
-      "https://img-cf.kurly.com/shop/data/goods/1657528646107l0.jpg",
-      "https://s3.amazonaws.com/static.neostack.com/img/react-slick/abstract04.jpg",
-      "https://s3.amazonaws.com/static.neostack.com/img/react-slick/abstract03.jpg",
-    ],
-    content: "상품 정말 너무 좋네요. 완전 잘쓰고 있어요 배송 늦어서 별 하나 안뺌",
-    createdAt: "2023.01.16",
-    point: 4,
-  };
-
-  const [imgSrc, setImgSrc] = useState(data && data.srcArr[0]);
+function ReviewModal({ setModalOpen, srcArr, content, modifiedBy, modifiedAt, reviewStar }) {
+  const [selectedImage, setSelectedImage] = useState(srcArr[0]);
 
   return (
     <>
@@ -137,29 +125,29 @@ function ReviewModal({ setModalOpen }) {
         <ContentContainer>
           <ImageContainer>
             <span>
-              <img src={imgSrc} />
+              <img src={selectedImage} />
             </span>
             <div className="img-list">
-              {data.srcArr.map((element, index) => {
+              {srcArr.map((src, index) => {
                 return (
                   <button key={index}>
-                    <img src={element} onClick={({ target }) => setImgSrc(target.src)} />
+                    <img src={src} onClick={({ target }) => setSelectedImage(target.src)} />
                   </button>
                 );
               })}
             </div>
           </ImageContainer>
           <Content>
-            <div className="username">{data.username}</div>
+            <div className="username">{modifiedBy}</div>
             {new Array(5)
               .fill(null)
-              .map((_, index) => index < data.point)
+              .map((_, index) => index < reviewStar)
               .map((point) =>
                 point ? <Star width="20px" fill="#ff6767" key={Math.random()} /> : <Star width="20px" fill="#ddd" key={Math.random()} />
               )}
-            <p className="content">{data.content}</p>
+            <p className="content">{content}</p>
             <footer className="footer">
-              <span>{data.createdAt}</span>
+              <span>{modifiedAt.slice(0, 10)}</span>
             </footer>
           </Content>
         </ContentContainer>
