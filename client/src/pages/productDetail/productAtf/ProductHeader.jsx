@@ -41,7 +41,7 @@ function ProductHeader({ data }) {
     })();
   }, []);
 
-  const handleIconClick = () => {
+  const handleIconClick = async () => {
     const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
 
     if (!accessToken) {
@@ -75,22 +75,25 @@ function ProductHeader({ data }) {
     }
 
     if (isLiked === false) {
-      const postProductLike = () => {
+      const postProductLike = async () => {
         const config = {
           headers: {
             "Content-Type": `application/json`,
             Authorization: accessToken,
           },
         };
-
-        axios.post(`${BASE_URL}/product/${id}/like`, null, config);
+        try {
+          return await axios.post(`${BASE_URL}/product/${id}/like`, null, config);
+        } catch (error) {
+          console.error(error);
+        }
       };
 
-      try {
-        postProductLike();
+      const response = await postProductLike();
+
+      if (response.status === 200) {
         setIsLiked(true);
-      } catch (error) {
-        console.error(error);
+        alert("해당 상품을 찜했습니다! [마이페이지 > 찜한 상품]에서 확인하실 수 있습니다.");
       }
     }
   };
