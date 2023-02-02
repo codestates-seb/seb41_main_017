@@ -87,7 +87,7 @@ public class ProductController {
     @GetMapping("/{product-id}/review")
     public ResponseEntity getProductReview(
             @PathVariable("product-id") Long productId,
-            @RequestParam(value = "sorted-type",required = false) String sortedType,
+            @RequestParam(value = "sorted_type",required = false) String sortedType,
             @Min (0) @RequestParam(defaultValue = "0",required = false) int page,
             @Positive @RequestParam(defaultValue = "5", required = false) int size
     ){
