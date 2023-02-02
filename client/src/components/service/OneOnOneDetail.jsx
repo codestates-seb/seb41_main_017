@@ -2,14 +2,9 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import BASE_URL from "../../constants/BASE_URL";
+
 import BasicButton from "../BasicButton";
-import {
-  DetailContainer,
-  DetailBar,
-  ContentBox,
-  Page,
-} from "../../styles/OneOnOneStyle";
+import { DetailContainer, DetailBar, ContentBox, Page } from "../../styles/OneOnOneStyle";
 import Answer from "../answer";
 
 function OneOnOneDetail() {
@@ -26,11 +21,10 @@ function OneOnOneDetail() {
 
   const fetchData = () => {
     axios
-      .get(`${BASE_URL}/board/inquiry/${id}`, {
+      .get(`${process.env.REACT_APP_URL}/board/inquiry/${id}`, {
         headers: {
           "Content-Type": `application/json`,
-          authorization: JSON.parse(localStorage.getItem("token"))
-            .authorization,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
         },
       })
       .then((res) => setData(res.data.data))
@@ -46,11 +40,10 @@ function OneOnOneDetail() {
 
     if (window.confirm("삭제하시겠습니까?")) {
       axios
-        .delete(`${BASE_URL}/board/inquiry/${id}`, {
+        .delete(`${process.env.REACT_APP_URL}/board/inquiry/${id}`, {
           headers: {
             "Content-Type": `application/json`,
-            authorization: JSON.parse(localStorage.getItem("token"))
-              .authorization,
+            authorization: JSON.parse(localStorage.getItem("token")).authorization,
           },
         })
         .then((res) => console.log(res))

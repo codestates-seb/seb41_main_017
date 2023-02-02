@@ -1,12 +1,12 @@
+import axios from "axios";
+import { useEffect } from "react";
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
+
 import OneOnOneHeader from "./OneOnOneHeader";
 import OneOnOneList from "./OneOnOneList";
 import BasicButton from "../BasicButton";
-import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
-import BASE_URL from "../../constants/BASE_URL";
-import { useEffect } from "react";
 import { OtherPagination } from "../OtherPagination";
 
 const Page = styled.div`
@@ -31,11 +31,10 @@ function OneOnOne() {
 
   const fetchData = async () => {
     await axios
-      .get(`${BASE_URL}/board/inquiry?page=${page}&size=10`, {
+      .get(`${process.env.REACT_APP_URL}/board/inquiry?page=${page}&size=10`, {
         headers: {
           "Content-Type": `application/json`,
-          authorization: JSON.parse(localStorage.getItem("token"))
-            .authorization,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
         },
       })
       .then((res) => setQuestion(res.data))
@@ -59,11 +58,7 @@ function OneOnOne() {
       </div>
 
       <PagenationWrapper>
-        <OtherPagination
-          state={page}
-          setState={setPage}
-          pageInfo={question.pageInfo}
-        />
+        <OtherPagination state={page} setState={setPage} pageInfo={question.pageInfo} />
       </PagenationWrapper>
     </Page>
   );

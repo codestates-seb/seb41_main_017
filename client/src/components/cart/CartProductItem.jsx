@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import BASE_URL from "../../constants/BASE_URL";
+
 import CheckBox from "../CheckBox";
 import DeleteButton from "../DeleteButton";
 import QuantityBox from "../QuantityBox";
@@ -72,7 +72,7 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
         },
       };
       try {
-        axios.patch(`${BASE_URL}/carts/${item.id}`, { quantity }, config);
+        axios.patch(`${process.env.REACT_APP_URL}/carts/${item.id}`, { quantity }, config);
       } catch (error) {
         console.error(error);
       }
@@ -104,7 +104,7 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
         };
 
         try {
-          await axios.delete(`${BASE_URL}/carts`, config);
+          await axios.delete(`${process.env.REACT_APP_URL}/carts`, config);
 
           setCheckedList(checkedList.filter((element) => element.id !== item.id));
           data.data = data.data.filter((_, idx) => idx !== index);

@@ -1,12 +1,12 @@
-import EmailForm from "./IdForm";
-import PasswordForm from "./PasswordForm";
-import LoginButton from "./LoginButton";
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import SignForm from "../signup/SignupForm";
-import BASE_URL from "../../constants/BASE_URL";
-import axios from "axios";
+import LoginButton from "./LoginButton";
+import PasswordForm from "./PasswordForm";
+import EmailForm from "./IdForm";
 
 const CheckboxContent = styled.div`
   display: flex;
@@ -107,16 +107,14 @@ function LoginInputForm() {
     };
 
     axios
-      .post(`${BASE_URL}/users/signin`, reqbody, header)
+      .post(`${process.env.REACT_APP_URL}/users/signin`, reqbody, header)
       .then((res) => {
         localStorage.setItem("token", JSON.stringify(res.headers));
         navigate("/");
         window.location.reload();
       })
       .catch((err) => {
-        window.alert(
-          "로그인 정보가 일치하지 않습니다! 계정정보를 확인해주세요!!"
-        );
+        window.alert("로그인 정보가 일치하지 않습니다! 계정정보를 확인해주세요!!");
       });
   };
 
@@ -124,16 +122,10 @@ function LoginInputForm() {
     <LoginContainer>
       <LoginTitle>환영합니다</LoginTitle>
       <Underline>
-        <button
-          className={toggle === 1 ? "tabs tabsActive" : "tabs"}
-          onClick={() => setToggle(1)}
-        >
+        <button className={toggle === 1 ? "tabs tabsActive" : "tabs"} onClick={() => setToggle(1)}>
           로그인
         </button>
-        <button
-          className={toggle === 2 ? "tabs tabsActive" : "tabs"}
-          onClick={() => setToggle(2)}
-        >
+        <button className={toggle === 2 ? "tabs tabsActive" : "tabs"} onClick={() => setToggle(2)}>
           회원가입
         </button>
       </Underline>

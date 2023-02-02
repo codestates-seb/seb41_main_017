@@ -5,8 +5,6 @@ import styled from "styled-components";
 import ColorButton from "../../../components/ColorButton";
 import QuantityBox from "../../../components/QuantityBox";
 
-import BASE_URL from "../../../constants/BASE_URL";
-
 const HeaderContainer = styled.div`
   padding-bottom: 40px;
 
@@ -145,7 +143,7 @@ function ProductSelection({ position, data, quantity, setQuantity, totalPrice })
     };
 
     try {
-      const response = await axios.post(`${BASE_URL}/carts`, body, config);
+      const response = await axios.post(`${process.env.REACT_APP_URL}/carts`, body, config);
 
       if (response.status === 201 && window.confirm("해당 상품이 장바구니에 담겼습니다. 장바구니 페이지로 이동하시겠습니까?")) {
         navigate("/cart");

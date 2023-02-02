@@ -12,7 +12,6 @@ import ColorButton from "../../components/ColorButton";
 import ProductItemSlider from "../../components/ProductItemSlider";
 import { Title, TodayRecommendProducts } from "..";
 
-import BASE_URL from "../../constants/BASE_URL";
 import { setInfo } from "../../app/reducer/productId2Pay";
 
 const Container = styled.div`
@@ -115,10 +114,10 @@ function Cart() {
   const [bestProductData, setBestProductData] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
-    
+
     if (!accessToken) {
       if (window.confirm("해당 기능은 로그인 후에 사용할 수 있습니다. 로그인 페이지으로 이동하시겠습니까?")) {
         navigate("/login");
@@ -139,7 +138,7 @@ function Cart() {
       };
 
       try {
-        const { data } = await axios.get(`${BASE_URL}/carts`, config);
+        const { data } = await axios.get(`${process.env.REACT_APP_URL}/carts`, config);
 
         return data;
       } catch (error) {
@@ -166,7 +165,7 @@ function Cart() {
 
   useEffect(() => {
     const getBestProductData = async () => {
-      const { data } = await axios.get(`${BASE_URL}/collections/bestproducts?size=20`);
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}/collections/bestproducts?size=20`);
 
       return data;
     };
@@ -212,7 +211,7 @@ function Cart() {
         },
       };
 
-      axios.delete(`${BASE_URL}/carts`, config);
+      axios.delete(`${process.env.REACT_APP_URL}/carts`, config);
 
       checkedList.forEach((list) => {
         data.data = data.data.filter((element) => element.id !== list.id);

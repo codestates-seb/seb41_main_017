@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import BASE_URL from "../../constants/BASE_URL";
+
 import BasicButton from "../BasicButton";
 
 const Container = styled.div`
@@ -70,11 +70,11 @@ function SuccessPayment() {
 
   const FetchData = () => {
     axios
-      .get(`${BASE_URL}/payments/success${location.search}`)
+      .get(`${process.env.REACT_APP_URL}/payments/success${location.search}`)
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
   };
-  console.log(`${BASE_URL}${location.search}`);
+
   useEffect(() => {
     FetchData();
   }, []);

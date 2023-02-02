@@ -6,7 +6,6 @@ import styled from "styled-components";
 import Pagination from "../../components/Pagination";
 import ProductItem from "../../components/ProductItem";
 
-import BASE_URL from "../../constants/BASE_URL";
 import productNone from "../../assets/product_none.png";
 
 const Container = styled.div`
@@ -116,13 +115,13 @@ function Search() {
     };
     const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
     const getProductData = async () => {
-      const { data } = await axios.get(`${BASE_URL}${location.pathname}${!!location.search ? location.search : "?"}${queryString}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}${location.pathname}${!!location.search ? location.search : "?"}${queryString}`);
 
       return data;
     };
 
     const getCategoryData = async () => {
-      const { data } = await axios.get(`${BASE_URL}/category/categorydetail/${code.slice(0, 3)}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}/category/categorydetail/${code.slice(0, 3)}`);
 
       return data;
     };

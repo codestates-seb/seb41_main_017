@@ -6,8 +6,6 @@ import styled from "styled-components";
 import BasicButton from "../../../components/BasicButton";
 import DeleteButton from "../../../components/DeleteButton";
 
-import BASE_URL from "../../../constants/BASE_URL";
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -194,7 +192,7 @@ function CreateInquiry({ id, imgUrl, name, setIsOpen }) {
     };
 
     try {
-      axios.post(`${BASE_URL}/product/${id}/inquiry`, body, config);
+      axios.post(`${process.env.REACT_APP_URL}/product/${id}/inquiry`, body, config);
     } catch (error) {
       console.error(error);
     }

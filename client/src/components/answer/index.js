@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import BASE_URL from "../../constants/BASE_URL";
 import { ReviewContainer, AnswerContainer } from "../../styles/OneOnOneStyle";
 import BasicButton from "../BasicButton";
 import AnswerList from "./AnswerList";
@@ -35,7 +34,7 @@ function Answer() {
     });
 
     axios
-      .post(`${BASE_URL}/board/inquiry/${id}/comments`, data, header)
+      .post(`${process.env.REACT_APP_URL}/board/inquiry/${id}/comments`, data, header)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
     window.location.reload();
@@ -43,11 +42,10 @@ function Answer() {
 
   const fetchData = () => {
     axios
-      .get(`${BASE_URL}/board/inquiry/${id}/comments`, {
+      .get(`${process.env.REACT_APP_URL}/board/inquiry/${id}/comments`, {
         headers: {
           "Content-Type": `application/json`,
-          authorization: JSON.parse(localStorage.getItem("token"))
-            .authorization,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
         },
       })
       .then((res) => setAnswer(res.data.data))
@@ -72,11 +70,7 @@ function Answer() {
       <AnswerList answer={answer} />
       <AnswerContainer>
         <div className="answer_box">
-          <textarea
-            value={content}
-            onChange={handleChangeContent}
-            placeholder="답변을 입력해주세요"
-          ></textarea>
+          <textarea value={content} onChange={handleChangeContent} placeholder="답변을 입력해주세요"></textarea>
         </div>
         <div onClick={handleClickBtn} className="answer_btn">
           <BasicButton p_width={"60"} p_height={"31"}>
