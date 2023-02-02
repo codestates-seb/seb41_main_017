@@ -66,12 +66,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${toss.test.origin-url}")
     private String tossOriginUrl;
 
-    @Value("${toss.test.success-url}")
-    private String tossSuccessUrl;
-
-    @Value("${toss.test.fail-url}")
-    private String tossFailUrl;
-
     @Override
     public PaymentInfoResponse createPayment(PaymentRequest request, CustomPrincipal principal) {
         Profile profile = profileRepository.getReferenceById(principal.profileId());
