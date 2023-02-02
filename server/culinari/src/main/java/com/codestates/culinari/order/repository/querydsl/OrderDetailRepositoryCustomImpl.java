@@ -77,4 +77,14 @@ public class OrderDetailRepositoryCustomImpl extends QuerydslRepositorySupport i
                         .and(orderDetail.statusType.eq(StatusType.ON_SHIPPING)))
                 .fetchCount();
     }
+
+    @Override
+    public String findPaymentKey(Long orderId) {
+        QOrderDetail orderDetail = QOrderDetail.orderDetail;
+
+        return from(orderDetail)
+                .select(orderDetail.orders.payment.paymentKey)
+                .where(orderDetail.id.eq(orderId))
+                .fetchOne();
+    }
 }
