@@ -1,10 +1,10 @@
+import axios from "axios";
 import React, { useState } from "react";
+import styled from "styled-components";
+
 import Modal from "./Modal";
 import GuideModal from "./GuideModal";
 import Post from "./Post";
-import styled from "styled-components";
-import axios from "axios";
-import BASE_URL from "../../constants/BASE_URL";
 
 const AddressBtn = styled.button`
   width: 100%;
@@ -14,7 +14,7 @@ const AddressBtn = styled.button`
   margin-top: 19.5px;
 `;
 
-function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disabled}) {
+function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disabled }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [response, setResponse] = useState("");
 
@@ -28,7 +28,7 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disable
   const handleCheckBtn = (e) => {
     e.preventDefault();
     axios
-      .get(`${BASE_URL}/users/username-check?username=${signupId}`)
+      .get(`${process.env.REACT_APP_URL}/users/username-check?username=${signupId}`)
 
       .then((res) => {
         console.log(res);
@@ -48,7 +48,7 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disable
   const handleCheckEmailBtn = (e) => {
     e.preventDefault();
     axios
-      .get(`${BASE_URL}/users/email-check?email=${signupEmail}`)
+      .get(`${process.env.REACT_APP_URL}/users/email-check?email=${signupEmail}`)
 
       .then((res) => {
         console.log(res);
@@ -70,10 +70,7 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disable
         <AddressBtn onClick={openModal}>주소검색</AddressBtn>
 
         <Modal open={modalOpen} close={closeModal} header="Modal heading">
-          <Post
-            setModalOpen={setModalOpen}
-            setSignupAddress={setSignupAddress}
-          ></Post>
+          <Post setModalOpen={setModalOpen} setSignupAddress={setSignupAddress}></Post>
         </Modal>
       </>
     );
@@ -97,10 +94,9 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disable
   if (type === "checkEmail") {
     return (
       <>
-        <AddressBtn 
-        onClick={handleCheckEmailBtn}
-        disabled={disabled}
-        >중복확인</AddressBtn>
+        <AddressBtn onClick={handleCheckEmailBtn} disabled={disabled}>
+          중복확인
+        </AddressBtn>
         <GuideModal
           signupEmail={signupEmail}
           type={"checkEmail"}
@@ -109,7 +105,6 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disable
           open={modalOpen}
           close={closeModal}
           header="Modal heading"
-          
         ></GuideModal>
       </>
     );
