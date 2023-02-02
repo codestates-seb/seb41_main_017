@@ -82,8 +82,3 @@ const RadioButton = styled.input`
 `;
 
 export default GenderRadio;
-
-/*
-1. 값이입력되지 않았을때 문구 노출은 안보이게
-2. 
-*/

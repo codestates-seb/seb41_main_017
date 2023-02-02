@@ -7,7 +7,8 @@ import ListLayout from "../../components/ListLayout";
 import Mypagehead from "../../components/MypageHead";
 import BasicButton from "../../components/BasicButton";
 import CreateInquiry from "../productDetail/productContent/CreateInquiry";
-
+import {OtherPagination} from "../../components/OtherPagination"
+import Guidance from "../../components/Guidance"
 
 
 const ClassList = styled.div`
@@ -136,22 +137,27 @@ const Layout = styled.div`
 function DeliveryLook() {
   const time = format(add(new Date(), { days: 2 }), "MM/dd");
   const [ordersData, setOrders] = useState([]);
-  const [datas, setDatas] = useState({});
-  const [isOpen, setIsOpen] = useState(false);
+  const [page, setPage] = useState(0);
+  const [isDelete, setIsDelete] = useState(false);
+
+  // const [datas, setDatas] = useState({});
+  // const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  console.log(ordersData)
+  
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_URL}/orders/details`,{
+    axios.get(`${process.env.REACT_APP_URL}/orders/details?page=${page}&size=5&searchMonths=3`,{
       headers: {
         authorization: JSON.parse(localStorage.getItem("token"))
           .authorization,
       },
-    }).then( res => setOrders(res.data))
-  }, []);
+    }).then( res => {
+      setOrders(res.data)
+    })
+  }, [page]);
 
-  // const setData = (id) => {
+  // const dataKey = (id) => {
   //   setDatas(id);
   //   setIsOpen(true);
   // };
@@ -159,6 +165,32 @@ function DeliveryLook() {
   const movePage = (id) => {
     navigate(`/product/:${id}`);
   };
+
+  const refund = () =>{
+    console.log("취소버튼클릭");
+    axios.get(`${process.env.REACT_APP_URL}/payments`,{
+      headers: {
+            authorization: JSON.parse(localStorage.getItem("token"))
+              .authorization,
+          },
+    }).then(res => console.log(res)); 
+
+
+
+    // axios.post(`${process.env.REACT_APP_URL}/payments/cancel`,{
+    //   headers: {
+    //     authorization: JSON.parse(localStorage.getItem("token"))
+    //       .authorization,
+    //   },
+    // },{
+    //   "orderDetailIds" : [3, 4, 5],
+    //   "paymentKey" : "jgN60L1adJYyZqmkKeP8gKMMddJYp8bQRxB9lG5DnzWE7pM4",
+    //   "cancelReason" : "환불 사유"
+    // })
+  }
+
+
+  
 
   return (
     <Mypagehead title={"배송 조회"}>
@@ -195,7 +227,13 @@ function DeliveryLook() {
                   </div>
                   <div className="right">
                     <div className="btns">
-                      <BasicButton>{"취소,교환,반품 신청"}</BasicButton>
+                      <BasicButton onClick={()=>setIsDelete(true)}>{"취소,교환,반품 신청"}</BasicButton>
+                      {isDelete? 
+                      <Guidance
+                      text={"해당상품을 취소하시겠습니까?"}
+                      ok={refund}
+                      close={()=>setIsDelete(false)}
+                      /> : null}
                       <BasicButton>{"문의하기"}</BasicButton>
                       {/* <BasicButton onClick={() => setData(data)}>
                         {"문의하기"}
@@ -208,7 +246,7 @@ function DeliveryLook() {
           );
         })}
         <div className="items_question">
-          {isOpen ? (
+          {/* {isOpen ? (
             <CreateInquiry
               data={{
                 image: datas?.product?.productImageDtos[0]?.imgUrl,
@@ -216,9 +254,10 @@ function DeliveryLook() {
               }}
               setIsOpen={setIsOpen}
             />
-          ) : null}
+          ) : null} */}
         </div>
       </ClassList>
+      <OtherPagination state={page} setState={setPage} pageInfo={ordersData.pageInfo}/>
     </Mypagehead>
   );
 }

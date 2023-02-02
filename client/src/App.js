@@ -15,6 +15,8 @@ import Pay from "./components/pay";
 import SuccessPayment from "./components/pay/SuccessPayment";
 import FailPayment from "./components/pay/FailPayment";
 import Footer from "./components/footer/Footer";
+import {AuthProvider, RequireAuth} from "./AuthRoute";
+
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
@@ -67,14 +69,19 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <BrowserRouter>
+    <AuthProvider>
       <GlobalStyle />
       <div id="container">
         <div id="header">
-          <Header />{" "}
+          <Header />
         </div>
         <main id="main">
           <Routes>
-            <Route path="/mypage/*" element={<Mypage />}></Route>
+          <Route path="/mypage/*" element={
+              <RequireAuth>
+                <Mypage />
+              </RequireAuth>
+            }/>
             <Route path="/login" element={<Login />} />
             <Route path="/service/*" element={<ServiceHome />} />
             <Route path="/" element={<Main />} />
@@ -88,9 +95,10 @@ function App() {
             <Route path="/pay/failpage" element={<FailPayment />} />
           </Routes>
         </main>
-        {/* <footer id="footer"></footer> */}
+        <footer id="footer"></footer>
         <Footer />
       </div>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

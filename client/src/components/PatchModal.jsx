@@ -105,6 +105,7 @@ function PatchModal({ close, data }) {
             flex_d={"column"}
             padding_b={"20px"}
             defaultValue={destinationName}
+            placeholder={"변경하실 배송지명 을 적어주세요"}
             onChange={(e) => e === undefined ? setDestinationName(data[0].destinationName) : setDestinationName(e.target.value)}
           />
           <SideInput
@@ -112,6 +113,7 @@ function PatchModal({ close, data }) {
             flex_d={"column"}
             padding_b={"20px"}
             defaultValue={address}
+            placeholder={"변경하실 주소를 적어주세요"}
             onChange={(e) => setAddress(e.target.value)}
           />
           <SideInput
@@ -119,6 +121,7 @@ function PatchModal({ close, data }) {
             flex_d={"column"}
             padding_b={"20px"}
             defaultValue={receiverName}
+            placeholder={"변경하실 수취인 명을 적어주세요"}
             onChange={(e) => setReceiverName(e.target.value)}
           />
           <SideInput
@@ -126,6 +129,7 @@ function PatchModal({ close, data }) {
             flex_d={"column"}
             padding_b={"20px"}
             defaultValue={receiverPhoneNumber}
+            placeholder={"새로운 번호를 '-'  포함하여 적어주세요"}
             onChange={(e) => setReceiverPhoneNumber(e.target.value)}
           />
         </div>

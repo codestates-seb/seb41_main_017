@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import styled from "styled-components";
 import { GoChevronRight } from "react-icons/go";
 import BasicButton from "../../components/BasicButton";
@@ -18,7 +18,7 @@ import ItemreviewWrite from "./itemreviewWrite";
 
 const Layout = styled.div`
   padding-top: 15px;
-  width:100%;
+  width: 100%;
   height: 100%;
   margin: 0 auto;
 `;
@@ -92,59 +92,99 @@ const Mycard = styled.div`
   }
 `;
 
-function Mypage () {
-
-
+function Mypage() {
   const [user, setUser] = useState({});
+  const [shipping, setShipping] = useState(0);
+  const [orderList, setOrderList] = useState(0);
+  const [selectItems, setSelectItems] = useState(0);
+  const [buyItems, setBuyItems] = useState(0);
 
-  useEffect(()=>{
+  // "username": "id2",
+  // "password": "!@#123password"
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_URL}/users`, {
+        headers: {
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
+        },
+      })
+      .then((res) => setUser(res.data.data));
 
-    axios.get(`${process.env.REACT_APP_URL}/users`,{
-      headers: {
-        authorization: JSON.parse(localStorage.getItem("token"))
-          .authorization,
-      },
-    })
-    .then(res => setUser(res.data.data))
-    .then(erros => erros)
-  },[]);
+    axios
+      .get(`${process.env.REACT_APP_URL}/orders/details`, {
+        headers: {
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
+        },
+      })
+      .then((res) => {
+        setShipping(res.data.pageInfo.totalElements);
+      });
 
+    axios
+      .get(`${process.env.REACT_APP_URL}/orders`, {
+        headers: {
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
+        },
+      })
+      .then((res) => {
+        setOrderList(res.data.pageInfo.totalElements);
+      });
+
+    axios
+      .get(`${process.env.REACT_APP_URL}/mypage/productlike`, {
+        headers: {
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
+        },
+      })
+      .then((res) => setSelectItems(res.data.pageInfo.totalElements));
+    axios
+      .get(`${process.env.REACT_APP_URL}/collections/frequent`, {
+        headers: {
+          authorization: JSON.parse(localStorage.getItem("token"))
+            .authorization,
+        },
+      })
+      .then((res) => setBuyItems(res.data.pageInfo.totalElements));
+  }, []);
+
+  
   const list = {
-    "내정보": {
-      'userInfo?': <Userinfo/>
+    내정보: {
+      userInfo: <Userinfo />,
     },
     "배송지 설정": {
-      'addressSet': <DeliverySet/>
+      deliverySet: <DeliverySet />,
     },
     "배송 조회": {
-      'deliveryLook': <DeliveryLook/>
+      deliveryLook: <DeliveryLook />,
     },
     "주문 목록 조회": {
-      'orderitem': <Orderitem/>
+      orderitem: <Orderitem />,
     },
     "내 쿠폰": {
-      'coupon': <Coupon/>
+      coupon: <Coupon />,
     },
     "내 포인트": {
-      'point': <Point/>
+      point: <Point />,
     },
     "자주 산 상품": {
-      'buyitem': <Buyitem/>
+      buyitem: <Buyitem />,
     },
     "찜한 상품": {
-      'selectItem': <Selectitem/>
+      selectItem: <Selectitem />,
     },
     "작성한 후기": {
-      'itemreviewList': <ItemreviewList/>,
-      children:[
-        {"itemreviewList/write" : (<ItemreviewWrite/>)},
-      ]
+      itemreviewList: <ItemreviewList />,
+      children: [{ "itemreviewList/write": <ItemreviewWrite /> }],
     },
     "내 문의": {
-      'inquiry': <Inquiry/>
-    }
-
-};
+      inquiry: <Inquiry />,
+    },
+  };
   return (
     <Layout>
       <Mycard>
@@ -162,7 +202,7 @@ function Mypage () {
               <a href="/point">
                 <span>내 포인트</span>
                 <span>
-                  {`${user.point}P`}
+                  {`${user.point === undefined ? "0" : user.point}P`}
                   <GoChevronRight />
                 </span>
               </a>
@@ -182,7 +222,7 @@ function Mypage () {
           <div>
             <h2>배송중</h2>
             <div className="count">
-              <span>0</span>
+              <span>{shipping}</span>
             </div>
             <BasicButton radius={10} href={"/mypage/deliveryLook"}>
               배송조회
@@ -191,7 +231,7 @@ function Mypage () {
           <div>
             <h2>주문 목록</h2>
             <div className="count">
-              <span>0</span>
+              <span>{orderList}</span>
             </div>
             <BasicButton radius={10} href={"/mypage/orderitem"}>
               주문 목록 조회
@@ -200,7 +240,7 @@ function Mypage () {
           <div>
             <h2>찜한 상품</h2>
             <div className="count">
-              <span>0</span>
+              <span>{selectItems}</span>
             </div>
             <BasicButton radius={10} href={"/mypage/selectItem"}>
               조회
@@ -209,7 +249,7 @@ function Mypage () {
           <div>
             <h2>자주 산 상품</h2>
             <div className="count">
-              <span>0</span>
+              <span>{buyItems}</span>
             </div>
             <BasicButton radius={10} href={"/mypage/buyitem"}>
               조회
@@ -217,14 +257,9 @@ function Mypage () {
           </div>
         </div>
       </Mycard>
-      <Tab 
-      list={list} 
-      title="마이 페이지" 
-      flex={1}
-      />
+      <Tab list={list} title="마이 페이지" flex={1} />
     </Layout>
   );
 }
 
 export default Mypage;
-

@@ -208,6 +208,7 @@ function Header() {
   const [currentIndex, setCurrentIndex] = useState(null);
   const isLogin = localStorage.getItem("token");
 
+
   const handleSearchProductSubmit = (event) => {
     event.preventDefault();
     const text = searchText.trim();
@@ -257,7 +258,7 @@ function Header() {
   const handleClickLogoutBtn = (e) => {
     e.preventDefault();
     localStorage.removeItem("token");
-    window.location.reload();
+    navigate("/login");
   };
 
   return (
@@ -291,7 +292,7 @@ function Header() {
         </form>
         <div className="myIcons flex">
           <div className="icons">
-            <a href="/mypage">
+            <a href="/mypage/userInfo">
               <BsFillPersonFill className="icon" />
             </a>
           </div>

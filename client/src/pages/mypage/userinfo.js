@@ -10,6 +10,10 @@ import GenderRadio from "../../components/signup/GenderRadio";
 import BasicButton from "../../components/BasicButton";
 import Guidance from "../../components/Guidance";
 
+// id2
+// !@#123password
+
+
 const Layout = styled.div`
   width: 450px;
   margin: 0 auto;
@@ -95,7 +99,7 @@ function Userinfo() {
   const [userYear, setUserYear] = useState(undefined);
   const [userMonth, setUserMonth] = useState(undefined);
   const [userDay, setUserDay] = useState(undefined);
-  const [userCheck, setCheck] = useState(undefined);
+  const [userCheck, setUserCheck] = useState(undefined);
   const [isdisabled, setIsdisabled] = useState(false);
   const [ismodal, setIsmodal] = useState(false);
   const userBirthDate = `${userYear}-${userMonth}-${userDay}`;
@@ -106,6 +110,7 @@ function Userinfo() {
   const birthDateCheck = /^(19[0-9][0-9]|20[0-9][0-9])-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/g;
   const navigate = useNavigate();
 
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_URL}/users`, {
@@ -115,10 +120,14 @@ function Userinfo() {
         },
       })
       .then((res) => {
-        setCheck(res.data.data.gender);
+        setUserCheck(res.data.data.gender);
         setUserData(res.data.data);
-      });
+      })
+      .catch((error) => {
+        console.log("실패");
+      })
   }, []);
+
 
   const userPatch = () => {
     
@@ -284,7 +293,8 @@ function Userinfo() {
           <div onClick={() => setIsdisabled(false)}>
             <span>성별</span>
             <GenderRadio
-              setCheck={setCheck}
+              check={userCheck}
+              setCheck={setUserCheck}
               isdisabled={isdisabled}
             ></GenderRadio>
           </div>

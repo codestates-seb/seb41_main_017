@@ -9,6 +9,9 @@ import Postmodal from "../../components/Postmodal";
 import Guidance from "../../components/Guidance";
 import PatchModal from "../../components/PatchModal";
 
+
+
+
 const Classlist = styled.div`
   .check_box {
     display: flex;
