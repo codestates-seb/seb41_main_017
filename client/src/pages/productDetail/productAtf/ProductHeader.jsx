@@ -6,8 +6,6 @@ import styled from "styled-components";
 
 import { ReactComponent as Heart } from "../../../assets/heart.svg";
 
-import BASE_URL from "../../../constants/BASE_URL";
-
 const HeartIconWrapper = styled.div`
   width: 30px;
   height: 30px;
@@ -32,7 +30,7 @@ function ProductHeader({ data }) {
         },
       };
 
-      return axios.get(`${BASE_URL}/mypage/productlike`, config);
+      return axios.get(`${process.env.REACT_APP_URL}/mypage/productlike`, config);
     };
 
     (async () => {
@@ -63,7 +61,7 @@ function ProductHeader({ data }) {
           },
         };
         try {
-          return await axios.delete(`${BASE_URL}/product/${id}/like`, config);
+          return await axios.delete(`${process.env.REACT_APP_URL}/product/${id}/like`, config);
         } catch (error) {
           console.error(error);
         }
@@ -86,7 +84,7 @@ function ProductHeader({ data }) {
           },
         };
         try {
-          return await axios.post(`${BASE_URL}/product/${id}/like`, null, config);
+          return await axios.post(`${process.env.REACT_APP_URL}/product/${id}/like`, null, config);
         } catch (error) {
           console.error(error);
         }
