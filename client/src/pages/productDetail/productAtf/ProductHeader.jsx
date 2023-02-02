@@ -55,22 +55,25 @@ function ProductHeader({ data }) {
     }
 
     if (isLiked === true) {
-      const deleteProductLike = () => {
+      const deleteProductLike = async () => {
         const config = {
           headers: {
             "Content-Type": `application/json`,
             Authorization: accessToken,
           },
         };
-
-        axios.delete(`${BASE_URL}/product/${id}/like`, config);
+        try {
+          return await axios.delete(`${BASE_URL}/product/${id}/like`, config);
+        } catch (error) {
+          console.error(error);
+        }
       };
 
-      try {
-        deleteProductLike();
+      const response = await deleteProductLike();
+
+      if (response.status === 200) {
         setIsLiked(false);
-      } catch (error) {
-        console.error(error);
+        alert("해당 상품의 찜을 취소 했습니다.");
       }
     }
 
