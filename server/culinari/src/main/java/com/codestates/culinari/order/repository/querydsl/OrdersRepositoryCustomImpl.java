@@ -36,4 +36,16 @@ public class OrdersRepositoryCustomImpl extends QuerydslRepositorySupport implem
 
         return new PageImpl<>(orders, pageable, query.fetchCount());
     }
+
+    @Override
+    public Long countOrderByProfileId(LocalDateTime createdAfterDateTime, Long profileId) {
+        QOrders order = QOrders.orders;
+        QProfile profile = QProfile.profile;
+
+        return from(order)
+                .where(order.createdAt.gt(createdAfterDateTime)
+                        .and(profile.id.eq(profileId))
+                        .and(order.payment.paySuccessTf.eq(true)))
+                .fetchCount();
+    }
 }

@@ -2,10 +2,13 @@ package com.codestates.culinari.order.repository.querydsl;
 
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.global.exception.ExceptionCode;
+import com.codestates.culinari.order.constant.StatusType;
 import com.codestates.culinari.order.entitiy.OrderDetail;
 import com.codestates.culinari.order.entitiy.QOrderDetail;
 import com.codestates.culinari.payment.entity.QPayment;
 import com.codestates.culinari.payment.entity.QRefund;
+import com.codestates.culinari.product.entitiy.QProduct;
+import com.codestates.culinari.product.entitiy.QProductImage;
 import com.codestates.culinari.user.entitiy.QProfile;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
@@ -58,5 +61,19 @@ public class OrderDetailRepositoryCustomImpl extends QuerydslRepositorySupport i
         List<OrderDetail> orderDetails = getQuerydsl().applyPagination(pageable, query).fetch();
 
         return new PageImpl<>(orderDetails, pageable, query.fetchCount());
+    }
+
+    @Override
+    public Long countOnShippingByProfileId(LocalDateTime createdAfterDateTime, Long profileId) {
+        QOrderDetail orderDetail = QOrderDetail.orderDetail;
+        QRefund refund = QRefund.refund;
+
+        return from(orderDetail)
+                .where(orderDetail.createdAt.gt(createdAfterDateTime)
+                        .and(orderDetail.orders.profile.id.eq(profileId))
+                        .and(orderDetail.orders.payment.paySuccessTf.eq(true))
+                        .and(orderDetail.id.notIn(JPAExpressions.select(refund.orderDetail.id).from(refund)))
+                        .and(orderDetail.statusType.eq(StatusType.ON_SHIPPING)))
+                .fetchCount();
     }
 }

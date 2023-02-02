@@ -11,4 +11,6 @@ public interface OrderDetailRepositoryCustom {
     List<OrderDetail> findAllPaidByIdAndProfileId(List<Long> orderDetailIds, Long profileId);
 
     Page<OrderDetail> findAllCreatedAfterAndProfile_Id(LocalDateTime createdAfterDateTime, Long profileId, Pageable pageable);
+
+    Long countOnShippingByProfileId(LocalDateTime createdAfterDateTime, Long profileId);
 }

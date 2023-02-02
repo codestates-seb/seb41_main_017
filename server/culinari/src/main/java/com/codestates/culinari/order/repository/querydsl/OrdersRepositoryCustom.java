@@ -8,4 +8,6 @@ import java.time.LocalDateTime;
 
 public interface OrdersRepositoryCustom {
     Page<Orders> findAllCreatedAfterAndProfile_Id(LocalDateTime createdAfterDateTime, Long profileId, Pageable pageable);
+
+    Long countOrderByProfileId(LocalDateTime createdAfterDateTime, Long profileId);
 }

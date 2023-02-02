@@ -17,4 +17,6 @@ public interface ProductRepositoryCustom{
     Page<Product> findAllFrequentOrderProduct(LocalDateTime createdAfterDateTime, Integer frequency, Long profileId, Pageable pageable);
 
     Page<Product> findBestProducts(List<String> category, List<String> brand, Integer frequency, Pageable pageable);
+
+    Long countFrequentOrderProduct(LocalDateTime createdAfterDateTime, Integer frequency, Long profileId);
 }
