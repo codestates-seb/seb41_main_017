@@ -1,11 +1,10 @@
 import axios from "axios";
 import styled from "styled-components";
-import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { BsFillPersonFill, BsCart4, BsList, BsSearch } from "react-icons/bs";
 import logo from "../../assets/fitlogo.png";
-import BASE_URL from "../../constants/BASE_URL";
 
 const Layout = styled.div`
   width: 100%;
@@ -220,13 +219,13 @@ function Header() {
 
   useEffect(() => {
     const getCategories = async () => {
-      const { data } = await axios.get(`${BASE_URL}/category`);
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}/category`);
 
       return data;
     };
 
     const getCategoryDetails = async (codes) => {
-      const data = await Promise.all(codes.map((code) => axios.get(`${BASE_URL}/category/categorydetail/${code}`)));
+      const data = await Promise.all(codes.map((code) => axios.get(`${process.env.REACT_APP_URL}/category/categorydetail/${code}`)));
 
       return data;
     };

@@ -19,7 +19,6 @@ const Layout = styled.div`
     height: 100%;
     background-color: #ffeaea;
 
-
     span {
       padding: 10px;
       display: inline-block;

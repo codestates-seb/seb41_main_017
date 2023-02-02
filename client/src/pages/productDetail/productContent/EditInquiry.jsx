@@ -4,7 +4,6 @@ import styled from "styled-components";
 import BasicButton from "../../../components/BasicButton";
 
 import DeleteButton from "../../../components/DeleteButton";
-import BASE_URL from "../../../constants/BASE_URL";
 
 const Container = styled.div`
   display: flex;
@@ -179,7 +178,7 @@ function EditInquiry({ data, element, setIsEditModalOpen }) {
     };
 
     try {
-      axios.patch(`${BASE_URL}/product/inquiry/${element.id}`, body, config);
+      axios.patch(`${process.env.REACT_APP_URL}/product/inquiry/${element.id}`, body, config);
     } catch (error) {
       console.error(error);
     }

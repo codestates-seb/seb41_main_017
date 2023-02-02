@@ -6,8 +6,6 @@ import styled from "styled-components";
 
 import { ReactComponent as Heart } from "../../../assets/heart.svg";
 
-import BASE_URL from "../../../constants/BASE_URL";
-
 const HeartIconWrapper = styled.div`
   width: 30px;
   height: 30px;
@@ -32,7 +30,7 @@ function ProductHeader({ data }) {
         },
       };
 
-      return axios.get(`${BASE_URL}/mypage/productlike`, config);
+      return axios.get(`${process.env.REACT_APP_URL}/mypage/productlike`, config);
     };
 
     (async () => {
@@ -41,7 +39,7 @@ function ProductHeader({ data }) {
     })();
   }, []);
 
-  const handleIconClick = () => {
+  const handleIconClick = async () => {
     const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
 
     if (!accessToken) {
@@ -55,42 +53,48 @@ function ProductHeader({ data }) {
     }
 
     if (isLiked === true) {
-      const deleteProductLike = () => {
+      const deleteProductLike = async () => {
         const config = {
           headers: {
             "Content-Type": `application/json`,
             Authorization: accessToken,
           },
         };
-
-        axios.delete(`${BASE_URL}/product/${id}/like`, config);
+        try {
+          return await axios.delete(`${process.env.REACT_APP_URL}/product/${id}/like`, config);
+        } catch (error) {
+          console.error(error);
+        }
       };
 
-      try {
-        deleteProductLike();
+      const response = await deleteProductLike();
+
+      if (response.status === 200) {
         setIsLiked(false);
-      } catch (error) {
-        console.error(error);
+        alert("해당 상품의 찜을 취소 했습니다.");
       }
     }
 
     if (isLiked === false) {
-      const postProductLike = () => {
+      const postProductLike = async () => {
         const config = {
           headers: {
             "Content-Type": `application/json`,
             Authorization: accessToken,
           },
         };
-
-        axios.post(`${BASE_URL}/product/${id}/like`, null, config);
+        try {
+          return await axios.post(`${process.env.REACT_APP_URL}/product/${id}/like`, null, config);
+        } catch (error) {
+          console.error(error);
+        }
       };
 
-      try {
-        postProductLike();
+      const response = await postProductLike();
+
+      if (response.status === 200) {
         setIsLiked(true);
-      } catch (error) {
-        console.error(error);
+        alert("해당 상품을 찜했습니다! [마이페이지 > 찜한 상품]에서 확인하실 수 있습니다.");
       }
     }
   };

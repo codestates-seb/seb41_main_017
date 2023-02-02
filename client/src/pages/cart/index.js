@@ -12,7 +12,6 @@ import ColorButton from "../../components/ColorButton";
 import ProductItemSlider from "../../components/ProductItemSlider";
 import { Title, TodayRecommendProducts } from "..";
 
-import BASE_URL from "../../constants/BASE_URL";
 import { setInfo } from "../../app/reducer/productId2Pay";
 
 const Container = styled.div`
@@ -139,7 +138,7 @@ function Cart() {
       };
 
       try {
-        const { data } = await axios.get(`${BASE_URL}/carts`, config);
+        const { data } = await axios.get(`${process.env.REACT_APP_URL}/carts`, config);
 
         return data;
       } catch (error) {
@@ -166,7 +165,7 @@ function Cart() {
 
   useEffect(() => {
     const getBestProductData = async () => {
-      const { data } = await axios.get(`${BASE_URL}/collections/bestproducts?size=20`);
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}/collections/bestproducts?size=20`);
 
       return data;
     };
@@ -212,7 +211,7 @@ function Cart() {
         },
       };
 
-      axios.delete(`${BASE_URL}/carts`, config);
+      axios.delete(`${process.env.REACT_APP_URL}/carts`, config);
 
       checkedList.forEach((list) => {
         data.data = data.data.filter((element) => element.id !== list.id);

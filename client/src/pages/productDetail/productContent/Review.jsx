@@ -7,8 +7,6 @@ import ReviewModal from "./ReviewModal";
 import ModalComponent from "./ModalComponent";
 import { ReactComponent as Star } from "../../../assets/star.svg";
 import Pagination from "../../../components/Pagination";
-
-import BASE_URL from "../../../constants/BASE_URL";
 import icon from "../../../assets/docs-icon.png";
 
 const Header = styled.div`
@@ -79,7 +77,7 @@ const NoReviewDataWrapper = styled.div`
   }
 `;
 
-function Review() {
+function Review({ productName }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [sort, setSort] = useState("newest");
   const [data, setData] = useState(null);
@@ -89,17 +87,23 @@ function Review() {
   useEffect(() => {
     (async () => {
       const query = {
-        page: currentPage,
         sorted_type: sort,
+        page: currentPage,
       };
-      const queryString = Object.entries(query).reduce((acc, [key, value]) => (value ? `${acc}&${key}=${value}` : acc), "");
-      const { data } = await axios.get(`${BASE_URL}/product/${id}/review?${queryString}`);
+      const queryString = Object.entries(query)
+        .map(([key, value]) => `${key}=${value}`)
+        .join("&");
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}/product/${id}/review?${queryString}`);
 
       setData(data);
     })();
   }, [currentPage, sort]);
 
   const handleFilterButtonClick = ({ target }) => {
+    const id = target.closest("li")?.dataset.id;
+
+    if (!id) return;
+
     setSort(target.closest("li").dataset.id);
   };
 
@@ -129,7 +133,7 @@ function Review() {
                 </div>
 
                 <div className="review-content">
-                  <div>상품명</div>
+                  <div>{productName}</div>
 
                   {new Array(5)
                     .fill(null)
@@ -140,11 +144,24 @@ function Review() {
 
                   <div className="review-content">{review.content}</div>
 
-                  {review.image?.map((src) => (
-                    <img className="review-image" src={src} onClick={() => setModalOpen(true)} key={Math.random()} />
+                  {review.productReviewImageDtos.map((src) => (
+                    <img className="review-image" src={src.imgUrl} onClick={() => setModalOpen(true)} key={Math.random()} />
                   ))}
                 </div>
-                {modalOpen ? <ModalComponent component={<ReviewModal setModalOpen={setModalOpen} />} /> : null}
+                {modalOpen ? (
+                  <ModalComponent
+                    component={
+                      <ReviewModal
+                        setModalOpen={setModalOpen}
+                        srcArr={review.productReviewImageDtos.map(({ imgUrl }) => imgUrl)}
+                        content={review.content}
+                        modifiedBy={review.modifiedBy}
+                        modifiedAt={review.modifiedAt}
+                        reviewStar={review.reviewStar}
+                      />
+                    }
+                  />
+                ) : null}
               </ReviewListContainer>
             );
           })

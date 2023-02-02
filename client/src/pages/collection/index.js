@@ -5,7 +5,6 @@ import styled from "styled-components";
 import axios from "axios";
 
 import MainBanner from "../../components/MainBanner";
-import BASE_URL from "../../constants/BASE_URL";
 import ProductItem from "../../components/ProductItem";
 import CategoryList from "./CategoryList";
 import Pagination from "../../components/Pagination";
@@ -111,7 +110,7 @@ function Collection() {
 
   useEffect(() => {
     const getCategories = async () => {
-      const { data } = await axios.get(`${BASE_URL}/category`);
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}/category`);
       setCategories(data.data);
     };
 
@@ -129,7 +128,7 @@ function Collection() {
 
     const getData = async () => {
       try {
-        const { data } = await axios.get(`${BASE_URL}/collections/${params}?${queryString}`);
+        const { data } = await axios.get(`${process.env.REACT_APP_URL}/collections/${params}?${queryString}`);
 
         setData(data);
       } catch (error) {
@@ -141,6 +140,10 @@ function Collection() {
   }, [checkedCategoryCodes, sort, currentPage]);
 
   const handleSortListClick = ({ target }) => {
+    const id = target.closest("li")?.dataset.id;
+
+    if (!id) return;
+
     setSort(target.closest("li").dataset.id);
   };
 

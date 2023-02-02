@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import BASE_URL from "../../constants/BASE_URL";
 
 const ReviewContainer = styled.div`
   width: 900px;
@@ -37,11 +36,10 @@ function AnswerItem({ answer }) {
 
     if (window.confirm("삭제하시겠습니까?")) {
       axios
-        .delete(`${BASE_URL}/board/inquiry/comments/${e.target.id}`, {
+        .delete(`${process.env.REACT_APP_URL}/board/inquiry/comments/${e.target.id}`, {
           headers: {
             "Content-Type": `application/json`,
-            authorization: JSON.parse(localStorage.getItem("token"))
-              .authorization,
+            authorization: JSON.parse(localStorage.getItem("token")).authorization,
           },
         })
         .then((res) => console.log(res))

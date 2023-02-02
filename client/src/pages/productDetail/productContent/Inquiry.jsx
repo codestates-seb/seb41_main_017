@@ -8,8 +8,6 @@ import InquiryDetail from "./InquiryDetail";
 import ModalComponent from "./ModalComponent";
 import CreateInquiry from "./CreateInquiry";
 import Pagination from "../../../components/Pagination";
-
-import BASE_URL from "../../../constants/BASE_URL";
 import icon from "../../../assets/docs-icon.png";
 
 const Header = styled.div`
@@ -103,7 +101,7 @@ function Inquiry({ data }) {
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get(`${BASE_URL}/product/${id}/inquiry?page=${currentPage}`);
+      const { data } = await axios.get(`${process.env.REACT_APP_URL}/product/${id}/inquiry?page=${currentPage}`);
 
       setInquiryData(data);
     })();

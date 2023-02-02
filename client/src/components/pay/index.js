@@ -1,22 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import BASE_URL from "../../constants/BASE_URL";
+import { loadTossPayments } from "@tosspayments/payment-sdk";
+import { useSelector } from "react-redux";
+
 import BasicButton from "../BasicButton";
 import OrderInfo from "./OrderInfo";
 import ShipInfo from "./ShipInfo";
 import PayInfo from "./PayInfo";
 import InfoCheck from "./InfoCheck";
-import { loadTossPayments } from "@tosspayments/payment-sdk";
-import { useSelector } from "react-redux";
-import {
-  ModalTitle,
-  ModalText,
-  CloseButton,
-  ButtonWrapper,
-  ModalWrapper,
-  SignupFailureContainer,
-} from "../../styles/signupStyle";
+import { ModalTitle, ModalText, CloseButton, ButtonWrapper, ModalWrapper, SignupFailureContainer } from "../../styles/signupStyle";
 
 const Container = styled.div`
   max-width: 1050px;
@@ -75,7 +68,7 @@ function Pay() {
     if (reject === false) {
       setRecjectModal(true);
     } else {
-      const res = await axios.post(`${BASE_URL}/payments`, data, header);
+      const res = await axios.post(`${process.env.REACT_APP_URL}/payments`, data, header);
 
       const tossPayments = await loadTossPayments(clientKey);
 
@@ -93,11 +86,10 @@ function Pay() {
   // 배송지 정보 (배송지 수령인, 수령인 번호, 수령인 주소)
   const fetchData = () => {
     axios
-      .get(`${BASE_URL}/destination`, {
+      .get(`${process.env.REACT_APP_URL}/destination`, {
         headers: {
           "Content-Type": `application/json`,
-          authorization: JSON.parse(localStorage.getItem("token"))
-            .authorization,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
         },
       })
       .then((res) => {
@@ -114,11 +106,10 @@ function Pay() {
   // 유저 정보 (사용자 이름, 사용자 번호, 사용자 이메일)
   const userFetchData = () => {
     axios
-      .get(`${BASE_URL}/users`, {
+      .get(`${process.env.REACT_APP_URL}/users`, {
         headers: {
           "Content-Type": `application/json`,
-          authorization: JSON.parse(localStorage.getItem("token"))
-            .authorization,
+          authorization: JSON.parse(localStorage.getItem("token")).authorization,
         },
       })
       .then((res) => setUserData(res.data.data))
@@ -143,22 +134,14 @@ function Pay() {
         <ModalWrapper>
           <SignupFailureContainer>
             <ModalTitle>결제 실패</ModalTitle>
-            <ModalText>
-              이용약관과 개인정보 수집 이용동의를 모두 동의해주세요.
-            </ModalText>
+            <ModalText>이용약관과 개인정보 수집 이용동의를 모두 동의해주세요.</ModalText>
           </SignupFailureContainer>
           <CloseButton onClick={() => setRecjectModal(false)}>닫기</CloseButton>
         </ModalWrapper>
       )}
 
       <ButtonWrapper onClick={handlePayBtnClick}>
-        <BasicButton
-          children={"결제하기"}
-          font={"20"}
-          radius={"5"}
-          p_height={"14"}
-          p_width={"150"}
-        />
+        <BasicButton children={"결제하기"} font={"20"} radius={"5"} p_height={"14"} p_width={"150"} />
       </ButtonWrapper>
     </Container>
   );
