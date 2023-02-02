@@ -47,8 +47,8 @@ const SocialLoginButton = styled.button`
   box-shadow: rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset;
   border-radius: 3px;
   outline: 1px solid gray;
-  margin: 10px 0px;
-  height: 59px;
+  margin: 5px 0px;
+  height: 50px;
 `;
 
 const GitLogin = styled(SocialLoginButton)`
@@ -74,8 +74,8 @@ const LoginBtn = styled.button`
   box-shadow: rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset;
   border-radius: 3px;
   outline: 1px solid #c26d53;
-  margin: 10px 0px;
-  height: 59px;
+  margin: 5px 0px;
+  height: 50px;
 `;
 
 export default LoginButton;
