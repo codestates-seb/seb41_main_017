@@ -9,23 +9,19 @@ public record PaymentInfoResponse(
         PayType payType,
         BigDecimal amount,
         String orderId,
-        String orderName,
-        String successUrl,
-        String failUrl
+        String orderName
 ) {
 
-    public static PaymentInfoResponse of(PayType payType, BigDecimal amount, String orderId, String orderName, String successUrl, String failUrl) {
-        return new PaymentInfoResponse(payType, amount, orderId, orderName, successUrl, failUrl);
+    public static PaymentInfoResponse of(PayType payType, BigDecimal amount, String orderId, String orderName) {
+        return new PaymentInfoResponse(payType, amount, orderId, orderName);
     }
 
-    public static PaymentInfoResponse from(Payment entity, String successUrl, String failUrl) {
+    public static PaymentInfoResponse from(Payment entity) {
         return PaymentInfoResponse.of(
                 entity.getPayType(),
                 entity.getAmount(),
                 entity.getOrder().getId(),
-                entity.getProductName(),
-                successUrl,
-                failUrl
+                entity.getProductName()
         );
     }
 }

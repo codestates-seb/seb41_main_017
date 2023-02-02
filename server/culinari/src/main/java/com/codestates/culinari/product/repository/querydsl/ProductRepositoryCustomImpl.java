@@ -137,4 +137,19 @@ public class ProductRepositoryCustomImpl extends QuerydslRepositorySupport imple
 
         return new PageImpl<>(products, pageable, query.fetchCount());
     }
+
+    @Override
+    public Long countFrequentOrderProduct(LocalDateTime createdAfterDateTime, Integer frequency, Long profileId) {
+        QOrderDetail orderDetail = QOrderDetail.orderDetail;
+
+        return from(orderDetail)
+                .select(orderDetail.product.id)
+                .where(orderDetail.createdAt.goe(createdAfterDateTime)
+                        .and(orderDetail.product.id.eq(orderDetail.product.id))
+                        .and(orderDetail.orders.payment.paySuccessTf.eq(true))
+                        .and(orderDetail.orders.profile.id.eq(profileId)))
+                .groupBy(orderDetail.product.id)
+                .having(orderDetail.product.id.count().goe(frequency))
+                .fetchCount();
+    }
 }

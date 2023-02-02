@@ -19,6 +19,7 @@ import com.codestates.culinari.payment.dto.response.PaymentFailResponse;
 import com.codestates.culinari.payment.dto.response.PaymentInfoResponse;
 import com.codestates.culinari.payment.dto.response.PaymentResponseToPage;
 import com.codestates.culinari.payment.dto.response.toss.PaymentTossDto;
+import com.codestates.culinari.payment.entity.Payment;
 import com.codestates.culinari.payment.repository.PaymentRepository;
 import com.codestates.culinari.payment.repository.RefundRepository;
 import com.codestates.culinari.payment.service.PaymentService;
@@ -65,16 +66,8 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${toss.test.origin-url}")
     private String tossOriginUrl;
 
-    @Value("${toss.test.success-url}")
-    private String tossSuccessUrl;
-
-    @Value("${toss.test.fail-url}")
-    private String tossFailUrl;
-
     @Override
     public PaymentInfoResponse createPayment(PaymentRequest request, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         Profile profile = profileRepository.getReferenceById(principal.profileId());
         Orders orders = ordersRepository.save(
                 OrderDto.of(
@@ -94,17 +87,14 @@ public class PaymentServiceImpl implements PaymentService {
                     orders.getOrderDetails().add(orderDetail);
                 });
 
-        return PaymentInfoResponse.from(
-                paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile)),
-                tossSuccessUrl,
-                tossFailUrl
-        );
+        Payment payment = paymentRepository.save(PaymentDto.of(request.payType()).toEntity(orders, profile));
+        orders.setPayment(payment);
+
+        return PaymentInfoResponse.from(payment);
     }
 
     @Override
     public Page<PaymentResponseToPage> readPayments(Integer searchMonths, Pageable pageable, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         return paymentRepository.findAllCreatedAfterAndProfile_Id(LocalDateTime.now().minusMonths(searchMonths), principal.profileId(), pageable)
                 .map(PaymentResponseToPage::from);
     }
@@ -170,11 +160,14 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void requestPaymentCancel(RefundRequest request, CustomPrincipal principal) {
-        verifyPrincipal(principal);
         RefundDto dto = request.toDto();
 
         List<OrderDetail> orderDetails =
-                orderDetailRepository.findAllPaidByIdAndPaymentKeyAndProfileId(request.orderDetailIds(), request.paymentKey(), principal.profileId());
+                orderDetailRepository.findAllPaidByIdAndProfileId(request.orderDetailIds(), principal.profileId());
+
+        // 들어온 모든 OrderDetailIds 가 같은 결제 키를 가진다는 전제로 흘러감
+        // N+1 문제 개선 에서 수정할 예정
+        String paymentKey = orderDetails.get(0).getOrders().getPayment().getPaymentKey();
 
         orderDetails.forEach(orderDetail -> {
             JSONObject params = new JSONObject();
@@ -184,7 +177,7 @@ public class PaymentServiceImpl implements PaymentService {
             try {
                 PaymentTossDto paymentTossDto =
                         new RestTemplate().postForEntity(
-                                String.format(String.format("%s/payments/%s/cancel", tossOriginUrl, request.paymentKey())),
+                                String.format(String.format("%s/payments/%s/cancel", tossOriginUrl, paymentKey)),
                                 new HttpEntity<>(params, createAuthHeaders()),
                                 PaymentTossDto.class
                         ).getBody();
@@ -192,12 +185,8 @@ public class PaymentServiceImpl implements PaymentService {
                 throw new BusinessLogicException(ExceptionCode.TOSS_REQUEST_FAIL);
             }
 
-            refundRepository.save(dto.toEntity(orderDetail));
+            refundRepository.save(dto.toEntity(orderDetail, paymentKey));
         });
-    }
-
-    private void verifyPrincipal(CustomPrincipal principal) {
-        if (principal == null) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
     private HttpHeaders createAuthHeaders() {
