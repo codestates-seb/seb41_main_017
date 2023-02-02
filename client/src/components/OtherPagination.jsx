@@ -21,7 +21,7 @@ const Layout = styled.div`
 
 
     span {
-      padding: 10px
+      padding: 10px;
       display: inline-block;
       cursor: pointer;
       border-radius: 8px;
@@ -44,16 +44,18 @@ const Layout = styled.div`
 
 export const OtherPagination = ({ state, setState, pageInfo }) => {
   const pageData = pageInfo;
+  
+
   const left = () => {
-    if (state === 1) {
+    if (state === 0) {
       return setState(0);
     } else {
       setState(state - 1);
     }
   };
   const right = () => {
-    if (state === state.totalPages) {
-      setState(pageData.totalPages);
+    if (state === pageData.totalPages - 1) {
+      setState(pageData.totalPages - 1);
     } else {
       setState(state + 1);
     }
@@ -64,11 +66,9 @@ export const OtherPagination = ({ state, setState, pageInfo }) => {
 
   return (
     <Layout>
-        {state === 0 ? null : (
-          <div className="box" onClick={left}>
+        <div className="box" onClick={left}>
             <span>{"<"}</span>
           </div>
-        )}
         <div className="box">
           {Array(pageData?.totalPages)
             .fill()
@@ -84,12 +84,9 @@ export const OtherPagination = ({ state, setState, pageInfo }) => {
               );
             })}
         </div>
-        {pageData?.totalPages === 0 ? null : state ===
-          pageData?.totalPages - 1 ? null : (
-          <div className="box" onClick={right}>
+        <div className="box" onClick={right}>
             <span>{">"}</span>
           </div>
-        )}
     </Layout>
   );
 };
