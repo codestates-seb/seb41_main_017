@@ -47,8 +47,13 @@ const CheckboxContent = styled.div`
 
 const IdBlock = styled.div`
     
-  //   margin: 6px 0;
+
   width: 100%;
+
+  .detail_address {
+    margin-top: -32px;
+  }
+
   .essential {
     color: red;
   }

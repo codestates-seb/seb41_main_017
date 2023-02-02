@@ -25,7 +25,6 @@ function SignForm() {
   const [signupAddress, setSignupAddress] = useState("");
   const [postAddress, setPostAddress] = useState("");
   const [signupId, setSignupId] = useState("");
-  const [errorId, setErrorId] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const [name, setName] = useState("");
@@ -65,7 +64,10 @@ function SignForm() {
       phoneNum !== "" &&
       year !== "" &&
       month !== "" &&
-      day !== ""
+      day !== "" &&
+      // signupAddress !== "" &&
+      detailAddress !== ""
+      // postAddress !== ""
     );
   };
 
@@ -217,17 +219,24 @@ function SignForm() {
         <div className="input_cotainer">
           <div className="input_box">
             <BasicInput
-              setValue2={setDetailAddress}
+              disabled
               label={"주소"}
               star={"*"}
               width={"100%"}
               type={"text"}
-              address={"address"}
               placeholder={"주소를 입력해주세요"}
               defaultValue={signupAddress}
               onChange={(e) => setPostAddress(e.target.value)}
             ></BasicInput>
+            <div className="detail_address"></div>
+            <BasicInput
+              setValue={setDetailAddress}
+              type={"text"}
+              placeholder={"상세주소를 입력해주세요"}
+              width={"100%"}
+            />
           </div>
+          {console.log(detailAddress)}
           <div className="check_btn">
             <ModalContainer
               setSignupAddress={setSignupAddress}
