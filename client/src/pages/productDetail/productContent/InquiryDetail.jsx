@@ -54,7 +54,7 @@ function InquiryDetail({ data, element }) {
   const parsedDate = new Date(element.createdAt);
   const year = parsedDate.getFullYear();
   const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
-  const day = parsedDate.getDate();
+  const day = String(parsedDate.getDate()).padStart(2, "0");
   const [isOpen, setIsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
