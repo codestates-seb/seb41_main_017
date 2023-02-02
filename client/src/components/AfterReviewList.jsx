@@ -110,10 +110,9 @@ function AfterReviewList({item, afterData, setAfterData, idx}) {
   const [listModify, setListModify] = useState(false);
   const [changeText, setChangeText] = useState(item.content);
   const [isOpen, setIsOpen] = useState(false);
-  const styles = { listModify };  
+  const styles = { listModify };
 
   const itemModify = (text) => {
-    
 
     if(text === "확인"){
       axios.patch(`${process.env.REACT_APP_URL}/product/review/${item.id}`,{
@@ -124,7 +123,7 @@ function AfterReviewList({item, afterData, setAfterData, idx}) {
             .authorization,
         }
       }).then(()=>{
-        afterData[idx].content = changeText; 
+        afterData.data[idx].content = changeText; 
         setAfterData(afterData);
         setIsOpen(false);
         setListModify(false);

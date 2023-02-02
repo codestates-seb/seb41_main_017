@@ -48,7 +48,6 @@ function OneOnOne() {
     <Page>
       <OneOnOneHeader></OneOnOneHeader>
       <OneOnOneList question={question.data}></OneOnOneList>
-
       <div className="question_btn">
         <Link to={`/service/one-on-one/inquiry`}>
           <BasicButton p_width={"20"} p_height={"7"}>

@@ -5,6 +5,7 @@ import AfterReviewList from "../../components/AfterReviewList";
 import ItemreviewWrite from "./itemreviewWrite";
 import styled from "styled-components";
 import axios from "axios";
+import {OtherPagination} from "../../components/OtherPagination"
 
 
 
@@ -48,32 +49,33 @@ function ItemreviewList() {
   const [afterData, setAfterData] = useState([])
   const [tabs, setTabs] = useState(true);
   const [pageChange, setPageChange] = useState(undefined);
+  const [page, setPage] = useState(0)
   
 
-  useEffect(()=>{
 
+  useEffect(()=>{
     if(tabs === false){
-      axios.get(`${process.env.REACT_APP_URL}/mypage/review?type=exist`,{
+      axios.get(`${process.env.REACT_APP_URL}/mypage/review?type=exist&page=${page}&size=10`,{
         headers: {
           authorization: JSON.parse(localStorage.getItem("token"))
             .authorization,
         }
       })
-      .then((res)=> setAfterData(res.data.data))
+      .then((res)=> setAfterData(res.data))
     }
 
     if(tabs === true){
-      axios.get(`${process.env.REACT_APP_URL}/mypage/review?type=nonexistent`,{
+      axios.get(`${process.env.REACT_APP_URL}/mypage/review?type=nonexistent&page=${page}&size=10`,{
         headers: {
           authorization: JSON.parse(localStorage.getItem("token"))
             .authorization,
         }
       })
-      .then((res)=> setBeforeData(res.data.data))
+      .then((res)=> setBeforeData(res.data))
     } 
-  },[tabs]);
+  },[tabs, page]);
 
-
+  
   return (
     <div>
       {pageChange ? 
@@ -87,10 +89,10 @@ function ItemreviewList() {
           tab={<Tab state={tabs} setState={setTabs} />}
         >
           {tabs === true ? 
-          ( beforeData.map((item)=>{
+          ( beforeData?.data?.map((item)=>{
             return(<BeforeReviewList key={item.id} item={item} setState={setPageChange}/>);
           })) 
-          : (afterData.map((item, idx)=>{
+          : (afterData?.data?.map((item, idx)=>{
             return(
               <AfterReviewList key={item.id} item={item} afterData={afterData} setAfterData={setAfterData} idx={idx}/>
             );
@@ -98,6 +100,7 @@ function ItemreviewList() {
           }
         </Mypagehead>
       )}
+      {pageChange ? null : <OtherPagination state={page} setState={setPage} pageInfo={tabs ? beforeData?.pageInfo : afterData?.pageInfo} />}
     </div>
   );
 }

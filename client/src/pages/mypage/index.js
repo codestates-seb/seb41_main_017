@@ -94,10 +94,10 @@ const Mycard = styled.div`
 
 function Mypage() {
   const [user, setUser] = useState({});
-  const [shipping, setShipping] = useState(0);
-  const [orderList, setOrderList] = useState(0);
-  const [selectItems, setSelectItems] = useState(0);
-  const [buyItems, setBuyItems] = useState(0);
+  const [userData, setUserData] = useState(0);
+  
+  
+  
 
   // "username": "id2",
   // "password": "!@#123password"
@@ -111,44 +111,12 @@ function Mypage() {
       })
       .then((res) => setUser(res.data.data));
 
-    axios
-      .get(`${process.env.REACT_APP_URL}/orders/details`, {
+      axios.get(`${process.env.REACT_APP_URL}/mypage/count`,{
         headers: {
           authorization: JSON.parse(localStorage.getItem("token"))
             .authorization,
         },
-      })
-      .then((res) => {
-        setShipping(res.data.pageInfo.totalElements);
-      });
-
-    axios
-      .get(`${process.env.REACT_APP_URL}/orders`, {
-        headers: {
-          authorization: JSON.parse(localStorage.getItem("token"))
-            .authorization,
-        },
-      })
-      .then((res) => {
-        setOrderList(res.data.pageInfo.totalElements);
-      });
-
-    axios
-      .get(`${process.env.REACT_APP_URL}/mypage/productlike`, {
-        headers: {
-          authorization: JSON.parse(localStorage.getItem("token"))
-            .authorization,
-        },
-      })
-      .then((res) => setSelectItems(res.data.pageInfo.totalElements));
-    axios
-      .get(`${process.env.REACT_APP_URL}/collections/frequent`, {
-        headers: {
-          authorization: JSON.parse(localStorage.getItem("token"))
-            .authorization,
-        },
-      })
-      .then((res) => setBuyItems(res.data.pageInfo.totalElements));
+      }).then((res)=> setUserData(res.data.data))
   }, []);
 
   
@@ -185,6 +153,9 @@ function Mypage() {
       inquiry: <Inquiry />,
     },
   };
+
+
+  
   return (
     <Layout>
       <Mycard>
@@ -222,7 +193,7 @@ function Mypage() {
           <div>
             <h2>배송중</h2>
             <div className="count">
-              <span>{shipping}</span>
+              <span>{userData?.shippingCount}</span>
             </div>
             <BasicButton radius={10} href={"/mypage/deliveryLook"}>
               배송조회
@@ -231,7 +202,7 @@ function Mypage() {
           <div>
             <h2>주문 목록</h2>
             <div className="count">
-              <span>{orderList}</span>
+              <span>{userData?.orderCount}</span>
             </div>
             <BasicButton radius={10} href={"/mypage/orderitem"}>
               주문 목록 조회
@@ -240,7 +211,7 @@ function Mypage() {
           <div>
             <h2>찜한 상품</h2>
             <div className="count">
-              <span>{selectItems}</span>
+              <span>{userData?.productLikeCount}</span>
             </div>
             <BasicButton radius={10} href={"/mypage/selectItem"}>
               조회
@@ -249,7 +220,7 @@ function Mypage() {
           <div>
             <h2>자주 산 상품</h2>
             <div className="count">
-              <span>{buyItems}</span>
+              <span>{userData?.frequentlyOrderedProductCount}</span>
             </div>
             <BasicButton radius={10} href={"/mypage/buyitem"}>
               조회

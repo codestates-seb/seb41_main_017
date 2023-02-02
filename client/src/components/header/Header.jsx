@@ -207,6 +207,7 @@ function Header() {
   const [currentIndex, setCurrentIndex] = useState(null);
   const isLogin = localStorage.getItem("token");
 
+
   const handleSearchProductSubmit = (event) => {
     event.preventDefault();
     const text = searchText.trim();
