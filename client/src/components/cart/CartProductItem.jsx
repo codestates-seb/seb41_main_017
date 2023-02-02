@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BASE_URL from "../../constants/BASE_URL";
 import CheckBox from "../CheckBox";
@@ -19,6 +20,7 @@ const ImageWrapper = styled.div`
   height: 100px;
   margin-left: 10px;
   margin-right: 20px;
+  cursor: pointer;
 
   img {
     width: 100%;
@@ -36,6 +38,7 @@ const ProductInfo = styled.div`
 
 const ProductTitle = styled.div`
   margin-bottom: 5px;
+  cursor: pointer;
 `;
 
 const ProductPrice = styled.div`
@@ -58,6 +61,7 @@ const DeleteButtonWrapper = styled.div`
 function CartProductItem({ item, data, setData, index, checkedList, setCheckedList, selectAllChecked }) {
   const [quantity, setQuantity] = useState(item.quantity);
   const [isChecked, setIsChecked] = useState(!!checkedList.find((element) => element.id === item.id));
+  const navigate = useNavigate();
 
   useEffect(() => {
     const patchQuantity = () => {
@@ -127,16 +131,20 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
     setIsChecked(!isChecked);
   };
 
+  const handleProductNameAndImgClick = () => {
+    navigate(`/product/${data.data[index].product.id}`);
+  };
+
   return (
     <Container>
       <div onClick={handleCheckBoxClick}>
         <CheckBox isChecked={isChecked} size="24px" />
       </div>
 
-      <ImageWrapper>{<img src={item.product.productImageDtos[0].imgUrl} />}</ImageWrapper>
+      <ImageWrapper onClick={handleProductNameAndImgClick}>{<img src={item.product.productImageDtos[0].imgUrl} />}</ImageWrapper>
 
       <ProductInfo>
-        <ProductTitle>{item.product.name}</ProductTitle>
+        <ProductTitle onClick={handleProductNameAndImgClick}>{item.product.name}</ProductTitle>
         <ProductPrice>{item.product.price.toLocaleString()}원</ProductPrice>
         <QuantityBoxWrapper>
           <QuantityBox quantity={quantity} setQuantity={setQuantity} />
