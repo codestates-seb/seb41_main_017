@@ -2,10 +2,13 @@ package com.codestates.culinari.order.repository.querydsl;
 
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.global.exception.ExceptionCode;
+import com.codestates.culinari.order.constant.StatusType;
 import com.codestates.culinari.order.entitiy.OrderDetail;
 import com.codestates.culinari.order.entitiy.QOrderDetail;
 import com.codestates.culinari.payment.entity.QPayment;
 import com.codestates.culinari.payment.entity.QRefund;
+import com.codestates.culinari.product.entitiy.QProduct;
+import com.codestates.culinari.product.entitiy.QProductImage;
 import com.codestates.culinari.user.entitiy.QProfile;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
@@ -23,20 +26,14 @@ public class OrderDetailRepositoryCustomImpl extends QuerydslRepositorySupport i
     }
 
     @Override
-    public List<OrderDetail> findAllPaidByIdAndPaymentKeyAndProfileId(List<Long> orderDetailIds, String paymentKey, Long profileId) {
+    public List<OrderDetail> findAllPaidByIdAndProfileId(List<Long> orderDetailIds, Long profileId) {
         QOrderDetail orderDetail = QOrderDetail.orderDetail;
-        QPayment payment = QPayment.payment;
         QRefund refund = QRefund.refund;
 
         List<OrderDetail> orderDetails =
                 from(orderDetail)
-                        .where(orderDetail.orders.id.eq(
-                                JPAExpressions.select(payment.order.id).from(payment)
-                                        .where(
-                                                payment.paySuccessTf.eq(true)
-                                                .and(payment.paymentKey.eq(paymentKey))
-                                                .and(payment.profile.id.eq(profileId))
-                                        ))
+                        .where(orderDetail.orders.payment.paySuccessTf.eq(true)
+                                .and(orderDetail.orders.profile.id.eq(profileId))
                                 .and(orderDetail.id.in(orderDetailIds))
                                 .and(orderDetail.id.notIn(JPAExpressions.select(refund.orderDetail.id).from(refund)))
                         )
@@ -50,19 +47,34 @@ public class OrderDetailRepositoryCustomImpl extends QuerydslRepositorySupport i
     @Override
     public Page<OrderDetail> findAllCreatedAfterAndProfile_Id(LocalDateTime createdAfterDateTime, Long profileId, Pageable pageable) {
         QOrderDetail orderDetail = QOrderDetail.orderDetail;
-        QPayment payment = QPayment.payment;
+        QProduct product = QProduct.product;
+        QProductImage productImage = QProductImage.productImage;
         QRefund refund = QRefund.refund;
-        QProfile profile = QProfile.profile;
 
         JPQLQuery<OrderDetail> query =
                 from(orderDetail)
-                        .innerJoin(orderDetail.orders.profile, profile).fetchJoin()
+                        .innerJoin(orderDetail.product, product).fetchJoin()
+                        .innerJoin(product.productImages, productImage).fetchJoin()
                         .where(orderDetail.createdAt.gt(createdAfterDateTime)
-                                .and(profile.id.eq(profileId))
-                                .and(orderDetail.orders.id.in(JPAExpressions.select(payment.order.id).from(payment).where(payment.paySuccessTf.eq(true))))
+                                .and(orderDetail.orders.profile.id.eq(profileId))
+                                .and(orderDetail.orders.payment.paySuccessTf.eq(true))
                                 .and(orderDetail.id.notIn(JPAExpressions.select(refund.orderDetail.id).from(refund))));
         List<OrderDetail> orderDetails = getQuerydsl().applyPagination(pageable, query).fetch();
 
         return new PageImpl<>(orderDetails, pageable, query.fetchCount());
+    }
+
+    @Override
+    public Long countOnShippingByProfileId(LocalDateTime createdAfterDateTime, Long profileId) {
+        QOrderDetail orderDetail = QOrderDetail.orderDetail;
+        QRefund refund = QRefund.refund;
+
+        return from(orderDetail)
+                .where(orderDetail.createdAt.gt(createdAfterDateTime)
+                        .and(orderDetail.orders.profile.id.eq(profileId))
+                        .and(orderDetail.orders.payment.paySuccessTf.eq(true))
+                        .and(orderDetail.id.notIn(JPAExpressions.select(refund.orderDetail.id).from(refund)))
+                        .and(orderDetail.statusType.eq(StatusType.ON_SHIPPING)))
+                .fetchCount();
     }
 }

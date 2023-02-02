@@ -4,15 +4,14 @@ import com.codestates.culinari.order.entitiy.OrderDetail;
 import com.codestates.culinari.payment.entity.Refund;
 
 public record RefundDto(
-        String paymentKey,
         String cancelReason
 ) {
 
-    public static RefundDto of(String paymentKey, String cancelReason) {
-        return new RefundDto(paymentKey, cancelReason);
+    public static RefundDto of(String cancelReason) {
+        return new RefundDto(cancelReason);
     }
 
-    public Refund toEntity(OrderDetail orderDetail) {
+    public Refund toEntity(OrderDetail orderDetail, String paymentKey) {
         return Refund.of(
                 paymentKey,
                 cancelReason,
