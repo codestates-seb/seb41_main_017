@@ -20,6 +20,7 @@ const ImageWrapper = styled.div`
   height: 100px;
   margin-left: 10px;
   margin-right: 20px;
+  cursor: pointer;
 
   img {
     width: 100%;
@@ -140,7 +141,7 @@ function CartProductItem({ item, data, setData, index, checkedList, setCheckedLi
         <CheckBox isChecked={isChecked} size="24px" />
       </div>
 
-      <ImageWrapper>{<img src={item.product.productImageDtos[0].imgUrl} />}</ImageWrapper>
+      <ImageWrapper onClick={handleProductNameAndImgClick}>{<img src={item.product.productImageDtos[0].imgUrl} />}</ImageWrapper>
 
       <ProductInfo>
         <ProductTitle onClick={handleProductNameAndImgClick}>{item.product.name}</ProductTitle>
