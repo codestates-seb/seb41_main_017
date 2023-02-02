@@ -76,8 +76,6 @@ function ItemreviewWrite({ item, close}) {
   const [file, setFile] = useState("");
   
 
-  console.log(item)
-
   const postReview = (data) => {
     const formData = new FormData();
     formData.append('request', new Blob([JSON.stringify({content,reviewStar})], {type: "application/json"}))
@@ -87,9 +85,6 @@ function ItemreviewWrite({ item, close}) {
       formData.append('images', new Blob(), '');
     }
     
-
-  
-
     axios.post(
       `${process.env.REACT_APP_URL}/product/${data.productId}/review?order-id=${data.id}`,
       formData,
@@ -147,6 +142,7 @@ function ItemreviewWrite({ item, close}) {
             p_height={"12"}
             p_width={"35"}
             onClick={() => postReview(item)}
+            disabled={ reviewStar === 0 ? true : content === "" ? true : false}
           >
             후기작성
           </BasicButton>
