@@ -51,7 +51,7 @@ function Buyitem() {
   const [cartModal, setCartModal] = useState(false);
   const [productId, setProductId] = useState(0);
   const [page, setPage] = useState(0)
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   
   
   useEffect(() => {
@@ -62,7 +62,7 @@ function Buyitem() {
         .authorization,
     },
     }).then( res => setBuyItems(res.data))
-  }, [page]);
+  }, [page,quantity]);
 
 
   const cartKey = (e)=>{
@@ -71,6 +71,8 @@ function Buyitem() {
   }
 
   const cartAll = ()=>{
+    console.log(quantity)
+    console.log("테스트")
 
       axios.post(`${process.env.REACT_APP_URL}/carts`,
     {

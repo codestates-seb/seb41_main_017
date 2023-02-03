@@ -25,7 +25,7 @@ function CountBox({setState}){
 
     if(e === "-"){
 
-      if(conunt === 1){
+      if(conunt === 0){
         setConunt(conunt)
       }else{
         setConunt(conunt - 1);

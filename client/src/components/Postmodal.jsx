@@ -103,6 +103,7 @@ function Postmodal() {
   const [destinationName, setDestinationName] = useState("");
   const [receiverName, setReceiverName] = useState("");
   const [receiverPhoneNumber, setReceiverPhoneNumber] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
 
   const save = () => {
     if (destinationName === "") {
@@ -117,7 +118,7 @@ function Postmodal() {
     if (signupAddress === "") {
       return alert("주소가 입력되지 않았습니다");
     }
-    if (address === "") {
+    if (detailAddress === "") {
       return alert("상세주소가 입력되지 않았습니다.");
     }
 
@@ -128,7 +129,7 @@ function Postmodal() {
           destinationName,
           receiverName,
           receiverPhoneNumber,
-          address: `${signupAddress} ${address}`,
+          address: `${signupAddress} ${detailAddress}`,
           defaultSelect: false,
         },
         {
@@ -191,17 +192,19 @@ function Postmodal() {
                 <div className="input_cotainer">
                   <div className="input_cotainer_input">
                     <BasicInput
+                      disabled
                       label={"주소"}
                       star={"*"}
                       width={"100%"}
                       type={"text"}
-                      address={"address"}
+                      // address={"address"}
                       min_height={"0"}
                       placeholder={"주소를 입력해주세요"}
-                      setValue2={setAddress}
+                      // setValue2={setAddress}
                       defaultValue={signupAddress}
                       onChange={(e) => setPostAddress(e.target.value)}
                     ></BasicInput>
+                    <div className="detail_address"><BasicInput setValue={setDetailAddress} type={"text"} placeholder={"상세주소를 입력해주세요"} width={"100%"} /></div>
                     <div className="input_cotainer_addresbtn">
                       <ModalContainer
                         setSignupAddress={setSignupAddress}
