@@ -65,7 +65,7 @@ function Serachitem() {
   const [selectItems, setSelectItems] = useState({});
   const [cartModal, setCartModal] = useState(false);
   const [productId, setProductId] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [page, setPage] = useState(0);
   const [selectsValue, setSelectsValue] = useState(0);
   const [deleteModal, setDeleteModal] = useState(false)
@@ -80,7 +80,7 @@ function Serachitem() {
     })
     .then( res => setSelectItems(res.data))
 
-  }, [page]);
+  }, [page,quantity]);
 
 
   const cartPost = ()=>{
@@ -137,7 +137,9 @@ function Serachitem() {
                   <ProductItem
                     imgUrl={data.productImageDtos[0].imgUrl}
                     name={data.name}
-                    price={data.price}/>
+                    price={data.price}
+                    id={data.productId}
+                    />
                     <div className="select_item" onClick={()=>selectDelete(data.productId)}>
                       <Heart width="30" height="30" fill="red"/>
                     </div>
