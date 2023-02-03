@@ -4,7 +4,7 @@ import Mypagehead from "../../components/MypageHead";
 import BasicButton from "../../components/BasicButton";
 import Guidance from "../../components/Guidance";
 import { useState, useEffect } from "react";
-import {OtherPagination} from "../../components/OtherPagination"
+import { OtherPagination } from "../../components/OtherPagination";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -42,14 +42,13 @@ const Layout = styled.div`
       gap: 10px;
       margin-bottom: 5px;
 
-      h5{
+      h5 {
         cursor: pointer;
       }
-      
+
       span {
         color: #067303;
         font-size: 14px;
-        
       }
     }
 
@@ -109,7 +108,6 @@ const Layout = styled.div`
         img {
           padding-left: 10px;
           width: 100px;
-          
         }
         & > div {
           text-align: center;
@@ -136,7 +134,6 @@ const Layout = styled.div`
       h5 {
         border-bottom: 2px solid #aeaeae;
         padding-bottom: 5px;
-        
       }
       .user_info_detail {
         display: flex;
@@ -173,24 +170,26 @@ function Orderitem() {
   const [keysData, setKeysData] = useState([]);
   const [isDelete, setIsDelete] = useState(false);
   const [page, setPage] = useState(0);
-  const [item, setItem] = useState({})
-  const navigate = useNavigate()
+  const [item, setItem] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_URL}/orders?page=${page}&size=5&searchMonths=3`, {
-        headers: {
-          authorization: JSON.parse(localStorage.getItem("token"))
-            .authorization,
-        },
-      })
+      .get(
+        `${process.env.REACT_APP_URL}/orders?page=${page}&size=5&searchMonths=3`,
+        {
+          headers: {
+            authorization: JSON.parse(localStorage.getItem("token"))
+              .authorization,
+          },
+        }
+      )
       .then((res) => {
         setOrders(res.data);
       });
   }, [page]);
 
   const isOpen = (data) => {
-    console.log(data);
     setCartModal(true);
     setKeysData(data);
   };
@@ -219,39 +218,41 @@ function Orderitem() {
       .then(() => setCartModal(false));
   };
 
-  const itemsDelete = (e)=>{
-    setItem(e)
-    setIsDelete(true)
-  }
+  const itemsDelete = (e) => {
+    setItem(e);
+    setIsDelete(true);
+  };
 
-  const refund = () =>{
-
-    const arr = []
-    for(const i of item.orderDetails){
-      arr.push(i.id)
+  const refund = () => {
+    const arr = [];
+    for (const i of item.orderDetails) {
+      arr.push(i.id);
     }
     console.log(arr);
 
-    axios.post(`${process.env.REACT_APP_URL}/payments/cancel`,{
-      "orderDetailIds": arr,
-      "cancelReason": "null"
-    },{
-      headers: {
+    axios
+      .post(
+        `${process.env.REACT_APP_URL}/payments/cancel`,
+        {
+          orderDetailIds: arr,
+          cancelReason: "null",
+        },
+        {
+          headers: {
             authorization: JSON.parse(localStorage.getItem("token"))
               .authorization,
           },
-    }).then((res)=>{
-      setIsDelete(false);
-      window.location.reload();
-    })
-
-  }
-
+        }
+      )
+      .then((res) => {
+        setIsDelete(false);
+        window.location.reload();
+      });
+  };
 
   const movePage = (id) => {
     navigate(`/product/${id}`);
   };
-  
 
   return (
     <Mypagehead title={"주문 목록 조회"}>
@@ -267,7 +268,10 @@ function Orderitem() {
           >
             <Layout>
               <div className="main_list">
-                <div className="left" onClick={() => movePage(data.orderDetails[0].product.id)}>
+                <div
+                  className="left"
+                  onClick={() => movePage(data.orderDetails[0].product.id)}
+                >
                   <img
                     src={
                       data.orderDetails[0].product.productImageDtos[0].imgUrl
@@ -277,12 +281,21 @@ function Orderitem() {
                 </div>
                 <div className="center">
                   <div className="title">
-                    {data.orderDetails.length - 1 === 0 ? <h5 onClick={() => movePage(data.orderDetails[0].product.id)}>{`${data.orderDetails[0].product.name}`}</h5> :
-                    <h5 onClick={() => movePage(data.orderDetails[0].product.id)}>{`${data.orderDetails[0].product.name}외 ${
-                      data.orderDetails.length - 1
-                    }건`}</h5>
-                    }
-                    
+                    {data.orderDetails.length - 1 === 0 ? (
+                      <h5
+                        onClick={() =>
+                          movePage(data.orderDetails[0].product.id)
+                        }
+                      >{`${data.orderDetails[0].product.name}`}</h5>
+                    ) : (
+                      <h5
+                        onClick={() =>
+                          movePage(data.orderDetails[0].product.id)
+                        }
+                      >{`${data.orderDetails[0].product.name}외 ${
+                        data.orderDetails.length - 1
+                      }건`}</h5>
+                    )}
                   </div>
                   <div className="items_price">
                     <div>
@@ -303,13 +316,16 @@ function Orderitem() {
 
                 <div className="right">
                   <div className="btns">
-                    <BasicButton onClick={()=>itemsDelete(data)}>{"취소,교환,반품 신청"}</BasicButton>
-                    {isDelete? 
+                    <BasicButton onClick={() => itemsDelete(data)}>
+                      {"취소,교환,반품 신청"}
+                    </BasicButton>
+                    {isDelete ? (
                       <Guidance
-                      text={"해당상품을 취소하시겠습니까?"}
-                      ok={refund}
-                      close={()=>setIsDelete(false)}
-                      /> : null}
+                        text={"해당상품을 취소하시겠습니까?"}
+                        ok={refund}
+                        close={() => setIsDelete(false)}
+                      />
+                    ) : null}
                     <BasicButton onClick={() => isOpen(data.orderDetails)}>
                       {"전체 장바구니 담기"}
                     </BasicButton>
@@ -409,9 +425,14 @@ function Orderitem() {
           </ListLayout>
         );
       })}
-      
-      {ordersData.data?.length === 0 ? null : <OtherPagination state={page} setState={setPage} pageInfo={ordersData.pageInfo}/>}
-      
+
+      {ordersData.data?.length === 0 ? null : (
+        <OtherPagination
+          state={page}
+          setState={setPage}
+          pageInfo={ordersData.pageInfo}
+        />
+      )}
     </Mypagehead>
   );
 }

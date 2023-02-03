@@ -61,7 +61,6 @@ function SuccessPayment() {
   const id = useParams();
   const location = useLocation();
 
-  console.log(location);
   const handleClickBtn = (e) => {
     e.preventDefault();
     navigate("/mypage/orderitem");

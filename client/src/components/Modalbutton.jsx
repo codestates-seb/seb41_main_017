@@ -68,7 +68,7 @@ const Modal = styled.div`
     display: flex;
     justify-content: center;
     gap: 10px;
-    padding-bottom:10px;
+    padding-bottom: 10px;
   }
 `;
 
@@ -77,7 +77,7 @@ function Modalbutton({ text }) {
   const [address, setAddress] = useState("");
 
   const [test, setTest] = useState("");
-  console.log(test);
+
   return (
     <>
       <Layout onClick={() => setIsopen(true)}>
@@ -155,8 +155,12 @@ function Modalbutton({ text }) {
               />
             </div>
             <div className="btns">
-              <div><Basicbutton p_height={"5"}>저장하기</Basicbutton></div>
-              <div onClick={() => setIsopen(false)} ><Basicbutton p_height={"5"}>닫기</Basicbutton></div>
+              <div>
+                <Basicbutton p_height={"5"}>저장하기</Basicbutton>
+              </div>
+              <div onClick={() => setIsopen(false)}>
+                <Basicbutton p_height={"5"}>닫기</Basicbutton>
+              </div>
             </div>
           </div>
         </Modal>

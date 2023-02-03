@@ -14,7 +14,13 @@ const AddressBtn = styled.button`
   margin-top: 19.5px;
 `;
 
-function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disabled }) {
+function ModalContainer({
+  setSignupAddress,
+  type,
+  signupId,
+  signupEmail,
+  disabled,
+}) {
   const [modalOpen, setModalOpen] = useState(false);
   const [response, setResponse] = useState("");
 
@@ -28,14 +34,15 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disable
   const handleCheckBtn = (e) => {
     e.preventDefault();
     axios
-      .get(`${process.env.REACT_APP_URL}/users/username-check?username=${signupId}`)
+      .get(
+        `${process.env.REACT_APP_URL}/users/username-check?username=${signupId}`
+      )
 
       .then((res) => {
         console.log(res);
         setResponse(res.status);
 
         openModal();
-        // window.alert("사용가능한 아이디입니다");
       })
 
       .catch((err) => {
@@ -48,7 +55,9 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disable
   const handleCheckEmailBtn = (e) => {
     e.preventDefault();
     axios
-      .get(`${process.env.REACT_APP_URL}/users/email-check?email=${signupEmail}`)
+      .get(
+        `${process.env.REACT_APP_URL}/users/email-check?email=${signupEmail}`
+      )
 
       .then((res) => {
         console.log(res);
@@ -70,7 +79,10 @@ function ModalContainer({ setSignupAddress, type, signupId, signupEmail, disable
         <AddressBtn onClick={openModal}>주소검색</AddressBtn>
 
         <Modal open={modalOpen} close={closeModal} header="Modal heading">
-          <Post setModalOpen={setModalOpen} setSignupAddress={setSignupAddress}></Post>
+          <Post
+            setModalOpen={setModalOpen}
+            setSignupAddress={setSignupAddress}
+          ></Post>
         </Modal>
       </>
     );
