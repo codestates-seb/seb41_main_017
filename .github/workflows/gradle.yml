@@ -17,6 +17,7 @@ permissions:
   contents: read
 env:
   S3_BUCKET_NAME: culinari
+  APPLICATION: ${{ secrets.APPLICATION}}
 
 jobs:
   build:
@@ -25,31 +26,56 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK 11
+    - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'temurin'
+        
+    ## gradle caching
+    - name: Gradle Caching
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+      
+    ## create application-dev.properties
+    - name: make application-dev.properties
+      if: contains(github.ref, 'BE')
+      run: |
+        cd ./server/culinari/src/main/resources
+        touch ./application-dev.properties
+        echo "${{ secrets.APPLICATION_TEST }}" > ./application-dev.properties
+      shell: bash
+
+    ## create application-prod.properties
+    - name: make application-prod.properties
+      if: contains(github.ref, 'BE')
+      run: |
+          cd ./server/culinari/src/main/resources
+          touch ./application-prod.properties
+          echo "${{ secrets.APPLICATION}}" > ./application-prod.properties
+      shell: bash
+  
+
+      
     - name: Add permission
       run: chmod +x ./gradlew
-    
-    - name: Set Yaml
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: ${{ env.RESOURCE_PATH }}
-      env:
-        spring.datasource.url: ${{ secrets.MYSQL_URL}}
-        spring.datasource.id: ${{ secrets.MYSQL_ID}}
-        spring.datasource.password: ${{ secrets.MYSQL_PWD }}
-        jwt.secret-key: ${{ secrets.JWT_SECRET_KEY}}
-        cloud.aws.credentials.access-key: ${{ secrets.AWS_ACCESS_KEY }}
-        cloud.aws.credentials.secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    
+      working-directory: ./server/culinari
       
+    
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: build
+      run: ./gradlew build --exclude-task test
+      working-directory: ./server/culinari/
+
+#     - name: Build with Gradle
+#       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+#       with:
+#         arguments: build
         
          # build한 후 프로젝트를 압축합니다.
     - name: Make zip file
@@ -67,6 +93,6 @@ jobs:
     
     # 압축한 프로젝트를 S3로 전송합니다.
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./practice-deploy.zip s3://culinari/culinari-deployy.zip
+      run: aws s3 cp --region ap-northeast-2 ./culinari-deploy.zip s3://culinari/culinari-deploy.zip
       
         
