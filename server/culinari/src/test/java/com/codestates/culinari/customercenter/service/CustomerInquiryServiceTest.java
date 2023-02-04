@@ -1,7 +1,6 @@
 package com.codestates.culinari.customercenter.service;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
-import com.codestates.culinari.customercenter.constant.ProcessStatus;
 import com.codestates.culinari.customercenter.dto.request.CsInquiryPost;
 import com.codestates.culinari.customercenter.entity.CsInquiry;
 import com.codestates.culinari.customercenter.repository.CsInquiryRepository;
@@ -76,7 +75,7 @@ class CustomerInquiryServiceTest {
                 .willReturn(page);
 
         //when
-        customerInquiryService.readEnquiriePage(principal, pageable);
+        customerInquiryService.readInquiriePage(principal, pageable);
 
         //then
         then(csInquiryRepository).should().findAll(any(Pageable.class));
@@ -133,7 +132,7 @@ class CustomerInquiryServiceTest {
                 .willReturn(Optional.of(csInquiry));
 
         //when
-        customerInquiryService.readEnquire(principal, inquiryId);
+        customerInquiryService.readInquire(principal, inquiryId);
 
         //then
         then(csInquiryRepository).should().findById(anyLong());

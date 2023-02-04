@@ -2,8 +2,6 @@ package com.codestates.culinari.config.security.filter;
 
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.config.security.jwt.JwtTokenizer;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,12 +41,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         try {
             Map<String, Object> claims = verifyJws(request); // JWT 검증
             setAuthenticationToContext(claims); // SecurityContext에 Authentication 저장
-        } catch (SignatureException e) {
-            request.setAttribute("SignatureException", e);
-        } catch (ExpiredJwtException e) {
-            request.setAttribute("ExpiredJwtException", e);
         } catch (Exception e) {
-            request.setAttribute("exception", e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
 
         filterChain.doFilter(request, response);
@@ -98,8 +93,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         Long profileId = Long.valueOf((Integer) claims.get("profileId"));
         // 권한 정보를 얻음
         Collection<? extends GrantedAuthority> authorities = (Collection<? extends GrantedAuthority>) ((List) claims.get("roles")).stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                        .collect(Collectors.toUnmodifiableSet());
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toUnmodifiableSet());
 
         log.info("authorities : {} ", authorities);
 

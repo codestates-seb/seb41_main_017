@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Component
-public class JwtTokenizer {
+public class  JwtTokenizer {
     /**
      * secretKey, accessTokenExpirationMinutes, refreshTokenExpirationMinutes
      * JWT 생성 시 필요한 정보 - application.yml에서 로드

@@ -3,9 +3,7 @@ package com.codestates.culinari.customercenter.controller;
 import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.customercenter.dto.request.CsInquiryCommentPatch;
 import com.codestates.culinari.customercenter.dto.request.CsInquiryCommentPost;
-import com.codestates.culinari.customercenter.dto.request.CsInquiryPatch;
 import com.codestates.culinari.customercenter.dto.response.CsInquiryCommentResponse;
-import com.codestates.culinari.customercenter.entity.CsInquiryComment;
 import com.codestates.culinari.customercenter.service.CustomerInquiryCommentService;
 import com.codestates.culinari.pagination.PageResponseDto;
 import com.codestates.culinari.pagination.service.PaginationService;
@@ -70,7 +68,7 @@ public class CustomerInquiryCommentController {
     @DeleteMapping("/comments/{comment-id}")
     public ResponseEntity deleteEnquire(@AuthenticationPrincipal CustomPrincipal customPrincipal,
                                         @PathVariable("comment-id") Long commentId) {
-        customerInquiryCommentService.deleteEnquireComment(customPrincipal, commentId);
+        customerInquiryCommentService.deleteInquireComment(customPrincipal, commentId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

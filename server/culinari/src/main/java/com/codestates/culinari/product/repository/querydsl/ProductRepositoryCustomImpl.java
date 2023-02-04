@@ -1,12 +1,14 @@
 package com.codestates.culinari.product.repository.querydsl;
 
 import com.codestates.culinari.order.entitiy.QOrderDetail;
+import com.codestates.culinari.payment.entity.QPayment;
 import com.codestates.culinari.product.entitiy.Product;
 import com.codestates.culinari.product.entitiy.QProduct;
 import com.codestates.culinari.user.entitiy.QProfile;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -77,6 +79,7 @@ public class ProductRepositoryCustomImpl extends QuerydslRepositorySupport imple
     public Page<Product> findAllFrequentOrderProduct(LocalDateTime createdAfterDateTime, Integer frequency, Long profileId, Pageable pageable) {
         QOrderDetail orderDetail = QOrderDetail.orderDetail;
         QProduct product = QProduct.product;
+        QPayment payment = QPayment.payment;
         QProfile profile = QProfile.profile;
 
         JPQLQuery<Product> query =
@@ -84,7 +87,13 @@ public class ProductRepositoryCustomImpl extends QuerydslRepositorySupport imple
                         .select(product)
                         .innerJoin(orderDetail.product, product)
                         .where(orderDetail.createdAt.goe(createdAfterDateTime)
-                                .and(product.id.eq(orderDetail.product.id)))
+                                .and(product.id.eq(orderDetail.product.id))
+                                .and(orderDetail.orders.id.in(
+                                                JPAExpressions.select(payment.order.id).from(payment)
+                                                        .where(
+                                                                payment.paySuccessTf.eq(true)
+                                                                        .and(payment.profile.id.eq(profileId))
+                                                        ))))
 //                        .fetchJoin()
                         .innerJoin(orderDetail.orders.profile, profile)
                         .where(profile.id.eq(profileId))
@@ -94,5 +103,53 @@ public class ProductRepositoryCustomImpl extends QuerydslRepositorySupport imple
         List<Product> products = getQuerydsl().applyPagination(pageable, query).fetch();
 
         return new PageImpl<>(products, pageable, query.fetchCount());
+    }
+
+    @Override
+    public Page<Product> findBestProducts(List<String> category, List<String> brand, Integer frequency, Pageable pageable) {
+        QOrderDetail orderDetail = QOrderDetail.orderDetail;
+        QProduct product = QProduct.product;
+        QPayment payment = QPayment.payment;
+
+        JPQLQuery<Product> query =
+                from(orderDetail)
+                        .select(product)
+                        .innerJoin(orderDetail.product, product)
+                        .where(orderDetail.product.id.eq(product.id),(orderDetail.orders.id.in(
+                                        JPAExpressions.select(payment.order.id).from(payment)
+                                                .where(
+                                                        payment.paySuccessTf.eq(true)
+                                                ))))
+//                        .where(orderDetail.product.goe(createdAfterDateTime)
+//                                .and(product.id.eq(orderDetail.product.id))
+//                                .and(orderDetail.orders.id.in(
+//                                        JPAExpressions.select(payment.order.id).from(payment)
+//                                                .where(
+//                                                        payment.paySuccessTf.eq(true)
+//                                                ))))
+//                        .fetchJoin()
+//                        .innerJoin(orderDetail.product ,product)
+                        .where(eqCategoryCode(category),(eqBrand(brand)))
+//                        .fetchJoin()
+                        .groupBy(product.id)
+                        .having(product.id.count().goe(frequency));
+        List<Product> products = getQuerydsl().applyPagination(pageable, query).fetch();
+
+        return new PageImpl<>(products, pageable, query.fetchCount());
+    }
+
+    @Override
+    public Long countFrequentOrderProduct(LocalDateTime createdAfterDateTime, Integer frequency, Long profileId) {
+        QOrderDetail orderDetail = QOrderDetail.orderDetail;
+
+        return from(orderDetail)
+                .select(orderDetail.product.id)
+                .where(orderDetail.createdAt.goe(createdAfterDateTime)
+                        .and(orderDetail.product.id.eq(orderDetail.product.id))
+                        .and(orderDetail.orders.payment.paySuccessTf.eq(true))
+                        .and(orderDetail.orders.profile.id.eq(profileId)))
+                .groupBy(orderDetail.product.id)
+                .having(orderDetail.product.id.count().goe(frequency))
+                .fetchCount();
     }
 }

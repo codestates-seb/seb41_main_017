@@ -41,7 +41,7 @@ public class CustomerInquiryController {
     @GetMapping
     public ResponseEntity getEnquirePage(@AuthenticationPrincipal CustomPrincipal customPrincipal,
                                          @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<CsInquiryResponse> csInquiryResponsePage = customerInquiryService.readEnquiriePage(customPrincipal, pageable);
+        Page<CsInquiryResponse> csInquiryResponsePage = customerInquiryService.readInquiriePage(customPrincipal, pageable);
         List<CsInquiryResponse> csInquiryResponses = csInquiryResponsePage.getContent();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), csInquiryResponsePage.getTotalPages());
 
@@ -53,7 +53,7 @@ public class CustomerInquiryController {
     @GetMapping("/{inquiry-id}")
     public ResponseEntity getEnquire(@AuthenticationPrincipal CustomPrincipal customPrincipal,
                                      @PathVariable("inquiry-id") Long inquiryId) {
-        CsInquiryResponse csInquiryResponse = customerInquiryService.readEnquire(customPrincipal, inquiryId);
+        CsInquiryResponse csInquiryResponse = customerInquiryService.readInquire(customPrincipal, inquiryId);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(csInquiryResponse),

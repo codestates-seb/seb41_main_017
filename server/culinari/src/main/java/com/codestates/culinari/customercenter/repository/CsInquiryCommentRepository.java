@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface CsInquiryCommentRepository extends JpaRepository<CsInquiryComment, Long>, CsInquiryCommentCustom {
 
-    @Query(value = "select c from CsInquiryComment c where c.id = :commentId and c.profile.id = :profileId")
+//    @Query(value = "select c from CsInquiryComment c where c.id = :commentId and c.profile.id = :profileId")
     Optional<CsInquiryComment> findByIdAndProfileId(Long commentId, Long profileId);
 }

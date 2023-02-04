@@ -2,7 +2,6 @@ package com.codestates.culinari.order.dto.response;
 
 import com.codestates.culinari.order.constant.StatusType;
 import com.codestates.culinari.order.entitiy.OrderDetail;
-import com.codestates.culinari.product.dto.ProductDto;
 import com.codestates.culinari.product.dto.response.ProductResponseToPage;
 
 public record OrderDetailResponse(
@@ -21,8 +20,7 @@ public record OrderDetailResponse(
                 entity.getId(),
                 entity.getQuantity(),
                 entity.getStatusType(),
-                // TODO: 이후 ProductResponseToPage.from(entity.getProduct())
-                ProductResponseToPage.from(ProductDto.from(entity.getProduct()))
+                ProductResponseToPage.from(entity.getProduct())
         );
     }
 }

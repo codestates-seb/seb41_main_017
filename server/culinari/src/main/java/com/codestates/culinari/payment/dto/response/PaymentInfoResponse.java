@@ -9,18 +9,18 @@ public record PaymentInfoResponse(
         PayType payType,
         BigDecimal amount,
         String orderId,
-        String productName
+        String orderName
 ) {
 
-    public static PaymentInfoResponse of(PayType payType, BigDecimal amount, String orderId, String productName) {
-        return new PaymentInfoResponse(payType, amount, orderId, productName);
+    public static PaymentInfoResponse of(PayType payType, BigDecimal amount, String orderId, String orderName) {
+        return new PaymentInfoResponse(payType, amount, orderId, orderName);
     }
 
     public static PaymentInfoResponse from(Payment entity) {
         return PaymentInfoResponse.of(
                 entity.getPayType(),
                 entity.getAmount(),
-                String.format("%019d", entity.getOrder().getId()),
+                entity.getOrder().getId(),
                 entity.getProductName()
         );
     }

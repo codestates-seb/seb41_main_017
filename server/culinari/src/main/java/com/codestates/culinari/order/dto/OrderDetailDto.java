@@ -11,7 +11,7 @@ public record OrderDetailDto(
 ) {
 
     public static OrderDetailDto of(Integer quantity) {
-        return new OrderDetailDto(quantity, StatusType.STAND_BY);
+        return new OrderDetailDto(quantity, StatusType.ORDER_RECEIVED);
     }
 
     public OrderDetail toEntity(Orders orders, Product product) {

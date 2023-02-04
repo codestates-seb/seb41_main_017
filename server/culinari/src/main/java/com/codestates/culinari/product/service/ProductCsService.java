@@ -5,6 +5,8 @@ import com.codestates.culinari.product.dto.ProductInquiryDto;
 import com.codestates.culinari.product.dto.request.ProductInquiryRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewLikeRequest;
 import com.codestates.culinari.product.dto.request.ProductReviewRequest;
+import com.codestates.culinari.product.entitiy.ProductInquiry;
+import com.codestates.culinari.product.entitiy.ProductReview;
 import com.codestates.culinari.user.dto.response.ProfileMyPageReviewExistResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +25,16 @@ public interface ProductCsService {
 
     // 문의 작성
     void createProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal, Long productId);
+
+    // 상품 문의 호출
+    Page<ProductInquiry> readProductInquiry(Long productId, Pageable pageable);
+
+    // 상품 리뷰 호출
+    Page<ProductReview> readProductReviewWithSortedType(String sortedType, Long productId, Pageable pageable);
+
     // 후기 작성
-    void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, List<MultipartFile> multipartFiles) throws IOException;
+    void createProductReview(ProductReviewRequest productReviewRequest, CustomPrincipal principal, Long productId, Long orderId, List<MultipartFile> multipartFiles) throws IOException;
+
     //문의 수정
     void updateProductInquiry(ProductInquiryRequest productInquiryRequest, CustomPrincipal principal, Long productInquiryId);
     //리뷰 수정
@@ -32,6 +42,9 @@ public interface ProductCsService {
     //문의 삭제
     void deleteProductInquiry(CustomPrincipal principal, Long productInquiryId);
     //리뷰 삭제
-    void deleteProductReview(CustomPrincipal principal, Long productReviewId);
+
+    //리뷰 삭제
+    void deleteProductReview(CustomPrincipal principal, Long productId, Long productReviewId);
+
     void updateLike(ProductReviewLikeRequest productReviewLikePost, CustomPrincipal principal, Long productReviewId);
 }
