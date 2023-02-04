@@ -88,8 +88,3 @@ clean {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-tasks.named('asciidoctor') {
-	inputs.dir snippetsDir
-	dependsOn test
-}

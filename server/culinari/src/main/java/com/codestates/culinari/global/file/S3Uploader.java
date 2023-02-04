@@ -47,7 +47,6 @@ public class S3Uploader {
 
 
     public String upload(MultipartFile multipartFile) throws IOException {
-
         if (multipartFile.isEmpty()) {
             return null;
         }
