@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record OrderResponse(
-        Long id,
+        String id,
         String address,
         String receiverName,
         String receiverPhoneNumber,
@@ -18,7 +18,7 @@ public record OrderResponse(
 ) {
 
     public static OrderResponse of(
-            Long id, String address, String receiverName, String receiverPhoneNumber,
+            String id, String address, String receiverName, String receiverPhoneNumber,
             StatusType status, LocalDateTime createdAt, List<OrderDetailResponse> orderDetails
     ) {
         return new OrderResponse(id, address, receiverName, receiverPhoneNumber, status, createdAt, orderDetails);

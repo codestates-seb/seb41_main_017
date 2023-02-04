@@ -4,6 +4,7 @@ import com.codestates.culinari.config.security.dto.CustomPrincipal;
 import com.codestates.culinari.global.exception.BusinessLogicException;
 import com.codestates.culinari.global.exception.ExceptionCode;
 import com.codestates.culinari.order.dto.CartDto;
+import com.codestates.culinari.order.dto.request.CartDelete;
 import com.codestates.culinari.order.dto.request.CartPatch;
 import com.codestates.culinari.order.dto.request.CartPost;
 import com.codestates.culinari.order.dto.response.CartResponse;
@@ -31,36 +32,32 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void createCart(CartPost post, CustomPrincipal principal) {
-        verifyPrincipal(principal);
+        post.cartItems().forEach(cartInfo -> {
+                    Product product = productRepository.findById(cartInfo.productId())
+                            .orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
+                    Profile profile = profileRepository.getReferenceById(principal.profileId());
+                    CartDto dto = cartInfo.toDto();
 
-        Product product = productRepository.findById(post.productId())
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
-        Profile profile = profileRepository.getReferenceById(principal.profileId());
-        CartDto dto = post.toDto();
-
-        cartRepository.findByProfile_IdAndProduct_Id(profile.getId(), product.getId())
-                .ifPresentOrElse(
-                        cart -> {
-                            cart.updateQuantity(cart.getQuantity() + dto.quantity());
-                            cartRepository.save(cart);
-                        }, () -> {
-                            cartRepository.save(dto.toEntity(profile, product));
-                        }
-                );
+                    cartRepository.findByProfile_IdAndProduct_Id(profile.getId(), product.getId())
+                            .ifPresentOrElse(
+                                    cart -> {
+                                        cart.updateQuantity(cart.getQuantity() + dto.quantity());
+                                        cartRepository.save(cart);
+                                    }, () -> {
+                                        cartRepository.save(dto.toEntity(profile, product));
+                                    }
+                            );
+                });
     }
 
     @Transactional(readOnly = true)
     @Override
     public Page<CartResponse> readCarts(Pageable pageable, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         return cartRepository.findAllByProfile_Id(pageable, principal.profileId()).map(CartResponse::from);
     }
 
     @Override
     public void updateCart(CartPatch patch, Long cartId, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
         Cart cart = cartRepository.findByIdAndProfile_Id(cartId, principal.profileId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
 
@@ -69,16 +66,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteCart(Long cartId, CustomPrincipal principal) {
-        verifyPrincipal(principal);
-
-        if(cartRepository.existsByIdAndProfile_Id(cartId, principal.profileId()))
-            cartRepository.deleteById(cartId);
-        else
+    public void deleteCarts(CartDelete delete, CustomPrincipal principal) {
+        try {
+            cartRepository.deleteAllByIdsAndProfile_Id(delete.cartIds(), principal.profileId());
+        } catch (Exception e) {
             throw new BusinessLogicException(ExceptionCode.CART_NOT_FOUND);
-    }
 
-    public void verifyPrincipal(CustomPrincipal principal) {
-        if (principal == null) throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+        }
     }
 }

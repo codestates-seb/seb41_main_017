@@ -1,12 +1,12 @@
 package com.codestates.culinari.product.dto.response;
 
-import com.codestates.culinari.product.dto.ProductReviewDto;
 import com.codestates.culinari.product.dto.ProductReviewImageDto;
 import com.codestates.culinari.product.entitiy.ProductReview;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 public record ProductReviewResponse(
@@ -27,19 +27,21 @@ public record ProductReviewResponse(
         return new ProductReviewResponse(id, productId, profileId, content, reviewStar, like, createdAt, modifiedAt, createdBy, modifiedBy,productReviewImageDtos);
     }
 
-    public static ProductReviewResponse from(ProductReviewDto dto) {
+    public static ProductReviewResponse from(ProductReview entity) {
         return new ProductReviewResponse(
-                dto.id(),
-                dto.productId(),
-                dto.profileId(),
-                dto.content(),
-                dto.reviewStar(),
-                dto.like(),
-                dto.createdAt(),
-                dto.modifiedAt(),
-                dto.createdBy(),
-                dto.modifiedBy(),
-                dto.productReviewImageDtos()
+                entity.getId(),
+                entity.getProduct().getId(),
+                entity.getProfile().getId(),
+                entity.getContent(),
+                entity.getReviewStar(),
+                entity.getProductReviewLike().getLikeNum(),
+                entity.getCreatedAt(),
+                entity.getModifiedAt(),
+                entity.getCreatedBy(),
+                entity.getModifiedBy(),
+                entity.getProductReviewImages().stream()
+                        .map(ProductReviewImageDto::from)
+                        .collect(Collectors.toList())
         );
     }
 }

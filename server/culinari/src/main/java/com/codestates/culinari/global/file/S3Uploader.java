@@ -34,6 +34,9 @@ public class S3Uploader {
 
     public List<String> uploads(List<MultipartFile> multipartFiles) throws IOException {
         List<String> imgUrlList = new ArrayList<>();
+        if (multipartFiles.isEmpty()) {
+            return imgUrlList;
+        }
         for (MultipartFile multipartFile : multipartFiles) {
             if (!multipartFile.isEmpty()) {
                 imgUrlList.add(upload(multipartFile));

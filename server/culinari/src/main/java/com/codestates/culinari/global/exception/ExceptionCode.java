@@ -20,6 +20,8 @@ public enum ExceptionCode {
     USERNAME_EXISTS(405, "Username exist"),
     EMAIL_EXISTS(405, "Email exist"),
     PAYMENT_EXISTS(405, "Payment exists"),
+
+    PRODUCT_LIKE_IS_EXIST(405,"Product Like is Exist"),
     TOSS_REQUEST_FAIL(500, "Toss request fail");
 
     @Getter
