@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { setInfo } from "../../app/reducer/productId2Pay";
 
 import { ReactComponent as CartIcon } from "../../assets/cart_icon.svg";
 import CartProductItem from "../../components/cart/CartProductItem";
@@ -11,8 +12,7 @@ import BasicButton from "../../components/BasicButton";
 import ColorButton from "../../components/ColorButton";
 import ProductItemSlider from "../../components/ProductItemSlider";
 import { Title, TodayRecommendProducts } from "..";
-
-import { setInfo } from "../../app/reducer/productId2Pay";
+import noCartImg from "../../assets/no_carts.png";
 
 const Container = styled.div`
   max-width: 1050px;
@@ -114,10 +114,10 @@ function Cart() {
   const [bestProductData, setBestProductData] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     const accessToken = JSON.parse(localStorage.getItem("token"))?.authorization;
-    
+
     if (!accessToken) {
       if (window.confirm("해당 기능은 로그인 후에 사용할 수 있습니다. 로그인 페이지으로 이동하시겠습니까?")) {
         navigate("/login");
@@ -265,7 +265,7 @@ function Cart() {
               key={item.id}
             />
           ))}
-        {data && data.data.length ? null : <img className="no_cart_img" src="img/no_carts.png"></img>}
+        {data && data.data.length ? null : <img className="no_cart_img" src={noCartImg}></img>}
 
         <TotalPriceBox>
           <div className="product-price">
